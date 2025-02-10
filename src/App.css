@@ -1,0 +1,211 @@
+@font-face {
+  font-family: "samim";
+  src: url("./assets/fonts/samim-font-v2.0.1/Samim.woff");
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  scrollbar-width: 2px;
+  font-family: "samim";
+  scrollbar-color: white;
+}
+
+/* Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+  width: 10px;
+}
+
+*::-webkit-scrollbar-track {
+  background: #ffffff;
+  border-radius: 10px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #e7e7e7;
+  border-radius: 3.5px;
+}
+
+.border-wrapper {
+  position: relative;
+  padding-left: 10px;
+  display: flex;
+  align-items: center;
+  border-bottom: 2px dashed #09a380;
+  padding-bottom: 8px;
+}
+
+.border-wrapper::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  border-bottom: 2px dashed #09a380;
+  z-index: -1;
+}
+
+.border-left-dashed {
+  position: relative;
+  padding-left: 8px;
+}
+
+.border-left-dashed::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 2px;
+  border-left: 2px dashed #09a380;
+}
+
+.gradient-box:hover {
+  background: rgb(9, 163, 128);
+  background: linear-gradient(
+    0deg,
+    rgba(9, 163, 128, 1) 63%,
+    rgba(76, 252, 212, 1) 100%
+  );
+}
+
+.transition-hover:hover {
+  transition: all ease-in 0.5s;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+@keyframes identifier {
+  from {
+    transform: translateX(100%);
+  }
+
+  to {
+    transform: translateX(0);
+  }
+}
+
+.modal-enter-menu {
+  opacity: 1;
+  animation: identifier 0.2s ease-in-out;
+}
+
+.triangle-up {
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-bottom: 10px solid white;
+}
+
+.wrapper {
+  @apply w-full;
+}
+
+.footer {
+  @apply bg-white border-t-[1px] border-t-gray-200 py-4 px-2 text-gray-500 pr-6;
+}
+
+.sidebar {
+  @apply lg:w-[250px] w-[270px] bg-[#fff] transition-all duration-500 shadow-lg;
+}
+
+.sidebar.collapsed {
+  @apply -mr-64 -z-50 !w-0;
+}
+
+.main {
+  @apply flex w-full min-h-screen min-w-0 flex-col transition-all duration-500;
+}
+
+.sidebar-brand {
+  @apply my-3 flex items-center lg:gap-3 gap-1;
+}
+
+.content {
+  @apply flex-1 p-6;
+}
+
+.text-brand {
+  @apply lg:text-[15px] text-[13px] font-extrabold;
+}
+
+.sidebar-item {
+  @apply py-2 lg:px-6 pr-1 pt-[1px] transition-all duration-500;
+}
+
+input,
+textarea {
+  outline: none;
+}
+
+.circular-chart {
+  width: 180px;
+  height: 180px;
+}
+
+.donut {
+  width: 100%;
+  height: 100%;
+  transform: rotate(130deg);
+}
+
+.donut-ring {
+  fill: transparent;
+  stroke: #d5efe9;
+  stroke-width: 4.2;
+}
+
+.donut-segment {
+  fill: transparent;
+  stroke: #1aa68b;
+  stroke-width: 4.2;
+  stroke-dasharray: 75 25;
+  stroke-linecap: round;
+  transition: stroke-dasharray 0.5s;
+}
+
+.legend {
+  font-size: 12px;
+}
+
+.legend div {
+  margin-bottom: 10px;
+}
+
+.legend span {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  margin-left: 5px;
+  border-radius: 50%;
+}
+
+.green {
+  background-color: #1aa68b;
+}
+
+.light-green {
+  background-color: #d5efe9;
+}
+.hover-btn {
+  @apply cursor-pointer hover:bg-gray-200 rounded-full hover:rotate-180 transition-all duration-500;
+}
+.modal-enter-menu {
+  transform: translateX(0);
+  opacity: 1;
+  transition: transform 0.5s ease, opacity 0.5s ease;
+}
+.modal-exit-menu {
+  transform: translateX(100%);
+  opacity: 0;
+  transition: transform 0.5s ease, opacity 0.5s ease;
+}

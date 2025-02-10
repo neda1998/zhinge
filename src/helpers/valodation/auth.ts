@@ -1,0 +1,20 @@
+import * as Yup from "yup";
+
+//signup user
+export const validationSchemaSignup = () =>
+  Yup.object({
+    userName: Yup.string().required("لطفا نام کاربری خود را وارد کنید"),
+    phoneNumber: Yup.string()
+      .max(11, "شماره تلفن نمیتواند بیش از ۱۱ رقم باشد")
+      .required("لطفا شماره تلفن خود را وارد کنید"),
+    password: Yup.string().required("فیلد اجباری است"),
+  });
+
+//signin user
+  export const validationSchemaSignin = () =>
+  Yup.object({
+    phoneNumber: Yup.string()
+      .max(11, "شماره تلفن نمیتواند بیش از ۱۱ رقم باشد")
+      .required("لطفا شماره تلفن خود را وارد کنید"),
+    password: Yup.string().required("فیلد اجباری است"),
+  });

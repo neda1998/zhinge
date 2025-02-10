@@ -1,0 +1,3 @@
+export const AUTH = {
+    GET_CODE_GENERATE:"GET_CODE_GENERATE"
+}
