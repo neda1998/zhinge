@@ -4,7 +4,6 @@ import RentHouse from "../Pages/RentHouse";
 import SellHouse from "../Pages/SellHouse";
 import SellHouseId from "../Pages/SellHouseId";
 import SignUp from "../Pages/signup";
-import Login from "../Pages/Login/idnex";
 import Otp from "../Pages/Otp";
 import RentHouseId from "../Pages/RentHouseId";
 import DetailsProperty from "../Pages/detailsProperty";
@@ -46,6 +45,7 @@ import JingeTeamManagement from "../panelAdmin/pages/UploadLogoOfEstate/JingeTea
 import AccountInformation from "../components/profile/AccountInformation.tsx";
 import RequestedEstateNewHouse from "../panelAdmin/pages/requestedEstate/RequestedEstateNewHouse";
 import ManageSetting from "../panelAdmin/pages/manageSetting";
+import Varify from "../Pages/Varify";
 
 const routes: AllRoutes[] = [
   {
@@ -94,8 +94,8 @@ const routes: AllRoutes[] = [
     type: "link",
     key: "home",
     name: "home",
-    route: "/Login",
-    component: <Login />,
+    route: "/Varify",
+    component: <Varify />,
   },
   {
     type: "link",

@@ -4,7 +4,7 @@ import Button from '../../components/ui/atoms/Button';
 import { useNavigate } from 'react-router-dom';
 import Header from '../../components/template/Header';
 
-const Login = () => {
+const Varify = () => {
     const navigate = useNavigate()
     return (
         <div className='w-full flex justify-center'>
@@ -52,4 +52,4 @@ const Login = () => {
         </div>
     )
 }
-export default Login
+export default Varify

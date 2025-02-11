@@ -1,4 +1,4 @@
-import { ButtonHTMLAttributes, InputHTMLAttributes } from "react";
+import { InputHTMLAttributes } from "react";
 import * as CSS from "csstype";
 
 type InputProps = InputHTMLAttributes<HTMLInputElement> & {
@@ -25,6 +25,7 @@ type InputProps = InputHTMLAttributes<HTMLInputElement> & {
     render?: any
     calendar?: any
     locale?: any
+    name?: string; // Add the name property
 };
 
 export default InputProps;

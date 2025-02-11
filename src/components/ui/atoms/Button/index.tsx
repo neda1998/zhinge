@@ -22,6 +22,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => {
     index,
     border,
     state,
+    type, // Add type prop here
   } = props;
   const baseClasses = `font-iranSans flex items-center font-[500] leading-[17.77px] px-3 justify-evenly`;
 
@@ -80,7 +81,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => {
   };
 
   return (
-    <button {...props} className={buttonClasses} style={inlineStyles} ref={ref}>
+    <button {...props} className={buttonClasses} style={inlineStyles} ref={ref} type={type}>
       {children}
     </button>
   );

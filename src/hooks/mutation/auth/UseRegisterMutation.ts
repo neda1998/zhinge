@@ -7,7 +7,7 @@ const useSignupMutation = () => {
   const navigate = useNavigate();
   return useMutation(async (data) => await register(data), {
     onSuccess: async function (data, formData) {
-      navigate("/");
+      navigate("/Login");
       // navigate(`/auth/verifyaccount?phoneNumber=${formData.phoneNumber}`)//set phonenumber in url
     },
     onError: async (error: any) => {

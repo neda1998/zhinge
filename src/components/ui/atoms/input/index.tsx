@@ -1,4 +1,4 @@
-import React, { forwardRef } from "react";
+import { forwardRef } from "react";
 import InputProps from "./type";
 import useClassNames from "../../../../core/hooks/classnames";
 const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
@@ -18,6 +18,8 @@ const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
     submit,
     returnbtn,
     base,
+    name, // Add name to the destructured props
+    type, // Add type to the destructured props
   } = props;
   const baseClasses = `font-iranSans flex items-center font-[500] leading-[17.77px] justify-evenly`;
   const sizeClasses = useClassNames({
@@ -84,7 +86,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
   };
 
   return (
-    <input {...props} className={buttonClasses} style={inlineStyles}>
+    <input {...props} name={name} type={type} className={buttonClasses} style={inlineStyles}>
       {children}
     </input>
   );

@@ -3,13 +3,13 @@ import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { newcode } from "../../../services/auth/getGenerateCode";
 
-const useSignupMutation = () => {
+const UseGenerateCodeMutation = () => {
   const navigate = useNavigate();
   return useMutation(
     async ({ phone }: { phone: number |string }) => await newcode(phone),
     {
       onSuccess: async function (data) {
-        navigate("/auth/newcode");
+        navigate("/Otp");
       },
       onError: async (error: any) => {
         Swal.fire({
@@ -23,4 +23,4 @@ const useSignupMutation = () => {
   );
 };
 
-export default useSignupMutation;
+export default UseGenerateCodeMutation;
