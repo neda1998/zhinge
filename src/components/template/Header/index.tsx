@@ -12,12 +12,12 @@ export default function Header({ variant }: any) {
   const navigate = useNavigate()
   return (
     <>
-      <div className={`w-full mobile:hidden tablet:hidden bg-transparent h-28  flex items-center  justify-center ${variant === "main" ? "absolute" : 'relative'}`}>
+      <div className={`w-full mobile:hidden tablet:hidden bg-transparent h-28 flex items-center justify-center ${variant === "main" ? "absolute" : 'relative'}`}>
         <div className='flex w-[95%] items-center justify-around bg-white rounded-[100px] pl-1 header-top-light'>
           <div className='w-[10%] flex justify-center items-center py-2'>
             <img src={ZhingeLogo} alt="ZhingeLogo" width={100} />
           </div>
-          <div className='w-[50%]  p-3'>
+          <div className='w-[50%] p-3'>
             <NavList items={navItems} />
           </div>
           <div className='w-[38%] flex justify-end gap-3'>
