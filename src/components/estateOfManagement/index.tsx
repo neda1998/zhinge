@@ -13,7 +13,6 @@ const EstateOfManagement = () => {
         return <div>Error occurred</div>;
     }
 
-    // اگر داده‌ها وجود نداشت، از داده‌های محلی استفاده کن
     const estateData = data
         ? [
               { id: 1, count: data["all users"], text: "کل کاربران ما", bgClass: "bg-[#FA8036]", img: "house" },
