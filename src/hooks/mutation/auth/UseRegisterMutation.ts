@@ -7,10 +7,11 @@ const useSignupMutation = () => {
   const navigate = useNavigate();
   return useMutation(async (data) => await register(data), {
     onSuccess: async function (data, formData) {
-      navigate("/Login");
-      // navigate(`/auth/verifyaccount?phoneNumber=${formData.phoneNumber}`)//set phonenumber in url
+      // هدایت کاربر به صفحه OTP
+      navigate("/Otp");
     },
     onError: async (error: any) => {
+      // نمایش خطای سرور
       Swal.fire({
         title: "!خطا",
         text: error.response.data.message,
@@ -20,5 +21,6 @@ const useSignupMutation = () => {
     },
   });
 };
+
 
 export default useSignupMutation;

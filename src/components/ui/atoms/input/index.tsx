@@ -18,8 +18,8 @@ const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
     submit,
     returnbtn,
     base,
-    name, // Add name to the destructured props
-    type, // Add type to the destructured props
+    name, 
+    type, 
   } = props;
   const baseClasses = `font-iranSans flex items-center font-[500] leading-[17.77px] justify-evenly`;
   const sizeClasses = useClassNames({
@@ -33,12 +33,12 @@ const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
   const BaseInput = useClassNames(
     baseClasses,
     sizeClasses,
-    `peer h-full w-full rounded-[7px] ${
+    `peer h-full w-full rounded-[7px] border-0 ${
       variant === "Date" ? "icon" : ""
     }  border ${
       error ? "border-red-500" : ""
-    }  bg-transparent px-3 py-2.5  text-sm outline outline-0 transition-all placeholder:text-[#1E1E1E66] placeholder-shown:border placeholder-shown:${
-      error ? "border-primary-red" : "border-primary-border "
+    }  bg-transparent px-3 py-2.5  text-sm outline outline-0 transition-all placeholder-shown:${
+      error ? "border-primary-red" : ""
     }  focus:border-1  focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50`
   );
 

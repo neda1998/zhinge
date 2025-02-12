@@ -17,7 +17,11 @@ const SignUp = () => {
         validationSchema:validationSchemaSignup,
         onSubmit: (values: any) => {
             console.log(values);
-            mutate({ phone: values.mobile });
+            mutate({ 
+                full_name: values.full_name, 
+                password: values.password, 
+                phone: values.phone
+             } as any);
         }
     });
     return (

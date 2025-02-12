@@ -45,7 +45,7 @@ import JingeTeamManagement from "../panelAdmin/pages/UploadLogoOfEstate/JingeTea
 import AccountInformation from "../components/profile/AccountInformation.tsx";
 import RequestedEstateNewHouse from "../panelAdmin/pages/requestedEstate/RequestedEstateNewHouse";
 import ManageSetting from "../panelAdmin/pages/manageSetting";
-import Varify from "../Pages/Varify";
+import Login from "../Pages/Login";
 
 const routes: AllRoutes[] = [
   {
@@ -62,6 +62,13 @@ const routes: AllRoutes[] = [
     route: "/SellHouse",
     component: <SellHouse />,
   },
+  // {
+  //     type: "link",
+  //     key: "home",
+  //     name: "home",
+  //     route: "/ContactUssd",
+  //     component: <ContactUssd />,
+  //   },
   {
     type: "link",
     key: "home",
@@ -94,8 +101,8 @@ const routes: AllRoutes[] = [
     type: "link",
     key: "home",
     name: "home",
-    route: "/Varify",
-    component: <Varify />,
+    route: "/Login",
+    component: <Login />,
   },
   {
     type: "link",
@@ -106,8 +113,8 @@ const routes: AllRoutes[] = [
   },
   {
     type: "link",
-    key: "home",
-    name: "home",
+    key: "myAdvertise",
+    name: "myAdvertise",
     route: "/dashboard/my-advertise",
     component: <MyAds />,
   },
@@ -124,13 +131,6 @@ const routes: AllRoutes[] = [
     name: "realState",
     route: "/dashboard/realState",
     component: <Realstate />,
-  },
-  {
-    type: "link",
-    key: "detailsProperty",
-    name: "detailsProperty",
-    route: "/detailsProperty",
-    component: <DetailsProperty />,
   },
   {
     type: "link",
