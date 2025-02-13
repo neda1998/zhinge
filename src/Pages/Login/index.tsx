@@ -31,7 +31,7 @@ const Login = () => {
                             <div className='w-12 h-[4px] mt-5 bg-[#09A380]'></div>
                             <span className='text-[45px] mobile:text-[30px] font-bold'>ورود به حساب <span className='text-[#09A380]'>ژینگه</span></span>
                         </div>
-                        <form onSubmit={formik.handleSubmit} className='w-full h-[50%] flex flex-col justify-evenly '>
+                        <form onSubmit={formik.handleSubmit} className='w-full h-[50%] flex flex-col justify-evenly'>
                             <div className='h-[60%] flex flex-col justify-evenly items-center'>
                                 <span className='font-bold' >
                                     برای دریافت کد یکبار مصرف ، شماره موبایل خود را وارد کنید
@@ -44,7 +44,7 @@ const Login = () => {
                                     borderradius={'100px'}
                                     bgcolor={'#D9D9D926'}
                                     name='phone'
-                                    type='tel'
+                                    type='text'
                                     onChange={formik.handleChange}
                                     value={formik.values.phone}
                                 />

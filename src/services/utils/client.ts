@@ -1,25 +1,74 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 
-let inDevEnvironment = process.env.NODE_ENV === "development";
 const baseUrl = "http://185.231.115.236:3000";
 
 // تنظیم baseURL برای axios
-axios.defaults.baseURL = baseUrl;
+const client = axios.create({
+    baseURL: baseUrl,
+});
 
-interface ClientConfig extends Omit<AxiosRequestConfig, 'url'> {
+// تابع کمکی برای خواندن مقدار `cookie`
+const getCookie = (name: string): string | null => {
+    const match = document.cookie
+        .split("; ")
+        .find((row) => row.startsWith(name + "="));
+    return match ? match.split("=")[1] : null;
+};
+
+// اینترسپتور برای ارسال `accessToken` در هدر همه درخواست‌ها
+client.interceptors.request.use(
+    (config) => {
+        const accessToken = getCookie("accessToken");
+        if (accessToken) {
+            config.headers["Authorization"] = `Bearer ${accessToken}`;
+        }
+        return config;
+    },
+    (error) => Promise.reject(error)
+);
+
+// اینترسپتور برای مدیریت `refreshToken` در صورت 401
+client.interceptors.response.use(
+    (response) => response,
+    async (error) => {
+        if (error.response?.status === 401) {
+            const refreshToken = getCookie("refreshToken");
+
+            if (refreshToken) {
+                try {
+                    // ارسال درخواست برای دریافت توکن جدید
+                    const { data } = await axios.post(`${baseUrl}/auth/refresh`, {
+                        refreshToken,
+                    });
+
+                    // ذخیره توکن جدید در کوکی
+                    document.cookie = `accessToken=${data.accessToken}; path=/`;
+                    document.cookie = `refreshToken=${data.refreshToken}; path=/`;
+
+                    // درخواست قبلی را با توکن جدید ارسال کن
+                    error.config.headers["Authorization"] = `Bearer ${data.accessToken}`;
+                    return axios(error.config);
+                } catch (refreshError) {
+                    console.error("Refresh token failed", refreshError);
+                    return Promise.reject(refreshError);
+                }
+            }
+        }
+        return Promise.reject(error);
+    }
+);
+
+interface ClientConfig extends Omit<AxiosRequestConfig, "url"> {
     url: string;
     token?: boolean;
 }
 
-const client = async (
+const request = async (
     { url, token = true, ...config }: ClientConfig,
     formatter?: (data: any, response: AxiosResponse) => any
 ): Promise<any | null> => {
     
-    const authToken = axios.defaults.headers.common["Authorization"] || "";
-    console.log("Auth Token:", authToken);
-
-    const response = await axios.request({
+    const response = await client.request({
         url: encodeURI(url),
         ...config,
     });
@@ -27,5 +76,5 @@ const client = async (
     return typeof formatter === "undefined" ? response.data : formatter(response.data, response);
 };
 
-export { inDevEnvironment, baseUrl };
-export default client;
+export { baseUrl };
+export default request;

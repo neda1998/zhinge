@@ -2,9 +2,9 @@ const apiRoutes = {
   auth: {
     register: "/api/V1/auth/Register",
     login: "/api/V1/auth/login",
-    newcode: "/api/V1/auth/newcode",
+    varify: "/api/V1/auth/Varify",
     forgetPassword: "/auth/forgetPassword",
-    verifyOtp: "/auth/forgetPassword/verifyOtp",
+    newcode: "/api/V1/auth/newcode",
     updatePass: "/auth/forgetPassword/updatePass",
     user: "/users/profile",
   },

@@ -6,13 +6,17 @@ import { useCookies } from "react-cookie";
 import axios from "axios";
 
 const useLoginMutation = () => {
-  const [cookies, setCookies] = useCookies(["token"]);
+    const [cookies, setCookies] = useCookies(["accessToken", "refreshToken"]);
   const navigate = useNavigate();
   return useMutation(async (data) => await login(data), {
     onSuccess: async function (data) {
+      const { accessToken, refreshToken } = data;
+
+      setCookies("accessToken", accessToken, { path: "/" });
+      setCookies("refreshToken", refreshToken, { path: "/" });
+      
+      axios.defaults.headers.common["Authorization"]=`Bearer ${accessToken}`;
       navigate("/");
-      setCookies("token",data.token,{path:"/"});
-      axios.defaults.headers.common["Authorization"]=`Bearer ${data.token}`;
     },
     onError: async (error: any) => {
       Swal.fire({

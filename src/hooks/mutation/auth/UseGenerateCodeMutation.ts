@@ -9,7 +9,7 @@ const UseGenerateCodeMutation = () => {
     async ({ phone }: { phone: number |string }) => await newcode(phone),
     {
       onSuccess: async function (data) {
-        navigate("/Otp");
+        navigate("/Login");
       },
       onError: async (error: any) => {
         Swal.fire({

@@ -7,7 +7,7 @@ import apiRoutes from "../../../helpers/routes/apiRoutes";
 
 // ارسال درخواست تأیید کد به بک‌اند
 const verifyOtp = async (data: any) => {
-  const url = getRoute({ route: `${apiRoutes.auth.verifyOtp}` });  // آدرس تأیید کد
+  const url = getRoute({ route: `${apiRoutes.auth.varify}` });
   return await client({ 
     url, 
     method: "POST", 
