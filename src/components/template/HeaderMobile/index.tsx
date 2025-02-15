@@ -21,7 +21,6 @@ const menuItems = [
     { name: 'آگهی فروش', href: '/SellHouse', iconWhite: UserWhite, iconBlack: User },
     { name: 'آگهی اجاره', href: '/RentHouse', iconWhite: UserWhite, iconBlack: User },
     { name: 'خدمات', href: '/services', iconWhite: UserWhite, iconBlack: User },
-    { name: 'بازدید', href: '/ContactUssd', iconWhite: UserWhite, iconBlack: User },
     { name: 'درخواست ملک', href: '/ContactUs', iconWhite: UserWhite, iconBlack: User },
     { name: 'خروج از حساب', href: '/logout', iconWhite: "", iconBlack: LogOut },
 ];
