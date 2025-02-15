@@ -42,7 +42,7 @@ const SidebarMobileProfile = () => {
     return (
         <div
             ref={sidebarRef}
-            className={`sm:w-[25%] w-[60%] bg-white min-h-screen overflow-auto fixed inset-0 z-[999] top-0 border-l border-l-gray-200 shadow-2xl pr-5 transition-all duration-500 ${animationClass} ${openModal ? 'flex' : 'flex-none'}`}>
+            className={`sm:w-[25%] w-[40%] bg-white min-h-screen overflow-auto fixed inset-0 z-[999] top-0 border-l border-l-gray-200 shadow-2xl pr-5 transition-all modal-exit-menu duration-500 ${animationClass} ${openModal ? 'flex' : 'flex-none'}`}>
             <div className="sidebar-content">
                 <Link to="/" className="flex items-center justify-center">
                     <img src={logo} alt="logo" className="mt-14 mb-9" />
@@ -90,14 +90,14 @@ const SidebarMobileProfile = () => {
                     <Modal.Body>
                         <div className="space-y-6">
                             <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-                                {`با خروج از حساب کاربری، به سبد خرید فعلی‌تان دسترسی نخواهید داشت. هروقت بخواهید می‌توانید مجددا وارد شوید و خریدتان را ادامه دهید.`}
+                                {`خروج از حساب خود مطمئن هستید؟`}
                             </p>
                         </div>
                     </Modal.Body>
                     <Modal.Footer className="gap-6">
                         <Button
 
-                            className="bg-red-200 hover:!text-white hover:!bg-red-200 relative hover:bg-gradient-to-r hover:from-bg-color-btn hover:to-bg-color-btn  transition-all ease-out duration-300 overflow-hidden group"
+                            className="bg-red-200 hover:!text-white hover:!bg-red-200 relative hover:bg-gradient-to-r hover:from-bg-color-btn hover:to-bg-color-btn cursor-pointer transition-all ease-out duration-300 overflow-hidden group"
                         >
                             <span className="absolute right-0 w-8 h-32 -mt-12 transition-all duration-1000 transform translate-x-12 bg-white opacity-10 rotate-12 group-hover:-translate-x-40 ease shadow"></span>
                             خروج از حساب

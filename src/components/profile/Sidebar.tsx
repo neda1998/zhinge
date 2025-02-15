@@ -4,6 +4,7 @@ import logo from "../../assets/images/Zhinge.svg";
 import React, { useState } from "react";
 import { itemsProfile } from "../../utils/data";
 import { Button, Modal } from "flowbite-react";
+import axios from "axios";
 
 const Sidebar = () => {
     const { showSidebar } = useAppContext();
@@ -16,6 +17,26 @@ const Sidebar = () => {
             setOpenModal(true);
         }
     };
+
+    const handleLogout = async () => {
+        try {
+            const refreshToken = localStorage.getItem("refreshToken");
+            if (!refreshToken) {
+                // No refresh token available; proceed with logout without API call.
+                localStorage.removeItem("refreshToken");
+                localStorage.removeItem("accessToken");
+                window.location.href = "/Login";
+                return;
+            }
+            await axios.delete("http://185.231.115.236:3000/api/V1/auth/logout", { data: { refreshToken } });
+            localStorage.removeItem("refreshToken");
+            localStorage.removeItem("accessToken");
+            window.location.href = "/Login";
+        } catch (error: any) {
+            console.error("Logout error:", error.response?.data?.message || error.message);
+        }
+    };
+
     return (
         <nav className={`sidebar bg-gradient-to-t from-[#0A805C] to-[#1e1e1e] nav-dashboard-theme ${!showSidebar ? "collapsed" : ""}`}>
             <div className="sidebar-content">
@@ -70,8 +91,8 @@ const Sidebar = () => {
                         </Modal.Body>
                         <Modal.Footer className="gap-6">
                             <Button
-
-                                className="bg-red-200 hover:!text-white hover:!bg-red-200 relative hover:bg-gradient-to-r hover:from-bg-color-btn hover:to-bg-color-btn  transition-all ease-out duration-300 overflow-hidden group"
+                                onClick={handleLogout}
+                                className="bg-red-200 hover:!text-white hover:!bg-red-200 relative hover:bg-gradient-to-r hover:from-bg-color-btn hover:to-bg-color-btn transition-all ease-out duration-300 overflow-hidden group"
                             >
                                 <span className="absolute right-0 w-8 h-32 -mt-12 transition-all duration-1000 transform translate-x-12 bg-white opacity-10 rotate-12 group-hover:-translate-x-40 ease shadow"></span>
                                 خروج از حساب

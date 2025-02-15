@@ -2,8 +2,8 @@ const apiRoutes = {
   auth: {
     register: "/api/V1/auth/Register",
     login: "/api/V1/auth/login",
-    varify: "/api/V1/auth/Varify",
-    forgetPassword: "/auth/forgetPassword",
+    varify: "/api/V1/auth/varify",
+    logout: "/api/V1/auth/logout",
     newcode: "/api/V1/auth/newcode",
     updatePass: "/auth/forgetPassword/updatePass",
     user: "/users/profile",

@@ -1,14 +1,22 @@
 import { useMutation } from "react-query";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import { newcode } from "../../../services/auth/getGenerateCode";
+import { verifyOtp } from "../../../services/auth/varifyCode";
 
-const UseGenerateCodeMutation = () => {
+const useVerifyOtpMutation = () => {
   const navigate = useNavigate();
-  return useMutation(
-    async ({ phone }: { phone: number |string }) => await newcode(phone),
+  return useMutation<void, any, { phone?: string; code?: number }>(
+    async (data) => {
+      await verifyOtp(data);
+    },
     {
       onSuccess: async function (data) {
+        Swal.fire({
+          title: "موفقیت",
+          text: "کد تایید با موفقیت تایید شد!",
+          icon: "success",
+          confirmButtonText: "باشه",
+        });
         navigate("/Login");
       },
       onError: async (error: any) => {
@@ -23,4 +31,4 @@ const UseGenerateCodeMutation = () => {
   );
 };
 
-export default UseGenerateCodeMutation;
+export default useVerifyOtpMutation;

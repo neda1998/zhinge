@@ -3,25 +3,25 @@ import Header from '../../components/template/Header';
 import Input from '../../components/ui/atoms/input';
 import { Link } from 'react-router-dom';
 import { useFormik } from 'formik';
-import UseGenerateCodeMutation from '../../hooks/mutation/auth/UseGenerateCodeMutation';
 import { validationSchemaSignup } from '../../helpers/validation/auth';
+import useSignupMutation from '../../hooks/mutation/auth/UseRegisterMutation';
 
 const SignUp = () => {
-    const {mutate} = UseGenerateCodeMutation()
+    const { mutate } = useSignupMutation()
     const formik = useFormik({
         initialValues: {
             full_name: '',
             password: '',
             phone: ''
         },
-        validationSchema:validationSchemaSignup,
+        validationSchema: validationSchemaSignup,
         onSubmit: (values: any) => {
             console.log(values);
-            mutate({ 
-                full_name: values.full_name, 
-                password: values.password, 
+            mutate({
+                full_name: values.full_name,
+                password: values.password,
                 phone: values.phone
-             } as any);
+            } as any);
         }
     });
     return (
