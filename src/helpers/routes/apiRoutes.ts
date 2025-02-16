@@ -45,6 +45,10 @@ const apiRoutes = {
     uploadSliderPhotos: "/api/V1/admin/uploadsliderPhotos",
     verifyAnnounce: "/api/V1/admin/varifyannounce",
     deleteSlider: "/api/V1/admin/deleteslider"
-  }
+  },
+  user: {
+    myAnnouncements:"/auth/getAnnouncements",
+    updateUser: "/api/V1/auth/updateuser",
+  },
 };
 export default apiRoutes;

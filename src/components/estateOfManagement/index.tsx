@@ -24,8 +24,6 @@ const EstateOfManagement = () => {
               { id: 7, count: data["deleted or not confirmed"], text: "ملک‌های تایید نشده", bgClass: "bg-[#FB7F35]", img: "trashbin" },
           ]
         : estats;
-        console.log(estateData);
-        
 
     return (
         <div className="grid lg:grid-cols-4 sm:grid-cols-2 grid-cols-1 lg:gap-14 gap-10">

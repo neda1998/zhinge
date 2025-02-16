@@ -1,9 +1,2 @@
-post http://185.231.115.236:3000/api/V1/auth/register
+get http://185.231.115.236:3000/auth/getAnnouncements
 Content-Type: application/json
-
-
-{
-"full_name": "aryan",
-"phone":	"09057973389",
-"password" : "90471"
-}
