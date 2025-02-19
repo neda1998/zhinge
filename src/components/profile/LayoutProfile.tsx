@@ -16,7 +16,7 @@ const LayoutProfile = ({ children }: Props) => {
             <Sidebar />
             <SidebarMobileProfile />
             <div className="flex justify-end relative">
-                <img src={hide} alt="hide" width={330} height={330} className={`absolute top-56 right-32 -z-[9999] ${showSidebar ? "mr-0" : "mr-[16rem]"}`} />
+                <img src={hide} alt="hide" width={330} height={330} className={`absolute top-56 right-32 z-[9999] ${showSidebar ? "mr-0" : "mr-[16rem]"}`} />
             </div>
             <div className={`main w-full md:overflow-y-hidden ${showSidebar ? "mr-0" : "mr-[16rem]"}`}>
                 <div className="flex justify-end relative">

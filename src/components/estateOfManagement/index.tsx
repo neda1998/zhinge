@@ -1,4 +1,4 @@
-import UseDashboardQuery from "../../hooks/queries/admin/dashboard";
+import UseDashboardQuery from "../../hooks/queries/admin/UseDashboardQuery";
 import { estats } from "../../utils/data";
 
 const EstateOfManagement = () => {

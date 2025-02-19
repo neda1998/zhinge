@@ -5,7 +5,7 @@ import { IoChevronBackOutline } from 'react-icons/io5';
 const TopNavbar = () => {
     const { toggleSidebar, showSidebar } = useAppContext();
     return (
-        <div className="shadow-md lg:flex hidden bg-gradient-to-r from-[#0A805C] to-[#1e1e1e] nav-dashboard-theme z-[9999] relative">
+        <div className="shadow-md lg:flex hidden bg-gradient-to-r from-[#0A805C] to-[#1e1e1e] nav-dashboard-theme relative">
             <div className="container mx-auto">
                 <nav className="grid lg:grid-cols-2 items-center justify-between md:py-8">
                     <div className="flex items-center gap-1 cursor-pointer" onClick={toggleSidebar}>

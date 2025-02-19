@@ -1,6 +1,6 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 
-const baseUrl = "http://185.231.115.236:3000";
+const baseUrl = "http://185.231.115.236:3000/api/V1";
 
 // تنظیم baseURL برای axios
 const client = axios.create({

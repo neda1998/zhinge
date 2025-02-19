@@ -1,16 +1,30 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FaCaretDown } from "react-icons/fa6";
 
 interface ComboBoxProps {
   label?: string;
   options: string[];
+  name?: string;
+  value?: string;
+  onChange?: (val: string) => void;
 }
 
-const ComboBox: React.FC<ComboBoxProps> = ({ label, options }) => {
+const ComboBox: React.FC<ComboBoxProps> = ({ label, options, name, value, onChange }) => {
   const [selected, setSelected] = useState<string>(options[0]);
 
+  useEffect(() => {
+    if (value !== undefined) {
+      setSelected(value);
+    }
+  }, [value]);
+
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelected(e.target.value);
+    const newVal = e.target.value;
+    if (onChange) {
+      onChange(newVal);
+    } else {
+      setSelected(newVal);
+    }
   };
 
   return (
@@ -18,7 +32,8 @@ const ComboBox: React.FC<ComboBoxProps> = ({ label, options }) => {
       <label className="mb-2 text-xs mr-5">{label}</label>
       <div className="relative">
         <select
-          value={selected}
+          name={name}
+          value={value !== undefined ? value : selected}
           onChange={handleChange}
           className="appearance-none w-full py-3 px-4 rounded-full focus:outline-none focus:ring-2 focus:ring-gray-400"
         >

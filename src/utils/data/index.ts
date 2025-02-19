@@ -39,7 +39,7 @@ export const navItems = [
   { text: "آگهی فروش", url: "/SellHouse" },
   { text: "آگهی اجاره", url: "/RentHouse" },
   { text: "خدمات", url: "/services" },
-  { text: "بازدید", url: "/ContactUssd" },
+  // { text: "بازدید", url: "/ContactUssd" },
   { text: "درخواست ملک", url: "/ContactUs" },
 ];
 export const itemsNavLeft = [

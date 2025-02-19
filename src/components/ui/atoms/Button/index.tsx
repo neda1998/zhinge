@@ -22,7 +22,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => {
     index,
     border,
     state,
-    type, // Add type prop here
+    type = "button", 
   } = props;
   const baseClasses = `font-iranSans flex items-center font-[500] leading-[17.77px] px-3 justify-evenly`;
 

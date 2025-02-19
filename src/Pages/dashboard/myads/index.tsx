@@ -3,7 +3,7 @@ import House from '../../../assets/images/Rectangle 49.svg';
 import MenuDots from '../../../assets/images/Menu Dots Square.svg';
 import MapPoint from '../../../assets/images/Map Point Favourite.svg';
 import LayoutProfile from "../../../components/profile/LayoutProfile";
-import UseMyAnnouncementsQuery from "../../../hooks/queries/userPanel/myAnnouncements";
+import UseMyAnnouncementsQuery from "../../../hooks/queries/userPanel/UseMyAnnouncementsQuery";
 
 const navItems = [
     { id: 1, text: 'صفحه اصلی', url: '/' },
