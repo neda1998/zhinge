@@ -1,30 +1,28 @@
 import { useMutation } from "react-query";
-import { login } from "../../../services/auth/login";
 import { useNavigate } from "react-router-dom";
-import Swal from "sweetalert2";
 import { useCookies } from "react-cookie";
+import { login } from "../../../services/auth/login";  // توجه داشته باش که login درست تایپ شود
 import axios from "axios";
 
 const useLoginMutation = () => {
-    const [cookies, setCookies] = useCookies(["accessToken", "refreshToken"]);
+  const [cookies, setCookies] = useCookies(["accessToken", "refreshToken"]);
   const navigate = useNavigate();
-  return useMutation(async (data) => await login(data), {
-    onSuccess: async function (data) {
-      const { accessToken, refreshToken } = data;
 
+  return useMutation<
+    any,  // نوع داده برگشتی از درخواست (مثلاً data)
+    any,  // نوع خطا (ممکنه هر چیزی باشه)
+    { phone: string; password: string },  // نوع داده‌ای که می‌فرستی
+    void  // نوع پاسخ بعد از ارسال درخواست
+  >(async (data) => await login(data), {
+    onSuccess: async (data) => {
+      const { accessToken, refreshToken } = data;
       setCookies("accessToken", accessToken, { path: "/" });
       setCookies("refreshToken", refreshToken, { path: "/" });
-      
-      axios.defaults.headers.common["Authorization"]=`Bearer ${accessToken}`;
+      axios.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
       navigate("/");
     },
-    onError: async (error: any) => {
-      Swal.fire({
-        title: "!خطا",
-        text: error.response.data.message,
-        icon: "error",
-        confirmButtonText: "باشه",
-      });
+    onError: (error) => {
+      console.error("Login error:", error);
     },
   });
 };

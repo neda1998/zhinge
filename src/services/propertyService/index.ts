@@ -4,5 +4,5 @@ import client from "../utils/client";
 
 export const createProperty = async () => {
   const url = apiRoutes.property.create;
-  return await client({ url, method: "POST", token: false });
+  return await client({ url, method: "POST" });
 };

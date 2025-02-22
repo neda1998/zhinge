@@ -11,16 +11,17 @@ const Login = () => {
     const {mutate} = useLoginMutation();
     const formik = useFormik({
         initialValues: {
-            phone: "",
-            password: ""
+          phone: "",
+          password: "",
         },
         onSubmit: (values) => {
-            mutate({
-                phone: values.phone,
-                password: values.password
-            } as any)
-        }
-    })
+          mutate({
+            phone: values.phone,
+            password: values.password,
+          });
+        },
+      });      
+        
     return (
         <div className='w-full flex justify-center'>
             <Header variant={'main'} />

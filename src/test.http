@@ -1,2 +1,7 @@
-get http://185.231.115.236:3000/auth/getAnnouncements
+post http://185.231.115.236:3000/api/V1/auth/login
 Content-Type: application/json
+
+{
+  "phone": "09181711690",
+  "password": "1kjlk"
+}

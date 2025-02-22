@@ -24,5 +24,5 @@ export interface AnnouncePayload {
 
 export const createAnnounce = async (payload: AnnouncePayload) => {
   const url = getRoute({ route: `${apiRoutes.user.creatAnnounce}` });
-  return await client({ url, method: "POST", token: false, data: payload });
+  return await client({ url, method: "POST", data: payload });
 };

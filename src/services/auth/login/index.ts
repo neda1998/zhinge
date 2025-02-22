@@ -1,8 +1,18 @@
-import { getRoute } from "../../service";
 import client from "../../utils/client";
 import apiRoutes from "../../../helpers/routes/apiRoutes";
+import { getRoute } from "../../service";
 
-export const login = async (data:any) => {
-  const url = getRoute({ route: `${apiRoutes.auth.login}` });
-  return await client({ url, method: "POST", data, withCredentials: true });
+export const login = async (data: any) => {
+  try {
+    const url = getRoute({ route: apiRoutes.auth.login });
+
+    return await client({
+      url,
+      method: "POST",
+      data,
+    });
+  } catch (error) {
+    console.error("Login request failed:", error);
+    throw error;
+  }
 };
