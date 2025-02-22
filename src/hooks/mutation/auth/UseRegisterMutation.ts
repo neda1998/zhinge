@@ -9,8 +9,8 @@ const useSignupMutation = () => {
     async (data) => await register(data),
     {
       onSuccess: async function (data, formData) {
-        // هدایت کاربر به صفحه OTP
-        navigate("/Otp", { state: { phone: formData.phone, code: data.code } });
+        // هدایت کاربر به صفحه OTP با ارسال phone و code
+        navigate("/otp", { state: { phone: formData.phone, code: data.code } });
       },
       // نمایش خطای سرور
       onError: async (error: any) => {

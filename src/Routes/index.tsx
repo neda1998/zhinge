@@ -108,7 +108,7 @@ const routes: AllRoutes[] = [
     type: "link",
     key: "home",
     name: "home",
-    route: "/Otp",
+    route: "/otp",
     component: <Otp />,
   },
   {

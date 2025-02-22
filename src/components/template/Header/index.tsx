@@ -6,10 +6,16 @@ import NavList from "../../ui/molecules/NavList";
 import { Link, useNavigate } from "react-router-dom";
 import HeaderMobile from "../HeaderMobile";
 import ChangeTheme from "../../changeTheme";
+import { useCookies } from "react-cookie";
+import { useContext } from "react";
+import { UserContext } from "../../../contexts/UserContext";
+
 
 
 export default function Header({ variant }: any) {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const [cookies, setCookies] = useCookies(["accessToken", "refreshToken", "phone"]);
+  const displayName = cookies.phone || "";
   return (
     <>
       <div className={`w-full mobile:hidden tablet:hidden bg-transparent h-28 flex items-center justify-center ${variant === "main" ? "absolute" : 'relative'}`}>
@@ -22,14 +28,35 @@ export default function Header({ variant }: any) {
           </div>
           <div className='w-[38%] flex justify-end gap-3'>
             <ChangeTheme />
-            <div className='flex justify-center items-center '>
-              <Button onClick={() => navigate('/SignUp')} borderradius={'100px'} bgcolor={"#09A380"} width={'140px'} height={'44px'} color='white' returnbtn={"true"} className={'flex items-center justify-center'}>
-                <img src={Logo} alt="logo" className="  " />
-                <span className=" text-[13px] font-bold ">
-                  ورود به حساب
-                </span>
-              </Button>
-            </div>
+            {
+              cookies.accessToken ? (
+                <Button
+                  onClick={() => {
+                    // Clear cookies correctly by setting them to an empty string
+                    setCookies("accessToken", "", { path: "/" });
+                    setCookies("refreshToken", "", { path: "/" });
+                    navigate("/Login");
+                  }}
+                  borderradius={"100px"}
+                  bgcolor={"#09A380"}
+                  width={"140px"}
+                  height={"44px"}
+                  color="white"
+                  returnbtn={"true"}
+                  className={"flex items-center justify-center"}
+                >
+                  <span className="text-[13px] font-bold">
+                    {displayName ? displayName : "خروج"}
+                  </span>
+                </Button>
+              ) : (
+                <Button onClick={() => navigate('/Login')} borderradius={'100px'} bgcolor={"#09A380"} width={'140px'} height={'44px'} color='white' returnbtn={"true"} className={'flex items-center justify-center'}>
+                  <span className=" text-[13px] font-bold ">
+                    ورود به حساب
+                  </span>
+                </Button>
+              )
+            }
           </div>
         </div>
       </div>

@@ -1,6 +1,4 @@
 import Signup from '../../assets/images/undraw_fingerprint_login_re_t71l 1.svg';
-import Header from '../../components/template/Header';
-import { useState } from 'react';
 import Button from '../../components/ui/atoms/Button';
 import { useNavigate, useLocation } from 'react-router-dom';
 import OtpInput from '../../components/ui/molecules/OtpInput';
@@ -28,7 +26,6 @@ const Otp = () => {
 
   return (
     <div className='w-full flex justify-center'>
-      <Header variant={'main'} />
       <div className="w-full h-fit mobile:flex-col-reverse mobile:h-fit flex">
         <div className='w-[50%] mobile:w-full p-4 mobile:p-0 mobile:h-[450px] h-screen flex justify-center'>
           <div className='flex justify-center flex-col w-[93%]'>

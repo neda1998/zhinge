@@ -5,9 +5,11 @@ import { Link } from 'react-router-dom';
 import { useFormik } from 'formik';
 import { validationSchemaSignup } from '../../helpers/validation/auth';
 import useSignupMutation from '../../hooks/mutation/auth/UseRegisterMutation';
+import { useCookies } from "react-cookie";
 
 const SignUp = () => {
-    const { mutate } = useSignupMutation()
+    const { mutate } = useSignupMutation();
+    const [cookies, setCookie] = useCookies(['full_name']);
     const formik = useFormik({
         initialValues: {
             full_name: '',
@@ -17,6 +19,7 @@ const SignUp = () => {
         validationSchema: validationSchemaSignup,
         onSubmit: (values: any) => {
             console.log(values);
+            setCookie('full_name', values.full_name, { path: '/' });
             mutate({
                 full_name: values.full_name,
                 password: values.password,
@@ -26,7 +29,6 @@ const SignUp = () => {
     });
     return (
         <div className='w-full flex justify-center'>
-            <Header variant={'main'} />
             <div className="w-full h-fit mobile:h-fit flex mobile:flex-col-reverse">
                 <div className='w-[50%] mobile:w-full mobile:p-0 flex justify-center'>
                     <div className='flex justify-center flex-col gap-4'>

@@ -2,7 +2,6 @@ import Signup from '../../assets/images/undraw_fingerprint_login_re_t71l 1.svg'
 import Input from '../../components/ui/atoms/input';
 import Button from '../../components/ui/atoms/Button';
 import { useNavigate } from 'react-router-dom';
-import Header from '../../components/template/Header';
 import { useFormik } from 'formik';
 import useLoginMutation from '../../hooks/mutation/auth/UseLoginMutation';
 
@@ -24,7 +23,6 @@ const Login = () => {
         
     return (
         <div className='w-full flex justify-center'>
-            <Header variant={'main'} />
             <div className="w-full h-fit mobile:h-fit mobile:flex-col-reverse flex">
                 <div className='w-[50%] mobile:w-full mobile:p-0 p-4 h-screen flex mobile:h-[450px] justify-center'>
                     <div className='flex justify-center flex-col w-[93%]'>
@@ -34,9 +32,6 @@ const Login = () => {
                         </div>
                         <form onSubmit={formik.handleSubmit} className='w-full h-[50%] flex flex-col justify-evenly'>
                             <div className='h-[60%] flex flex-col justify-evenly items-center'>
-                                <span className='font-bold' >
-                                    برای دریافت کد یکبار مصرف ، شماره موبایل خود را وارد کنید
-                                </span>
                                 <Input
                                     base={'true'}
                                     width={'90%'}

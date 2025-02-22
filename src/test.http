@@ -1,7 +1,8 @@
-post http://185.231.115.236:3000/api/V1/auth/login
+post http://185.231.115.236:3000/api/V1/auth/register
 Content-Type: application/json
 
 {
-  "phone": "09181711690",
-  "password": "1kjlk"
+"phone": "09057973389",
+"full_name": "bgbgu",
+"password": "1kjlk"
 }

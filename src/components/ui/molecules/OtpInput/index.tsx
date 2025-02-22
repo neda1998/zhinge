@@ -40,8 +40,7 @@ const OtpInput = ({ numInputs, value, onChange }: any) => {
                     key={index}
                     type="text"
                     value={data}
-                    onPaste={handlePaste}
-                    // onChange={(e) => handleChange(e.target, index)}x
+                    onChange={(e) => handleChange(e.target, index)}
                     onKeyDown={(e) => handleKeyDown(e, index)}
                     className="w-[75px] h-[75px] mobile:w-[50px] mobile:h-[50px] text-black text-center rounded-[13px] bg-white border-[1px]"
                 />
