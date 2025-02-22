@@ -57,7 +57,7 @@ const Sidebar = () => {
                                         >
                                             <div className="sidebar-brand">
                                                 <item.icon color="#11a97f" size={20} />
-                                                <span className="text-brand">{item.item}</span>
+                                                <p className="text-brand">{item.item}</p>
                                             </div>
                                         </li>
                                     </Link>
@@ -71,7 +71,7 @@ const Sidebar = () => {
                                         >
                                             <div className="sidebar-brand">
                                                 <item.icon color="#11a97f" size={20} />
-                                                <span className="text-brand">{item.item}</span>
+                                                <p className="text-brand">{item.item}</p>
                                             </div>
                                         </li>
                                     </div>

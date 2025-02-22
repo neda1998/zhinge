@@ -56,7 +56,7 @@ const SidebarMobile = () => {
                                             <item.icon
                                                 className={`${location.pathname === item.path ? "text-main-color" : "text-gray-600"}`}
                                             />
-                                            <span className="text-brand">{item.item}</span>
+                                            <p className="text-brand">{item.item}</p>
                                         </div>
                                     </li>
                                 </Link>

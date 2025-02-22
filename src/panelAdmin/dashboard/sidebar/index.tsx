@@ -34,7 +34,7 @@ const Sidebar = () => {
                     <item.icon
                       className={`w-6 h-6 ${location.pathname === item.path ? "text-main-color" : "text-gray-600"}`}
                     />
-                    <span className="text-brand">{item.item}</span>
+                    <p className="text-brand">{item.item}</p>
                   </div>
                 </div>
               </Link>

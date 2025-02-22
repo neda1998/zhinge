@@ -1,5 +1,11 @@
 import UseDashboardQuery from "../../hooks/queries/admin/UseDashboardQuery";
-import { estats } from "../../utils/data";
+import user from "../../assets/images/Users-Group-Two-Rounded.png";
+import close from "../../assets/images/Close-Circle.png";
+import users from "../../assets/images/dashboardicons/User Rounded.svg";
+import request from "../../assets/images/Chat-Square-Arrow.png";
+import houreGlass from "../../assets/images/Hourglass.png";
+import ChatRoundUnread from "../../assets/images/Chat-Round-Unread.png";
+import trashbin from "../../assets/images/Trash-Bin.png";
 
 const EstateOfManagement = () => {
     const { data, isLoading, isError } = UseDashboardQuery();
@@ -14,20 +20,20 @@ const EstateOfManagement = () => {
     }
 
     const estateData = data
-        ? [
-              { id: 1, count: data["all users"], text: "کل کاربران ما", bgClass: "bg-[#FA8036]", img: "house" },
-              { id: 2, count: data["in progress"], text: "در حال انجام", bgClass: "bg-[#5096F7]", img: "close" },
-              { id: 3, count: data["all visitors"], text: "بازدیدکنندگان کل", bgClass: "bg-[#17C3A5]", img: "users" },
-              { id: 4, count: data["daily visitors"], text: "بازدیدکنندگان روزانه", bgClass: "bg-[#EA5A92]", img: "request" },
-              { id: 5, count: data["unchecked requests"], text: "درخواست‌های تایید نشده", bgClass: "bg-[#E95991]", img: "houreGlass" },
-              { id: 6, count: data["all announcements"], text: "تمام اعلامیه‌ها", bgClass: "bg-[#7DBCE3]", img: "ChatRoundUnread" },
-              { id: 7, count: data["deleted or not confirmed"], text: "ملک‌های تایید نشده", bgClass: "bg-[#FB7F35]", img: "trashbin" },
+        && [
+              { id: 1, count: data["all users"], text: "کل کاربران ما", bgClass: "bg-[#17C3A5]", img: user },
+              { id: 2, count: data["in progress"], text: "در حال انجام", bgClass: "bg-[#5096F7]", img: close },
+              { id: 3, count: data["all visitors"], text: "بازدیدکنندگان کل", bgClass: "bg-[#17C3A5]", img: users },
+              { id: 4, count: data["daily visitors"], text: "بازدیدکنندگان روزانه", bgClass: "bg-[#EA5A92]", img: request },
+              { id: 5, count: data["unchecked requests"], text: "درخواست‌های تایید نشده", bgClass: "bg-[#E95991]", img: houreGlass },
+              { id: 6, count: data["all announcements"], text: "تمام اعلامیه‌ها", bgClass: "bg-[#7DBCE3]", img: ChatRoundUnread },
+              { id: 7, count: data["deleted or not confirmed"], text: "ملک‌های تایید نشده", bgClass: "bg-[#FB7F35]", img: trashbin },
           ]
-        : estats;
+        ;
 
     return (
         <div className="grid lg:grid-cols-4 sm:grid-cols-2 grid-cols-1 lg:gap-14 gap-10">
-            {estateData.map((estat) => (
+            {estateData.map((estat:any) => (
                 <div key={estat.id} className="shadow-lg rounded-xl py-6">
                     <div className={`${estat.bgClass} rounded-full flex justify-center items-center w-14 h-14 -translate-y-10 -translate-x-6`}>
                         <img src={estat.img} alt="estates" />

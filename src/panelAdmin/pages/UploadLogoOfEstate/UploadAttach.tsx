@@ -20,7 +20,7 @@ const UploadAttach = () => {
         <>
             <div className="flex items-center justify-between border-b border-b-gray-200 mb-10 lg:py-7 py-4 overflow-x-auto w-[330px] sm:w-full lg:overflow-x-visible gap-7">
                 <div>
-                    <span className="text-black font-extrabold text-lg whitespace-nowrap">تنظیمات مدیریتی</span>
+                    <span className="font-extrabold text-lg whitespace-nowrap">تنظیمات مدیریتی</span>
                 </div>
                 <RouteChevron items={pageUploadAttach} />
             </div>

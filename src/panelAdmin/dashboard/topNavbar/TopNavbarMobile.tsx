@@ -20,7 +20,7 @@ const TopNavbarMobile = () => {
                         <span className="text-black font-extrabold md:text-lg text-sm">Taher Zahedi</span>
                         <span className="text-gray-500 text-xs">main admin</span>
                     </div>
-                    <img src={admin} alt="admin" className='w-12 h-12 object-cover rounded-full' />
+                    <img src={admin} alt="admin" className='w-12 h-12 object-cover rounded-full bg-white' />
                 </div>
             </div>
             <div className="flex items-center justify-between my-6">

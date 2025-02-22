@@ -83,7 +83,7 @@ const SellHouse = () => {
             tour3dlink: "",
             land_metrage: 200
         };
-        createProperty(sampleSellProperty);
+        // createProperty(sampleSellProperty);
     }, []);
 
     return (

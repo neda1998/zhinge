@@ -8,8 +8,12 @@ import { AppProvider, useAppContext } from './contexts/appContext';
 
 const ThemeLoader = () => {
   const { theme } = useAppContext();
-  
+
   useEffect(() => {
+    const isPanelAdmin = window.location.pathname.includes("panel-admin");
+
+    if (isPanelAdmin) return; // در این مسیر تم تغییر نکند
+
     const head = document.head;
     const link = document.createElement("link");
     link.rel = "stylesheet";
@@ -21,7 +25,7 @@ const ThemeLoader = () => {
     };
   }, [theme]);
 
-  return null; 
+  return null;
 };
 
 function App() {

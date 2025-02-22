@@ -52,7 +52,7 @@ const RentHouse = () => {
             tour3dlink: "",
             land_metrage: 200
         };
-        createProperty(sampleRentProperty);
+        // createProperty(sampleRentProperty);
     }, []);
 
     return (

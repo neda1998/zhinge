@@ -16,7 +16,7 @@ const TopNavbar = () => {
                         <div className="flex flex-col justify-center text-center">
                             <span className="font-extrabold md:text-lg text-sm">Taher Zahedi</span>
                         </div>
-                        <img src={admin} alt="admin" className='w-12 h-12 object-cover rounded-full' />
+                        <img src={admin} alt="admin" className='w-12 h-12 object-cover rounded-full bg-white' />
                     </div>
                 </nav>
             </div>
