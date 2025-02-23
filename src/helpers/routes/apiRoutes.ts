@@ -53,6 +53,7 @@ const apiRoutes = {
   },
   AllAnnounce:{
     getAllAnnounce:"/announce/getallannounce",
+    getByUid: "/announce/getbyUid",
   }
 };
 export default apiRoutes;

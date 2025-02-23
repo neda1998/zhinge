@@ -6,24 +6,34 @@ import ImageGallery from '../../components/ui/molecules/ImageGallery';
 import Phone from '../../assets/images/Phone Calling Rounded.svg'
 import MapPoint from '../../assets/images/Map Point Favourite.svg'
 import { useState } from 'react';
-const Datas = [
-    { id: 1, name: "نوع آگهی", description: "فروش" },
-    { id: 1, name: "کد ملک", description: "43287" },
-    { id: 1, name: "منطقه", description: "شهرک سعدی" },
-    { id: 1, name: "زیر بنا(مترمربع)", description: "120 متر" },
-    { id: 1, name: "تعداد اتاق ", description: "3" },
-    { id: 1, name: "طبقه مورد نظر", description: "2" },
-    { id: 1, name: "تعداد طبقات", description: "5" },
-    { id: 1, name: "تعداد واحد در طبقه", description: "2" },
-    { id: 1, name: "سال ساخت", description: "1400" },
-    { id: 1, name: "آسانسور", description: "دارد" },
-    { id: 1, name: "پارکینگ", description: "ندارد" },
-    { id: 1, name: "انباری", description: "ندارد" },
-    { id: 1, name: "آدرس ملک ", description: "ابتدای شهرک سعدی کوچه کیوان" },
-    { id: 1, name: "قیمت ملک ", description: "3,850,000,000 تومان" },
-    { id: 1, name: "مبلغ وام", description: "ندارد" },
-]
-const SellHouseId = () => {
+import UseByUidAnnounceQuery from "../../hooks/queries/getAnnounce/UseByUidAnnounceQuery";
+
+const RentHouseId = () => {
+    const { data, isLoading, error } = UseByUidAnnounceQuery();
+    if(isLoading) return <div>Loading...</div>;
+    if(error) return <div>Error occurred</div>;
+
+    const adType = data?.type || 'اجاره';
+
+    // Replace static advertDetails with dynamic mapping based on fetched data fields
+    const advertDetails = [
+        { id: 1, name: "نوع آگهی", description: data.type },
+        { id: 2, name: "کد ملک", description: data.id },
+        { id: 3, name: "منطقه", description: data.region },
+        { id: 4, name: "زیر بنا(مترمربع)", description: `${data.useful_metrage} متر` },
+        { id: 5, name: "تعداد اتاق", description: data.room_number },
+        { id: 6, name: "طبقه مورد نظر", description: data.floor_number },
+        { id: 7, name: "تعداد طبقات", description: data.floor },
+        { id: 8, name: "تعداد واحد در طبقه", description: data.Unit_in_floor },
+        { id: 9, name: "سال ساخت", description: data.year_of_build },
+        { id: 10, name: "آسانسور", description: data.features },
+        { id: 11, name: "پارکینگ", description: "ندارد" },
+        { id: 12, name: "انباری", description: "ندارد" },
+        { id: 13, name: "آدرس ملک", description: data.address },
+        { id: 14, name: "قیمت ملک", description: `${data.price} تومان` },
+        { id: 15, name: "مبلغ وام", description: data.loan || "ندارد" },
+    ];
+
     const [isBoxVisible, setIsBoxVisible] = useState(false);
     const toggleBox = () => {
         setIsBoxVisible(!isBoxVisible);
@@ -54,14 +64,14 @@ const SellHouseId = () => {
                             </div>
                         </div>
                         <div className='mt-2  flex w-full  mobile:justify-center'>
-                            <span className='text-[40px] mobile:text-[30px]  font-bold'>ملک فروشی آپارتمانی</span>
+                            <span className='text-[40px] mobile:text-[30px]  font-bold'>{adType === 'اجاره' ? 'ملک اجاره‌ای آپارتمانی' : 'ملک فروشی آپارتمانی'}</span>
                         </div>
                         <div className='flex w-full flex-col justify-start h-[855px] mobile:h-full bg-white border-[1px] shadow-md rounded-[12px] p-4 '>
                             <div className='w-full flex  justify-center h-12'>
                                 <div className='w-[90%] bg-[#09A380] flex items-center justify-center rounded-[100px] text-white'>جزئیات ملک</div>
                             </div>
                             <div className='w-full h-fit overflow-auto   p-2'>
-                                {Datas.map((item, index) => (
+                                {advertDetails.map((item: { id: number; name: string; description: string }, index: number) => (
                                     <>
                                         <div className='w-full flex  justify-between items-center p-3'>
                                             <span className=''>
@@ -96,4 +106,4 @@ const SellHouseId = () => {
     )
 }
 
-export default SellHouseId;
+export default RentHouseId;
