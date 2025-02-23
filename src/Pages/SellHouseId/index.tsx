@@ -7,38 +7,75 @@ import Phone from '../../assets/images/Phone Calling Rounded.svg'
 import MapPoint from '../../assets/images/Map Point Favourite.svg'
 import { useState } from 'react';
 import UseByUidAnnounceQuery from '../../hooks/queries/getAnnounce/UseByUidAnnounceQuery';
+import { Formik, Form, Field } from 'formik';
 
 const SellHouseId = () => {
     const { data, isLoading, error } = UseByUidAnnounceQuery();
+    const [isBoxVisible, setIsBoxVisible] = useState(false);
     if(isLoading) return <div>Loading...</div>;
     if(error) return <div>Error occurred</div>;
 
-    // Determine advertisement type from fetched data, defaulting to 'فروش'
     const adType = data?.type || 'فروش';
 
-    // Replace static advertDetails with dynamic mapping based on fetched data
-    const advertDetails = [
-        { id: 1, name: "نوع آگهی", description: data.type },
-        { id: 2, name: "کد ملک", description: data.id },
-        { id: 3, name: "منطقه", description: data.region },
-        { id: 4, name: "زیر بنا(مترمربع)", description: `${data.useful_metrage} متر` },
-        { id: 5, name: "تعداد اتاق", description: data.room_number },
-        { id: 6, name: "طبقه مورد نظر", description: data.floor_number },
-        { id: 7, name: "تعداد طبقات", description: data.floor },
-        { id: 8, name: "تعداد واحد در طبقه", description: data.Unit_in_floor },
-        { id: 9, name: "سال ساخت", description: data.year_of_build },
-        { id: 10, name: "آسانسور", description: data.features },
-        { id: 11, name: "پارکینگ", description: data.parking || "ندارد" },
-        { id: 12, name: "انباری", description: data.storage || "ندارد" },
-        { id: 13, name: "آدرس ملک", description: data.address },
-        { id: 14, name: "قیمت ملک", description: `${data.price} تومان` },
-        { id: 15, name: "مبلغ وام", description: data.loan || "ندارد" },
+    // Prepare initialValues from fetched data
+    const initialValues = {
+        type: data?.type || '',
+        id: data?.id || '',
+        region: data?.region || '',
+        useful_metrage: data?.useful_metrage || '',
+        room_number: data?.room_number || '',
+        floor_number: data?.floor_number || '',
+        floor: data?.floor || '',
+        Unit_in_floor: data?.Unit_in_floor || '',
+        year_of_build: data?.year_of_build || '',
+        features: data?.features || '',
+        parking: data?.parking || 'ندارد',
+        storage: data?.storage || 'ندارد',
+        address: data?.address || '',
+        price: data?.price || '',
+        loan: data?.loan || 'ندارد',
+    };
+
+    // Define fields for dynamic rendering
+    const fields = [
+        { name: 'type', label: 'نوع آگهی' },
+        { name: 'id', label: 'کد ملک' },
+        { name: 'region', label: 'منطقه' },
+        { name: 'useful_metrage', label: 'زیر بنا(مترمربع)', format: (v: string | number) => v + ' متر' },
+        { name: 'room_number', label: 'تعداد اتاق' },
+        { name: 'floor_number', label: 'طبقه مورد نظر' },
+        { name: 'floor', label: 'تعداد طبقات' },
+        { name: 'Unit_in_floor', label: 'تعداد واحد در طبقه' },
+        { name: 'year_of_build', label: 'سال ساخت' },
+        { name: 'features', label: 'آسانسور' },
+        { name: 'parking', label: 'پارکینگ' },
+        { name: 'storage', label: 'انباری' },
+        { name: 'address', label: 'آدرس ملک' },
+        { name: 'price', label: 'قیمت ملک', format: (v: string | number) => `${v} تومان` },
+        { name: 'loan', label: 'مبلغ وام' }
     ];
 
-    const [isBoxVisible, setIsBoxVisible] = useState(false);
     const toggleBox = () => {
         setIsBoxVisible(!isBoxVisible);
     };
+
+    // onSubmit function to post data
+    const onSubmit = async (values: typeof initialValues) => {
+        try {
+            const response = await fetch('/api/announce', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(values)
+            });
+            if(!response.ok) throw new Error('Network response was not ok');
+            // handle success
+            alert('اطلاعات با موفقیت ارسال شد');
+        } catch (err) {
+            console.error(err);
+            alert('خطایی در ارسال اطلاعات رخ داده است');
+        }
+    };
+
     return (
         <div className='flex items-center flex-col'>
             <Header variant={'main'} />
@@ -67,23 +104,26 @@ const SellHouseId = () => {
                         <div className='mt-2  flex w-full  mobile:justify-center'>
                             <span className='text-[40px] mobile:text-[30px]  font-bold'>{adType === 'اجاره' ? 'ملک اجاره‌ای آپارتمانی' : 'ملک فروشی آپارتمانی'}</span>
                         </div>
-                        <div className='flex w-full flex-col justify-start h-[855px] mobile:h-full bg-white border-[1px] shadow-md rounded-[12px] p-4 '>
-                            <div className='w-full flex  justify-center h-12'>
-                                <div className='w-[90%] bg-[#09A380] flex items-center justify-center rounded-[100px] text-white'>جزئیات ملک</div>
-                            </div>
-                            <div className='w-full h-fit overflow-auto   p-2'>
-                                {advertDetails.map((item: { id: number; name: string; description: string }, index: number) => (
-                                    <>
-                                        <div className='w-full flex  justify-between items-center p-3'>
-                                            <span className=''>
-                                                {item.name}</span>
-                                            <span className={`w-[65%]  ${index === 12 ? "min-w-[45%] max-w-[35%]" : index === 13 ? "w-[35%]" : ''}  border-[1px] h-0 border-[#1E1E1E33] border-dashed`}></span>
-                                            <span className='mr-1 text-nowrap'>{item.description}</span>
-                                        </div >
-                                    </>
-                                ))}
-                            </div>
-                        </div>
+                        {/* Formik Form Section */}
+                        <Formik initialValues={initialValues} onSubmit={onSubmit}>
+                            {({ values }) => (
+                                <Form className='flex flex-col w-full bg-white border-[1px] shadow-md rounded-[12px] p-4'>
+                                    <div className='w-full flex justify-center h-12'>
+                                        <div className='w-[90%] bg-[#09A380] flex items-center justify-center rounded-[100px] text-white'>جزئیات ملک</div>
+                                    </div>
+                                    <div className='w-full h-fit overflow-auto p-2'>
+                                        {fields.map((field, index) => (
+                                            <div key={field.name} className='w-full flex flex-col p-2'>
+                                                <label className='mb-1'>{field.label}</label>
+                                                <Field name={field.name} className='border p-2 rounded'/>
+                                            </div>
+                                        ))}
+                                    </div>
+                                    <button type='submit' className='mt-4 w-full bg-[#09A380] text-white p-2 rounded'>ارسال</button>
+                                </Form>
+                            )}
+                        </Formik>
+                        {/* End of Formik Form */}
                         <div className='flex w-full flex-col gap-5 justify-start h-fit bg-white border-[1px] shadow-md rounded-[12px] p-4 '>
                             <div className='w-full flex justify-center h-12'>
                                 <div className='w-[90%] bg-[#09A380] flex items-center justify-center rounded-[100px] text-black'>توضیحات بیشتر ملک</div>

@@ -4,5 +4,5 @@ import client from "../utils/client";
 
 export const getByUidAnnounce = async () => {
   const url = getRoute({ route: `${apiRoutes.AllAnnounce.getByUid}` });
-  return await client({ url, method: "GET" });
+  return await client({ url, method: "POST" });
 };
