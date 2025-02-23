@@ -7,15 +7,13 @@ import { Link, useNavigate } from "react-router-dom";
 import HeaderMobile from "../HeaderMobile";
 import ChangeTheme from "../../changeTheme";
 import { useCookies } from "react-cookie";
-import { useContext } from "react";
-import { UserContext } from "../../../contexts/UserContext";
 
 
 
 export default function Header({ variant }: any) {
   const navigate = useNavigate();
-  const [cookies, setCookies] = useCookies(["accessToken", "refreshToken", "phone"]);
-  const displayName = cookies.phone || "";
+  const [cookies, setCookies] = useCookies(["accessToken", "refreshToken", "full_name"]);
+  const displayName = cookies.full_name || "";
   return (
     <>
       <div className={`w-full mobile:hidden tablet:hidden bg-transparent h-28 flex items-center justify-center ${variant === "main" ? "absolute" : 'relative'}`}>

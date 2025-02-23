@@ -4,6 +4,6 @@ import apiRoutes from "../../../helpers/routes/apiRoutes";
 
 
 export const verifyOtp = async (data: { phone?: string; code?: number }) => {
-  const url = getRoute({ route: `${apiRoutes.auth.varify}` });
+  const url = getRoute({ route: `${apiRoutes.auth.verify}` });
   return await client({ url, method: "POST", data });
 };
