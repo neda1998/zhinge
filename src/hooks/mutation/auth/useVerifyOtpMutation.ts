@@ -17,7 +17,7 @@ const useVerifyOtpMutation = () => {
           icon: "success",
           confirmButtonText: "باشه",
         });
-        navigate("/Login");
+        navigate("/");
       },
       onError: async (error: any) => {
         Swal.fire({

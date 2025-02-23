@@ -1,26 +1,26 @@
 import Signup from '../../assets/images/undraw_fingerprint_login_re_t71l 1.svg'
 import Input from '../../components/ui/atoms/input';
 import Button from '../../components/ui/atoms/Button';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import useLoginMutation from '../../hooks/mutation/auth/UseLoginMutation';
 
 const Login = () => {
     const navigate = useNavigate();
-    const {mutate} = useLoginMutation();
+    const { mutate } = useLoginMutation();
     const formik = useFormik({
         initialValues: {
-          phone: "",
-          password: "",
+            phone: "",
+            password: "",
         },
         onSubmit: (values) => {
-          mutate({
-            phone: values.phone,
-            password: values.password,
-          });
+            mutate({
+                phone: values.phone,
+                password: values.password,
+            });
         },
-      });      
-        
+    });
+
     return (
         <div className='w-full flex justify-center'>
             <div className="w-full h-fit mobile:h-fit mobile:flex-col-reverse flex">
@@ -63,9 +63,13 @@ const Login = () => {
                                         ورود
                                     </span>
                                 </Button>
-
                             </div>
                         </form>
+                        <div className='flex flex-col items-center gap-4'>
+                            <span className='font-bold'>
+                                قبلا حساب ایجاد نکرده اید ؟ <Link to="/SignUp" className='text-[#09A380]'>ثبت نام</Link>
+                            </span>
+                        </div>
                     </div>
                 </div>
                 <div className='w-[50%] mobile:w-full mobile:h-fit mobile:mt-24 flex items-center justify-center h-screen'>
