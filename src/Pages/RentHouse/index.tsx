@@ -5,56 +5,16 @@ import House from '../../assets/images/Rectangle 49.svg'
 import MenuDots from '../../assets/images/Menu Dots Square.svg'
 import MapPoint from '../../assets/images/Map Point Favourite.svg'
 import { Link } from "react-router-dom";
-import { useEffect } from "react";
-import { createProperty } from "../../services/propertyService";
 
 const navItems = [
     { id: 1, text: 'صفحه اصلی', url: '/' },
     { id: 91, text: 'آگهی فروش', url: '/SellHouse' },
     { id: 12, text: 'آگهی اجاره', url: '/blogs' },
     { id: 1344, text: 'خدمات', url: '/faq' },
-    { id: 1, text: 'بازدید', url: '/ContactUssd' },
-    { id: 51, text: 'بازدید', url: '/ContactUssd' },
-    { id: 14, text: 'بازدید', url: '/ContactUssd' },
-    { id: 1, text: 'بازدید', url: '/ContactUssd' },
-    { id: 71, text: 'بازدید', url: '/ContactUssd' },
     { id: 12, text: 'درخواست ملک', url: '/ContactUs' }
 ];
 
 const RentHouse = () => {
-    useEffect(() => {
-        const sampleRentProperty = {
-            loan: 2199,
-            usage: "any",
-            floor_number: 2,
-            type: "rent",
-            userID: "09181711690",
-            features: "any",
-            year_of_build: 1998,
-            price: 20000,
-            reject: false,
-            tour3dRequest: false,
-            id: 1,
-            floor: 1,
-            document_type: "any",
-            address: "any",
-            useful_metrage: 150,
-            Unit_in_floor: 1,
-            room_number: 4,
-            photo: {},
-            check: false,
-            Uid: "1731598770627",
-            full_name: "any",
-            phone: "user ID",
-            location: "any",
-            region: "any",
-            state_code: "",
-            tour3dlink: "",
-            land_metrage: 200
-        };
-        // createProperty(sampleRentProperty);
-    }, []);
-
     return (
         <div className="flex flex-col items-center">
             <Header />

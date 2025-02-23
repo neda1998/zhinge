@@ -51,11 +51,8 @@ const apiRoutes = {
     updateUser: "/auth/updateuser",
     creatAnnounce: "/announce/creatAnnounce",
   },
-  announce:{
-    getAnnounce:"/announce/getallannounce",
-  },
-  property: {
-    create: "/announce/getallannounce" // backend endpoint for creating properties
+  AllAnnounce:{
+    getAllAnnounce:"/announce/getallannounce",
   }
 };
 export default apiRoutes;

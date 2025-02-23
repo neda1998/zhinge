@@ -1,8 +1,8 @@
 import { useQuery } from "react-query";
-import { getAnnounce } from "../../../services/getAnnounce";
+import { getAllAnnounce } from "../../../services/getAllAnnounce";
 
-const UseGetAnnouncementQuery = () => {
-    return useQuery("getAnnounce", getAnnounce);
+const UseGetAllAnnouncementQuery = () => {
+    return useQuery("getAllAnnounce", getAllAnnounce);
 };
 
-export default UseGetAnnouncementQuery;
+export default UseGetAllAnnouncementQuery;
