@@ -5,6 +5,8 @@ import House from '../../assets/images/Rectangle 49.svg'
 import MenuDots from '../../assets/images/Menu Dots Square.svg'
 import MapPoint from '../../assets/images/Map Point Favourite.svg'
 import { Link } from "react-router-dom";
+import React from 'react';
+import UseGetAllAnnouncementQuery from "../../hooks/queries/getAnnounce/UseAnnounceQuery";
 
 const navItems = [
     { id: 1, text: 'صفحه اصلی', url: '/' },
@@ -15,6 +17,11 @@ const navItems = [
 ];
 
 const RentHouse = () => {
+    const { data, isLoading, error } = UseGetAllAnnouncementQuery();
+
+    if (isLoading) return <p>در حال بارگذاری...</p>;
+    if (error) return <p>خطا: {(error as any)?.response?.data || error}</p>;
+
     return (
         <div className="flex flex-col items-center">
             <Header />
@@ -29,27 +36,24 @@ const RentHouse = () => {
                     />
                 </div>
                 <div className="w-full  grid grid-cols-3 mobile:grid-cols-4 mobile:mt-5 mobile:gap-0 gap-4 h-screen place-items-center ">
-                    {navItems.map((item, index) => (
-                        <>
-                            <div className="col-span-1 mobile:col-span-2 flex flex-col justify-start items-center w-[80%] min-h-[400px] mobile:min-h-[280px] max-h-fit">
-                                <Link to={`/RentHouse/${item.id}`} className="w-full h-full ">
-
-                                    <img src={House} alt="icons" width={350} />
-                                    <div className="w-[89%] flex gap-2 mt-2 mobile:w-full flex-col ">
-                                        <div className="w-full ">
-                                            <span className="text-[17px] mobile:text-[15px] font-bold">ملک اجاره ای آپارتمانی</span>
-                                        </div>
-                                        <div className="flex justify-between items-center">
-                                            <span className="flex text-[14px] gap-1 ">
-                                                <img src={MapPoint} alt="" width={20} />
-                                                شهرک بهاران
-                                            </span>
-                                            <img src={MenuDots} alt="" width={30} />
-                                        </div>
+                    {data && data.map((property:any) => (
+                        <div key={property.id} className="col-span-1 mobile:col-span-2 flex flex-col justify-start items-center w-[80%] min-h-[400px] mobile:min-h-[280px] max-h-fit">
+                            <Link to={`/RentHouse/${property.id}`} className="w-full h-full ">
+                                <img src={House} alt="icons" width={350} />
+                                <div className="w-[89%] flex gap-2 mt-2 mobile:w-full flex-col ">
+                                    <div className="w-full ">
+                                        <span className="text-[17px] mobile:text-[15px] font-bold">ملک اجاره ای آپارتمانی</span>
                                     </div>
-                                </Link >
-                            </div>
-                        </>
+                                    <div className="flex justify-between items-center">
+                                        <span className="flex text-[14px] gap-1 ">
+                                            <img src={MapPoint} alt="" width={20} />
+                                            شهرک بهاران
+                                        </span>
+                                        <img src={MenuDots} alt="" width={30} />
+                                    </div>
+                                </div>
+                            </Link >
+                        </div>
                     ))}
                 </div>
             </div >
