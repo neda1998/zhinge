@@ -18,7 +18,6 @@ const SignUp = () => {
         },
         validationSchema: validationSchemaSignup,
         onSubmit: (values: any) => {
-            console.log(values);
             setCookie('full_name', values.full_name, { path: '/' });
             mutate({
                 full_name: values.full_name,

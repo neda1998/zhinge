@@ -6,35 +6,39 @@ import ImageGallery from '../../components/ui/molecules/ImageGallery';
 import Phone from '../../assets/images/Phone Calling Rounded.svg'
 import MapPoint from '../../assets/images/Map Point Favourite.svg';
 import { useState } from 'react';
-import UseByUidAnnounceQuery from "../../hooks/queries/getAnnounce/UseByUidAnnounceQuery";
-import { Formik, Form, Field } from "formik";
+import { Field } from "formik";
+import UseByUidAnnounceMutation from '../../hooks/mutation/announce/UseByUidAnnounceMutation';
 
 const RentHouseId = () => {
-    const { data, isLoading, error } = UseByUidAnnounceQuery();
+    const { mutate } = UseByUidAnnounceMutation();
     const [isBoxVisible, setIsBoxVisible] = useState(false);
     if(isLoading) return <div>Loading...</div>;
     if(error) return <div>Error occurred</div>;
 
-    const adType = data?.type || 'اجاره';
+    const adType = (data as any)?.type || 'اجاره';
 
-    // Prepare initialValues based on fetched data
-    const initialValues = {
-        type: data?.type || '',
-        id: data?.id || '',
-        region: data?.region || '',
-        useful_metrage: data?.useful_metrage || '',
-        room_number: data?.room_number || '',
-        floor_number: data?.floor_number || '',
-        floor: data?.floor || '',
-        Unit_in_floor: data?.Unit_in_floor || '',
-        year_of_build: data?.year_of_build || '',
-        features: data?.features || '',
-        parking: data?.parking || 'ندارد',
-        storage: data?.storage || 'ندارد',
-        address: data?.address || '',
-        price: data?.price || '',
-        loan: data?.loan || 'ندارد'
-    };
+    const formik = useFormik({
+        initialValues: {
+            type: (data as any)?.type || '',
+            id: (data as any)?.id || '',
+            region: (data as any)?.region || '',
+            useful_metrage: (data as any)?.useful_metrage || '',
+            room_number: (data as any)?.room_number || '',
+            floor_number: (data as any)?.floor_number || '',
+            floor: (data as any)?.floor || '',
+            Unit_in_floor: (data as any)?.Unit_in_floor || '',
+            year_of_build: (data as any)?.year_of_build || '',
+            features: (data as any)?.features || '',
+            parking: (data as any)?.parking || 'ندارد',
+            storage: (data as any)?.storage || 'ندارد',
+            address: (data as any)?.address || '',
+            price: (data as any)?.price || '',
+            loan: (data as any)?.loan || 'ندارد',
+        },
+        onSubmit: (values) => {
+            mutate(values);
+        }
+    });
 
     // Define fields for dynamic rendering
     const fields = [
@@ -57,22 +61,6 @@ const RentHouseId = () => {
 
     const toggleBox = () => {
         setIsBoxVisible(!isBoxVisible);
-    };
-
-    // onSubmit function to post data via API
-    const onSubmit = async (values: typeof initialValues) => {
-        try {
-            const response = await fetch('/api/announce', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(values)
-            });
-            if(!response.ok) throw new Error('Network response was not ok');
-            alert('اطلاعات با موفقیت ارسال شد');
-        } catch (err) {
-            console.error(err);
-            alert('خطایی در ارسال اطلاعات رخ داده است');
-        }
     };
 
     return (
@@ -104,10 +92,7 @@ const RentHouseId = () => {
                         <div className='mt-2  flex w-full  mobile:justify-center'>
                             <span className='text-[40px] mobile:text-[30px]  font-bold'>{adType === 'اجاره' ? 'ملک اجاره‌ای آپارتمانی' : 'ملک فروشی آپارتمانی'}</span>
                         </div>
-                        {/* Formik Form Section */}
-                        <Formik initialValues={initialValues} onSubmit={onSubmit}>
-                            {() => (
-                                <Form className='flex flex-col w-full bg-white border-[1px] shadow-md rounded-[12px] p-4'>
+                        <form onSubmit={formik.handleSubmit} className='flex flex-col w-full bg-white border-[1px] shadow-md rounded-[12px] p-4'>
                                     <div className='w-full flex justify-center h-12'>
                                         <div className='w-[90%] bg-[#09A380] flex items-center justify-center rounded-[100px] text-white'>جزئیات ملک</div>
                                     </div>
@@ -120,10 +105,7 @@ const RentHouseId = () => {
                                         ))}
                                     </div>
                                     <button type='submit' className='mt-4 w-full bg-[#09A380] text-white p-2 rounded'>ارسال</button>
-                                </Form>
-                            )}
-                        </Formik>
-                        {/* End of Formik Form */}
+                                </form>
                         <div className='flex w-full flex-col gap-5 justify-start h-fit bg-white border-[1px] shadow-md rounded-[12px] p-4 '>
                             <div className='w-full flex justify-center h-12'>
                                 <div className='w-[90%] bg-[#09A380] flex items-center justify-center rounded-[100px] text-black'>توضیحات بیشتر ملک</div>
