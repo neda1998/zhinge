@@ -5,8 +5,6 @@ const apiRoutes = {
     verify: "/auth/verify",
     logout: "/auth/logout",
     newcode: "/auth/newcode",
-    updatePass: "/auth/forgetPassword/updatePass",
-    user: "/users/profile",
   },
   admin: {
     aboutUpdating: "/admin/aboutUpdating",

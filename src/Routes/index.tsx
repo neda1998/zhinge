@@ -45,6 +45,7 @@ import RequestedEstateNewHouse from "../panelAdmin/pages/requestedEstate/Request
 import ManageSetting from "../panelAdmin/pages/manageSetting";
 import Login from "../Pages/Login";
 import HouseDetails from "../Pages/RentHouseId";
+import VerifyOtp from "../Pages/Auth/VerifyOtp";
 
 const routes: AllRoutes[] = [
   {
@@ -95,6 +96,13 @@ const routes: AllRoutes[] = [
     name: "home",
     route: "/Login",
     component: <Login />,
+  },
+  {
+    type: "link",
+    key: "home",
+    name: "home",
+    route: "/VerifyOtp",
+    component: <VerifyOtp />,
   },
   {
     type: "link",

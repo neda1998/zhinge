@@ -40,7 +40,7 @@ const RentHouseId = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            const uid = getCookie('Uid') || ''; // Get Uid from cookie
+            const uid = "1731598770626"
             if (!uid) {
               console.error("Uid not found in cookie.");
               return;
