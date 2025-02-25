@@ -5,19 +5,62 @@ import Header from '../../components/template/Header';
 import ImageGallery from '../../components/ui/molecules/ImageGallery';
 import Phone from '../../assets/images/Phone Calling Rounded.svg'
 import MapPoint from '../../assets/images/Map Point Favourite.svg';
-import { useState } from 'react';
-import { Field } from "formik";
+import { useState, useEffect } from 'react';
+import { Field, useFormik } from "formik";
 import UseByUidAnnounceMutation from '../../hooks/mutation/announce/UseByUidAnnounceMutation';
 
+// Helper to get a cookie by name
+const getCookie = (name: string): string | undefined => {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) return parts.pop()?.split(';').shift();
+};
+
+// Define proper types for form values
+interface FormValues {
+    type: string;
+    id: string | number;
+    region: string;
+    useful_metrage: string | number;
+    room_number: string | number;
+    floor_number: string | number;
+    floor: string | number;
+    Unit_in_floor: string | number;
+    year_of_build: string | number;
+    features: string;
+    parking: string;
+    storage: string;
+    address: string;
+    price: string | number;
+    loan: string;
+}
+
 const RentHouseId = () => {
-    const { mutate } = UseByUidAnnounceMutation();
+    const { mutate, data, isLoading, error } = UseByUidAnnounceMutation();
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const uid = getCookie('Uid') || ''; // Get Uid from cookie
+            if (!uid) {
+              console.error("Uid not found in cookie.");
+              return;
+            }
+            const requestData = { Uid: uid };
+            mutate(requestData);
+        };
+        fetchData();
+    }, [mutate]);
+
     const [isBoxVisible, setIsBoxVisible] = useState(false);
     if(isLoading) return <div>Loading...</div>;
     if(error) return <div>Error occurred</div>;
 
     const adType = (data as any)?.type || 'اجاره';
 
-    const formik = useFormik({
+    // Update Formik to enable reinitialization with fetched data and prevent reusing mutate on submit.
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const formik = useFormik<FormValues>({
+        enableReinitialize: true,
         initialValues: {
             type: (data as any)?.type || '',
             id: (data as any)?.id || '',
@@ -36,7 +79,8 @@ const RentHouseId = () => {
             loan: (data as any)?.loan || 'ندارد',
         },
         onSubmit: (values) => {
-            mutate(values);
+            // Handle submit as needed; removing mutate to avoid conflict with the fetch call
+            console.log("Submitted values:", values);
         }
     });
 

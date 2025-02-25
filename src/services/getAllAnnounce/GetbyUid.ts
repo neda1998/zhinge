@@ -1,8 +1,10 @@
-import apiRoutes from "../../helpers/routes/apiRoutes";
-import { getRoute } from "../service";
-import client from "../utils/client";
+import axios from 'axios';
 
-export const getByUidAnnounce = async (data:any) => {
-  const url = getRoute({ route: `${apiRoutes.AllAnnounce.getByUid}` });
-  return await client({ url, method: "POST",data });
+export const getAnnouncementByUid = async (data: { Uid: string }) => {
+  const response = await axios.post('/announce/getByUid', data, {
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  });
+  return response.data;
 };

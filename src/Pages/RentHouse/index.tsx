@@ -5,16 +5,8 @@ import House from '../../assets/images/Rectangle 49.svg'
 import MenuDots from '../../assets/images/Menu Dots Square.svg'
 import MapPoint from '../../assets/images/Map Point Favourite.svg'
 import { Link } from "react-router-dom";
-import React from 'react';
 import UseGetAllAnnouncementQuery from "../../hooks/queries/getAnnounce/UseAnnounceQuery";
 
-const navItems = [
-    { id: 1, text: 'صفحه اصلی', url: '/' },
-    { id: 91, text: 'آگهی فروش', url: '/SellHouse' },
-    { id: 12, text: 'آگهی اجاره', url: '/blogs' },
-    { id: 1344, text: 'خدمات', url: '/faq' },
-    { id: 12, text: 'درخواست ملک', url: '/ContactUs' }
-];
 
 const RentHouse = () => {
     const { data, isLoading, error } = UseGetAllAnnouncementQuery();
@@ -28,7 +20,7 @@ const RentHouse = () => {
             <div className="w-full flex flex-col h-screen mobile:mt-20">
                 <div className="w-full flex justify-center mobile:p-0 p-2 ">
                     <SearchBar
-                        inputStyles={"rounded-[50px] "}
+                        inputStyles={"rounded-[50px]"}
                         customStyles={"w-[70%] h-[50px] mobile:w-[80%] "}
                         placeholder="جست جو"
                         iconSrc={search}

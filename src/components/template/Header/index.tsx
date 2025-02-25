@@ -30,7 +30,6 @@ export default function Header({ variant }: any) {
               cookies.accessToken ? (
                 <Button
                   onClick={() => {
-                    // Clear cookies correctly by setting them to an empty string
                     setCookies("accessToken", "", { path: "/" });
                     setCookies("refreshToken", "", { path: "/" });
                     navigate("/Login");

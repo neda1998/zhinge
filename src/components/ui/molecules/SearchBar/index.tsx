@@ -1,9 +1,14 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import defaultSearchIcon from "../../../../assets/images/Login.svg";
 import Filter from '../../../../assets/images/icon input/Filter.svg'
 import SearchWhite from '../../../../assets/images/icon input/searchwhite.svg'
 import ComboBox from "../../../common/Combo";
 import InputState from "../../atoms/input/inputState";
+
+
+
+
+
 export default function SearchBar({
   placeholder = "Search by brand, model, or functionality",
   showIcon = true,
@@ -35,10 +40,10 @@ export default function SearchBar({
       )}
       <div className="relative flex justify-center w-full pb-10" onBlur={handleBlur}>
         <div
-          className={`relative flex flex-col items-center lg:w-[70%] w-full sm:mt-14 lg:mt-0 mx-4 mobile:w-full justify-center p-4 rounded-[20px] ${isSearching ? "z-50" : ""
+          className={`relative flex flex-col items-center lg:w-[70%] w-full sm:mt-14 lg:mt-0 md:mx-4 mobile:w-full justify-center p-4 rounded-[20px] ${isSearching ? "z-50" : ""
             } ${divStyles}`}
         >
-          <div className={`flex h-[45px] w-[70%] mobile:ml-8 mobile:w-full ${customStyles} relative`}>
+          <div className={`flex h-[45px] w-[70%] mobile:w-full ${customStyles} relative`}>
             <input
               className={`w-full  border border-blue-gray-200 lg:pr-[8%] pr-[12%] mobile:pr-[16%] bg-gray-main text-[14px] font-medium text-blue-gray-700 outline-none transition-all focus:border-2 ${inputStyles}`}
               placeholder={placeholder}
@@ -54,7 +59,7 @@ export default function SearchBar({
                   <img src={iconSrc} alt={iconAlt} width={20} />
                 </button>
                 <button
-                  className="absolute top-1/2 right-[86%] mobile:right-[75%] transform -translate-y-1/2 z-10 select-none py-2 px-4 text-center align-middle text-xs font-bold text-white transition-opacity focus:opacity-85 active:opacity-85"
+                  className="absolute top-1/2 left-12 transform -translate-y-1/2 z-10 select-none py-2 px-4 text-center align-middle text-xs font-bold text-white transition-opacity focus:opacity-85 active:opacity-85"
                   type="button"
                   onClick={toggleDropdown}
                   data-ripple-light="true"
@@ -63,7 +68,7 @@ export default function SearchBar({
                 </button>
 
                 <button
-                  className="absolute top-1/2 right-[93%] bg-[#09A380] h-full w-14 rounded-l-[50px] transform -translate-y-1/2 z-10 select-none py-2 px-4 text-center align-middle text-xs font-bold text-white transition-opacity focus:opacity-85 active:opacity-85"
+                  className="absolute top-1/2 left-0 bg-[#09A380] h-full w-14 rounded-l-[50px] transform -translate-y-1/2 z-10 select-none py-2 px-4 text-center align-middle text-xs font-bold text-white transition-opacity focus:opacity-85 active:opacity-85"
                   type="button"
                   data-ripple-light="true"
                 >

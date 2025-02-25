@@ -2,10 +2,8 @@ import { AllRoutes } from "../@types/App/components.type";
 import MainPage from "../Pages/MainPage";
 import RentHouse from "../Pages/RentHouse";
 import SellHouse from "../Pages/SellHouse";
-import SellHouseId from "../Pages/SellHouseId";
 import SignUp from "../Pages/signup";
 import Otp from "../Pages/Otp";
-import RentHouseId from "../Pages/RentHouseId";
 import DetailsProperty from "../Pages/detailsProperty";
 import PropertyFeatures from "../Pages/propertyFeatures";
 import PropertyInfo from "../Pages/propertyInfo";
@@ -46,6 +44,7 @@ import AccountInformation from "../components/profile/AccountInformation.tsx";
 import RequestedEstateNewHouse from "../panelAdmin/pages/requestedEstate/RequestedEstateNewHouse";
 import ManageSetting from "../panelAdmin/pages/manageSetting";
 import Login from "../Pages/Login";
+import HouseDetails from "../Pages/RentHouseId";
 
 const routes: AllRoutes[] = [
   {
@@ -73,8 +72,8 @@ const routes: AllRoutes[] = [
     type: "link",
     key: "home",
     name: "home",
-    route: "/SellHouse/:id",
-    component: <SellHouseId />,
+    route: "/house-details/:id",
+    component: <HouseDetails />,
   },
   {
     type: "link",
@@ -82,13 +81,6 @@ const routes: AllRoutes[] = [
     name: "home",
     route: "/RentHouse",
     component: <RentHouse />,
-  },
-  {
-    type: "link",
-    key: "home",
-    name: "home",
-    route: "/RentHouse/:id",
-    component: <RentHouseId />,
   },
   {
     type: "link",
