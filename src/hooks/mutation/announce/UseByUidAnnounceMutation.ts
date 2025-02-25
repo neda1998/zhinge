@@ -4,8 +4,8 @@ import { getByUidAnnounce } from "../../../services/getAllAnnounce/GetbyUid";
 
 const UseByUidAnnounceMutation = () => {
   return useMutation(
-    async () => {
-      await getByUidAnnounce();
+    async (data) => {
+      await getByUidAnnounce(data);
     },
     {
       onSuccess: async function () {
