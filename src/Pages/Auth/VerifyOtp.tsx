@@ -31,7 +31,7 @@ const VerifyOtp = () => {
           name="phone"
           value={formik.values.phone}
           onChange={formik.handleChange}
-        />
+        />``
         <label>کد تایید</label>
         <input
           type="number"

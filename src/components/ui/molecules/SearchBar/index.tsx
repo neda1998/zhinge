@@ -1,7 +1,7 @@
 import { useState } from "react";
 import defaultSearchIcon from "../../../../assets/images/Login.svg";
-import Filter from '../../../../assets/images/icon input/Filter.svg'
-import SearchWhite from '../../../../assets/images/icon input/searchwhite.svg'
+import Filter from '../../../../assets/images/iconInput/Filter.svg'
+import SearchWhite from '../../../../assets/images/iconInput/searchwhite.svg'
 import ComboBox from "../../../common/Combo";
 import InputState from "../../atoms/input/inputState";
 

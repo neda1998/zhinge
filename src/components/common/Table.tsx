@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import dot from "../../assets/images/Menu Dots Square.svg";
+import dot from "../../assets/images/MenuDotsSquare.svg";
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa6';
 import ModalTable from '../modalTable';
 

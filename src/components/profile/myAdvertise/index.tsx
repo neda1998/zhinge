@@ -1,6 +1,6 @@
-import House from '../../../assets/images/Rectangle 49.svg'
-import MenuDots from '../../../assets/images/Menu Dots Square.svg'
-import MapPoint from '../../../assets/images/Map Point Favourite.svg'
+import House from '../../../assets/images/Rectangle49.svg'
+import MenuDots from '../../../assets/images/MenuDotsSquare.svg'
+import MapPoint from '../../../assets/images/MapPointFavourite.svg'
 import LayoutProfile from '../LayoutProfile'
 import { useAppContext } from '../../../contexts/appContext'
 

@@ -18,8 +18,8 @@ const menuItems = [
     { name: 'داشبورد', href: '/dashboard', iconWhite: UserWhite, iconBlack: User },
     { name: 'آگهی های من ', href: '/dashboard/myads ', iconWhite: myadswhite, iconBlack: myads },
     { name: 'ثبت آگهی جدید', href: '/dashboard/realstate', iconWhite: weightwhite, iconBlack: weight },
-    { name: 'آگهی فروش', href: '/SellHouse', iconWhite: UserWhite, iconBlack: User },
-    { name: 'آگهی اجاره', href: '/RentHouse', iconWhite: UserWhite, iconBlack: User },
+    { name: 'آگهی فروش', href: '/AnnouncementList/sell', iconWhite: UserWhite, iconBlack: User },
+    { name: 'آگهی اجاره', href: '/AnnouncementList/rent', iconWhite: UserWhite, iconBlack: User },
     { name: 'خدمات', href: '/services', iconWhite: UserWhite, iconBlack: User },
     { name: 'درخواست ملک', href: '/ContactUs', iconWhite: UserWhite, iconBlack: User },
     { name: 'خروج از حساب', href: '/logout', iconWhite: "", iconBlack: LogOut },
@@ -94,7 +94,7 @@ export default function HeaderMobile() {
                                         {menuItems.map((item) => (
                                             <li
                                                 key={item.name}
-                                                className={`flex w-full gap-2 cursor-pointer items-center  justify-start transition-transform   duration-300 p-5 `}
+                                                className={`flex w-full gap-2 cursor-pointer items-center justify-start transition-transform duration-300 p-5 `}
                                                 onClick={() => navigate(item.href)}
                                             >
 
@@ -125,7 +125,7 @@ export default function HeaderMobile() {
                         </div>
 
                         <div className="w-full flex flex-col items-center rounded-[30px] ">
-                            <ul className="w-full h-full  flex flex-col items-center rounded-[30px] ">
+                            <ul className="w-full h-full  flex flex-col items-center rounded-[30px]">
                                 {menuItems.map((item) => (
                                     <li
                                         key={item.name}

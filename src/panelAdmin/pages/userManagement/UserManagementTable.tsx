@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { FaCaretDown, FaChevronLeft, FaChevronRight } from 'react-icons/fa6';
-import dot from "../../../assets/images/Menu Dots Square.svg";
+import dot from "../../../assets/images/MenuDotsSquare.svg";
 import { MdClose } from "react-icons/md";
 
 interface RequestEstateTableProps {

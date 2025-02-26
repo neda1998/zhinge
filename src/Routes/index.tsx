@@ -44,8 +44,9 @@ import AccountInformation from "../components/profile/AccountInformation.tsx";
 import RequestedEstateNewHouse from "../panelAdmin/pages/requestedEstate/RequestedEstateNewHouse";
 import ManageSetting from "../panelAdmin/pages/manageSetting";
 import Login from "../Pages/Login";
-import HouseDetails from "../Pages/RentHouseId";
 import VerifyOtp from "../Pages/Auth/VerifyOtp";
+import HouseDetails from "../Pages/houseDetails";
+import AnnouncementListContainer from "../containers/AnnouncementListContainer";
 
 const routes: AllRoutes[] = [
   {
@@ -57,31 +58,24 @@ const routes: AllRoutes[] = [
   },
   {
     type: "link",
-    key: "home",
-    name: "home",
-    route: "/SellHouse",
-    component: <SellHouse />,
+    key: "rent",
+    name: "rent",
+    route: "/AnnouncementList/rent",
+    component: <AnnouncementListContainer announcementType="rent" />,
   },
-  // {
-  //     type: "link",
-  //     key: "home",
-  //     name: "home",
-  //     route: "/ContactUssd",
-  //     component: <ContactUssd />,
-  //   },
+  {
+    type: "link",
+    key: "sell",
+    name: "sell",
+    route: "/AnnouncementList/sell",
+    component: <AnnouncementListContainer announcementType="sell" />,
+  },
   {
     type: "link",
     key: "home",
     name: "home",
     route: "/house-details/:id",
     component: <HouseDetails />,
-  },
-  {
-    type: "link",
-    key: "home",
-    name: "home",
-    route: "/RentHouse",
-    component: <RentHouse />,
   },
   {
     type: "link",
@@ -188,13 +182,6 @@ const routes: AllRoutes[] = [
     route: "/dashboard/propertyImageDashboard",
     component: <PropertyImageDashboard />,
   },
-  // {
-  //   type: "link",
-  //   key: "successfullyAdd",
-  //   name: "successfullyAdd",
-  //   route: "/successfullyAdd",
-  //   component: <SuccessfullyAdd />,
-  // },
   {
     type: "link",
     key: "successfullyAdd",

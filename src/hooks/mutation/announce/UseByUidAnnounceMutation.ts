@@ -9,12 +9,7 @@ const UseByUidAnnounceMutation = () => {
     },
     {
       onSuccess: async (response) => {
-        Swal.fire({
-          title: "موفقیت",
-          text: "اطلاعات با موفقیت دریافت شد",
-          icon: "success",
-          confirmButtonText: "باشه",
-        });
+        console.log("اطلاعات با موفقیت دریافت شد");
       },
       onError: async (error: any) => {
         Swal.fire({

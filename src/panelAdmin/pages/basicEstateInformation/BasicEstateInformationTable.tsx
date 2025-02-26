@@ -1,6 +1,6 @@
 import React from 'react'
 import { AiOutlineDelete } from 'react-icons/ai'
-import dot from "../../../assets/images/Menu Dots Square.svg";
+import dot from "../../../assets/images/MenuDotsSquare.svg";
 import { tableZone } from '../../../utils/data';
 
 interface Props {

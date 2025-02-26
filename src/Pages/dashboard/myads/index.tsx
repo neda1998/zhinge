@@ -1,20 +1,15 @@
 import { Link } from "react-router-dom";
-import House from '../../../assets/images/Rectangle 49.svg';
-import MenuDots from '../../../assets/images/Menu Dots Square.svg';
-import MapPoint from '../../../assets/images/Map Point Favourite.svg';
+import House from '../../../assets/images/Rectangle49.svg';
+import MenuDots from '../../../assets/images/MenuDotsSquare.svg';
+import MapPoint from '../../../assets/images/MapPointFavourite.svg';
 import LayoutProfile from "../../../components/profile/LayoutProfile";
 import UseMyAnnouncementsQuery from "../../../hooks/queries/userPanel/UseMyAnnouncementsQuery";
 
 const navItems = [
     { id: 1, text: 'صفحه اصلی', url: '/' },
-    { id: 91, text: 'آگهی فروش', url: '/SellHouse' },
-    { id: 12, text: 'آگهی اجاره', url: '/blogs' },
+    { id: 91, text: 'آگهی فروش', url: '/AnnouncementList/sell' },
+    { id: 12, text: 'آگهی اجاره', url: '/AnnouncementList/rent' },
     { id: 1344, text: 'خدمات', url: '/faq' },
-    { id: 2, text: 'بازدید', url: '/ContactUssd' },
-    { id: 51, text: 'بازدید', url: '/ContactUssd' },
-    { id: 14, text: 'بازدید', url: '/ContactUssd' },
-    { id: 3, text: 'بازدید', url: '/ContactUssd' },
-    { id: 71, text: 'بازدید', url: '/ContactUssd' },
     { id: 12, text: 'درخواست ملک', url: '/ContactUs' }
 ];
 

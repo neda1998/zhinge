@@ -3,7 +3,7 @@ import ZhingeLogo from '../../assets/images/Zhinge.svg'
 import Button from '../../components/ui/atoms/Button';
 import MagniFair from '../../assets/images/Magnifer.svg'
 import HomeIcons from '../../assets/images/Home Add Angle.svg'
-import Image1 from '../../assets/images/Rectangle 42.svg'
+import Rectangle42 from '../../assets/images/Rectangle42.svg'
 import Image2 from '../../assets/images/Rectangle 43.svg'
 import Image3 from '../../assets/images/Rectangle 44.svg'
 import Header from '../../components/template/Header';
@@ -53,7 +53,7 @@ const MainPage = () => {
                         </div>
                         <div className='w-full flex'>
                             <div>
-                                <img src={Image1} alt="" className='w-[240px] mobile:w-[130px]' />
+                                <img src={Rectangle42} alt="" className='w-[240px] mobile:w-[130px]' />
                                 <span className='text-white absolute text-[14px] bottom-12 mr-4 mobile:bottom-8 flex gap-2 mobile:gap-1 '>
                                     <img src={MapPoint} alt="" width={20} />
                                     شهرک سعدی
@@ -103,7 +103,7 @@ const MainPage = () => {
                         </div>
                         <div className='w-full flex'>
                             <div>
-                                <img src={Image1} alt="" className='w-[240px] mobile:w-[160px]' />
+                                <img src={Rectangle42} alt="" className='w-[240px] mobile:w-[160px]' />
                                 <span className='text-white  text-[14px] -mt-16  mr-4 mobile:bottom-8  flex gap-2 mobile:gap-1 '>
                                     <img src={MapPoint} alt="" width={20} />
                                     شهرک سعدی
