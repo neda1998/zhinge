@@ -24,15 +24,13 @@ const AnnouncementList: React.FC<AnnouncementListProps> = ({ data, isLoading, er
         <PuffLoader color="#09A380" />
       </div>
     );
-  if (error) {
-    const errMessage = typeof error === 'object' && error.message ? error.message : 'خطایی رخ داده است';
-    return <p>خطا: {errMessage}</p>;
-  }
 
   const titleLabel = announcementType === "rent" ? "ملک اجاره ای آپارتمانی" : "ملک فروش آپارتمانی";
 
   const filteredData = data.filter((property: any) =>
-    announcementType === "rent" ? property.type === "اجاره" : property.type !== "اجاره"
+    announcementType === "rent" 
+      ? property.type === "اجاره" 
+      : property.type === "فروش"  
   );
 
   return (

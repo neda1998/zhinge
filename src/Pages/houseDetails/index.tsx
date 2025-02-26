@@ -9,6 +9,7 @@ import { useState, useEffect } from 'react';
 import { Field, useFormik, FormikProvider } from "formik";
 import UseByUidAnnounceMutation from '../../hooks/mutation/announce/UseByUidAnnounceMutation';
 import { useParams } from "react-router-dom"; // added
+import { PuffLoader } from 'react-spinners';
 
 // Helper to get a cookie by name
 const getCookie = (name: string): string | undefined => {
@@ -16,25 +17,6 @@ const getCookie = (name: string): string | undefined => {
   const parts = value.split(`; ${name}=`);
   if (parts.length === 2) return parts.pop()?.split(';').shift();
 };
-
-// Define proper types for form values
-interface FormValues {
-    type: string;
-    id: string | number;
-    region: string;
-    useful_metrage: string | number;
-    room_number: string | number;
-    floor_number: string | number;
-    floor: string | number;
-    Unit_in_floor: string | number;
-    year_of_build: string | number;
-    features: string;
-    parking: string;
-    storage: string;
-    address: string;
-    price: string | number;
-    loan: string;
-}
 
 const HouseDetails = () => {
     const { id } = useParams(); // get id from route
@@ -104,7 +86,11 @@ const HouseDetails = () => {
     // Instead of early returning, include conditions in the JSX.
     return (
         <div className='flex flex-col items-center'>
-            {isLoading && <div>Loading...</div>}
+            {isLoading && (
+                <div className="flex justify-center items-center min-h-screen">
+                    <PuffLoader color="#09A380" />
+                </div>
+            )}
             {error && <div>Error occurred</div>}
             {!isLoading && !error && (
                 <>
@@ -158,8 +144,8 @@ const HouseDetails = () => {
                                         </div>
                                     </form>
                                 </FormikProvider>
-                                <div className='flex w-full flex-col gap-5 justify-start h-fit bg-white border-[1px] shadow-md rounded-[12px] p-4'>
-                                    <div className='w-full flex justify-center h-12'>
+                                <div className='flex w-full flex-col gap-5 justify-start ه-fit bg-white border-[1px] shadow-md rounded-[12px] p-4'>
+                                    <div className='w-full flex justify-center ه-12'>
                                         <div className='w-[90%] bg-[#09A380] flex items-center justify-center rounded-[100px] text-black'>توضیحات بیشتر ملک</div>
                                     </div>
                                     <div className='w-full flex justify-center'>

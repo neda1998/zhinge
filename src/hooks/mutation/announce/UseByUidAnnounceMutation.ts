@@ -10,6 +10,8 @@ const UseByUidAnnounceMutation = () => {
     {
       onSuccess: async (response) => {
         console.log("اطلاعات با موفقیت دریافت شد");
+
+
       },
       onError: async (error: any) => {
         Swal.fire({
