@@ -1,15 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import StepperLayout from "../../../components/partial/layout/StepperLayout";
 import { useNavigate } from "react-router-dom";
 import Button from "../../../components/ui/atoms/Button";
 import camera from "../../../assets/images/camera.svg";
-import Input from "../../../components/ui/atoms/input";
 import LayoutProfile from "../../../components/profile/LayoutProfile";
+import Input from "../../../components/ui/atoms/input";
 
 export default function PropertyImageDashboard() {
   const navigate = useNavigate();
   const [uploadedFileName, setUploadedFileName] = useState("");
   const [uploadedFile, setUploadedFile] = useState<any>();
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
   const handleFileUploads = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
     if (!files || files.length === 0) return;
@@ -24,6 +26,10 @@ export default function PropertyImageDashboard() {
       };
       reader.readAsDataURL(file);
     });
+  };
+
+  const handleButtonClick = () => {
+    fileInputRef.current?.click();
   };
 
   return (
@@ -41,10 +47,14 @@ export default function PropertyImageDashboard() {
           <div className="flex flex-col w-[90%] gap-10 mobile:w-full mobile:gap-4 mobile:h-full">
             {!uploadedFileName && (
               <div className="w-full flex items-center justify-center">
-                <div className="flex flex-col gap-4 items-center justify-center w-[20rem] h-[15rem] rounded-[20px] bg-[#D9D9D980] mobile:w-[15rem] mobile:h-[10rem]">
+                <div
+                  onClick={handleButtonClick}
+                  className="flex flex-col gap-4 items-center justify-center w-[20rem] h-[15rem] rounded-[20px] bg-[#f9f9f9] mobile:w-[15rem] mobile:h-[10rem]"
+                >
                   <Input
+                    ref={fileInputRef}
                     type="file"
-                    accept={uploadedFile}
+                    accept="image/*"
                     hidden
                     onChange={handleFileUploads}
                     className="w-full h-full"
@@ -61,9 +71,9 @@ export default function PropertyImageDashboard() {
               </div>
             )}
             <div className="flex items-center gap-6 justify-center">
-              <div className="w-[8rem] h-[8rem] rounded-[20px] bg-[#D9D9D980] mobile:w-[9rem] mobile:h-[6rem]"></div>
-              <div className="w-[8rem] h-[8rem] rounded-[20px] bg-[#D9D9D980] mobile:w-[9rem] mobile:h-[6rem]"></div>
-              <div className="w-[8rem] h-[8rem] rounded-[20px] bg-[#D9D9D980] mobile:w-[9rem] mobile:h-[6rem]"></div>
+              <div className="w-[8rem] h-[8rem] rounded-[20px] bg-[#f9f9f9] mobile:w-[9rem] mobile:h-[6rem]"></div>
+              <div className="w-[8rem] h-[8rem] rounded-[20px] bg-[#f9f9f9] mobile:w-[9rem] mobile:h-[6rem]"></div>
+              <div className="w-[8rem] h-[8rem] rounded-[20px] bg-[#f9f9f9] mobile:w-[9rem] mobile:h-[6rem]"></div>
             </div>
             <div className="w-[90%] flex items-center gap-4 justify-end">
               <Button

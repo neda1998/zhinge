@@ -1,4 +1,4 @@
-import Input from "./ui/atoms/input";
+import Input from "./ui/atoms/input/index";
 
 
 const Signin = () => {

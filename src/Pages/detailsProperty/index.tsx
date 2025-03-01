@@ -1,11 +1,8 @@
 import React from "react";
 import StepperLayout from "../../components/partial/layout/StepperLayout";
 import Button from "../../components/ui/atoms/Button";
-import Select from "../../components/ui/atoms/Select";
-import Input from "../../components/ui/atoms/input";
 import { useNavigate } from "react-router-dom";
 import InputState from "../../components/ui/atoms/input/inputState";
-import ComboBox from "../../components/common/Combo";
 
 export default function DetailsProperty() {
   const navigate = useNavigate();

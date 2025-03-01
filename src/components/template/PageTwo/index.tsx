@@ -1,5 +1,4 @@
 import Button from "../../ui/atoms/Button";
-import Input from "../../ui/atoms/input";
 import InputState from "../../ui/atoms/input/inputState";
 
 export default function PageTwo() {

@@ -1,7 +1,5 @@
 import { AllRoutes } from "../@types/App/components.type";
 import MainPage from "../Pages/MainPage";
-import RentHouse from "../Pages/RentHouse";
-import SellHouse from "../Pages/SellHouse";
 import SignUp from "../Pages/signup";
 import Otp from "../Pages/Otp";
 import DetailsProperty from "../Pages/detailsProperty";
@@ -47,6 +45,7 @@ import Login from "../Pages/Login";
 import VerifyOtp from "../Pages/Auth/VerifyOtp";
 import HouseDetails from "../Pages/houseDetails";
 import AnnouncementListContainer from "../containers/AnnouncementListContainer";
+import SuccessfullyAdd from "../Pages/successfullyAdd";
 
 const routes: AllRoutes[] = [
   {
@@ -180,14 +179,14 @@ const routes: AllRoutes[] = [
     key: "propertyImage",
     name: "propertyImage",
     route: "/dashboard/propertyImageDashboard",
-    component: <PropertyImageDashboard />,
+    component: <PropertyImage />,
   },
   {
     type: "link",
     key: "successfullyAdd",
     name: "successfullyAdd",
     route: "/dashboard/successfullyAddDashboard",
-    component: <SuccessfullyAddDashboard />,
+    component: <SuccessfullyAdd />,
   },
   {
     type: "link",
