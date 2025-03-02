@@ -1,8 +1,10 @@
 import React, { useRef } from "react";
 import Swal from "sweetalert2";
 import camera from "../../assets/images/camera.svg";
+import UseUploadFileMutation from "../../hooks/mutation/announce/UseUploadFileMutation";
 
 export interface UploadedImage {
+  id: string;  // اضافه کردن یک id یکتا برای هر تصویر
   name: string;
   preview: string;
 }
@@ -14,6 +16,7 @@ interface FileUploadProps {
 
 const FileUpload: React.FC<FileUploadProps> = ({ uploadedImages, setUploadedImages }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const { mutate: uploadFileMutation } = UseUploadFileMutation();
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
@@ -30,13 +33,17 @@ const FileUpload: React.FC<FileUploadProps> = ({ uploadedImages, setUploadedImag
       }
 
       const reader = new FileReader();
-      reader.onloadend = () => {
-        const preview = reader.result as string;
-        const newImage = { name: file.name, preview };
-
-        setUploadedImages(prev => [...prev, newImage]); // اضافه کردن تصویر جدید
-      };
       reader.readAsDataURL(file);
+      reader.onloadend = () => {
+        uploadFileMutation({ file, uid: "example-uid" });
+        setUploadedImages(prev => [
+          ...prev,
+          { id: URL.createObjectURL(file), name: file.name, preview: reader.result as string },
+        ]);
+        if (fileInputRef.current) {
+          fileInputRef.current.value = "";
+        }
+      };
     }
   };
 
@@ -44,40 +51,32 @@ const FileUpload: React.FC<FileUploadProps> = ({ uploadedImages, setUploadedImag
     fileInputRef.current?.click();
   };
 
-  // تابع برای حذف عکس
-  const handleRemoveImage = (index: number) => {
-    setUploadedImages(prev => prev.filter((_, i) => i !== index));
+  const handleRemoveImage = (id: string) => {
+    setUploadedImages(prev => prev.filter(img => img.id !== id));
   };
 
   return (
     <div className="flex flex-col items-center justify-center">
-      {/* باکس آپلود */}
-      <div
-        onClick={handleClick}
-        className="flex flex-col gap-4 items-center justify-center w-[20rem] h-[15rem] rounded-[20px] bg-[#f9f9f9] mobile:w-[15rem] mobile:h-[10rem] cursor-pointer"
-      >
-        <input
-          ref={fileInputRef}
-          type="file"
-          accept="image/*"
-          hidden
-          onChange={handleFileUpload}
-        />
-        <img src={camera} alt="Camera Icon" className="mobile:w-[80px] object-contain" />
-        <p className="text-[15px] text-[#1E1E1E80] mobile:text-[13px]">
-          آپلود تصویر ملک (حداکثر ۸ قطعه عکس)
-        </p>
-      </div>
+      {uploadedImages.length < 8 && (
+        <div
+          onClick={handleClick}
+          className="flex flex-col gap-4 items-center justify-center w-[20rem] h-[15rem] rounded-[20px] bg-[#f9f9f9] mobile:w-[15rem] mobile:h-[10rem] cursor-pointer"
+        >
+          <input ref={fileInputRef} type="file" accept="image/*" hidden onChange={handleFileUpload} />
+          <img src={camera} alt="Camera Icon" className="mobile:w-[80px] object-contain" />
+          <p className="text-[15px] text-[#1E1E1E80] mobile:text-[13px]">
+            آپلود تصویر ملک (حداکثر ۸ قطعه عکس)
+          </p>
+        </div>
+      )}
 
-      {/* نمایش تصاویر آپلود شده */}
       {uploadedImages.length > 0 && (
-        <div className="flex flex-wrap gap-4 justify-center mt-6">
-          {uploadedImages.map((img, index) => (
-            <div key={index} className="relative w-[8rem] h-[8rem] rounded-[20px] bg-[#f9f9f9] overflow-hidden">
+        <div className="grid grid-cols-3 gap-4 mt-6">
+          {uploadedImages.map((img) => (
+            <div key={img.id} className="relative w-[8rem] h-[8rem] rounded-[20px] bg-[#f9f9f9] overflow-hidden">
               <img src={img.preview} alt={img.name} className="w-full h-full object-cover" />
-              {/* دکمه حذف عکس */}
               <button
-                onClick={() => handleRemoveImage(index)}
+                onClick={() => handleRemoveImage(img.id)}
                 className="absolute top-1 right-1 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs"
               >
                 ✕

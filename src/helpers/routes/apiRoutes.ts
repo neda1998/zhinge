@@ -52,6 +52,7 @@ const apiRoutes = {
   AllAnnounce:{
     getAllAnnounce:"/announce/getallannounce",
     getByUid: "/announce/getbyUid",
+    uploadFile:"/announce/uploadPhotos"
   }
 };
 export default apiRoutes;
