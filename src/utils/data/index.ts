@@ -36,10 +36,10 @@ import { VscFileSymlinkDirectory } from "react-icons/vsc";
 
 export const navItems = [
   { text: "صفحه اصلی", url: "/" },
-  { text: "آگهی فروش", url: "/AnnouncementList/sell" },
-  { text: "آگهی اجاره", url: "/AnnouncementList/rent" },
+  { text: "آگهی فروش", url: "/Announcement-list/sell" },
+  { text: "آگهی اجاره", url: "/Announcement-list/rent" },
   { text: "خدمات", url: "/services" },
-  { text: "درخواست ملک", url: "/ContactUs" },
+  { text: "درخواست ملک", url: "/request-state" },
 ];
 export const itemsNavLeft = [
   { id: 1, icon: IoMdNotificationsOutline },

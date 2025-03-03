@@ -54,6 +54,9 @@ const apiRoutes = {
     getByUid: "/announce/getbyUid",
     uploadFile: "/announce/uploadPhotos",
     search: "/announce/search"
+  },
+  request:{
+    createRequest:"/request/creatrequest"
   }
 };
 

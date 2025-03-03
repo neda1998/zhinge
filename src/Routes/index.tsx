@@ -45,6 +45,7 @@ import Login from "../Pages/Login";
 import HouseDetails from "../Pages/houseDetails";
 import AnnouncementListContainer from "../containers/AnnouncementListContainer";
 import SuccessfullyAdd from "../Pages/successfullyAdd";
+import RequestStateHeader from "../components/requestStateHeader";
 
 const routes: AllRoutes[] = [
   {
@@ -56,16 +57,23 @@ const routes: AllRoutes[] = [
   },
   {
     type: "link",
+    key: "home",
+    name: "home",
+    route: "/request-state",
+    component: <RequestStateHeader />,
+  },
+  {
+    type: "link",
     key: "rent",
     name: "rent",
-    route: "/AnnouncementList/rent",
+    route: "/Announcement-list/rent",
     component: <AnnouncementListContainer announcementType="rent" />,
   },
   {
     type: "link",
     key: "sell",
     name: "sell",
-    route: "/AnnouncementList/sell",
+    route: "/Announcement-list/sell",
     component: <AnnouncementListContainer announcementType="sell" />,
   },
   {

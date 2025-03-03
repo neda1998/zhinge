@@ -145,3 +145,6 @@ input,
 select {
   background-color: #272727;
 }
+.header-top-dark {
+  box-shadow: rgb(0 0 0 / 26%) 0px 2px 8px 0px
+}
