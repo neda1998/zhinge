@@ -42,7 +42,6 @@ import AccountInformation from "../components/profile/AccountInformation.tsx";
 import RequestedEstateNewHouse from "../panelAdmin/pages/requestedEstate/RequestedEstateNewHouse";
 import ManageSetting from "../panelAdmin/pages/manageSetting";
 import Login from "../Pages/Login";
-import VerifyOtp from "../Pages/Auth/VerifyOtp";
 import HouseDetails from "../Pages/houseDetails";
 import AnnouncementListContainer from "../containers/AnnouncementListContainer";
 import SuccessfullyAdd from "../Pages/successfullyAdd";
@@ -89,13 +88,6 @@ const routes: AllRoutes[] = [
     name: "home",
     route: "/Login",
     component: <Login />,
-  },
-  {
-    type: "link",
-    key: "home",
-    name: "home",
-    route: "/VerifyOtp",
-    component: <VerifyOtp />,
   },
   {
     type: "link",

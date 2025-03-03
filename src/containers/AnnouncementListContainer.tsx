@@ -12,13 +12,14 @@ const AnnouncementListContainer: React.FC<AnnouncementListContainerProps> = ({ a
   const allData = data || [];
   console.log(data);
   
-  const filteredData = allData.filter((property: any) =>
-    announcementType === "rent" ? property.type === "اجاره" : property.type === "فروش"
-  );
+  // const filteredData = allData.filter((property: any) =>
+  //   announcementType === "rent" ? property.type === "اجاره" : property.type === "فروش"
+  // );
+  // console.log("Filtered Data:", filteredData);
 
   return (
     <AnnouncementList
-      data={filteredData}
+      data={allData}
       isLoading={isLoading}
       error={error}
       announcementType={announcementType}

@@ -45,14 +45,16 @@ const apiRoutes = {
     deleteSlider: "/admin/deleteslider"
   },
   user: {
-    myAnnouncements:"/auth/getAnnouncements",
+    myAnnouncements: "/auth/getAnnouncements",
     updateUser: "/auth/updateuser",
     creatAnnounce: "/announce/creatAnnounce",
   },
-  AllAnnounce:{
-    getAllAnnounce:"/announce/getallannounce",
+  AllAnnounce: {
+    getAllAnnounce: "/announce/getallannounce",
     getByUid: "/announce/getbyUid",
-    uploadFile:"/announce/uploadPhotos"
+    uploadFile: "/announce/uploadPhotos",
+    search: "/announce/search"
   }
 };
+
 export default apiRoutes;

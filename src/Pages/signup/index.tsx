@@ -69,7 +69,7 @@ const SignUp = () => {
                                     borderradius={'100px'}
                                     bgcolor={'#D9D9D926'}
                                     name='phone'
-                                    type='text'
+                                    type='tel'
                                     onChange={formik.handleChange}
                                     value={formik.values.phone}
                                 />

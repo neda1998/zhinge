@@ -19,7 +19,7 @@ const useResendOtpMutation = () => {
       onError: async (error: any) => {
         Swal.fire({
           title: "!خطا",
-          text: error.response?.data?.message || "خطایی در ارسال کد جدید رخ داده است",
+          text: error.response?.data || "خطایی در ارسال کد جدید رخ داده است",
           icon: "error",
           confirmButtonText: "باشه",
         });

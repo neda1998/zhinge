@@ -209,3 +209,7 @@ textarea {
   opacity: 0;
   transition: transform 0.5s ease, opacity 0.5s ease;
 }
+input[type="tel" i] {
+  direction: rtl !important;
+  padding-right: 15px;
+}

@@ -1,13 +1,24 @@
 import { useMutation } from "react-query";
 import Swal from "sweetalert2";
-import { uploadFile } from "../../../services/uploadFile";
+import { search } from "../../../services/search";
 
-const UseUploadFileMutation = () => {
+
+type FilterData = {
+  type: string;
+  region: string;
+  minPrice: string;
+  maxPrice: string;
+  propertyCode: string;
+};
+
+const useSearchMutation = () => {
   return useMutation(
-    async (data: { file: File; uid: string }) => await uploadFile(data.file, data.uid),
+    async (data: FilterData) => {
+      return await search(data); 
+    },
     {
       onSuccess: async (response) => {
-        console.log("اطلاعات با موفقیت دریافت شد");
+        console.log("✅ جستجو موفقیت‌آمیز بود", response);
       },
       onError: async (error: any) => {
         Swal.fire({
@@ -21,4 +32,4 @@ const UseUploadFileMutation = () => {
   );
 };
 
-export default UseUploadFileMutation;
+export default useSearchMutation;

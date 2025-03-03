@@ -35,6 +35,7 @@ const FileUpload: React.FC<FileUploadProps> = ({ uploadedImages, setUploadedImag
       const reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onloadend = () => {
+        // Replace "example-uid" with an actual uid as needed.
         uploadFileMutation({ file, uid: "example-uid" });
         setUploadedImages(prev => [
           ...prev,

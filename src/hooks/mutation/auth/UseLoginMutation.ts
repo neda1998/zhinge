@@ -1,7 +1,7 @@
 import { useMutation } from "react-query";
 import { useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
-import { login } from "../../../services/auth/login";  // توجه داشته باش که login درست تایپ شود
+import { login } from "../../../services/auth/login";  
 import axios from "axios";
 import Swal from "sweetalert2";
 
@@ -10,14 +10,13 @@ const useLoginMutation = () => {
   const navigate = useNavigate();
 
   return useMutation<
-    any,  // نوع داده برگشتی از درخواست (مثلاً data)
-    any,  // نوع خطا (ممکنه هر چیزی باشه)
-    { phone: string; password: string },  // نوع داده‌ای که می‌فرستی
-    void  // نوع پاسخ بعد از ارسال درخواست
+    any, 
+    any, 
+    { phone: string; password: string }, 
+    void
   >(async (data) => await login(data), {
     onSuccess: async (data) => {
-      console.log("Login response:", data); // Debug: inspect response data
-      // Destructure using the correct key with aliasing
+      console.log("Login response:", data);
       const { AccessToken: accessToken, refreshToken } = data; 
       if (!accessToken || !refreshToken) {
         console.error("Tokens are undefined", data);
