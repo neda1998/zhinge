@@ -1,12 +1,11 @@
 import Signup from '../../assets/images/undraw_fingerprint_login_re_t71l 1.svg';
 import Input from '../../components/ui/atoms/input';
 import Button from '../../components/ui/atoms/Button';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useFormik } from 'formik';
 import useLoginMutation from '../../hooks/mutation/auth/UseLoginMutation';
 
 const Login = () => {
-    const navigate = useNavigate();
     const { mutate } = useLoginMutation();
     const formik = useFormik({
         initialValues: {

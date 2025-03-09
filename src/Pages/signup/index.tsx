@@ -1,5 +1,4 @@
 import Signup from '../../assets/images/undraw_fingerprint_login_re_t71l 1.svg'
-import Header from '../../components/template/Header';
 import Input from '../../components/ui/atoms/input';
 import { Link } from 'react-router-dom';
 import { useFormik } from 'formik';

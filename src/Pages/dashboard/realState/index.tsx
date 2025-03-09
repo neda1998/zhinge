@@ -4,7 +4,7 @@ import Button from "../../../components/ui/atoms/Button";
 import LayoutProfile from "../../../components/profile/LayoutProfile";
 import InputState from "../../../components/ui/atoms/input/inputState";
 import ComboBox from "../../../components/common/Combo";
-import useCreateAnnounceMutation from "../../../hooks/mutation/userPanel/useCreateAnnounceMutation";
+import useCreateAnnounceMutation from "../../../hooks/mutation/announce/useCreateAnnounceMutation";
 
 export default function Realstate() {
   const navigate = useNavigate();
@@ -43,10 +43,11 @@ export default function Realstate() {
         features: undefined,
       };
       mutate(payload, {
-        onSuccess: () => {
+        onSuccess: (data: any) => {
+          const uid = data?.Uid || data?.id;
           navigate("/dashboard/detailsPropertyDashboard", {
             replace: true,
-            state: { variant: "notheader" },
+            state: { variant: "notheader", uid },
           });
         },
       });

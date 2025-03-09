@@ -47,9 +47,9 @@ const apiRoutes = {
   user: {
     myAnnouncements: "/auth/getAnnouncements",
     updateUser: "/auth/updateuser",
-    creatAnnounce: "/announce/creatAnnounce",
   },
   AllAnnounce: {
+    creatAnnounce: "/announce/creatAnnounce",
     getAllAnnounce: "/announce/getallannounce",
     getByUid: "/announce/getbyUid",
     uploadFile: "/announce/uploadPhotos",

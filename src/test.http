@@ -2,31 +2,5 @@ post http://185.231.115.236:3000/api/V1/announce/getbyUid
 Content-Type: application/json
 
 {
-  "loan" : 2199,
-  "usage" : "any",
-  "floor_number" : 2,
-  "type" : "any",
-  "userID" : "09057973389",
-  "features" : "any",
-  "year_of_build" : 1998,
-  "price" : 20000,
-  "reject" : false,
-  "tour3dRequest" : false,
-  "id" : 1,
-  "floor" : 1,
-  "document_type" : "any",
-  "address" : "any",
-  "useful_metrage" : 150,
-  "Unit_in_floor" : 1,
-  "room_number" : 4,
-  "photo" : { },
-  "check" : false,
-  "Uid" : "1731598770627",
-  "full_name" : "any",
-  "phone" : "user ID",
-  "location" : "any",
-  "region" : "any",
-  "state_code" : "",
-  "tour3dlink" : "",
-  "land_metrage" : 200
+  "Uid": "2"
 }

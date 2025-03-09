@@ -5,13 +5,8 @@ import { getRoute } from "../../service";
 export const login = async (data: any) => {
   try {
     const url = getRoute({ route: apiRoutes.auth.login });
-
-    return await client({
-      url,
-      method: "POST",
-      data,
-    });
-  } catch (error) {
+    return await client({url,method: "POST", data});} 
+    catch (error) {
     throw error;
   }
 };

@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import House from "../../src/assets/images/Rectangle49.svg";
 import MenuDots from "../../src/assets/images/MenuDotsSquare.svg";
@@ -18,14 +18,6 @@ interface AnnouncementListProps {
 
 const AnnouncementList: React.FC<AnnouncementListProps> = ({ data, isLoading, announcementType, onAnnouncementClick }) => {
   const titleLabel = announcementType === "rent" ? "ملک اجاره ای آپارتمانی" : "ملک فروش آپارتمانی";
-
-  // const filteredData = useMemo(() => {
-  //   if (!data) return []; // اگر data هنوز نیامده، مقدار [] بده
-  
-  //   return data.filter((property) =>
-  //     announcementType === "rent" ? property.type === "اجاره" : property.type === "فروش"
-  //   );
-  // }, [data, announcementType]);  
 
   return (
     <div className="flex flex-col items-center">
@@ -62,7 +54,7 @@ const AnnouncementList: React.FC<AnnouncementListProps> = ({ data, isLoading, an
                       <img src={MapPoint} alt="" width={20} />
                       شهرک بهاران
                     </span>
-                    <Link to={`/house-details/${property.id}`} onClick={() => onAnnouncementClick?.(property)}>
+                    <Link to={`/house-details/${property.Uid}`} onClick={() => onAnnouncementClick?.(property)}>
                       <img src={MenuDots} alt="" width={30} />
                     </Link>
                   </div>
