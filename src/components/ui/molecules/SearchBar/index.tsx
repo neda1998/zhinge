@@ -5,15 +5,7 @@ import SearchWhite from "../../../../assets/images/iconInput/searchwhite.svg";
 import ComboBox from "../../../common/Combo";
 import InputState from "../../atoms/input/inputState";
 import useSearchMutation from "../../../../hooks/mutation/announce/useSearchMutation";
-
-type FilterData = {
-  type: string;
-  region: string;
-  minPrice: string;
-  maxPrice: string;
-  propertyCode: string;
-  Uid: string;
-};
+import Swal from "sweetalert2";
 
 interface SearchBarProps {
   placeholder?: string;
@@ -25,133 +17,144 @@ interface SearchBarProps {
   inputStyles?: string;
   resultContainerStyles?: React.CSSProperties;
   resultItemStyles?: React.CSSProperties;
+  onSearchResults?: (results: any[]) => void; 
 }
 
 export default function SearchBar({
-  placeholder = "Search by brand, model, or functionality",
+  placeholder = "جستجو بر اساس برند، مدل یا امکانات",
   showIcon = true,
   iconSrc = defaultSearchIcon,
-  iconAlt = "search icon",
+  iconAlt = "آیکون جستجو",
   customStyles = "",
   divStyles = "",
   inputStyles = "",
-  resultContainerStyles = {},
-  resultItemStyles = {},
+  onSearchResults,
 }: SearchBarProps) {
-  const [results, setResults] = useState<string[]>([]);
-  const [isSearching, setIsSearching] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const searchRef = useRef<HTMLDivElement>(null);
-
-  // Filter state
   const [propertyType, setPropertyType] = useState("نوع ملک");
   const [region, setRegion] = useState("انتخاب منطقه");
   const [minPrice, setMinPrice] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
   const [propertyCode, setPropertyCode] = useState("");
+  const [usage, setUsage] = useState("any");
+  const [loan, setLoan] = useState("");
+  const [yearOfBuild, setYearOfBuild] = useState("");
+  const [floorNumber, setFloorNumber] = useState("");
+  const [roomNumber, setRoomNumber] = useState("");
+  const [landMetrage, setLandMetrage] = useState("");
+  const [searchResults, setSearchResults] = useState<any[]>([]);
+  const [hasSearched, setHasSearched] = useState(false);
 
-  const { mutate: searchMutate } = useSearchMutation();
+  const searchMutation = useSearchMutation();
 
   const handleBlur = (e: React.FocusEvent<HTMLDivElement>) => {
     if (!searchRef.current?.contains(e.relatedTarget)) {
-      setIsSearching(false);
       setIsOpen(false);
-      setResults([]);
     }
   };
 
   const toggleDropdown = () => setIsOpen((prev) => !prev);
 
-  const applyFilter = () => {
-    const filterData: FilterData = {
-      type: propertyType !== "نوع ملک" ? propertyType : "any",
-      region: region !== "انتخاب منطقه" ? region : "any",
-      minPrice,
-      maxPrice,
-      propertyCode,
-      Uid: "1731598770627",
+  const handleSearch = () => {
+    if (minPrice && maxPrice) {
+      const min = parseFloat(minPrice);
+      const max = parseFloat(maxPrice);
+      if (min > max) {
+        Swal.fire({
+          title: "!خطا",
+          text: "حداقل مقدار نباید از حداکثر بیشتر باشد",
+          icon: "error",
+          confirmButtonText: "باشه",
+        });
+        return;
+      }
+    }
+
+    const searchData = {
+      id: propertyCode ? parseInt(propertyCode) : null,
+      userID: "",
+      tour3dRequest: false,
+      tour3dlink: "",
+      loan: loan ? parseInt(loan) : 0,
+      type: propertyType, 
+      region: region,
+      address: "", 
+      location: "",
+      usage: usage,
+      document_type: "",
+      land_metrage: landMetrage ? parseInt(landMetrage) : 0,
+      useful_metrage: 0,
+      floor_number: floorNumber ? parseInt(floorNumber) : 0,
+      floor: 0, 
+      Unit_in_floor: 0, 
+      year_of_build: yearOfBuild ? parseInt(yearOfBuild) : 0,
+      full_name: "", 
+      price: 0, 
+      room_number: roomNumber ? parseInt(roomNumber) : 0,
+      features: "", 
+      photo: {},
+      phone: "", 
+      check: false,
+      reject: false,
+      state_code: "",
+      Uid: "" 
     };
 
-    searchMutate(filterData, {
+    searchMutation.mutate(searchData as any, {
       onSuccess: (response: any) => {
-        setResults(response.data || []);
-        setIsOpen(false);
-      },
-      onError: () => {
-        setResults([]);
-      },
+        const results = Array.isArray(response) ? response : response?.announce_search_bodyUp;
+        setHasSearched(true);
+        if (!results || results.length === 0) {
+          setSearchResults([]);
+          if (onSearchResults) onSearchResults([]);
+        } else {
+          setSearchResults(results);
+          if (onSearchResults) onSearchResults(results);
+        }
+      }
     });
   };
 
   return (
-    <>
-      {isSearching && <div className="fixed inset-0 z-40 bg-black bg-opacity-50"></div>}
-      <div className="relative flex justify-center w-full pb-10" onBlur={handleBlur} ref={searchRef}>
-        <div className={`relative flex flex-col items-center lg:w-[50%] w-full sm:mt-14 lg:mt-0 md:mx-4 mobile:w-full justify-center p-4 rounded-[20px] ${isSearching ? "z-50" : ""} ${divStyles}`}>
-          <div className={`flex h-[45px] w-full mobile:w-full ${customStyles} relative`}>
-            <input
-              className={`w-full border border-blue-gray-200 lg:pr-[8%] pr-[12%] mobile:pr-[16%] bg-gray-main text-[14px] font-medium text-blue-gray-700 outline-none transition-all focus:border-2 ${inputStyles}`}
-              placeholder={placeholder}
-              required
-            />
-            {showIcon && (
-              <>
-                <button className="absolute top-1/2 right-[1%] transform -translate-y-1/2 z-10" type="button">
-                  <img src={iconSrc} alt={iconAlt} width={20} />
-                </button>
-                <button
-                  className="absolute top-1/2 left-16 transform -translate-y-1/2 z-10"
-                  type="button"
-                  onClick={toggleDropdown}
-                >
-                  <img src={Filter} alt="filter icon" width={25} />
-                </button>
-                <button
-                  className="absolute top-1/2 left-0 bg-[#09A380] h-full w-14 rounded-l-[50px] transform -translate-y-1/2 z-10"
-                  type="button"
-                  onClick={applyFilter}
-                >
-                  <img src={SearchWhite} alt="search icon" width={25} className="mx-auto" />
-                </button>
-              </>
-            )}
-          </div>
-          {isOpen && (
-            <div
-              id="dropdown"
-              className="absolute top-full left-7 mobile:left-5 border border-gray-300 bg-white rounded-lg shadow z-10 p-3"
-              onMouseDown={(e) => e.stopPropagation()}
-            >
-              <ComboBox 
-                options={["نوع ملک", "اجاره", "فروش", "other"]} 
-                value={propertyType}
-                onChange={(val) => setPropertyType(val)} 
-              />
-              <ComboBox 
-                options={["انتخاب منطقه", "تهران", "ارومیه"]}
-                value={region}
-                onChange={(val) => setRegion(val)} 
-              />
-              <InputState placeholder="حداقل قیمت" margin="mb-4" onChange={(e) => setMinPrice(e.target.value)} />
-              <InputState placeholder="حداکثر قیمت" margin="mb-4" onChange={(e) => setMaxPrice(e.target.value)} />
-              <InputState placeholder="کد ملک" onChange={(e) => setPropertyCode(e.target.value)} />
-              <button className="bg-main-color rounded-full py-2 flex justify-center items-center w-full mt-4 text-white" onClick={applyFilter}>
-                اعمال فیلتر
+    <div className="relative flex justify-center w-full pb-10" onBlur={handleBlur} ref={searchRef}>
+      <div className={`relative flex flex-col items-center w-full lg:w-[50%] p-4 rounded-[20px] ${divStyles}`}>
+        <div className={`flex h-[45px] w-full relative ${customStyles}`}>
+          <input
+            className={`w-full border border-gray-300 lg:pr-[8%] pr-[12%] bg-gray-main text-[14px] font-medium text-gray-700 outline-none transition-all focus:border-2 ${inputStyles}`}
+            placeholder={placeholder}
+            required
+          />
+          {showIcon && (
+            <>
+              <button className="absolute top-1/2 right-[2%] transform -translate-y-1/2 z-10" type="button">
+                <img src={iconSrc} alt={iconAlt} width={20} />
               </button>
-            </div>
-          )}
-
-          {results.length > 0 && (
-            <div className="absolute top-full left-0 w-full mt-2 bg-white border border-gray-300 rounded-lg shadow-lg z-50" style={resultContainerStyles}>
-              {results.map((result, index) => (
-                <div key={index} className="px-4 py-2 hover:bg-gray-100 cursor-pointer" style={resultItemStyles}>
-                  {result}
-                </div>
-              ))}
-            </div>
+              <button className="absolute top-1/2 left-16 transform -translate-y-1/2 z-10" type="button" onClick={toggleDropdown}>
+                <img src={Filter} alt="filter icon" width={25} />
+              </button>
+              <button className="absolute top-1/2 left-0 bg-[#09A380] h-full w-14 rounded-l-[50px] transform -translate-y-1/2 z-10" type="button" onClick={handleSearch}>
+                <img src={SearchWhite} alt="search icon" width={25} className="mx-auto" />
+              </button>
+            </>
           )}
         </div>
+
+        {isOpen && (
+          <div id="dropdown" className="absolute top-full left-7 border border-gray-300 bg-white rounded-lg shadow z-10 p-3">
+            <ComboBox options={["نوع ملک", "اجاره", "فروش", "other"]} value={propertyType} onChange={setPropertyType} />
+            <ComboBox options={["انتخاب منطقه", "تهران", "ارومیه"]} value={region} onChange={setRegion} />
+            <InputState placeholder="حداقل قیمت" margin="mb-4" onChange={(e) => setMinPrice(e.target.value)} />
+            <InputState placeholder="حداکثر قیمت" margin="mb-4" onChange={(e) => setMaxPrice(e.target.value)} />
+            <InputState placeholder="کد ملک" onChange={(e) => setPropertyCode(e.target.value)} />
+            <InputState placeholder="سال ساخت" onChange={(e) => setYearOfBuild(e.target.value)} />
+            <InputState placeholder="تعداد اتاق" onChange={(e) => setRoomNumber(e.target.value)} />
+            <button className="bg-main-color rounded-full py-2 flex justify-center items-center w-full mt-4 text-white" onClick={handleSearch}>
+              اعمال فیلتر
+            </button>
+          </div>
+        )}
       </div>
-    </>
+    </div>
   );
 }

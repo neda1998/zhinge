@@ -2,23 +2,23 @@ import { useMutation } from "react-query";
 import Swal from "sweetalert2";
 import { search } from "../../../services/search";
 
-
-type FilterData = {
-  type: string;
-  region: string;
-  minPrice: string;
-  maxPrice: string;
-  propertyCode: string;
-};
-
 const useSearchMutation = () => {
   return useMutation(
-    async (data: FilterData) => {
-      return await search(data); 
+    async (data) => {
+      return await search(data);
     },
     {
       onSuccess: async (response) => {
         console.log("✅ جستجو موفقیت‌آمیز بود", response);
+        // Only show success alert if ads were found
+        if (response?.announce_search_bodyUp && response.announce_search_bodyUp.length > 0) {
+          Swal.fire({
+            title: "موفقیت",
+            text: "✅ جستجو انجام شد",
+            icon: "success",
+            confirmButtonText: "باشه",
+          });
+        }
       },
       onError: async (error: any) => {
         Swal.fire({
