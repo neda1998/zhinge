@@ -1,5 +1,5 @@
 import React from 'react';
-import AnnouncementList from '../components/AnnouncementList';
+import AnnouncementList from './AnnouncementList';
 import UseGetAllAnnouncementQuery from '../hooks/queries/getAnnounce/UseAnnounceQuery';
 
 interface AnnouncementListContainerProps {

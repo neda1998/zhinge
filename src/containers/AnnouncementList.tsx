@@ -3,10 +3,10 @@ import { Link } from "react-router-dom";
 import House from "../../src/assets/images/Rectangle49.svg";
 import MenuDots from "../../src/assets/images/MenuDotsSquare.svg";
 import MapPoint from "../../src/assets/images/MapPointFavourite.svg";
-import SearchBar from "./ui/molecules/SearchBar";
-import Header from "./template/Header";
+import Header from "../components/template/Header";
 import search from "../assets/images/Magnifer.svg";
 import { PuffLoader } from "react-spinners";
+import SearchBar from "../components/ui/molecules/SearchBar";
 
 interface AnnouncementListProps {
   data: any[];
