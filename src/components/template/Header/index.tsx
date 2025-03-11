@@ -8,7 +8,6 @@ import ChangeTheme from "../../changeTheme";
 import { useCookies } from "react-cookie";
 
 
-
 export default function Header({ variant }: any) {
   const navigate = useNavigate();
   const [cookies, setCookies] = useCookies(["accessToken", "refreshToken", "name"]);
