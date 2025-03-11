@@ -8,7 +8,7 @@ import { useCookies } from "react-cookie";
 
 const SignUp = () => {
     const { mutate } = useSignupMutation();
-    const [cookies, setCookie] = useCookies(['full_name']);
+    const [cookies, setCookie] = useCookies(['name']);
     const formik = useFormik({
         initialValues: {
             full_name: '',
@@ -17,7 +17,7 @@ const SignUp = () => {
         },
         validationSchema: validationSchemaSignup,
         onSubmit: (values: any) => {
-            setCookie('full_name', values.full_name, { path: '/' });
+            setCookie('name', values.full_name, { path: '/' });
             mutate({
                 full_name: values.full_name,
                 password: values.password,

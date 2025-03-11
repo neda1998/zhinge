@@ -6,7 +6,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 
 const useLoginMutation = () => {
-  const [cookies, setCookies] = useCookies(["accessToken", "refreshToken","full_name","phone"]);
+  const [cookies, setCookies] = useCookies(["accessToken", "refreshToken","name","phone"]);
   const navigate = useNavigate();
 
   return useMutation<
@@ -23,8 +23,8 @@ const useLoginMutation = () => {
       }
       setCookies("accessToken", accessToken, { path: "/" });
       setCookies("refreshToken", refreshToken, { path: "/" });
-      setCookies("full_name", data.user.full_name, { path: "/" });
-      setCookies("phone", data.user.phone, { path: "/" });
+      setCookies("name", data.name, { path: "/" });
+      setCookies("phone", data.phone, { path: "/" });
       axios.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
       navigate("/");
     },

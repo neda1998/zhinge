@@ -11,8 +11,8 @@ import { useCookies } from "react-cookie";
 
 export default function Header({ variant }: any) {
   const navigate = useNavigate();
-  const [cookies, setCookies] = useCookies(["accessToken", "refreshToken", "full_name"]);
-  const displayName = cookies.full_name || "";
+  const [cookies, setCookies] = useCookies(["accessToken", "refreshToken", "name"]);
+  const displayName = cookies.name || "";
   return (
     <>
       <div className={`w-full mobile:hidden tablet:hidden bg-transparent h-28 flex items-center justify-center ${variant === "main" ? "absolute" : 'relative'}`}>
