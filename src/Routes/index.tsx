@@ -16,8 +16,6 @@ import Realstate from "../Pages/dashboard/realState";
 import DetailsPropertyDashboard from "../Pages/dashboard/detailsProperty";
 import PropertyFeaturesDashboard from "../Pages/dashboard/propertyFeatures";
 import PropertyInfoDashboard from "../Pages/dashboard/propertyInfo";
-import PropertyImageDashboard from "../Pages/dashboard/propertyImage";
-import SuccessfullyAddDashboard from "../Pages/dashboard/successfullyAdd";
 import ManagementDashboard from "../panelAdmin/pages/managementDashboard";
 import StateManagement from "../panelAdmin/pages/propertyManagement";
 import NewEstateRegistration from "../panelAdmin/pages/newEstateRegistration";
@@ -46,6 +44,7 @@ import HouseDetails from "../Pages/houseDetails";
 import AnnouncementListContainer from "../containers/AnnouncementListContainer";
 import SuccessfullyAdd from "../Pages/successfullyAdd";
 import RequestStateHeader from "../components/requestStateHeader";
+import ResetPassword from "../Pages/ResetPassword";
 
 const routes: AllRoutes[] = [
   {
@@ -103,6 +102,13 @@ const routes: AllRoutes[] = [
     name: "home",
     route: "/otp",
     component: <Otp />,
+  },
+  {
+    type: "link",
+    key: "home",
+    name: "home",
+    route: "/reset-password",
+    component: <ResetPassword />,
   },
   {
     type: "link",

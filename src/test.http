@@ -1,6 +1,15 @@
-post http://185.231.115.236:3000/api/V1/announce/getbyUid
+post http://185.231.115.236:3000/api/V1/auth/sendforgetpass
 Content-Type: application/json
 
 {
-  "Uid": "2"
+  "phone": "09057973389"
+}
+
+post http://185.231.115.236:3000/api/V1/auth/setnewpass
+Content-Type: application/json
+
+{
+  "phone": "09057973389",
+  "code":40667,
+  "password":"090909"
 }

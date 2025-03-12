@@ -47,7 +47,7 @@ const TopNavbar = () => {
                                 <span className="font-extrabold md:text-lg text-sm">Taher Zahedi</span>
                                 <span className="text-gray-500 text-xs">main admin</span>
                             </div>
-                            <img src={admin} alt="admin" className='w-12 h-12 object-cover rounded-full bg-white' />
+                            <img src={admin} alt="admin" className='w-12 h-12 object-cover rounded-full' />
                         </div>
                     </div>
                 </nav>

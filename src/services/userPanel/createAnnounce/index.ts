@@ -2,27 +2,14 @@ import apiRoutes from "../../../helpers/routes/apiRoutes";
 import { getRoute } from "../../service";
 import client from "../../utils/client";
 
-export interface AnnouncePayload {
-  loan?: number;
-  type?: string;
-  region?: string;
-  address?: string;
-  location?: string;
-  usage?: string;
-  document_type?: string;
-  land_metrage?: number;
-  useful_metrage?: number;
-  floor_number?: number;
-  floor?: number;
-  Unit_in_floor?: number;
-  year_of_build?: number;
-  full_name?: string;
-  price?: number;
-  room_number?: number;
-  features?: string;
-}
-
-export const createAnnounce = async (payload: AnnouncePayload) => {
+export const createAnnounce = async (data: any) => {
   const url = getRoute({ route: `${apiRoutes.AllAnnounce.creatAnnounce}` });
-  return await client({ url, method: "POST", data: payload });
+  return await client({
+    url,
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    data: JSON.stringify(data)
+  });
 };

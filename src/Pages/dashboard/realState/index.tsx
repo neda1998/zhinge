@@ -1,4 +1,3 @@
-import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import Button from "../../../components/ui/atoms/Button";
 import LayoutProfile from "../../../components/profile/LayoutProfile";
@@ -7,50 +6,55 @@ import ComboBox from "../../../components/common/Combo";
 import useCreateAnnounceMutation from "../../../hooks/mutation/announce/useCreateAnnounceMutation";
 
 export default function Realstate() {
-  const navigate = useNavigate();
   const { mutate } = useCreateAnnounceMutation();
 
   const formik = useFormik({
     initialValues: {
-      loan: "",
-      province: "",
-      city: "",
-      zone: "",
-      address: "",
-      propertyType: "",
-      usage: "",
-      documentType: "",
-      location: "",
+        "loan": 2199,
+        "type": "rent",
+        "region": "منطقه 1",
+        "address": "خیابان اوراز",
+        "location": "جنوبی",
+        "usage": "مسکونی",
+        "document_type": "سند رسمی",
+        "land_metrage": 200,
+        "useful_metrage": 150,
+        "floor_number": 2,
+        "floor": 1,
+        "Unit_in_floor": 1,
+        "year_of_build": 1998,
+        "full_name": "علی رضایی",
+        "price": 20000,
+        "room_number": 4,
+        "features": "دارای پارکینگ و آسانسور",
+        "province": "سنندج",
+        "city": "سنندج",
+        "zone": "1",
+      
     },
     onSubmit: (values) => {
-      const payload = {
-        loan: undefined,
-        type: values.propertyType,
-        region: `${values.province} ${values.city} ${values.zone}`,
-        address: values.address,
-        location: values.location,
-        usage: values.usage,
-        document_type: values.documentType,
-        land_metrage: undefined,
-        useful_metrage: undefined,
-        floor_number: undefined,
-        floor: undefined,
-        Unit_in_floor: undefined,
-        year_of_build: undefined,
-        full_name: undefined,
-        price: undefined,
-        room_number: undefined,
-        features: undefined,
+      const requestData = {
+        loan: values.loan || null,
+        type: values.type || "any",
+        region: values.zone || "any",
+        address: values.address || "",
+        location: values.location || "any",
+        usage: values.usage || "any",
+        document_type: values.document_type || "any",
+        land_metrage: values.land_metrage ? Number(values.land_metrage) : null,
+        useful_metrage: values.useful_metrage ? Number(values.useful_metrage) : null,
+        floor_number: values.floor_number ? Number(values.floor_number) : null,
+        floor: values.floor ? Number(values.floor) : null,
+        Unit_in_floor: values.Unit_in_floor ? Number(values.Unit_in_floor) : null,
+        year_of_build: values.year_of_build ? Number(values.year_of_build) : null,
+        full_name: values.full_name || "نام پیش‌فرض",
+        price: values.price ? Number(values.price) : null,
+        room_number: values.room_number ? Number(values.room_number) : null,
+        features: values.features || "",
       };
-      mutate(payload, {
-        onSuccess: (data: any) => {
-          const uid = data?.Uid || data?.id;
-          navigate("/dashboard/detailsPropertyDashboard", {
-            replace: true,
-            state: { variant: "notheader", uid },
-          });
-        },
-      });
+
+      console.log("📤 داده‌ی نهایی که ارسال می‌شود:", requestData);
+      mutate(requestData as any);
     },
   });
 
@@ -65,84 +69,29 @@ export default function Realstate() {
       <form onSubmit={formik.handleSubmit}>
         <div className="flex flex-col items-center justify-center w-full gap-5">
           <div className="grid lg:grid-cols-2 lg:gap-10 w-full">
-            <InputState
-              label="استان"
-              placeholder="کردستان"
-              name="province"
-              value={formik.values.province}
-              onChange={formik.handleChange}
-            />
-            <InputState
-              label="شهرستان"
-              placeholder="سنندج"
-              name="city"
-              value={formik.values.city}
-              onChange={formik.handleChange}
-            />
-            <ComboBox
-              label="منطقه"
-              options={["منطقه 1", "منطقه 2"]}
-              name="zone"
-              value={formik.values.zone}
-              onChange={(val) =>
-                formik.setFieldValue("zone", val)
-              }
-            />
-            <InputState
-              label="آدرس ملک"
-              placeholder="خیابان اوراز"
-              name="address"
-              value={formik.values.address}
-              onChange={formik.handleChange}
-            />
-            <ComboBox
-              label="نوع ملک"
-              options={["ویلایی", "مسکونی"]}
-              name="propertyType"
-              value={formik.values.propertyType}
-              onChange={(val) =>
-                formik.setFieldValue("propertyType", val)
-              }
-            />
-            <ComboBox
-              label="نوع کاربری"
-              options={["مسکونی", "تجاری"]}
-              name="usage"
-              value={formik.values.usage}
-              onChange={(val) =>
-                formik.setFieldValue("usage", val)
-              }
-            />
-            <ComboBox
-              label="نوع مالکیت"
-              options={["قولنامه", "سند رسمی"]}
-              name="documentType"
-              value={formik.values.documentType}
-              onChange={(val) =>
-                formik.setFieldValue("documentType", val)
-              }
-            />
-            <ComboBox
-              label="موقعیت ملک"
-              options={["جنوبی", "شمالي"]}
-              name="location"
-              value={formik.values.location}
-              onChange={(val) =>
-                formik.setFieldValue("location", val)
-              }
-            />
+            <InputState label="استان" name="province" value={formik.values.province} onChange={formik.handleChange} />
+            <InputState label="شهرستان" name="city" value={formik.values.city} onChange={formik.handleChange} />
+            <ComboBox label="منطقه" options={["منطقه 1", "منطقه 2"]} name="zone" value={formik.values.zone} onChange={(val) => formik.setFieldValue("zone", val)} />
+            <InputState label="آدرس ملک" name="address" value={formik.values.address} onChange={formik.handleChange} />
+            <ComboBox label="نوع کاربری" options={["مسکونی", "تجاری"]} name="usage" value={formik.values.usage} onChange={(val) => formik.setFieldValue("usage", val)} />
+            <ComboBox label="نوع مالکیت" options={["قولنامه", "سند رسمی"]} name="document_type" value={formik.values.document_type} onChange={(val) => formik.setFieldValue("document_type", val)} />
+            <ComboBox label="موقعیت ملک" options={["جنوبی", "شمالی"]} name="location" value={formik.values.location} onChange={(val) => formik.setFieldValue("location", val)} />
+
+            {/* فیلدهای عددی که تبدیل به استرینگ شده‌اند */}
+            <InputState label="متراژ زمین" name="land_metrage" value={formik.values.land_metrage.toString()} onChange={(e) => formik.setFieldValue("land_metrage", Number(e.target.value))} />
+            <InputState label="متراژ مفید" name="useful_metrage" value={formik.values.useful_metrage.toString()} onChange={(e) => formik.setFieldValue("useful_metrage", Number(e.target.value))} />
+            <InputState label="تعداد طبقات" name="floor_number" value={formik.values.floor_number.toString()} onChange={(e) => formik.setFieldValue("floor_number", Number(e.target.value))} />
+            <InputState label="طبقه" name="floor" value={formik.values.floor.toString()} onChange={(e) => formik.setFieldValue("floor", Number(e.target.value))} />
+            <InputState label="واحد در طبقه" name="Unit_in_floor" value={formik.values.Unit_in_floor.toString()} onChange={(e) => formik.setFieldValue("Unit_in_floor", Number(e.target.value))} />
+            <InputState label="سال ساخت" name="year_of_build" value={formik.values.year_of_build.toString()} onChange={(e) => formik.setFieldValue("year_of_build", Number(e.target.value))} />
+            <InputState label="نام مالک" name="full_name" value={formik.values.full_name} onChange={formik.handleChange} />
+            <InputState label="قیمت" name="price" value={formik.values.price.toString()} onChange={(e) => formik.setFieldValue("price", Number(e.target.value))} />
+            <InputState label="تعداد اتاق‌ها" name="room_number" value={formik.values.room_number.toString()} onChange={(e) => formik.setFieldValue("room_number", Number(e.target.value))} />
+            <InputState label="ویژگی‌ها" name="features" value={formik.values.features} onChange={formik.handleChange} />
           </div>
         </div>
         <div className="w-[90%] flex items-center justify-end">
-          <Button
-            submit="true"
-            width="110px"
-            height="50px"
-            bgcolor="#09A380"
-            borderradius="30px"
-            color="white"
-            type="submit"
-          >
+          <Button submit="true" width="110px" height="50px" bgcolor="#09A380" borderradius="30px" color="white" type="submit">
             <p className="text-[1rem] font-bold">ثبت</p>
           </Button>
         </div>

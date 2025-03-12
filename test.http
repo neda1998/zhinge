@@ -1,9 +1,0 @@
-post http://185.231.115.236:3000/api/V1/auth/Register
-Content-Type: application/json
-
-
-{
-"full_name": "neda",
-"phone":	"09057973389",
-"password" : "neda1234@"
-}
