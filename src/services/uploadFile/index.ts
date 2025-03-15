@@ -1,12 +1,14 @@
-import apiRoutes from "../../helpers/routes/apiRoutes";
-import { getRoute } from "../service";
 import client from "../utils/client";
 
 export const uploadFile = async (file: File, uid: string) => {
-  const url = getRoute({ route: `${apiRoutes.AllAnnounce.uploadFile}` });
+  const url = "http://185.231.115.236:3000/api/V1/announce/uploadPhotos"; 
   const formData = new FormData();
-  // Include the filename so the file data is not empty
   formData.append("images", file, file.name);
   formData.append("Uid", uid);
-  return await client({ url, method: "POST", data: formData });
+  return await client({
+    url,
+    method: "POST",
+    data: formData,
+    headers: { "Content-Type": "multipart/form-data" }
+  });
 };

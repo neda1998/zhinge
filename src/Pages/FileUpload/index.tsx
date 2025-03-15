@@ -4,17 +4,18 @@ import camera from "../../assets/images/camera.svg";
 import UseUploadFileMutation from "../../hooks/mutation/announce/UseUploadFileMutation";
 
 export interface UploadedImage {
-  id: string;  // اضافه کردن یک id یکتا برای هر تصویر
+  id: string;  
   name: string;
   preview: string;
 }
 
 interface FileUploadProps {
+  uid: string; // added dynamic uid prop
   uploadedImages: UploadedImage[];
   setUploadedImages: React.Dispatch<React.SetStateAction<UploadedImage[]>>;
 }
 
-const FileUpload: React.FC<FileUploadProps> = ({ uploadedImages, setUploadedImages }) => {
+const FileUpload: React.FC<FileUploadProps> = ({ uid, uploadedImages, setUploadedImages }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { mutate: uploadFileMutation } = UseUploadFileMutation();
 
@@ -35,8 +36,7 @@ const FileUpload: React.FC<FileUploadProps> = ({ uploadedImages, setUploadedImag
       const reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onloadend = () => {
-        // Replace "example-uid" with an actual uid as needed.
-        uploadFileMutation({ file, uid: "example-uid" });
+        uploadFileMutation({ file, uid }); 
         setUploadedImages(prev => [
           ...prev,
           { id: URL.createObjectURL(file), name: file.name, preview: reader.result as string },
@@ -72,7 +72,7 @@ const FileUpload: React.FC<FileUploadProps> = ({ uploadedImages, setUploadedImag
       )}
 
       {uploadedImages.length > 0 && (
-        <div className="grid grid-cols-3 gap-4 mt-6">
+        <div className="grid lg:grid-cols-4 sm:grid-cols-3 grid-cols-1 gap-4 mt-6">
           {uploadedImages.map((img) => (
             <div key={img.id} className="relative w-[8rem] h-[8rem] rounded-[20px] bg-[#f9f9f9] overflow-hidden">
               <img src={img.preview} alt={img.name} className="w-full h-full object-cover" />

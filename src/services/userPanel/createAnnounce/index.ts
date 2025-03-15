@@ -10,6 +10,6 @@ export const createAnnounce = async (data: any) => {
     headers: {
       "Content-Type": "application/json",
     },
-    data: JSON.stringify(data)
+    data
   });
 };

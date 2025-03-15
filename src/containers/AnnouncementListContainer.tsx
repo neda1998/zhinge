@@ -15,8 +15,6 @@ const AnnouncementListContainer: React.FC<AnnouncementListContainerProps> = ({ a
   const filteredData = allData.filter((property: any) =>
     announcementType === "rent" ? property.type === "اجاره" : property.type === "فروش"
   );
-  console.log("Filtered Data:", filteredData);
-
   return (
     <AnnouncementList
       data={allData}
