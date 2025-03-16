@@ -1,15 +1,25 @@
+import { useCookies } from "react-cookie";
 import apiRoutes from "../../../helpers/routes/apiRoutes";
 import { getRoute } from "../../service";
 import client from "../../utils/client";
 
-export const createAnnounce = async (data: any) => {
-  const url = getRoute({ route: `${apiRoutes.AllAnnounce.creatAnnounce}` });
-  return await client({
-    url,
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    data
-  });
+// Changed: converting to a hook that reads the accessToken from cookies
+export const useCreateAnnounce = () => {
+  const [cookies] = useCookies(["accessToken"]);
+  const createAnnounce = async (data: any) => {
+    const accessToken = cookies.accessToken;
+    const url = getRoute({ route: `${apiRoutes.AllAnnounce.creatAnnounce}` });
+    return await client({
+      url,
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+        Authorization: accessToken ? `Bearer ${accessToken}` : "",
+      },
+      data: JSON.stringify(data)
+    });
+  };
+
+  return createAnnounce;
 };

@@ -1,12 +1,13 @@
 import { useMutation } from "react-query";
 import Swal from "sweetalert2";
-import { createAnnounce } from "../../../services/userPanel/createAnnounce";
+import { useCreateAnnounce } from "../../../services/userPanel/createAnnounce";
 
 const useCreateAnnounceMutation = () => {
+  const createAnnounceCall = useCreateAnnounce();
   return useMutation(
-    async (data) => {
+    async (data: { accessToken: string; [key: string]: any }) => {
       console.log("🔵 داده ارسالی:", data);
-      return await createAnnounce(data);
+      return await createAnnounceCall(data);
     },
     {
       onSuccess: async function (response) {

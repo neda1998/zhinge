@@ -9,29 +9,30 @@ export default function Realstate() {
 
   const formik = useFormik({
     initialValues: {
-      loan: 2199,
-      type: "rent",
-      region: "1",
-      address: "خیابان اوراز",
-      location: "جنوبی",
-      usage: "مسکونی",
-      document_type: "سند رسمی",
-      land_metrage: 200,
-      useful_metrage: 150,
-      floor_number: 2,
-      floor: 1,
-      Unit_in_floor: 1,
-      year_of_build: 1998,
-      full_name: "metiii",
-      price: 20000,
-      room_number: 4,
-      features: "دارای پارکینگ و آسانسور"
-    }
+      "loan" : 21123,
+      "type" : "sell",
+      "region" :"dsdsl",
+      "address" : "dsdsl",
+      "location" : "dsdsl",
+      "usage"    : "dsdsl",
+      "document_type" :"dsdsl",
+      "land_metrage" :  12433,
+      "useful_metrage" : 31232,
+      "floor_number" : 1,
+      "floor" : 2,
+      "Unit_in_floor" : 1,
+      "year_of_build" : 1999,
+      "full_name" : "dsdsl",
+      "price"     : 43124341,
+      "room_number"  : 1,
+      "features"     : "dsdsl"
+  }
     ,
     onSubmit: (values) => {
       const requestData = {
         loan: values.loan ? Number(values.loan) : undefined,
-        type: values.type === "اجاره" ? "rent" : values.type === "فروش" ? "sale" : values.type,
+        type: 'sell', // replaced condition with literal "sell"
+        region: values.region ?? "any",
         address: values.address ?? "any",
         location: values.location ?? "any",
         usage: values.usage ?? "any",

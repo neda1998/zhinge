@@ -10,7 +10,7 @@ export interface UploadedImage {
 }
 
 interface FileUploadProps {
-  uid: string; // added dynamic uid prop
+  uid: string; 
   uploadedImages: UploadedImage[];
   setUploadedImages: React.Dispatch<React.SetStateAction<UploadedImage[]>>;
 }

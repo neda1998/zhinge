@@ -7,7 +7,7 @@ export const uploadFile = async (file: File, uid: string) => {
   formData.append("Uid", uid);
   return await client({
     url,
-    method: "POST",
+  method: "POST",
     data: formData,
     headers: { "Content-Type": "multipart/form-data" }
   });
