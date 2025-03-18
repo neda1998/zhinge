@@ -10,7 +10,6 @@ const AnnouncementListContainer: React.FC<AnnouncementListContainerProps> = ({ a
   const { data, isLoading, error } = UseGetAllAnnouncementQuery();
   
   const allData = data || [];
-  console.log(data);
   
   const filteredData = allData.filter((property: any) =>
     announcementType === "rent" ? property.type === "اجاره" : property.type === "فروش"
