@@ -1,4 +1,4 @@
-import UseDashboardQuery from "../../hooks/queries/admin/UseDashboardQuery";
+import UseDashboardQuery from "../../hooks/queries/admin/dashboard/UseDashboardQuery";
 import user from "../../assets/images/Users-Group-Two-Rounded.png";
 import close from "../../assets/images/Close-Circle.png";
 import users from "../../assets/images/dashboardicons/User Rounded.svg";
@@ -9,8 +9,6 @@ import trashbin from "../../assets/images/Trash-Bin.png";
 
 const EstateOfManagement = () => {
     const { data, isLoading, isError } = UseDashboardQuery();
-
-    // در صورت خطا یا در حال بارگذاری، می‌توانی یک پیام نمایش بدی
     if (isLoading) {
         return <div>Loading...</div>;
     }
@@ -22,7 +20,7 @@ const EstateOfManagement = () => {
     const estateData = data
         && [
               { id: 1, count: data["all users"], text: "کل کاربران ما", bgClass: "bg-[#17C3A5]", img: user },
-              { id: 2, count: data["in progress"], text: "در حال انجام", bgClass: "bg-[#5096F7]", img: close },
+              { id: 2, count: data["in progress "], text: "در حال انجام", bgClass: "bg-[#5096F7]", img: close },
               { id: 3, count: data["all visitors"], text: "بازدیدکنندگان کل", bgClass: "bg-[#17C3A5]", img: users },
               { id: 4, count: data["daily visitors"], text: "بازدیدکنندگان روزانه", bgClass: "bg-[#EA5A92]", img: request },
               { id: 5, count: data["unchecked requests"], text: "درخواست‌های تایید نشده", bgClass: "bg-[#E95991]", img: houreGlass },

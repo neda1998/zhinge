@@ -13,12 +13,11 @@ const InitialLayout = ({ children }: Props) => {
   const { showSidebar } = useAppContext();
   const [isSubmenu, setIsSubmenu] = useState(false); 
 
-
   return (
-    <div className={`wrapper panelAdmin always-light ${isSubmenu ? "grid grid-cols-3" : "flex items-stretch"}`}>
+    <div className={`wrapper always-light overflow-x-hidden ${isSubmenu ? "grid grid-cols-2" : "flex items-stretch"}`}>
       <Sidebar />
       <SidebarMobile />
-      <div className={`col-span-2 panelAdmin always-light main w-full md:overflow-y-hidden ${showSidebar ? "mr-0" : "mr-[16rem]"}`}>
+      <div className={`col-span-2 panelAdmin always-light main w-full md:overflow-x-hidden ${showSidebar ? "-mr-[15rem]" : "mr-0"}`}>
         <TopNavbar />
         <TopNavbarMobile />
         <main className="container mx-auto panelAdmin always-light">

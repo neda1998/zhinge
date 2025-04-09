@@ -35,7 +35,7 @@ const SidebarMobile = () => {
     return (
         <nav
             ref={sidebarRef}
-            className={`sm:w-[25%] w-[60%] bg-white min-h-screen overflow-auto fixed inset-0 -z-10 top-0 border-l border-l-gray-200 shadow-2xl pr-5 transition-all duration-500 ${animationClass} ${showModal ? 'opacity-100' : 'opacity-0'}`}
+            className={`sm:w-[25%] w-[60%] bg-white min-h-screen fixed top-0 right-0 border-r border-r-gray-200 shadow-2xl pr-5 transition-transform duration-500 ${showModal ? 'translate-x-0' : 'translate-x-full'}`}
         >
             <div className="sidebar-content">
                 <button onClick={() => setShowModal(!showModal)} className="flex items-center justify-center">
