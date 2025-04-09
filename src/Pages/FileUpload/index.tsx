@@ -2,6 +2,7 @@ import React, { useRef } from "react";
 import Swal from "sweetalert2";
 import camera from "../../assets/images/camera.svg";
 import UseUploadFileMutation from "../../hooks/mutation/announce/UseUploadFileMutation";
+import { useCookies } from "react-cookie";
 
 export interface UploadedImage {
   id: string;  
@@ -10,16 +11,29 @@ export interface UploadedImage {
 }
 
 interface FileUploadProps {
-  uid: string; 
+  uid?: string; // now optional, will fallback to cookie value
   uploadedImages: UploadedImage[];
   setUploadedImages: React.Dispatch<React.SetStateAction<UploadedImage[]>>;
 }
 
 const FileUpload: React.FC<FileUploadProps> = ({ uid, uploadedImages, setUploadedImages }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [cookies] = useCookies(["Uid"]);
+  // fallback to uid from cookie if not provided via props
+  const currentUid = uid || cookies.Uid;
+  console.log("Current UID:", currentUid);
   const { mutate: uploadFileMutation } = UseUploadFileMutation();
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!currentUid) {
+      Swal.fire({
+        title: "!خطا",
+        text: "شناسه کاربری (uid) موجود نیست، لطفا ابتدا آگهی خود را ثبت کنید.",
+        icon: "error",
+        confirmButtonText: "باشه",
+      });
+      return;
+    }
     if (e.target.files && e.target.files.length > 0) {
       const file = e.target.files[0];
 
@@ -36,7 +50,8 @@ const FileUpload: React.FC<FileUploadProps> = ({ uid, uploadedImages, setUploade
       const reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onloadend = () => {
-        uploadFileMutation({ file, uid }); 
+        // Now currentUid is guaranteed to be defined
+        uploadFileMutation({ file, uid: currentUid });
         setUploadedImages(prev => [
           ...prev,
           { id: URL.createObjectURL(file), name: file.name, preview: reader.result as string },

@@ -1,28 +1,36 @@
 import { useMutation } from "react-query";
 import Swal from "sweetalert2";
 import { useCreateAnnounce } from "../../../services/userPanel/createAnnounce";
+import { useCookies } from "react-cookie";
 
 const useCreateAnnounceMutation = () => {
   const createAnnounceCall = useCreateAnnounce();
+  const [cookies, setCookie] = useCookies(["Uid"]);
   return useMutation(
     async (data: { accessToken: string; [key: string]: any }) => {
-      console.log("🔵 داده ارسالی:", data);
       return await createAnnounceCall(data);
     },
     {
-      onSuccess: async function (response) {
+      onSuccess: async function(response) {
+        const uid = response?.newA?.Uid || response?.data?.newA?.Uid;
+        if (uid) {
+          setCookie("Uid", uid, { path: "/" });
+        } else {
+        }
         Swal.fire({
           title: "موفق",
-          text: response?.data?.message || "آگهی با موفقیت ثبت شد",
+          text: response?.newA?.message ||
+                response?.data?.message ||
+                "آگهی با موفقیت ثبت شد",
           icon: "success",
           confirmButtonText: "باشه",
         });
       },
       onError: async (error: any) => {
-        console.log("🔴 خطای درخواست:", error.response?.data);
         Swal.fire({
           title: "!خطا",
-          text: error.response?.data?.message || "خطایی رخ داده است.",
+          text: error.response?.data?.message ||
+                "خطایی رخ داده است.",
           icon: "error",
           confirmButtonText: "باشه",
         });

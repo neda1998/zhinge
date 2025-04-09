@@ -3,7 +3,6 @@ import apiRoutes from "../../../helpers/routes/apiRoutes";
 import { getRoute } from "../../service";
 import client from "../../utils/client";
 
-// Changed: converting to a hook that reads the accessToken from cookies
 export const useCreateAnnounce = () => {
   const [cookies] = useCookies(["accessToken"]);
   const createAnnounce = async (data: any) => {

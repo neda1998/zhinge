@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import LayoutProfile from "../../components/profile/LayoutProfile";
 import FileUpload, { UploadedImage } from "../FileUpload";
+import { useCookies } from "react-cookie";
 
 export default function PropertyImage() {
+  const [cookies] = useCookies(["Uid"]);
   const [uploadedImages, setUploadedImages] = useState<UploadedImage[]>([]);
-  const uid = localStorage.getItem("uid") || "";
+  const uid = cookies.Uid || "";
 
   return (
     <LayoutProfile>
