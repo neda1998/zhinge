@@ -23,6 +23,7 @@ const Sliders = () => {
         }
     };
 
+    
     const handleSliderSubmit = () => {
         const sliderData = {
             Title: sliderTitle,
