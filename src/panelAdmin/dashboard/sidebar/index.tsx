@@ -14,7 +14,7 @@ const Sidebar = () => {
   };
 
   return (
-    <nav className={`sidebar transition-transform duration-500 ${showSidebar ? 'translate-x-full' : 'translate-x-0'}`}>
+    <nav className={`sidebar ${!showSidebar ? "collapsed" : ""}`}>
       <div className="sidebar-content">
         <Link to="/" className="flex items-center justify-center">
           <img src={logo} alt="logo" className="mt-14 mb-9" />
