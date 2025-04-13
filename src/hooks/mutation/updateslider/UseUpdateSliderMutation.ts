@@ -1,17 +1,17 @@
 import { useMutation } from "react-query";
 import Swal from "sweetalert2";
-import { creatSlider } from "../../../services/admin/creatSlider";
+import { updateSlider } from "../../../services/admin/updateslider";
 
-const UseCreatSliderMutation = () => {
+const UseUpdateSliderMutation = () => {
   return useMutation(
-    async (data) => {
-      return await creatSlider(data);
+    async (data: any) => {
+      return await updateSlider(data);
     },
     {
       onSuccess: async (response) => {
         Swal.fire({
           title: "موفق",
-          text: response?.data?.message || "اسلایدر با موفقیت ایجاد شد",
+          text: response?.data?.message || "اسلایدر با موفقیت به روز رسانی شد",
           icon: "success",
           confirmButtonText: "باشه",
         });
@@ -28,4 +28,4 @@ const UseCreatSliderMutation = () => {
   );
 };
 
-export default UseCreatSliderMutation;
+export default UseUpdateSliderMutation;
