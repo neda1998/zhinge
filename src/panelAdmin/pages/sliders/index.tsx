@@ -4,23 +4,30 @@ import InputState from "../../../components/ui/atoms/input/inputState";
 import InitialLayout from "../../dashboard/initialLayoutAdmin";
 import { FiEdit } from "react-icons/fi";
 import { AiOutlineDelete } from "react-icons/ai";
+import { IoCloseSharp } from "react-icons/io5";
 import UseDeleteSliderMutation from "../../../hooks/mutation/deleteslider/UseDeleteSliderMutation";
 import Swal from "sweetalert2";
 import UseGetAllSliders from "../../../hooks/queries/admin/getAllSliders/UseGetAllSlidersQuery";
 import { PuffLoader } from "react-spinners";
 import UseCreatSliderMutation from "../../../hooks/mutation/creatSlider/UseCreatSliderMutation";
+import UseUpdateSliderMutation from "../../../hooks/mutation/updateslider/UseUpdateSliderMutation";
 import avatar from "../../../assets/images/house.webp";
 
 const Sliders = () => {
     const [images, setImages] = useState<string[]>([]);
     const [sliderTitle, setSliderTitle] = useState("");
     const [sliderNote, setSliderNote] = useState("");
+    const [modalOpen, setModalOpen] = useState(false);
+    const [newSliderTitle, setNewSliderTitle] = useState("");
+    const [newSliderNote, setNewSliderNote] = useState("");
+    const [selectedSliderId, setSelectedSliderId] = useState<number | null>(null);
 
     const { data: slidersData, isLoading, refetch } = UseGetAllSliders();
-    console.log("Sliders data:", slidersData); // برای دیباگ
+    console.log("Sliders data:", slidersData); 
     const fetchedSliders: any[] = slidersData?.data || [];
     const deleteSliderMutation = UseDeleteSliderMutation();
     const createSliderMutation = UseCreatSliderMutation();
+    const updateSliderMutation = UseUpdateSliderMutation();
 
     const handleDelete = (id: number) => {
         Swal.fire({
@@ -41,6 +48,16 @@ const Sliders = () => {
         });
     };
 
+    const handleModalOpen = (slider: any) => {
+        setSelectedSliderId(slider.id);
+        setNewSliderTitle(slider.Title);
+        setNewSliderNote(slider.note);
+        setModalOpen(true);
+    };
+
+    const handleModalClose = () => {
+        setModalOpen(false);
+    };
 
     const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
         const files = event.target.files;
@@ -64,9 +81,26 @@ const Sliders = () => {
             setSliderTitle("");
             setSliderNote("");
             setImages([]);
-            refetch(); // re-fetch sliders after creation
+            refetch();
         } catch (error) {
             // Error is handled by onError callback in the mutation.
+        }
+    };
+
+    const handleUpdateSlider = async () => {
+        if (selectedSliderId === null) return;
+        const updatedData = {
+            id: selectedSliderId,
+            Title: newSliderTitle,
+            note: newSliderNote,
+            photo: {} // adjust if needed
+        };
+        try {
+            await updateSliderMutation.mutateAsync(updatedData);
+            handleModalClose();
+            refetch();
+        } catch (error) {
+            // Error is handled by onError callback in update mutation.
         }
     };
 
@@ -80,6 +114,37 @@ const Sliders = () => {
     return (
         <InitialLayout>
             <div className="flex flex-col">
+                {/* Update Modal triggered by FiEdit */}
+                {modalOpen && (
+                    <div className="fixed inset-0 bg-gray-500 bg-opacity-50 flex items-center justify-center z-50">
+                        <div className="bg-white lg:p-8 rounded-lg shadow-lg lg:w-1/2 w-full lg:mx-0 mx-4 p-3">
+                            <div className="flex items-center justify-between border-b border-dashed border-b-gray-300 mb-4 pb-4">
+                                <h2 className="text-xl font-bold">بروزرسانی اسلایدر</h2>
+                                <IoCloseSharp color="#6b7280" size={25} className="hover-btn" onClick={handleModalClose} />
+                            </div>
+                            <input
+                                type="text"
+                                placeholder="عنوان اسلایدر را وارد کنید"
+                                className="border border-gray-300 rounded-lg p-3 w-full mb-4"
+                                value={newSliderTitle}
+                                onChange={(e) => setNewSliderTitle(e.target.value)}
+                            />
+                            <input
+                                type="text"
+                                placeholder="متن اسلایدر را وارد کنید"
+                                className="border border-gray-300 rounded-lg p-3 w-full mb-4"
+                                value={newSliderNote}
+                                onChange={(e) => setNewSliderNote(e.target.value)}
+                            />
+                            <button
+                                onClick={handleUpdateSlider}
+                                className="mt-7 ml-0 mr-auto flex px-8 py-2 bg-main-color text-white rounded-full"
+                            >
+                                بروزرسانی اسلایدر
+                            </button>
+                        </div>
+                    </div>
+                )}
                 {/* جدول اسلایدرها */}
                 <div className="overflow-x-auto mt-10">
                     <table className="min-w-full bg-white">
@@ -134,7 +199,12 @@ const Sliders = () => {
                                                 className="text-red-500 hover:text-red-700 cursor-pointer"
                                                 onClick={() => handleDelete(item.id)}
                                             />
-                                            <FiEdit color="#11a97f" size={22} />
+                                            <FiEdit
+                                                color="#11a97f"
+                                                size={22}
+                                                className="cursor-pointer"
+                                                onClick={() => handleModalOpen(item)} // Open modal on edit click
+                                            />
                                         </td>
                                     </tr>
                                 ))
