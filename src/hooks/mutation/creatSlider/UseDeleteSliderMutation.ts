@@ -15,7 +15,6 @@ const UseDeleteSliderMutation = () => {
         queryClient.invalidateQueries("getAllSliders");
       },
       onSuccess: async (response) => {
-        console.log("✅ حذف با موفقیت:", response);
         Swal.fire({
           title: "موفق",
           text: response?.data?.message || "حذف با موفقیت انجام شد",
@@ -24,7 +23,6 @@ const UseDeleteSliderMutation = () => {
         });
       },
       onError: async (error: any) => {
-        console.error("❌ خطا در حذف:", error);
         Swal.fire({
           title: "!خطا",
           text: error.response?.data?.message || "خطایی رخ داده است",

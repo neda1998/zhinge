@@ -5,12 +5,12 @@ import InitialLayout from "../../dashboard/initialLayoutAdmin";
 import { FiEdit } from "react-icons/fi";
 import { AiOutlineDelete } from "react-icons/ai";
 import { IoCloseSharp } from "react-icons/io5";
-import UseDeleteSliderMutation from "../../../hooks/mutation/deleteslider/UseDeleteSliderMutation";
+import UseDeleteSliderMutation from "../../../hooks/mutation/creatSlider/UseDeleteSliderMutation";
 import Swal from "sweetalert2";
 import UseGetAllSliders from "../../../hooks/queries/admin/getAllSliders/UseGetAllSlidersQuery";
 import { PuffLoader } from "react-spinners";
 import UseCreatSliderMutation from "../../../hooks/mutation/creatSlider/UseCreatSliderMutation";
-import UseUpdateSliderMutation from "../../../hooks/mutation/updateslider/UseUpdateSliderMutation";
+import UseUpdateSliderMutation from "../../../hooks/mutation/creatSlider/UseUpdateSliderMutation";
 import avatar from "../../../assets/images/house.webp";
 
 const Sliders = () => {
@@ -93,7 +93,7 @@ const Sliders = () => {
             id: selectedSliderId,
             Title: newSliderTitle,
             note: newSliderNote,
-            photo: {} // adjust if needed
+            photo: {}
         };
         try {
             await updateSliderMutation.mutateAsync(updatedData);
