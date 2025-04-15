@@ -5,6 +5,10 @@ import InputState from "../../../components/ui/atoms/input/inputState"
 import { pageTransactionManagement } from "../../../utils/data"
 import InitialLayout from "../../dashboard/initialLayoutAdmin"
 import { creatDeal } from "../../../services/admin/creatDeal";
+import Swal from "sweetalert2";
+import DatePicker from "react-multi-date-picker";
+import persian from "react-date-object/calendars/persian";
+import persian_fa from "react-date-object/locales/persian_fa";
 
 const TransactionManagement = () => {
     // State hooks for form fields
@@ -15,10 +19,30 @@ const TransactionManagement = () => {
     const [client, setClient] = useState("");
     const [price, setPrice] = useState("");
     const [commission, setCommission] = useState("");
-    const [date, setDate] = useState("");
+    const [date, setDate] = useState<any>(null);
     const [note, setNote] = useState("");
 
     const handleSubmit = async () => {
+        // اعتبارسنجی فیلدها
+        if (
+            !dealNumber.trim() ||
+            !region.trim() ||
+            !dealType.trim() ||
+            !seller.trim() ||
+            !client.trim() ||
+            !price.trim() ||
+            !commission.trim() ||
+            !date
+        ) {
+            Swal.fire({
+                title: "خطا",
+                text: "لطفا همه فیلدهای ضروری را پر کنید.",
+                icon: "warning",
+                confirmButtonText: "باشه"
+            });
+            return;
+        }
+
         const data = {
             seller: seller,
             region: region,
@@ -27,12 +51,28 @@ const TransactionManagement = () => {
             client: client,
             price: Number(price),
             commission: Number(commission),
-            date: date,
+            date: date?.format?.("YYYY/MM/DD") || "",
             note: note
         };
         try {
             const response = await creatDeal(data);
-            console.log(response);
+            // SweetAlert موفقیت‌آمیز
+            Swal.fire({
+                title: "موفق!",
+                text: "معامله با موفقیت ثبت شد.",
+                icon: "success",
+                confirmButtonText: "باشه"
+            });
+            // پاک کردن فیلدها بعد از ثبت موفق
+            setDealNumber("");
+            setRegion("");
+            setDealType("");
+            setSeller("");
+            setClient("");
+            setPrice("");
+            setCommission("");
+            setNote("");
+            setDate(null); // مقداردهی null برای ریست دیتاپیکر
         } catch (error) {
             console.error(error);
         }
@@ -49,6 +89,7 @@ const TransactionManagement = () => {
             <span className="text-black font-bold text-lg">ثبت معاملات جدید</span>
             <div className="grid lg:grid-cols-4 grid-cols-1 lg:gap-x-5 lg:gap-y-10 gap-y-4 my-12">
                 <InputState 
+                type="number"
                     label="شماره مبایعه نامه" 
                     value={dealNumber} 
                     onChange={(e) => setDealNumber(e.target.value)}
@@ -85,11 +126,20 @@ const TransactionManagement = () => {
                     value={commission} 
                     onChange={(e) => setCommission(e.target.value)}
                 />
-                <InputState 
-                    label="تاریخ معامله" 
-                    value={date} 
-                    onChange={(e) => setDate(e.target.value)}
-                />
+                {/* دیتاپیکر شمسی */}
+                <div className="flex flex-col w-full">
+                    <label className="mb-2 text-xs mr-5">تاریخ معامله</label>
+                    <DatePicker
+                        value={date}
+                        onChange={setDate}
+                        calendar={persian}
+                        locale={persian_fa}
+                        inputClass="appearance-none w-full py-3 px-4 rounded-full focus:outline-none focus:ring-2 focus:ring-gray-400 bg-[#f4f4f4]"
+                        format="YYYY/MM/DD"
+                        calendarPosition="bottom-right"
+                        style={{ width: "100%" }}
+                    />
+                </div>
             </div>
             <textarea 
                 placeholder="توضیحات را وارد کنید..." 

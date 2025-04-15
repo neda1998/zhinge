@@ -1,20 +1,22 @@
-import { useMutation } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 import Swal from "sweetalert2";
-import { creatVisit } from "../../../services/admin/creatVisit";
+import { updateVisit } from "../../../services/admin/updateVisits";
 
-const UseCreatVisitMutation = () => {
+const UseUpdateVisitsutation = () => {
+  const queryClient = useQueryClient();
   return useMutation(
-    async (data) => {
-      return await creatVisit(data);
+    async (data: any) => {
+      return await updateVisit(data);
     },
     {
       onSuccess: async (response) => {
         Swal.fire({
           title: "موفق",
-          text: response?.data?.message,
+          text: response?.data?.message || "بازدید با موفقیت به‌روز شد",
           icon: "success",
           confirmButtonText: "باشه",
         });
+        queryClient.invalidateQueries("getAllVisits");
       },
       onError: async (error: any) => {
         Swal.fire({
@@ -28,4 +30,4 @@ const UseCreatVisitMutation = () => {
   );
 };
 
-export default UseCreatVisitMutation;
+export default UseUpdateVisitsutation;

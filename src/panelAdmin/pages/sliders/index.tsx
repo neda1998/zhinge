@@ -70,6 +70,15 @@ const Sliders = () => {
     };
 
     const handleSliderSubmit = async () => {
+        if (!sliderTitle || !sliderNote || images.length === 0) {
+            Swal.fire({
+                title: "خطا",
+                text: "لطفاً همه فیلدها را پر کنید و حتماً یک عکس انتخاب کنید.",
+                icon: "error",
+                confirmButtonText: "باشه",
+            });
+            return;
+        }
         const sliderData = {
             Title: sliderTitle,
             note: sliderNote,
@@ -203,7 +212,7 @@ const Sliders = () => {
                                                 color="#11a97f"
                                                 size={22}
                                                 className="cursor-pointer"
-                                                onClick={() => handleModalOpen(item)} // Open modal on edit click
+                                                onClick={() => handleModalOpen(item)} 
                                             />
                                         </td>
                                     </tr>

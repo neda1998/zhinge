@@ -17,7 +17,7 @@ const RegisterVisit: React.FC = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [visitName, setVisitName] = useState("");
     const [visitAddress, setVisitAddress] = useState("");
-    const [visitDate, setVisitDate] = useState<any>(null); // نگه‌داری تاریخ انتخاب‌شده
+    const [visitDate, setVisitDate] = useState<any>(null);
     const [visitPhone, setVisitPhone] = useState("");
     const [visitDescription, setVisitDescription] = useState("");
 
@@ -40,7 +40,7 @@ const RegisterVisit: React.FC = () => {
         const visitData = {
             name: visitName,
             address: visitAddress,
-            date: visitDate?.format(), // تبدیل به فرمت شمسی مثل "1404/01/26"
+            date: visitDate?.format(), 
             phone: visitPhone,
             description: visitDescription,
         };
