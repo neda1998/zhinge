@@ -1,6 +1,6 @@
 import RouteChevron from "../../../components/common/RouteChevron"
 import Search from "../../../components/common/Search"
-import { pageRequestEstate, requestedEstateTable } from "../../../utils/data"
+import { pageRequestEstate } from "../../../utils/data"
 import InitialLayout from "../../dashboard/initialLayoutAdmin"
 import RequestEstateTable from "./RequestEstateTable"
 import newHouse from "../../../assets/images/newHouse.png"
@@ -33,7 +33,7 @@ const RequestedEstate = () => {
                     </span>
                 </Link>
             </div>
-            <RequestEstateTable dataRequest={requestedEstateTable} />
+            <RequestEstateTable />
         </InitialLayout>
     )
 }

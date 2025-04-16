@@ -23,7 +23,6 @@ const Sliders = () => {
     const [selectedSliderId, setSelectedSliderId] = useState<number | null>(null);
 
     const { data: slidersData, isLoading, refetch } = UseGetAllSliders();
-    console.log("Sliders data:", slidersData); 
     const fetchedSliders: any[] = slidersData?.data || [];
     const deleteSliderMutation = UseDeleteSliderMutation();
     const createSliderMutation = UseCreatSliderMutation();
@@ -182,7 +181,7 @@ const Sliders = () => {
                                                 item.photo.map((image: string, idx: number) => (
                                                     <img
                                                         key={idx}
-                                                        src={image} // تغییر این خط به image
+                                                        src={image} 
                                                         alt={`Slider Image ${idx}`}
                                                         className="w-16 h-16 object-cover rounded text-center mx-auto"
                                                     />

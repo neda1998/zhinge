@@ -11,7 +11,6 @@ import persian from "react-date-object/calendars/persian";
 import persian_fa from "react-date-object/locales/persian_fa";
 
 const TransactionManagement = () => {
-    // State hooks for form fields
     const [dealNumber, setDealNumber] = useState("");
     const [region, setRegion] = useState("");
     const [dealType, setDealType] = useState("");
@@ -23,7 +22,6 @@ const TransactionManagement = () => {
     const [note, setNote] = useState("");
 
     const handleSubmit = async () => {
-        // اعتبارسنجی فیلدها
         if (
             !dealNumber.trim() ||
             !region.trim() ||
@@ -56,14 +54,12 @@ const TransactionManagement = () => {
         };
         try {
             const response = await creatDeal(data);
-            // SweetAlert موفقیت‌آمیز
             Swal.fire({
                 title: "موفق!",
                 text: "معامله با موفقیت ثبت شد.",
                 icon: "success",
                 confirmButtonText: "باشه"
             });
-            // پاک کردن فیلدها بعد از ثبت موفق
             setDealNumber("");
             setRegion("");
             setDealType("");
@@ -72,7 +68,7 @@ const TransactionManagement = () => {
             setPrice("");
             setCommission("");
             setNote("");
-            setDate(null); // مقداردهی null برای ریست دیتاپیکر
+            setDate(null); 
         } catch (error) {
             console.error(error);
         }

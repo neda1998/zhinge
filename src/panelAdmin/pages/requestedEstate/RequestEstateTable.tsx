@@ -1,63 +1,72 @@
 import React, { useState } from 'react';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa6';
-import dot from "../../../assets/images/MenuDotsSquare.svg"
+import dot from "../../../assets/images/MenuDotsSquare.svg";
+import UseGetAllRequests from "../../../hooks/queries/admin/getAllRequests/UseGetAllRequests";
+import { PuffLoader } from "react-spinners";
 
-interface RequestEstateTableProps {
-    dataRequest: Array<{
-        id: number;
-        "نام و نام خانوادگی": string;
-        "شماره تماس": number;
-        "حداقل قیمت": number;
-        "حداکثر قیمت": number;
-        "منطقه": number;
-        "تاریخ درخواست": Date;
-    }>;
-}
+const columns = [
+    { key: "id", label: "کد ملک" },
+    { key: "full_name", label: "نام و نام خانوادگی" },
+    { key: "phone", label: "شماره تماس" },
+    { key: "lowest_price", label: "حداقل قیمت" },
+    { key: "hieghest_price", label: "حداکثر قیمت" },
+    { key: "region", label: "منطقه" },
+    { key: "created_at", label: "تاریخ درخواست" }
+];
 
-const RequestEstateTable: React.FC<RequestEstateTableProps> = ({ dataRequest }) => {
+const RequestEstateTable: React.FC = () => {
+    const { data = { users: [], number: 0 }, isLoading, isError } = UseGetAllRequests();
     const [currentPage, setCurrentPage] = useState(1);
 
-    const itemsPerPage = 3;
-    const totalPages = Math.ceil(dataRequest.length / itemsPerPage);
+    const itemsPerPage = 10;
+    const totalPages = Math.ceil(data.users.length / itemsPerPage);
 
     const handlePageChange = (page: number) => {
         setCurrentPage(page);
     };
 
     const startIndex = (currentPage - 1) * itemsPerPage;
-    const paginatedData = dataRequest.slice(startIndex, startIndex + itemsPerPage);
+    const paginatedData = data.users.slice(startIndex, startIndex + itemsPerPage);
+
+    if (isLoading) return (
+        <div className="flex justify-center items-center py-10">
+            <PuffLoader color="#09A380" />
+        </div>
+    );
+    if (isError) return <div>خطا در دریافت اطلاعات</div>;
 
     return (
         <div className="overflow-x-auto">
+            <div className="mb-4 text-right font-bold text-gray-700">
+                تعداد کل درخواست‌ها: {data.number}
+            </div>
             <table className="min-w-full bg-white">
                 <thead className="bg-gray-100">
                     <tr>
-                        <th className="px-2 py-4 lg:p-6 text-center whitespace-nowrap text-[16px] rounded-tr-full rounded-br-full">کد ملک</th>
-                        <th className="px-2 py-4 lg:p-6 text-center whitespace-nowrap text-[16px]">نام و نام خانوادگی</th>
-                        <th className="px-2 py-4 lg:p-6 text-center whitespace-nowrap text-[16px]">شماره تماس</th>
-                        <th className="px-2 py-4 lg:p-6 text-center whitespace-nowrap text-[16px]">حداقل قیمت</th>
-                        <th className="px-2 py-4 lg:p-6 text-center whitespace-nowrap text-[16px]">حداکثر قیمت</th>
-                        <th className="px-2 py-4 lg:p-6 text-center whitespace-nowrap text-[16px]">منطقه</th>
-                        <th className="px-2 py-4 lg:p-6 text-center whitespace-nowrap text-[16px]">تاریخ درخواست</th>
+                        {columns.map(col => (
+                            <th key={col.key} className="px-2 py-4 lg:p-6 text-center whitespace-nowrap text-[16px]">
+                                {col.label}
+                            </th>
+                        ))}
                         <th className="px-2 py-4 lg:p-6 text-center whitespace-nowrap text-[16px] rounded-tl-full rounded-bl-full">بیشتر</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {paginatedData.map((item, index) => (
-                        <tr key={index} className="py-2 text-center">
-                            <td className="p-4 whitespace-nowrap">{item.id}</td>
-                            <td className="p-4 whitespace-nowrap">{item["نام و نام خانوادگی"]}</td>
-                            <td className="p-4 whitespace-nowrap">{item["شماره تماس"]}</td>
-                            <td className="p-4 whitespace-nowrap">{item["حداقل قیمت"]}</td>
-                            <td className="p-4 whitespace-nowrap">{item["حداکثر قیمت"]}</td>
-                            <td className="p-4 whitespace-nowrap">{item["منطقه"]}</td>
-                            <td className="p-4 whitespace-nowrap">{new Date(item["تاریخ درخواست"]).toLocaleDateString()}</td>
+                    {paginatedData.map((item: any, index: number) => (
+                        <tr key={item.id || index} className="py-2 text-center">
+                            {columns.map(col => (
+                                <td key={col.key} className="p-4 whitespace-nowrap">
+                                    {col.key === "created_at"
+                                        ? (item.created_at ? new Date(item.created_at).toLocaleDateString() : "")
+                                        : item[col.key]}
+                                </td>
+                            ))}
                             <td className="py-2 px-4 text-center inline-block">
-                                    <img
-                                        src={dot}
-                                        alt="dot"
-                                        className="text-2xl cursor-pointer w-6 h-6 mt-1"
-                                    />
+                                <img
+                                    src={dot}
+                                    alt="dot"
+                                    className="text-2xl cursor-pointer w-6 h-6 mt-1"
+                                />
                             </td>
                         </tr>
                     ))}
