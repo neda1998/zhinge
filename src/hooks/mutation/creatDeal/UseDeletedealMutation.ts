@@ -12,7 +12,7 @@ const UseDeletedealMutation = () => {
 
     {
       onSettled: async () => {
-        queryClient.invalidateQueries("getAllSliders");
+        queryClient.invalidateQueries("getAllDeals");
       },
       onSuccess: async (response) => {
         Swal.fire({

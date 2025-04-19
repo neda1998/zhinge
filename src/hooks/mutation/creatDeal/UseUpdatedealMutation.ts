@@ -1,11 +1,11 @@
 import { useMutation } from "react-query";
 import Swal from "sweetalert2";
-import { creatDeal } from "../../../services/admin/creatDeal";
+import { updatedeal } from "../../../services/admin/updatedeal";
 
 const UseUpdatedealMutation = () => {
   return useMutation(
     async (data) => {
-      return await creatDeal(data);
+      return await updatedeal(data);
     },
     {
       onSuccess: async (response) => {
