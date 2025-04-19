@@ -2,14 +2,14 @@ import apiRoutes from "../../../helpers/routes/apiRoutes";
 import { getRoute } from "../../service";
 import client from "../../utils/client";
 
-export const deleteTeam = async (id: number) => {
-  const url = getRoute({ route: `${apiRoutes.admin.deleteTeam}` });
+export const uploadPhotos = async (data: any) => {
+  const url = getRoute({ route: `${apiRoutes.admin.uploadPhotos}` });
   return await client({
     url,
-    method: "DELETE",
-    data: { id },
+    method: "POST",
+    data,
     headers: {
-      "Content-Type": "application/json",
+      "Content-Type": "application/json"
     }
   });
 };
