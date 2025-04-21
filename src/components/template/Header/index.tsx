@@ -14,8 +14,8 @@ export default function Header({ variant }: any) {
   const displayName = cookies.name || "";
   return (
     <>
-      <div className={`w-full mobile:hidden tablet:hidden bg-transparent h-28 flex items-center justify-center ${variant === "main" ? "absolute" : 'relative'}`}>
-        <div className='flex w-[95%] items-center justify-around bg-white rounded-[100px] pl-1 header-top-light header-top-dark'>
+      <div className={`w-full lg:flex hidden bg-transparent h-28 items-center justify-center ${variant === "main" ? "absolute" : 'relative'}`}>
+        <div className='flex w-full mx-10 items-center justify-around bg-white rounded-[100px] pl-1 header-top-light header-top-dark'>
           <Link to="/" className='flex justify-center items-center py-2'>
             <img src={ZhingeLogo} alt="ZhingeLogo" width={100} />
           </Link>

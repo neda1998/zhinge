@@ -46,7 +46,7 @@ const PhoneBookManagement = () => {
             <Search className="lg:w-1/2 w-full my-12" searchClass="w-12 h-11" />
             <PhoneBookManagementTable dataRegister={phoneBookTable} />
             {isModalOpen && (
-                <div className="fixed inset-0 flex items-center justify-center bg-gray-600 bg-opacity-75">
+                <div className="fixed inset-0 flex items-center justify-center bg-gray-600 bg-opacity-75 z-[9999]">
                     <div className="bg-white rounded-lg lg:p-6 p-3 lg:w-1/3 w-full shadow-lg mx-4">
                         <h2 className="text-xl font-bold mb-4">افزودن مخاطب جدید</h2>
                         <div className="mb-4">

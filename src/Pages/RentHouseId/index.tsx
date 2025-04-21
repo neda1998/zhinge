@@ -80,7 +80,7 @@ const RentHouseId = () => {
                                 </div>
                             </div>
                             <div className='w-full p-2'>
-                                <span className="flex items-center text-[#1E1E1E80] text-[16px] gap-1 ">
+                                <span className="flex items-center text-[#1E1E1E80] dark:text-white text-[16px] gap-1 ">
                                     <img src={MapPoint} alt="" width={20} className='-mr-4' />
                                     ابتدای شهرک سعدی کوچه کیوان
                                 </span>

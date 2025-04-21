@@ -97,7 +97,7 @@ const RegesterVisitTable: React.FC = () => {
         return <div className="text-center text-red-500">خطا در دریافت بازدیدها</div>;
 
     return (
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto sm:w-full w-[315px]">
             <table className="min-w-full bg-white">
                 <thead className="bg-gray-100">
                     <tr>
@@ -168,7 +168,7 @@ const RegesterVisitTable: React.FC = () => {
 
             {/* New update modal */}
             {isEditModalOpen && (
-                <div className="fixed inset-0 flex items-center justify-center bg-gray-600 bg-opacity-75">
+                <div className="fixed inset-0 flex items-center justify-center bg-gray-600 bg-opacity-75 z-[9999]">
                     <div className="bg-white rounded-lg lg:p-6 p-3 lg:w-1/3 w-full shadow-lg mx-4">
                         <h2 className="text-xl font-bold mb-4">ویرایش بازدید</h2>
 

@@ -60,7 +60,7 @@ export default function HeaderMobile() {
         <>
 
             <div className="w-[95%] rounded-[100px] z-10 lg:hidden absolute mt-2 bg-white flex  h-[54px]  justify-between  border-[1px] border-primary-border">
-                <div onClick={HanellModal} className="flex sm:w-[25%] w-[17%] justify-center cursor-pointer sm:mr-2 items-center mr-0">
+                <div onClick={HanellModal} className="flex sm:w-[25%] justify-start cursor-pointer items-center mr-5">
                     <img src={menu} alt="icons" width={25} />
                 </div>
                 <div className="flex items-center justify-center sm:w-[45%] w-[25%] ">

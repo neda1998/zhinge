@@ -6,15 +6,21 @@ import SidebarMobile from "../sidebar/SidebarMobile";
 
 const TopNavbarMobile = () => {
     const [notif, setToggleNotif] = useState(false);
-    const [toggleMenu,setToggleMenu] = useState(false);
+    const [toggleMenu, setToggleMenu] = useState(false);
+
+    // تابع بستن منو که به SidebarMobile پاس داده می‌شود
+    const handleCloseMenu = () => setToggleMenu(false);
 
     return (
-        <div className="container mx-auto lg:hidden block mt-7 relative z-[9999]">
+        <div className=" lg:hidden block m-7 mb-0 relative z-[9999]">
             <div className="flex items-center justify-between">
-                <CgMenuRightAlt color="#11a97f" size={32} onClick={()=>setToggleMenu(!toggleMenu)} />
-                    {
-                        toggleMenu && <SidebarMobile />
-                    }
+                <CgMenuRightAlt color="#11a97f" size={32} onClick={() => setToggleMenu(true)} />
+                {
+                    // نمایش SidebarMobile فقط زمانی که toggleMenu=true است
+                    toggleMenu && (
+                        <SidebarMobile show={toggleMenu} onClose={handleCloseMenu} />
+                    )
+                }
                 <div className="flex items-center gap-1">
                     <div className="flex flex-col justify-center text-center">
                         <span className="text-black font-extrabold md:text-lg text-sm">Taher Zahedi</span>
@@ -39,7 +45,6 @@ const TopNavbarMobile = () => {
                                     idx === 0 ? (<div>
                                         <div className="absolute w-4 h-4 bg-main-color rounded-full top-0 -right-2 text-white text-[8px] flex justify-center items-center text-center">10</div>
                                         <item.icon color="#11a97f" size={20} />
-
                                     </div>
                                     ) : (<item.icon color="#11a97f" size={20} />)
                                 }

@@ -38,7 +38,7 @@ const Login = () => {
             </div>
               <>
                 <form onSubmit={loginFormik.handleSubmit} className='w-full h-[50%] flex flex-col justify-evenly'>
-                  <div className='h-[60%] flex flex-col justify-evenly items-center'>
+                  <div className='h-[60%] flex flex-col justify-evenly items-center gap-5'>
                     <Input
                       base={'true'}
                       width={'90%'}
@@ -64,13 +64,13 @@ const Login = () => {
                       value={loginFormik.values.password}
                     />
                   </div>
-                  <div className='flex flex-col items-center gap-4'>
+                  <div className='flex flex-col items-center gap-4 mt-5'>
                     <Button type='submit' bgcolor={'#09A380'} width={'90%'} borderradius={'100px'} color={'white'} height={'65px'}>
                       <span className='font-bold'>ورود</span>
                     </Button>
                   </div>
                 </form>
-                <div className='flex flex-col items-center gap-4'>
+                <div className='flex flex-col items-center gap-4 mt-4'>
                   <span className='font-bold'>
                     قبلا حساب ایجاد نکرده اید ؟ 
                     <Link to="/SignUp" className='text-[#09A380] mr-3'>ثبت نام</Link>

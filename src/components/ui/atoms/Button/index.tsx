@@ -49,7 +49,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => {
   const ReturnBtn = useClassNames(
     baseClasses,
     sizeClasses,
-    ` rounded-[96px] md:w-[206px] w-[105px]  h-[40px]  text-[14px] ${variant === 'outlined' ? 'bg-transparent border-[1px] flex justify-center items-end border-[#007C9A]' : ''} `
+    ` rounded-[96px] md:w-[120px] w-[105px]  h-[40px]  text-[14px] ${variant === 'outlined' ? 'bg-transparent border-[1px] flex justify-center items-end border-[#007C9A]' : ''} `
   );
 
   const BookMark = useClassNames(

@@ -37,7 +37,7 @@ const Otp = () => {
               </span>
             </div>
             <form onSubmit={formik.handleSubmit} className='w-full h-[50%] flex flex-col justify-evenly'>
-              <div className='h-[60%] flex flex-col justify-evenly items-center'>
+              <div className='h-[60%] flex flex-col justify-evenly items-center gap-5'>
                 <span className='font-bold'>
                   کد تایید برای شماره موبایل شما ارسال گردید
                 </span>

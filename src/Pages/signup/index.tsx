@@ -28,7 +28,7 @@ const SignUp = () => {
     return (
         <div className='w-full flex justify-center'>
             <div className="w-full h-fit mobile:h-fit flex mobile:flex-col-reverse">
-                <div className='w-[50%] mobile:w-full mobile:p-0 flex justify-center'>
+                <div className='w-[50%] mobile:w-full mobile:p-0 flex justify-center my-6'>
                     <div className='flex justify-center flex-col gap-4'>
                         <div className='w-full flex p-2 gap-2 items-center justify-start'>
                             <div className='w-12 h-[4px] bg-[#09A380]'></div>

@@ -1,53 +1,60 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
 import logo from "../../../assets/images/Zhinge.svg";
 import { itemsSidebar } from "../../../utils/data";
 
-const SidebarMobile = () => {
-    const [selectedItem, setSelectedItem] = useState<number | null>(null);
-    const [showModal, setShowModal] = useState(false);
-    const [animationClass, setAnimationClass] = useState('');
+interface SidebarMobileProps {
+    show: boolean;
+    onClose: () => void;
+}
+
+const SidebarMobile: React.FC<SidebarMobileProps> = ({ show, onClose }) => {
     const sidebarRef = useRef<HTMLDivElement | null>(null);
     const location = useLocation();
 
     useEffect(() => {
-        const handleClickOutside = (event: MouseEvent) => {
-            if (sidebarRef.current && !sidebarRef.current.contains(event.target as Node)) {
-                setAnimationClass('modal-exit-menu');
-                setTimeout(() => setShowModal(false), 500);
-            }
+        const handleEsc = (event: KeyboardEvent) => {
+            if (event.key === "Escape") onClose();
         };
-
-        document.addEventListener("mousedown", handleClickOutside);
-        return () => {
-            document.removeEventListener("mousedown", handleClickOutside);
-        };
-    }, []);
-
-    useEffect(() => {
-        if (showModal) {
-            setAnimationClass('modal-enter-menu');
-        } else {
-            setAnimationClass('');
+        if (show) {
+            document.addEventListener("keydown", handleEsc);
         }
-    }, [showModal]);
+        return () => {
+            document.removeEventListener("keydown", handleEsc);
+        };
+    }, [show, onClose]);
+
+    if (!show) return null;
 
     return (
-        <nav
-            ref={sidebarRef}
-            className={`sm:w-[25%] w-[60%] bg-white min-h-screen overflow-auto fixed inset-0 -z-10 top-0 border-l border-l-gray-200 shadow-2xl pr-5 transition-all duration-500 ${animationClass} ${showModal ? 'opacity-100' : 'opacity-0'}`}
-        >
-            <div className="sidebar-content">
-                <button onClick={() => setShowModal(!showModal)} className="flex items-center justify-center">
-                    <img src={logo} alt="logo" className="mt-14 mb-9" />
-                </button>
-                <ul className="relative">
-                    {itemsSidebar.map((item) => (
-                        <React.Fragment key={item.id}>
-                            <div className="relative">
-                                <Link to={item.path ? item.path : "#"} className="relative">
+        <>
+            {/* Backdrop */}
+            <div
+                className="fixed inset-0 z-[99998] bg-black bg-opacity-40 sm:hidden block"
+                onClick={onClose}
+            />
+            {/* Sidebar */}
+            <nav
+                ref={sidebarRef}
+                className={`fixed top-0 right-0 sm:w-[25%] w-[65%] max-w-xs bg-white min-h-screen overflow-auto z-[99999] border-l border-l-gray-200 shadow-2xl pr-5 transition-transform duration-500 sm:hidden block
+                ${show ? "translate-x-0" : "translate-x-full"}
+                `}
+                style={{ transform: show ? "translateX(0)" : "translateX(100%)" }}
+            >
+                <div className="sidebar-content">
+                    <button onClick={onClose} className="flex items-center justify-center">
+                        <img src={logo} alt="logo" className="mt-14 mb-9" />
+                    </button>
+                    <ul className="relative">
+                        {itemsSidebar.map((item) => (
+                            <div className="relative" key={item.id}>
+                                <Link
+                                    to={item.path ? item.path : "#"}
+                                    className="relative"
+                                    onClick={onClose}
+                                >
                                     <li
-                                        className={`sidebar-item ${selectedItem === item.id
+                                        className={`sidebar-item ${location.pathname === item.path
                                             ? "bg-gradient-to-l from-secondary-color to-green-100 before:absolute before:bg-main-color before:right-0 before:w-1 before:h-[54px] before:rounded-full before:top-0"
                                             : "bg-transparent"
                                             }`}
@@ -61,11 +68,11 @@ const SidebarMobile = () => {
                                     </li>
                                 </Link>
                             </div>
-                        </React.Fragment>
-                    ))}
-                </ul>
-            </div>
-        </nav>
+                        ))}
+                    </ul>
+                </div>
+            </nav>
+        </>
     );
 };
 
