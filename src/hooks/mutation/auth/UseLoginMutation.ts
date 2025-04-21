@@ -29,7 +29,7 @@ const useLoginMutation = () => {
       navigate("/");
     },
     onError: (error) => {
-      Swal.fire("خطا", error?.response?.data || "خطایی رخ داده است", "error");
+      Swal.fire("خطا", error?.response?.data?.message || "خطایی رخ داده است", "error");
     },
   });
 };

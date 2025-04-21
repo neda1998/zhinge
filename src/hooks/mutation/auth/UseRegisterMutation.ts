@@ -16,7 +16,7 @@ const useSignupMutation = () => {
       onError: async (error: any) => {
         if (error.response?.status === 409) {
           Swal.fire({
-            title: "خطا",
+            title: "اره؟؟؟",
             text: "این شماره موبایل قبلاً ثبت شده است. لطفاً وارد شوید یا شماره دیگری استفاده کنید.",
             icon: "error",
             confirmButtonText: "باشه",

@@ -331,7 +331,7 @@ const routes: AllRoutes[] = [
     type: "link",
     key: "UploadLogoOfEstate",
     name: "UploadLogoOfEstate",
-    route: "/panel-admin/dashboard/estate-management/upload-logo-estate",
+    route: "/panel-admin/dashboard/estate-management/upload-logo",
     component: <UploadLogoOfEstate />
   },
   {

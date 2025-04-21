@@ -1,8 +1,7 @@
 import ComboBox from "../../../components/common/Combo"
 import RouteChevron from "../../../components/common/RouteChevron"
-import Table from "../../../components/common/Table"
 import InputState from "../../../components/ui/atoms/input/inputState"
-import { dataTable, pageSearchForEstate } from "../../../utils/data"
+import { pageSearchForEstate } from "../../../utils/data"
 import InitialLayout from "../../dashboard/initialLayoutAdmin"
 import ChooseItemsOfState from "../propertyManagement/ChooseItemsOfState"
 
@@ -33,7 +32,6 @@ const SearchForEstate = () => {
             <div className="flex justify-end items-center my-8">
                 <button className="bg-main-color rounded-full px-10 py-2 text-white">جستجو</button>
             </div>
-            <Table data={dataTable} />
         </InitialLayout>
     )
 }
