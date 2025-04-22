@@ -12,26 +12,28 @@ import ZhingeLogo from '../../../assets/images/Zhinge.svg'
 import menu from '../../../assets/images/menu.svg'
 import ChangeTheme from "../../changeTheme";
 import { useCookies } from "react-cookie";
+import { Button as FlowbiteButton, Modal } from "flowbite-react";
 
 const menuItems = [
     { name: 'خانه', href: '/', iconWhite: UserWhite, iconBlack: User },
     { name: 'داشبورد', href: '/dashboard', iconWhite: UserWhite, iconBlack: User },
-    { name: 'آگهی های من ', href: '/dashboard/myads ', iconWhite: myadswhite, iconBlack: myads },
+    { name: 'آگهی های من ', href: '/dashboard/my-advertise ', iconWhite: myadswhite, iconBlack: myads },
     { name: 'ثبت آگهی جدید', href: '/dashboard/realstate', iconWhite: weightwhite, iconBlack: weight },
-    { name: 'آگهی فروش', href: '/AnnouncementList/sell', iconWhite: UserWhite, iconBlack: User },
-    { name: 'آگهی اجاره', href: '/AnnouncementList/rent', iconWhite: UserWhite, iconBlack: User },
+    { name: 'آگهی فروش', href: '//Announcement-list/sell', iconWhite: UserWhite, iconBlack: User },
+    { name: 'آگهی اجاره', href: '//Announcement-list/rent', iconWhite: UserWhite, iconBlack: User },
     { name: 'خدمات', href: '/services', iconWhite: UserWhite, iconBlack: User },
-    { name: 'درخواست ملک', href: '/ContactUs', iconWhite: UserWhite, iconBlack: User },
+    { name: 'درخواست ملک', href: '/request-state', iconWhite: UserWhite, iconBlack: User },
     { name: 'خروج از حساب', href: '/logout', iconWhite: "", iconBlack: LogOut },
 ];
 
 export default function HeaderMobile() {
-      const [cookies, setCookies] = useCookies(["accessToken", "refreshToken", "name"]);
-      const displayName = cookies.name || "";
+    const [cookies, setCookies, removeCookie] = useCookies(["accessToken", "refreshToken", "name"]);
+    const displayName = cookies.name || "";
     const [showModal, setShowModal] = useState(false);
     const [Active, setActive] = useState(false);
     const [Profile, setProfileforModal] = useState(false)
     const [NotProfile, setNotProfileforModal] = useState(false)
+    const [showLogoutModal, setShowLogoutModal] = useState(false);
 
     const HanellModal = () => {
         if (Active) {
@@ -41,6 +43,12 @@ export default function HeaderMobile() {
         }
     }
 
+    // خروج از حساب
+    const handleLogout = () => {
+        removeCookie("accessToken", { path: "/" });
+        removeCookie("refreshToken", { path: "/" });
+        navigate("/Login");
+    };
 
     const [animationClass, setAnimationClass] = useState('');
     useEffect(() => {
@@ -116,7 +124,13 @@ export default function HeaderMobile() {
                                             <li
                                                 key={item.name}
                                                 className={`flex w-full gap-2 cursor-pointer items-center justify-start transition-transform duration-300 p-5 `}
-                                                onClick={() => navigate(item.href)}
+                                                onClick={() => {
+                                                    if (item.name === "خروج از حساب") {
+                                                        setShowLogoutModal(true);
+                                                    } else {
+                                                        navigate(item.href);
+                                                    }
+                                                }}
                                             >
 
                                                 <img src={item.iconWhite} alt="icon" />
@@ -148,7 +162,13 @@ export default function HeaderMobile() {
                                     <li
                                         key={item.name}
                                         className={`flex w-full gap-2 cursor-pointer items-center  justify-start transition-transform    duration-300 p-5 `}
-                                        onClick={() => navigate(item.href)}
+                                        onClick={() => {
+                                            if (item.name === "خروج از حساب") {
+                                                setShowLogoutModal(true);
+                                            } else {
+                                                navigate(item.href);
+                                            }
+                                        }}
                                     >
                                         <div className="w-10 h-10 rounded-full flex items-center justify-center shadow-sm shadow-[#09A38080] bg-[#09A380]">
                                             <img src={item.iconBlack} alt="icon" />
@@ -165,6 +185,32 @@ export default function HeaderMobile() {
                 </div>
             </>)
             }
+            {/* Logout Modal */}
+            <Modal className="z-50 relative" show={showLogoutModal} onClose={() => setShowLogoutModal(false)}>
+                <Modal.Body>
+                    <div className="space-y-6">
+                        <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+                            خروج از حساب خود مطمئن هستید؟
+                        </p>
+                    </div>
+                </Modal.Body>
+                <Modal.Footer className="gap-6">
+                    <FlowbiteButton
+                        onClick={handleLogout}
+                        className="bg-red-200 hover:!text-white hover:!bg-red-200 relative hover:bg-gradient-to-r hover:from-bg-color-btn hover:to-bg-color-btn cursor-pointer transition-all ease-out duration-300 overflow-hidden group"
+                    >
+                        <span className="absolute right-0 w-8 h-32 -mt-12 transition-all duration-1000 transform translate-x-12 bg-white opacity-10 rotate-12 group-hover:-translate-x-40 ease shadow"></span>
+                        خروج از حساب
+                    </FlowbiteButton>
+                    <FlowbiteButton
+                        className="hover:!text-black text-black hover:bg-white shadow"
+                        color="gray"
+                        onClick={() => setShowLogoutModal(false)}
+                    >
+                        انصراف
+                    </FlowbiteButton>
+                </Modal.Footer>
+            </Modal>
         </>
     );
 }
