@@ -19,7 +19,7 @@ export default function LegalServices() {
         </div>
       </div>
       <div className="w-full flex items-start no-scrollbar mobile:flex-col-reverse mobile:gap-12 sm:py-0 py-6">
-        <div className="w-[50%] h-[30rem] overflow-scroll no-scrollbar px-12 py-8 mobile:px-3 mobile:py-0 mobile:w-full">
+        <div className="w-[50%] p-12 mobile:px-3 mobile:py-0 mobile:w-full">
           <div className="text-[16px] leading-relaxed text-start mobile:text-[15px]">
             آگاهی حقوقی ملک مشاوره حقوقی املاک در جلوگیری از مشکلات احتمالی در
             معاملات ملکی بسیار موثر است. مشاوره حقوقی املاک به شما کمک می‌کند تا

@@ -61,7 +61,7 @@ export default function Realstate() {
       </div>
       <form onSubmit={formik.handleSubmit}>
         <div className="flex flex-col items-center justify-center w-full gap-5">
-          <div className="grid lg:grid-cols-2 lg:gap-10 w-full">
+          <div className="grid lg:grid-cols-2 lg:gap-10 w-full gap-5">
           <InputState label="وام" name="loan" value={formik.values.loan} onChange={formik.handleChange} />
             <InputState label="منطقه" name="region" value={formik.values.region} onChange={formik.handleChange} />
             <InputState label="آدرس ملک" name="address" value={formik.values.address} onChange={formik.handleChange} />
@@ -80,7 +80,7 @@ export default function Realstate() {
             <InputState label="ویژگی‌ها" name="features" value={formik.values.features} onChange={formik.handleChange} />
           </div>
         </div>
-        <div className="w-[90%] flex items-center justify-end">
+        <div className="w-[90%] flex items-center justify-end my-6">
           <Button submit="true" width="110px" height="50px" bgcolor="#09A380" borderradius="30px" color="white" type="submit">
             <p className="text-[1rem] font-bold">ثبت</p>
           </Button>

@@ -4,17 +4,14 @@ import { getRoute } from "../../service";
 import client from "../../utils/client";
 
 export const useCreateAnnounce = () => {
-  const [cookies] = useCookies(["accessToken"]);
   const createAnnounce = async (data: any) => {
-    const accessToken = cookies.accessToken;
     const url = getRoute({ route: `${apiRoutes.AllAnnounce.creatAnnounce}` });
     return await client({
       url,
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Accept": "application/json",
-        Authorization: accessToken ? `Bearer ${accessToken}` : "",
+        "Accept": "application/json"
       },
       data: JSON.stringify(data)
     });

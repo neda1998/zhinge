@@ -3,7 +3,6 @@ import Sidebar from "./Sidebar"
 import TopNavbar from "./TopNavbar";
 import hide from "../../assets/images/hide.png"
 import TopNavbarMobile from "./TopNavbarMobileProfile";
-import SidebarMobileProfile from "./SidebarMobileProfile";
 
 interface Props {
     children?: React.ReactNode;
@@ -14,7 +13,6 @@ const LayoutProfile = ({ children }: Props) => {
     return (
         <div className="wrapper flex z-10 relative">
             <Sidebar />
-            <SidebarMobileProfile />
             <div className="flex justify-end relative">
                 <img src={hide} alt="hide" width={330} height={330} className={`absolute top-56 right-32 z-[9999] ${showSidebar ? "mr-0" : "mr-[16rem]"}`} />
             </div>

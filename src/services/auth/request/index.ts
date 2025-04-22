@@ -15,5 +15,13 @@ export type RequestBody = {
 
 export const createRequest = async (data: RequestBody) => {
   const url = getRoute({ route: `${apiRoutes.request.createRequest}` });
-  return await client({ url, method: "POST", data });
+  return await client({
+    url,
+    method: "POST",
+    data,
+    headers: {
+      "Content-Type": "application/json",
+      "Accept": "application/json"
+    }
+  });
 };

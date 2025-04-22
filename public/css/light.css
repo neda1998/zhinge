@@ -100,3 +100,18 @@ select {
 .header-top-light{
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 }
+.bg-right-announce{
+  background-color: #fff;
+}
+.text-right-announe{
+  color: #000;
+}
+.lorem-right-announce{
+  color: #1E1E1E99;
+}
+.text-green-announce{
+  color: #09A380;
+}
+.bg-white-btn-announce{
+  background-color: #fff;
+}

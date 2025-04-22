@@ -19,7 +19,7 @@ export default function Conditions() {
         </div>
       </div>
       <div className="w-full flex items-start mobile:flex-wrap no-scrollbar mobile:flex-col-reverse mobile:gap-12">
-        <div className="w-[50%] h-[30rem] overflow-scroll no-scrollbar px-12 py-8 mobile:px-3 mobile:py-0 mobile:w-full">
+        <div className="w-[50%] p-12 mobile:px-3 mobile:py-0 mobile:w-full">
           <div className="text-[16px] leading-relaxed text-start mobile:text-[15px]">
             1- با ورود به به سایت و اپلیکیشن ژینگه ، شما اعلام نموده اید که از
             کلیه شرایط و قوانین آگاه بوده و خود را ملزم به رعایت همه جانبه آنها

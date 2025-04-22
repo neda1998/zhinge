@@ -16,17 +16,17 @@ const MainPage = () => {
         <div className='w-full flex justify-center'>
             <Header variant={'main'} />
             <div className="w-full h-[110vh] tablet:h-fit mobile:h-fit grid grid-cols-2  ">
-                <div className=" col-span-1 mobile:col-span-2 tablet:col-span-2 tablet:order-2 mobile:order-2 mobile:p-0 p-7 flex flex-col justify-start dark:bg-dark">
+                <div className=" col-span-1 mobile:col-span-2 tablet:col-span-2 tablet:order-2 mobile:order-2 mobile:p-0 p-7 flex flex-col justify-start dark:bg-dark bg-right-announce">
                     <div className='w-full  p-4 mt-24 flex flex-col items-start mobile:mt-0'>
                         <div className='flex flex-col items-start justify-start mobile:items-center'>
-                            <span className='text-[60px] font-bold flex justify-start items-center dark:text-white'>
+                            <span className='text-[60px] font-bold flex justify-start items-center dark:text-white text-right-announe'>
                                 با
                                 <img src={ZhingeLogo} alt="icons" width={150} />
                             </span>
-                            <span className='text-[60px] font-bold text-center dark:text-white'>راحت خونه پیدا کن</span>
+                            <span className='text-[60px] font-bold text-center dark:text-white text-right-announe'>راحت خونه پیدا کن</span>
                         </div>
                         <div className='flex items-center mt-5 justify-start mobile:h-fit mobile:justify-center'>
-                            <span className='text-[22px] lorem-dark w-full  mobile:leading-8 mobile:text-[20px] mobile:text-center leading-[45px] dark:text-white'>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است.لورم ایپسوم متن ساختگی با تولید سادگی</span>
+                            <span className='text-[22px] w-full  mobile:leading-8 mobile:text-[20px] mobile:text-center leading-[45px] dark:text-[#FFFFFF99] lorem-right-announce'>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است.لورم ایپسوم متن ساختگی با تولید سادگی</span>
                         </div>
 
                         <div className='w-full flex gap-4 mt-4 p-3 '>
@@ -37,9 +37,9 @@ const MainPage = () => {
                                 </span>
                             </Button>
 
-                            <Button onClick={() => navigate('/realState')} borderradius={'96px'} width={'180px'} variant='outlined' height={'50px'} submit={"true"} className={'flex w-[180px] items-center border-[1px] border-[#09A380] justify-center text-[#09A380] bg-white dark:bg-black'}>
+                            <Button onClick={() => navigate('/dashboard/realState')} borderradius={'96px'} width={'180px'} variant='outlined' height={'50px'} submit={"true"} className={'flex w-[180px] items-center border-[1px] border-[#09A380] justify-center text-[#09A380] bg-white-btn-announce dark:bg-transparent'}>
                                 <img src={HomeIcons} alt="logo" />
-                                <p className="text-[15px] mobile:text-[13px] mobile:p-1 font-bold dark:text-white ">
+                                <p className="text-[15px] mobile:text-[13px] mobile:p-1 font-bold dark:text-[#09A380] text-green-announce">
                                     ایجاد آگهی جدید
                                 </p>
                             </Button>
@@ -90,11 +90,9 @@ const MainPage = () => {
                             </span>
                         </div>
                     </div>
-
-
                 </div>
                 <div className="col-span-1 mobile:col-span-2 tablet:col-span-2 tablet:hidden ">
-                    <img src={ImageMainPage} className='object-contain' alt="" />
+                    <img src={ImageMainPage} className='object-contain w-[100%]' alt="" />
                     <div className='w-[70%] -bottom-5 -mt-20 mobile:flex hidden mobile:w-full  mobile:right-0 tablet:relative tablet:w-full tablet:justify-center  mobile:justify-center tablet:right-0 mobile:flex-col  justify-end last-of-type:-bottom-16  items-end h-fit   '>
                         <div className='w-[25%] mobile:hidden h-0 mb-[12px] border-[2px]  border-dashed border-[#1E1E1E66]'>
                             <span className='lorem-dark text-[18px] relative bottom-16 flex flex-col'>معامله های اخیر

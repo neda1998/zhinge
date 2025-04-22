@@ -3,46 +3,58 @@ import logo from "../../assets/images/Zhinge.svg";
 import React, { useEffect, useRef, useState } from "react";
 import { itemsProfile } from "../../utils/data";
 import { Button, Modal } from "flowbite-react";
+import axios from "axios";
+import { useCookies } from "react-cookie";
 
-const SidebarMobileProfile = () => {
+interface SidebarMobileProfileProps {
+    onClose: () => void;
+}
+
+const SidebarMobileProfile = ({ onClose }: SidebarMobileProfileProps) => {
     const [selectedItem, setSelectedItem] = useState<number | null>(null);
     const [openModal, setOpenModal] = useState(false);
     const [animationClass, setAnimationClass] = useState('');
     const sidebarRef = useRef<HTMLDivElement | null>(null);
+    const [cookies, , removeCookie] = useCookies(["refreshToken", "accessToken"]);
 
-    useEffect(() => {
-        const handleClickOutside = (event: MouseEvent) => {
-            if (sidebarRef.current && !sidebarRef.current.contains(event.target as Node)) {
-                setAnimationClass('modal-exit-menu');
-                setTimeout(() => {
-                    setOpenModal(false)
-                }, 500);
+    const logoutUser = async () => {
+        try {
+            const refreshToken = cookies.refreshToken;
+            if (!refreshToken) {
+                removeCookie("refreshToken", { path: "/" });
+                removeCookie("accessToken", { path: "/" });
+                window.location.href = "/Login";
+                return;
             }
-        };
-        document.addEventListener("mousedown", handleClickOutside);
-        return () => {
-            document.removeEventListener("mousedown", handleClickOutside)
+            await axios.delete("http://185.231.115.236:3000/api/V1/auth/logout", {
+                data: { refreshToken },
+                headers: {
+                    "Content-Type": "application/json",
+                    "Accept": "application/json"
+                }
+            });
+            removeCookie("refreshToken", { path: "/" });
+            removeCookie("accessToken", { path: "/" });
+            window.location.href = "/Login";
+        } catch (error: any) {
+            removeCookie("refreshToken", { path: "/" });
+            removeCookie("accessToken", { path: "/" });
+            window.location.href = "/Login";
         }
-    }, [])
-
-    useEffect(() => {
-        if (openModal) {
-            setAnimationClass('modal-enter-menu');
-        } else {
-            setAnimationClass('');
-        }
-    }, [openModal]);
-
+    };
     const handleItemClick = (itemId: number, hasModal: boolean = false) => {
         setSelectedItem(itemId);
         if (hasModal) {
             setOpenModal(true);
         }
     };
+
+    const handleLogout = logoutUser;
+
     return (
         <div
             ref={sidebarRef}
-            className={`sm:w-[25%] w-[40%] bg-white min-h-screen overflow-auto fixed inset-0 z-[999] top-0 border-l border-l-gray-200 shadow-2xl pr-5 transition-all modal-exit-menu duration-500 ${animationClass} ${openModal ? 'flex' : 'flex-none'}`}>
+            className={`w-[60%] bg-white min-h-screen overflow-auto fixed inset-0 z-[999] top-0 border-l border-l-gray-200 shadow-2xl pr-5 transition-all duration-500 modal-enter-menu`}>
             <div className="sidebar-content">
                 <Link to="/" className="flex items-center justify-center">
                     <img src={logo} alt="logo" className="mt-14 mb-9" />
@@ -96,7 +108,7 @@ const SidebarMobileProfile = () => {
                     </Modal.Body>
                     <Modal.Footer className="gap-6">
                         <Button
-
+                            onClick={handleLogout}
                             className="bg-red-200 hover:!text-white hover:!bg-red-200 relative hover:bg-gradient-to-r hover:from-bg-color-btn hover:to-bg-color-btn cursor-pointer transition-all ease-out duration-300 overflow-hidden group"
                         >
                             <span className="absolute right-0 w-8 h-32 -mt-12 transition-all duration-1000 transform translate-x-12 bg-white opacity-10 rotate-12 group-hover:-translate-x-40 ease shadow"></span>

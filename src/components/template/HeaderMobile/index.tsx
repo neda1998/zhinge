@@ -9,9 +9,9 @@ import weight from '../../../assets/images/dashboardicons/Widget Add.svg'
 import weightwhite from '../../../assets/images/dashboardicons/Widget Addwhite.svg'
 import LogOut from '../../../assets/images/dashboardicons/User Minus.svg'
 import ZhingeLogo from '../../../assets/images/Zhinge.svg'
-import Logo from '../../../assets/images/Login.svg'
 import menu from '../../../assets/images/menu.svg'
 import ChangeTheme from "../../changeTheme";
+import { useCookies } from "react-cookie";
 
 const menuItems = [
     { name: 'خانه', href: '/', iconWhite: UserWhite, iconBlack: User },
@@ -26,6 +26,8 @@ const menuItems = [
 ];
 
 export default function HeaderMobile() {
+      const [cookies, setCookies] = useCookies(["accessToken", "refreshToken", "name"]);
+      const displayName = cookies.name || "";
     const [showModal, setShowModal] = useState(false);
     const [Active, setActive] = useState(false);
     const [Profile, setProfileforModal] = useState(false)
@@ -59,8 +61,8 @@ export default function HeaderMobile() {
     return (
         <>
 
-            <div className="w-[95%] rounded-[100px] z-10 lg:hidden absolute mt-2 bg-white flex  h-[54px]  justify-between  border-[1px] border-primary-border">
-                <div onClick={HanellModal} className="flex sm:w-[25%] justify-start cursor-pointer items-center mr-5">
+            <div className="rounded-[100px] z-10 lg:hidden fixed top-0 left-3 right-3 mt-3 bg-white flex  h-[54px]  justify-between  border-[1px] border-primary-border pl-1 pr-2">
+                <div onClick={HanellModal} className="flex sm:w-[25%] justify-start cursor-pointer items-center">
                     <img src={menu} alt="icons" width={25} />
                 </div>
                 <div className="flex items-center justify-center sm:w-[45%] w-[25%] ">
@@ -68,20 +70,39 @@ export default function HeaderMobile() {
                 </div>
                 <div className="flex items-center sm:gap-3 gap-2">
                     <ChangeTheme />
-                    <div className="flex justify-center ml-2 items-center">
-                        <Button onClick={() => navigate('/SignUp')} borderradius={'100px'} bgcolor={"#09A380"} height={'35px'} color='white' returnbtn={"true"} className={'flex items-center justify-center'}>
-                            <img src={Logo} alt="logo" />
-                            <span className=" text-[10px] font-bold ">
-                                ورود  حساب
-                            </span>
-                        </Button>
-                    </div>
+                    {
+              cookies.accessToken ? (
+                <Button
+                  onClick={() => {
+                    setCookies("accessToken", "", { path: "/" });
+                    setCookies("refreshToken", "", { path: "/" });
+                    navigate("/Login");
+                  }}
+                  borderradius={"100px"}
+                  bgcolor={"#09A380"}
+                  width={"100px"}
+                  height={"44px"}
+                  color="white"
+                  returnbtn={"true"}
+                  className={"flex items-center justify-center"}
+                >
+                  <span className="text-[13px] font-bold">
+                    {displayName ? displayName : "خروج"}
+                  </span>
+                </Button>
+              ) : (
+                <Button onClick={() => navigate('/Login')} borderradius={'100px'} bgcolor={"#09A380"} width={'140px'} height={'44px'} color='white' returnbtn={"true"} className={'flex items-center justify-center'}>
+                  <span className=" text-[13px] font-bold ">
+                    ورود به حساب
+                  </span>
+                </Button>
+              )
+            }
                 </div>
             </div>
             {Profile ? (
                 <>
                     <>
-
                         <div
                             onClick={() => setProfileforModal(false)}
                             className={`h-full  items-center mobile:flex tablet:flex hidden  overflow-auto fixed inset-0 z-[999]   outline-none focus:outline-none `}>
@@ -105,11 +126,8 @@ export default function HeaderMobile() {
                                         ))}
                                     </ul>
                                 </div>
-
                             </div>
-
                         </div>
-
                     </>
                 </>
             ) : NotProfile && (<>

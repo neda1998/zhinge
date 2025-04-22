@@ -43,7 +43,7 @@ export default function Services() {
   return (
     <div>
       <Header />
-      <div className="flex flex-col w-full mobile:h-screen mobile:justify-center pt-12 gap-12 mobile:p-0">
+      <div className="flex flex-col w-full mt-32 sm:mt-20 mobile:justify-center gap-12 mobile:p-0">
         <img src={backgrounimage} alt=" " className="absolute -z-10" />
         <div className="flex items-center w-full justify-center gap-2 font-bold text-[2.6rem] mobile:text-[24px] mobile:p-0">
           <p>خدمات</p>

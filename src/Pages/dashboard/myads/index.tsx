@@ -1,27 +1,17 @@
-import { Link } from "react-router-dom";
 import House from '../../../assets/images/Rectangle49.svg';
-import MenuDots from '../../../assets/images/MenuDotsSquare.svg';
 import MapPoint from '../../../assets/images/MapPointFavourite.svg';
 import LayoutProfile from "../../../components/profile/LayoutProfile";
 import UseMyAnnouncementsQuery from "../../../hooks/queries/userPanel/UseMyAnnouncementsQuery";
 
-const navItems = [
-    { id: 1, text: 'صفحه اصلی', url: '/' },
-    { id: 91, text: 'آگهی فروش', url: '/AnnouncementList/sell' },
-    { id: 12, text: 'آگهی اجاره', url: '/AnnouncementList/rent' },
-    { id: 1344, text: 'خدمات', url: '/faq' },
-    { id: 12, text: 'درخواست ملک', url: '/ContactUs' }
-];
-
 const MyAds = () => {
-    const { isLoading } = UseMyAnnouncementsQuery();
+    const { isLoading, data } = UseMyAnnouncementsQuery();
     return (
         <LayoutProfile>
-            <div className="w-full mt-4 mobile:mt-28 grid grid-cols-3 gap-4 h-fit place-items-center ">
+            <div className="w-full mt-4 mobile:mt-8 grid grid-cols-3 gap-4 h-fit place-items-center ">
                 {
-                    !isLoading && navItems?.map((item) => (
-                        <div key={item.id} className="col-span-1 mobile:col-span-3 flex flex-col justify-start items-center w-[80%] min-h-[400px] max-h-fit mt-10">
-                            <Link to={`/RentHouse/${item.id}`} className="w-full h-full ">
+                    !isLoading && data?.map((item:any) => (
+                        <div key={item.id} className="col-span-1 mobile:col-span-3 flex flex-col justify-start items-center w-[80%] sm:min-h-[400px] max-h-fit my-10">
+                            <div className="w-full h-full ">
                                 <img src={House} alt="icons" width={350} />
                                 <div className="w-[89%] flex gap-2 mt-2 flex-col ">
                                     <div className="w-full ">
@@ -32,10 +22,9 @@ const MyAds = () => {
                                             <img src={MapPoint} alt="" width={20} />
                                             شهرک بهاران
                                         </span>
-                                        <img src={MenuDots} alt="" width={30} />
                                     </div>
                                 </div>
-                            </Link>
+                            </div>
                         </div>
                     ))
                 }

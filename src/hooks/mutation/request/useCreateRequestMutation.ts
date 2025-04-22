@@ -9,6 +9,12 @@ const useCreateRequestMutation = () => {
     },
     {
       onSuccess: async (response) => {
+        Swal.fire({
+          title: "موفق",
+          text: "درخواست با موفقیت ثبت شد",
+          icon: "success",
+          confirmButtonText: "باشه",
+        });
       },
       onError: async (error: any) => {
         Swal.fire({

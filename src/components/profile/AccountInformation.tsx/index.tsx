@@ -3,13 +3,27 @@ import circle from "../../../assets/images/circle.png"
 import InputState from "../../ui/atoms/input/inputState"
 import { useFormik } from "formik"
 import useUpdateUserMutatioin from "../../../hooks/mutation/userPanel/useUpdateUserMutatioin"
+import Swal from "sweetalert2"
 
 const AccountInformation = () => {
     const {mutate} = useUpdateUserMutatioin()
     const formik = useFormik({
         initialValues: {full_name: '', password: '', phone: ''},
-        onSubmit: (values) => {
-            mutate(values as any)
+        onSubmit: (values, { resetForm }) => {
+            if (!values.full_name || !values.password || !values.phone) {
+                Swal.fire({
+                    icon: "warning",
+                    title: "خطا",
+                    text: "لطفا همه فیلدها را پر کنید.",
+                    confirmButtonText: "باشه"
+                });
+                return;
+            }
+            mutate(values as any, {
+                onSuccess: () => {
+                    resetForm();
+                }
+            });
         }
     })
     return (
