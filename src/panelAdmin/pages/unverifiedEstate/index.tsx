@@ -1,13 +1,21 @@
 import RouteChevron from "../../../components/common/RouteChevron"
-import Table from "../../../components/common/Table"
-import { dataTable, pageNewEstate } from "../../../utils/data"
+import { pageNewEstate } from "../../../utils/data"
 import InitialLayout from "../../dashboard/initialLayoutAdmin"
 import ChooseItemsOfState from "../propertyManagement/ChooseItemsOfState"
+import UseNotconfirmedannouncementsQuery from "../../../hooks/queries/admin/notconfirmedannouncements/UseNotconfirmedannouncementsQuery"
+import { PuffLoader } from "react-spinners";
+import UnverifiedEstateTable from "./UnverifiedEstateTable"
 
-interface Props {
+interface Props {}
 
-}
 const UnverifiedEstate = ({ }: Props) => {
+    const { data, isLoading, isError } = UseNotconfirmedannouncementsQuery();
+
+    // تبدیل داده دریافتی به فرمت مورد نیاز Table
+    const tableData = data?.deleted || [];
+    const count = data?.number;
+console.log(data, "data in unverified estate page");
+
     return (
         <InitialLayout>
             <div className="flex items-center justify-between border-b border-b-gray-200 mb-10 lg:py-7 py-4 overflow-x-auto w-[330px] sm:w-full lg:overflow-x-visible gap-7">
@@ -17,7 +25,15 @@ const UnverifiedEstate = ({ }: Props) => {
                 <RouteChevron items={pageNewEstate} />
             </div>
             <ChooseItemsOfState />
-            <Table data={dataTable} />
+            {isLoading ? (
+                <div className="flex items-center justify-center h-screen">
+                    <PuffLoader color="#09A380" />
+                </div>
+            ) : isError ? (
+                <div>خطا در دریافت اطلاعات</div>
+            ) : (
+                <UnverifiedEstateTable data={tableData} count={count} />
+            )}
         </InitialLayout>
     )
 }
