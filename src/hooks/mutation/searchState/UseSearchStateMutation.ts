@@ -1,22 +1,25 @@
+import { useCookies } from "react-cookie";
 import { useMutation } from "react-query";
 import Swal from "sweetalert2";
-// import { search } from "../../../services/search";
-import { adminSearch } from "../../../services/admin/adminSearch"; // مسیر صحیح
+import { adminSearch } from "../../../services/admin/adminSearch";
 
 const UseSearchStateMutation = () => {
+  const [cookies] = useCookies(["accessToken"]);
+  const token = cookies.accessToken;
+
   return useMutation(
-    async (data: Record<string, any>) => { // نوع پارامتر را مشخص کن
-      return await adminSearch(data);
+    async (data: Record<string, any>) => {
+      return await adminSearch(data, token); // ارسال توکن
     },
     {
       onSuccess: async (response) => {
         console.log("✅ جستجو موفقیت‌آمیز بود", response);
-          Swal.fire({
-            title: "موفقیت",
-            text: "✅ جستجو انجام شد",
-            icon: "success",
-            confirmButtonText: "باشه",
-          });
+        Swal.fire({
+          title: "موفقیت",
+          text: "✅ جستجو انجام شد",
+          icon: "success",
+          confirmButtonText: "باشه",
+        });
       },
       onError: async (error: any) => {
         Swal.fire({
