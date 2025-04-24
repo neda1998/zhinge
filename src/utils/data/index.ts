@@ -41,11 +41,6 @@ export const navItems = [
   { text: "خدمات", url: "/services" },
   { text: "درخواست ملک", url: "/request-state" },
 ];
-export const itemsNavLeft = [
-  { id: 1, icon: IoMdNotificationsOutline },
-  { id: 2, icon: GoPlus },
-  { id: 3, icon: IoEarth },
-];
 export const itemsSidebar = [
   {
     id: 1,
