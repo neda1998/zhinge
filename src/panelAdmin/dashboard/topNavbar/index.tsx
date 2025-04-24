@@ -11,7 +11,7 @@ const TopNavbar = () => {
     return (
         <div className="shadow-md lg:block hidden relative z-[999]">
             <div className="container mx-auto">
-                <nav className="grid lg:grid-cols-3 items-center justify-between md:py-8">
+                <nav className="grid lg:grid-cols-2 items-center justify-between md:py-8">
                     <div className="flex items-center gap-1 cursor-pointer" onClick={toggleSidebar}>
                         <IoChevronBackOutline color='#11a97f' size={20} className={`transition-all duration-500 ${showSidebar ? "-rotate-180" : ""}`} />
                         <span className="font-extrabold md:text-xl text-sm">داشبورد مشاور املاک ژینگه</span>

@@ -1,4 +1,3 @@
-import { FiEdit } from "react-icons/fi"
 import RouteChevron from "../../../components/common/RouteChevron"
 import { pageManagementAboutus } from "../../../utils/data"
 import UseAboutUpdatingMutation from "../../../hooks/mutation/aboutUpdating/UseAboutUpdatingMutation";
@@ -32,16 +31,6 @@ const ManagementAboutUs = () => {
                 <RouteChevron items={pageManagementAboutus} />
             </div>
             <div className="flex flex-col gap-5">
-                <div className="flex items-center justify-between">
-                    <span className="text-gray-500">در مورد ژینگه</span>
-                    <div
-                        className="shadow-xl rounded-full p-2 flex items-center justify-center bg-white cursor-pointer"
-                        onClick={handleUpdateAbout}
-                        title="ذخیره تغییرات"
-                    >
-                        <FiEdit color="#11a97f" />
-                    </div>
-                </div>
                 <div className="border border-gray-600 rounded-xl p-4">
                     <textarea
                         className="w-full border-none outline-none bg-transparent resize-none"
@@ -55,13 +44,6 @@ const ManagementAboutUs = () => {
             <div className="flex flex-col mt-12 gap-5">
                 <div className="flex items-center justify-between">
                     <span className="text-gray-500">اهداف ژینگه</span>
-                    <div
-                        className="shadow-xl rounded-full p-2 flex items-center justify-center bg-white cursor-pointer"
-                        onClick={handleUpdateAbout}
-                        title="ذخیره تغییرات"
-                    >
-                        <FiEdit color="#11a97f" />
-                    </div>
                 </div>
                 <div className="border border-gray-600 rounded-xl p-4">
                     <textarea
@@ -72,6 +54,12 @@ const ManagementAboutUs = () => {
                         onChange={e => setGoals(e.target.value)}
                     />
                 </div>
+                <button
+                    className="bg-main-color text-white rounded-full px-8 py-2 mb-10"
+                    onClick={handleUpdateAbout}
+                >
+                    ثبت تغییرات
+                </button>
             </div>
         </>
     )

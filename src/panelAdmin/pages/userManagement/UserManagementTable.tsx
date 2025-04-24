@@ -157,7 +157,7 @@ const UserManagementTable: React.FC = () => {
 				</button>
 			</div>
 			{isModalOpen && editUser && (
-				<div className="fixed inset-0 flex items-center justify-center bg-gray-600 bg-opacity-75 z-50">
+				<div className="fixed inset-0 flex items-center justify-center bg-gray-600 bg-opacity-75 z-[9999]">
 					<div className="bg-white rounded-lg lg:p-6 p-3 lg:w-1/3 w-full shadow-lg mx-4">
 						<div className="flex justify-between items-center gap-4">
 							<h2 className="text-xl font-bold">ویرایش اطلاعات کاربر</h2>

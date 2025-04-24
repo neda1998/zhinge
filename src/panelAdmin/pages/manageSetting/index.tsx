@@ -88,7 +88,7 @@ const ManageSetting = () => {
                             <Link
                                 key={item.id}
                                 to={item.path}
-                                className={`block p-2 text-black lg:text-lg sm:text-sm text-xs ${id === item.path.split("/").pop() ? "text-main-color" : ""
+                                className={`block p-2 text-black lg:text-lg sm:text-sm text-xs whitespace-nowrap ${id === item.path.split("/").pop() ? "text-main-color" : ""
                                     }`}
                                 onClick={() => handleItemClick(item.path)}
                             >

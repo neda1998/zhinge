@@ -108,7 +108,6 @@ const Sliders = () => {
             handleModalClose();
             refetch();
         } catch (error) {
-            // Error is handled by onError callback in update mutation.
         }
     };
 
@@ -122,7 +121,6 @@ const Sliders = () => {
     return (
         <InitialLayout>
             <div className="flex flex-col">
-                {/* Update Modal triggered by FiEdit */}
                 {modalOpen && (
                     <div className="fixed inset-0 bg-gray-500 bg-opacity-50 flex items-center justify-center z-50">
                         <div className="bg-white lg:p-8 rounded-lg shadow-lg lg:w-1/2 w-full lg:mx-0 mx-4 p-3">
@@ -158,13 +156,13 @@ const Sliders = () => {
                     <table className="min-w-full bg-white">
                         <thead className="bg-gray-100 rounded-2xl">
                             <tr>
-                                <th className="px-2 py-4 text-center rounded-tr-full rounded-br-full">
+                                <th className="sm:px-2 p-0 whitespace-nowrap sm:py-4 text-center rounded-tr-full rounded-br-full">
                                     عنوان اسلایدر
                                 </th>
-                                <th className="px-2 py-4 text-center">
+                                <th className="sm:px-2 p-0 whitespace-nowrap sm:py-4 text-center">
                                     متن کوتاه در مورد اسلایدر
                                 </th>
-                                <th className="px-2 py-4 text-center">عکس‌ها</th>
+                                <th className="sm:px-2 p-0 whitespace-nowrap sm:py-4 text-center">عکس‌ها</th>
                                 <th className="px-2 py-4 text-center rounded-tl-full rounded-bl-full">
                                     عملیات
                                 </th>

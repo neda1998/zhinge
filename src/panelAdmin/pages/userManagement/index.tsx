@@ -1,5 +1,4 @@
 import RouteChevron from "../../../components/common/RouteChevron"
-import Search from "../../../components/common/Search"
 import { pageUserManagement  } from "../../../utils/data"
 import InitialLayout from "../../dashboard/initialLayoutAdmin"
 import UserManagementTable from "./UserManagementTable"
@@ -13,7 +12,6 @@ const UserManagement = () => {
                 </div>
                 <RouteChevron items={pageUserManagement} />
             </div>
-            <Search className="lg:w-1/2 w-full my-12" searchClass="w-12 h-11" />
             <UserManagementTable />
         </InitialLayout>
     )

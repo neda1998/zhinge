@@ -12,7 +12,7 @@ const TopNavbarMobile = () => {
     const handleCloseMenu = () => setToggleMenu(false);
 
     return (
-        <div className=" lg:hidden m-7 mb-0 relative z-[9999] flex items-center justify-between">
+        <div className="lg:hidden m-5 mb-0 relative z-[9999] flex items-center justify-between">
             <div className="flex items-center justify-between gap-2">
                 <CgMenuRightAlt color="#11a97f" size={32} onClick={() => setToggleMenu(true)} />
                 {

@@ -1,7 +1,5 @@
 import { useState } from "react";
-import ComboBox from "../common/Combo";
 import InputState from "../ui/atoms/input/inputState";
-import TitleCommon from "./TitleCommon";
 import UseCreatAnnouncementMutation from "../../hooks/mutation/creatAnnouncement/UseCreatAnnouncementMutation";
 
 const StepOne = () => {
@@ -60,7 +58,7 @@ const StepOne = () => {
       check: true,
       Uid: "1740490552353", // 👈 دقیقا با حرف بزرگ طبق داکیومنت
       full_name: "علی رضایی",
-      phone: "09120000000",
+      phone: "09057973389",
       location: "تهران",
       region: "مرکزی",
       state_code: "IR-23",
@@ -70,22 +68,21 @@ const StepOne = () => {
   
     creatAnnouncementMutation.mutate(payload);
   };
-  
-
-
   return (
+    <div className=" w-full">
     <form
-      className="grid lg:grid-cols-4 grid-cols-1 lg:gap-x-5 lg:gap-y-10 gap-y-4 w-full"
+      className="grid lg:grid-cols-4 sm:grid-cols-2 grid-cols-1 lg:gap-x-5 lg:gap-y-10 gap-y-4"
       onSubmit={handleSubmit}
     >
-      <TitleCommon text="مشخصات ملک" />
+      <InputState 
+        label="نوع ملک" 
+        value={type} 
+        onChange={(e) => setEstateType(e.target.value)} 
+      />
+      <InputState label="نوع کاربری" value={usage} onChange={(e) => setUsageType(e.target.value)} />
 
-      <ComboBox label="نوع ملک" options={["آپارتمان", "ویلایی", "زمین"]} value={type} onChange={setEstateType} />
-      <ComboBox label="نوع کاربری" options={["مسکونی", "اداری", "تجاری"]} value={usage} onChange={setUsageType} />
-
-      <ComboBox label="استان" options={["کردستان", "تهران", "ارومیه"]} value={state_code} onChange={setStateCode} />
-      <ComboBox label="منطقه" options={["مرکزی", "شمالی", "جنوبی"]} value={region} onChange={setRegion} />
-
+      <InputState label="استان" value={state_code} onChange={e => setStateCode(e.target.value)} />
+      <InputState label="منطقه" value={region} onChange={e => setRegion(e.target.value)} />
       <InputState label="آدرس" placeholder="آدرس ملک" value={address} onChange={e => setAddress(e.target.value)} />
       <InputState label="قیمت (تومان)" placeholder="مثال: 2000000" value={price} onChange={e => setPrice(Number(e.target.value))} />
       <InputState label="سال ساخت" placeholder="مثال: 1400" value={year_of_build} onChange={e => setYearOfBuild(Number(e.target.value))} />
@@ -101,7 +98,9 @@ const StepOne = () => {
       <InputState label="شماره تماس" placeholder="مثال: 09120000000" value={phone} onChange={e => setPhone(e.target.value)} />
       <InputState label="مکان" placeholder="مثال: تهران" value={location} onChange={e => setLocation(e.target.value)} />
       <InputState label="لینک تور سه‌بعدی" placeholder="مثال: https://example.com" value={tour3dlink} onChange={e => setTour3dlink(e.target.value)} />
-
+      <InputState label="لینک تور سه‌بعدی" placeholder="مثال: https://example.com" value={tour3dlink} onChange={e => setTour3dlink(e.target.value)} />
+      <InputState label="لینک تور سه‌بعدی" placeholder="مثال: https://example.com" value={tour3dlink} onChange={e => setTour3dlink(e.target.value)} />
+      <InputState label="لینک تور سه‌بعدی" placeholder="مثال: https://example.com" value={tour3dlink} onChange={e => setTour3dlink(e.target.value)} />
       <div className="flex items-center gap-2">
         <label>تور سه‌بعدی</label>
         <input type="checkbox" checked={tour3dRequest} onChange={e => setTour3dRequest(e.target.checked)} />
@@ -123,6 +122,7 @@ const StepOne = () => {
         {creatAnnouncementMutation.isLoading ? "در حال ثبت..." : "ثبت آگهی"}
       </button>
     </form>
+    </div>
   );
 };
 

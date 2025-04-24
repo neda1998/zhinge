@@ -7,9 +7,14 @@ export const aboutUpdating = async (data: { id?: number; about?: string; goals?:
   return await client({
     url,
     method: "POST",
-    data,
+    data: {
+      id: 1,
+      about: "تست",
+      goals: "تست",
+      logo: null
+    },
     headers: {
       "Content-Type": "application/json"
     }
-  });
+  });  
 };

@@ -90,17 +90,15 @@ const TransactionManagement = () => {
                     value={dealNumber} 
                     onChange={(e) => setDealNumber(e.target.value)}
                 />
-                <ComboBox 
+                <InputState 
                     label="منطقه" 
-                    options={["کردستان", "تهران", "ارومیه"]} 
                     value={region}
-                    onChange={(val) => setRegion(val)}
+                    onChange={(e) => setRegion(e.target.value)}
                 />
-                <ComboBox 
+                <InputState 
                     label="نوع ملک" 
-                    options={["ویلایی", "اپارتمان"]} 
                     value={dealType}
-                    onChange={(val) => setDealType(val)}
+                    onChange={(e) => setDealType(e.target.value)}
                 />
                 <InputState 
                     label="نام فروشنده" 
@@ -144,7 +142,7 @@ const TransactionManagement = () => {
                 onChange={(e) => setNote(e.target.value)}
             ></textarea>
             <button 
-                className="text-white bg-main-color rounded-full px-14 py-2 ml-0 mr-auto flex"
+                className="text-white bg-main-color rounded-full px-14 py-2 ml-0 mr-auto flex mb-10"
                 onClick={handleSubmit}
             >
                 ثبت
