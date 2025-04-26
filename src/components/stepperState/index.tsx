@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
-import StepOne from "./StepOne";
 import StepTwo from "./StepTwo";
 import StepThree from "./StepThree";
 import StepFour from "./StepFour";
+import StepOne from "./StepOne";
 
 const StepperState = () => {
     const [currentStep, setCurrentStep] = useState(1);

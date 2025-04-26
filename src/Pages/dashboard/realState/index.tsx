@@ -27,7 +27,7 @@ export default function Realstate() {
       "room_number"  : "",
       "features"     : ""
   },
-    onSubmit: (values) => {
+    onSubmit: (values, {resetForm}) => {
       const requestData = {
         loan: values.loan ? Number(values.loan) : undefined,
         type: values.type && values.type.trim() === "اجاره" ? "اجاره" : "فروش",
@@ -47,7 +47,11 @@ export default function Realstate() {
         room_number: values.room_number ? Number(values.room_number) : undefined,
         features: values.features || "any"
       };
-      mutate(requestData as any);
+      mutate(requestData as any, {
+        onSuccess: () => {
+          resetForm();
+        }
+      });
     },
   });
 

@@ -33,14 +33,17 @@ export interface CreatAnnouncementBody {
   land_metrage?: number;
 }
 
-export const creatAnnouncement = async (data: CreatAnnouncementBody) => {
+export const creatAnnouncement = async (data: CreatAnnouncementBody, token: string) => {
   const url = getRoute({ route: `${apiRoutes.admin.creatAnnouncement}` });
+
   return await client({
     url,
     method: "POST",
     data,
     headers: {
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`, 
     }
   });
 };
+

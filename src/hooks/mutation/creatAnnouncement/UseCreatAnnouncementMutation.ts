@@ -1,11 +1,14 @@
 import { useMutation } from "react-query";
 import Swal from "sweetalert2";
 import { creatAnnouncement, CreatAnnouncementBody } from "../../../services/admin/creatAnnouncement";
+import { useCookies } from "react-cookie"; // 👈 اضافه شده
 
 const UseCreatAnnouncementMutation = () => {
+  const [cookies] = useCookies(["accessToken"]); // 👈 کوکی رو میگیریم
+  
   return useMutation(
     async (data: CreatAnnouncementBody) => {
-      return await creatAnnouncement(data);
+      return await creatAnnouncement(data, cookies.accessToken); // 👈 توکن به عنوان آرگومان دوم ارسال می‌شود
     },
     {
       onSuccess: async (response) => {
