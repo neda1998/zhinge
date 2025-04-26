@@ -129,13 +129,18 @@ const StepOne = () => {
         <InputState label="نوع سند" placeholder="مثال: سند تک برگ" value={document_type} onChange={(e) => setDocumentType(e.target.value)} />
         <InputState label="امکانات" placeholder="مثال: آسانسور، پارکینگ" value={features} onChange={(e) => setFeatures(e.target.value)} />
         <InputState label="نام کامل مالک" placeholder="مثال: علی رضایی" value={full_name} onChange={(e) => setFullName(e.target.value)} />
-        <button
+        <div></div>
+        <div></div>
+        <div></div>
+       <div className="flex justify-end">
+       <button
           type="submit"
-          className="col-span-4 bg-main-color text-white px-8 py-2 rounded-full mt-4"
+          className="col-span-4 bg-main-color text-white px-8 py-2 rounded-full mt-4 "
           disabled={creatAnnouncementMutation.isLoading}
         >
           {creatAnnouncementMutation.isLoading ? "در حال ثبت..." : "ثبت آگهی"}
         </button>
+       </div>
       </form>
     </div>
   );

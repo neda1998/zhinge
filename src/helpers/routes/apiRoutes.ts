@@ -44,7 +44,8 @@ const apiRoutes = {
     uploadPhotos: "/admin/uploadPhotos",
     uploadSliderPhotos: "/admin/uploadsliderPhotos",
     verifyAnnounce: "/admin/varifyannounce",
-    deleteSlider: "/admin/deleteslider"
+    deleteSlider: "/admin/deleteslider",
+    getAbout: "/admin/getabout",
   },
   user: {
     myAnnouncements: "/auth/getAnnouncements",
