@@ -6,11 +6,16 @@ import request from "../../assets/images/Chat-Square-Arrow.png";
 import houreGlass from "../../assets/images/Hourglass.png";
 import ChatRoundUnread from "../../assets/images/Chat-Round-Unread.png";
 import trashbin from "../../assets/images/Trash-Bin.png";
+import { PuffLoader } from "react-spinners";
 
 const EstateOfManagement = () => {
     const { data, isLoading, isError } = UseDashboardQuery();
     if (isLoading) {
-        return <div>Loading...</div>;
+        return (
+            <div className="flex items-center justify-center h-screen">
+                <PuffLoader color="#09A380" />
+            </div>
+        );
     }
 
     if (isError) {

@@ -3,13 +3,13 @@ import { useMutation } from "react-query";
 import Swal from "sweetalert2";
 import { adminSearch } from "../../../services/admin/adminSearch";
 
-const UseSearchStateMutation = () => {
+const UseSearchStateMutation = (options?: { onSuccess?: () => void }) => {
   const [cookies] = useCookies(["accessToken"]);
   const token = cookies.accessToken;
 
   return useMutation(
     async (data: Record<string, any>) => {
-      return await adminSearch(data, token); // ارسال توکن
+      return await adminSearch(data, token);
     },
     {
       onSuccess: async (response) => {
@@ -20,6 +20,7 @@ const UseSearchStateMutation = () => {
           icon: "success",
           confirmButtonText: "باشه",
         });
+        options?.onSuccess?.();
       },
       onError: async (error: any) => {
         Swal.fire({

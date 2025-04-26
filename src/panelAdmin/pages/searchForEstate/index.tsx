@@ -5,9 +5,9 @@ import InitialLayout from "../../dashboard/initialLayoutAdmin"
 import ChooseItemsOfState from "../propertyManagement/ChooseItemsOfState"
 import UseSearchStateMutation from "../../../hooks/mutation/searchState/UseSearchStateMutation"
 import { useState } from "react"
+import Swal from "sweetalert2"
 
 const SearchForEstate = () => {
-  const searchMutation = UseSearchStateMutation();
   const [form, setForm] = useState<any>({});
 
   const handleChange = (label: string, value: any) => {
@@ -17,6 +17,12 @@ const SearchForEstate = () => {
     }));
   };
 
+  const resetForm = () => setForm({});
+
+  const searchMutation = UseSearchStateMutation({
+    onSuccess: resetForm
+  });
+
   const handleSearch = () => {
     const payload = {
       loan: form.loan || "",
@@ -24,10 +30,20 @@ const SearchForEstate = () => {
       region: form.region || "",
       address: form.address || "",
     };
-  
+
+    const allFilled = Object.values(payload).every(val => val !== "" && val !== undefined && val !== null);
+    if (!allFilled) {
+      Swal.fire({
+        title: "اخطار",
+        text: "لطفا همه فیلدها را پر کنید.",
+        icon: "warning",
+        confirmButtonText: "باشه",
+      });
+      return;
+    }
+
     searchMutation.mutate(payload);
   };
-  
 
   return (
     <InitialLayout>
@@ -39,12 +55,12 @@ const SearchForEstate = () => {
       </div>
       <ChooseItemsOfState />
       <div className="grid lg:grid-cols-4 gap-x-5 gap-y-10 mb-9">
-        <InputState label="منطقه" onChange={e => handleChange("region", e.target.value)} />
-        <InputState label="نوع ملک" onChange={e => handleChange("type", e.target.value)} />
-        <InputState label="وام" onChange={e => handleChange("loan", Number(e.target.value))} />
+        <InputState label="منطقه" value={form.region || ""} onChange={e => handleChange("region", e.target.value)} />
+        <InputState label="نوع ملک" value={form.type || ""} onChange={e => handleChange("type", e.target.value)} />
+        <InputState label="وام" value={form.loan || ""} onChange={e => handleChange("loan", Number(e.target.value))} />
       </div>
-      <div className="flex items-center justify-between w-full gap-5">
-        <InputState label="آدرس ملک" placeholder="آدرس را وارد کنید" onChange={e => handleChange("address", e.target.value)} />
+      <div className="flex items-center justify-between md:w-1/2 w-full gap-5">
+        <InputState label="آدرس ملک" value={form.address || ""} placeholder="آدرس را وارد کنید" onChange={e => handleChange("address", e.target.value)} />
       </div>
       <div className="flex justify-end items-center my-8">
         <button

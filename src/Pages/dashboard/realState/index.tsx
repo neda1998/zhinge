@@ -61,13 +61,7 @@ export default function Realstate() {
       </div>
       <form onSubmit={formik.handleSubmit}>
         <div className="flex flex-col items-center justify-center w-full gap-5">
-          <div className="grid lg:grid-cols-2 lg:gap-10 w-full gap-5">
-            {/* فقط این اینپوت در موبایل نمایش داده شود */}
-            <div className="block lg:hidden w-full">
-              <InputState label="آدرس ملک" name="address" value={formik.values.address} onChange={formik.handleChange} />
-            </div>
-            {/* بقیه اینپوت‌ها فقط در دسکتاپ نمایش داده شوند */}
-            <div className="hidden lg:grid lg:grid-cols-2 lg:gap-10 w-full gap-5">
+          <div className="grid lg:grid-cols-2 grid-cols-1 lg:gap-10 w-full gap-5">
               <InputState label="وام" name="loan" value={formik.values.loan} onChange={formik.handleChange} />
               <InputState label="منطقه" name="region" value={formik.values.region} onChange={formik.handleChange} />
               <InputState label="نوع کاربری" name="usage" value={formik.values.usage} onChange={formik.handleChange} />
@@ -84,7 +78,6 @@ export default function Realstate() {
               <InputState label="تعداد اتاق‌ها" name="room_number" value={formik.values.room_number.toString()} onChange={(e) => formik.setFieldValue("room_number", e.target.value)} />
               <InputState label="ویژگی‌ها" name="features" value={formik.values.features} onChange={formik.handleChange} />
             </div>
-          </div>
         </div>
         <div className="flex items-center justify-end my-6">
           <Button submit="true" width="80px" height="50px" bgcolor="#09A380" borderradius="30px" color="white" type="submit">
