@@ -8,7 +8,7 @@ import UseUploadsliderPhotosMutation from "../../../hooks/mutation/uploadsliderP
 const UploadAttach = () => {
     const [images, setImages] = useState<string[]>([]);
     const [files, setFiles] = useState<File[]>([]);
-    const [sliderId, setSliderId] = useState(""); // شناسه اسلایدر
+    const [sliderId, setSliderId] = useState(""); 
     const uploadSliderPhotosMutation = UseUploadsliderPhotosMutation();
 
     const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {

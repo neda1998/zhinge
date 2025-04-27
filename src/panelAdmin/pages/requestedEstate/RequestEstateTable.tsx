@@ -28,12 +28,11 @@ const RequestEstateTable: React.FC = () => {
     const startIndex = (currentPage - 1) * itemsPerPage;
     const paginatedData = data.users.slice(startIndex, startIndex + itemsPerPage);
 
-    if (isLoading) return (
-        <div className="flex justify-center items-center py-10">
+    if (isError) return (
+        <div className="flex items-center justify-center h-screen">
             <PuffLoader color="#09A380" />
         </div>
     );
-    if (isError) return <div>خطا در دریافت اطلاعات</div>;
 
     return (
         <div className="overflow-x-auto">
@@ -55,7 +54,7 @@ const RequestEstateTable: React.FC = () => {
                     {paginatedData.map((item: any, index: number) => (
                         <tr key={item.id || index} className="py-2 text-center">
                             {columns.map(col => (
-                                <td key={col.key} className="p-4 whitespace-nowrap">
+                                <td key={col.key} className="p-4 whitespace-nowrap rounded-tr-full rounded-br-full">
                                     {col.key === "created_at"
                                         ? (item.created_at ? new Date(item.created_at).toLocaleDateString() : "")
                                         : item[col.key]}

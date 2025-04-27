@@ -17,7 +17,7 @@ const GeneralSettings = () => {
       });
       return;
     }
-    initiateSettingMutate();
+    // initiateSettingMutate();
   };
 
   return (

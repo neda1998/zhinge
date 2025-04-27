@@ -2,19 +2,26 @@ import apiRoutes from "../../../helpers/routes/apiRoutes";
 import { getRoute } from "../../service";
 import client from "../../utils/client";
 
-export const aboutUpdating = async (data: { id?: number; about?: string; goals?: string; logo?: any }) => {
-  const url = getRoute({ route: `${apiRoutes.admin.aboutUpdating}` });
+// خواندن توکن از کوکی به صورت دستی
+function getAccessToken() {
+  return document.cookie
+    .split("; ")
+    .find(row => row.startsWith("accessToken="))
+    ?.split("=")[1];
+}
+
+export const aboutUpdating = async (data: any) => {
+  // توجه: اگر apiRoutes.admin.aboutUpdating مقدار صحیح نیست، آن را بررسی و اصلاح کنید
+  const url = getRoute({ route: apiRoutes.admin.aboutUpdating });
+  const accessToken = getAccessToken();
+
   return await client({
     url,
-    method: "POST",
-    data: {
-      id: 1,
-      about: "تست",
-      goals: "تست",
-      logo: null
-    },
+    method: "PUT",
+    data,
     headers: {
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
+      ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {})
     }
-  });  
+  });
 };

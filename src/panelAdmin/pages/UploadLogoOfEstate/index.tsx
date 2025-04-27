@@ -22,7 +22,6 @@ const UploadLogoOfEstate = () => {
         }
     };
 
-    // آپلود لوگو
     const uploadLogo = async () => {
         if (!uid || files.length === 0) {
             Swal.fire({

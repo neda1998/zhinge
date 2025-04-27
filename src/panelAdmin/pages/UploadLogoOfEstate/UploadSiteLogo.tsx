@@ -1,16 +1,13 @@
 import { useState } from "react";
-import RouteChevron from "../../../components/common/RouteChevron"
-import { pageUploadSiteLogo } from "../../../utils/data"
-import camraadd from "../../../assets/images/Cameradd.png"
-import Swal from "sweetalert2";
-import UseUploadLogo from "../../../hooks/mutation/uploadLogo/UseUploadLogo";
-
-
+import RouteChevron from "../../../components/common/RouteChevron";
+import { pageUploadSiteLogo } from "../../../utils/data";
+import camraadd from "../../../assets/images/Cameradd.png";
+import UseUploadLogo from "../../../hooks/queries/admin/uploadLogo/UseUploadLogoQuery";
 
 const UploadSiteLogo = () => {
     const [images, setImages] = useState<string[]>([]);
     const [files, setFiles] = useState<File[]>([]);
-    const uploadLogoMutation = UseUploadLogo();
+    const { data, isLoading, error } = UseUploadLogo();
 
     const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
         const selectedFiles = event.target.files;
@@ -22,19 +19,6 @@ const UploadSiteLogo = () => {
             );
             setImages(prev => [...prev, ...newImages].slice(0, 8));
         }
-    };
-
-    const uploadLogo = async () => {
-        if (files.length === 0) {
-            Swal.fire({
-                title: "خطا",
-                text: "لطفا تصویر را انتخاب کنید.",
-                icon: "warning",
-                confirmButtonText: "باشه"
-            });
-            return;
-        }
-        uploadLogoMutation.mutate({ files });
     };
 
     return (
@@ -65,14 +49,30 @@ const UploadSiteLogo = () => {
                 />
                 <button
                     className="bg-main-color text-white rounded-full px-8 py-2 mt-4"
-                    onClick={uploadLogo}
-                    disabled={uploadLogoMutation.isLoading}
+                    // disabled={uploadLogoMutation.isLoading}
                 >
                     ثبت لوگو
                 </button>
             </div>
+            {/* نمایش لوگوهای دریافتی از سرور */}
+            <div className="flex flex-wrap gap-4 justify-center mt-8">
+                {Array.isArray(data?.logo) && data.logo.length > 0 && data.logo.map((logoUrl: string, idx: number) => (
+                    <div key={idx} className="flex flex-col items-center">
+                        <div className="w-32 h-32 flex items-center justify-center border rounded-lg bg-white overflow-hidden">
+                            <img
+                                src={logoUrl}
+                                alt={`لوگو ${idx + 1}`}
+                                className="max-w-full max-h-full object-contain"
+                            />
+                        </div>
+                        <span className="text-xs text-gray-500 mt-2">{`لوگو ${idx + 1}`}</span>
+                    </div>
+                ))}
+            </div>
+            {isLoading && <div className="text-center mt-4">در حال دریافت لوگوها...</div>}
+            {error && <div className="text-center text-red-500 mt-4">خطا در دریافت لوگوها</div>}
         </div>
-    )
-}
+    );
+};
 
-export default UploadSiteLogo
+export default UploadSiteLogo;
