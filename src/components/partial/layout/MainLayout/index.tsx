@@ -4,11 +4,6 @@ const MainLayout: React.FC<LayoutsInterface> = ({ children }: LayoutsInterface) 
 
     return (
         <>
-            {/* <main className="flex flex-col mobile:hidden lg:w-full mx-auto">
-                <div className="">
-                    {children}
-                </div>
-            </main> */}
             <main className="flex flex-col mx-auto p-4 mobile:p-0 tablet:p-0">
                 {/* <Header /> */}
                 <div className="mt-3 mb-5 tablet:mt-0 tablet:mb-0 mobile:mt-0 mobile:mb-0 ">
