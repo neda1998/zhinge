@@ -29,7 +29,7 @@ const UploadSiteLogo = () => {
                 </div>
                 <RouteChevron items={pageUploadSiteLogo} />
             </div>
-            <div className="flex flex-col items-center justify-center bg-gray-50 px-6 py-9 mx-auto rounded-xl w-full cursor-pointer my-14">
+            {/* <div className="flex flex-col items-center justify-center bg-gray-50 px-6 py-9 mx-auto rounded-xl w-full cursor-pointer my-14">
                 <img
                     src={camraadd}
                     alt="camraadd"
@@ -53,9 +53,9 @@ const UploadSiteLogo = () => {
                 >
                     ثبت لوگو
                 </button>
-            </div>
+            </div> */}
             {/* نمایش لوگوهای دریافتی از سرور */}
-            <div className="flex flex-wrap gap-4 justify-center mt-8">
+            <div className="lex flex-col items-center justify-center bg-gray-50 px-6 py-9 mx-auto rounded-xl w-full cursor-pointer my-14">
                 {Array.isArray(data?.logo) && data.logo.length > 0 && data.logo.map((logoUrl: string, idx: number) => (
                     <div key={idx} className="flex flex-col items-center">
                         <div className="w-32 h-32 flex items-center justify-center border rounded-lg bg-white overflow-hidden">
