@@ -1,17 +1,18 @@
 import { useMutation } from "react-query";
 import Swal from "sweetalert2";
-import { uploadsliderPhotos } from "../../../services/admin/uploadsliderPhotos";
+import { uploadPhotosAnnounc } from "../../../services/admin/uploadPhotosAnnounc";
 
-const UseUploadsliderPhotosMutation = () => {
-  return useMutation<any, any, FormData>(
+const UseUploadPhotosAnnouncMutation = () => {
+  return useMutation(
     async (formData: FormData) => {
-      return await uploadsliderPhotos(formData);
+      // formData should contain 'images' (files) and 'Uid'
+      return await uploadPhotosAnnounc(formData);
     },
     {
       onSuccess: async (response) => {
         Swal.fire({
           title: "موفق",
-          text: response?.data?.message || "عکس جدید با موفقیت آپلود شد",
+          text: response?.data?.message || "عکس جدید با موفقیت ایجاد شد",
           icon: "success",
           confirmButtonText: "باشه",
         });
@@ -19,7 +20,7 @@ const UseUploadsliderPhotosMutation = () => {
       onError: async (error: any) => {
         Swal.fire({
           title: "خطا",
-          text: error.response?.data || "خطایی رخ داده است",
+          text: error.response?.data?.message || "خطایی رخ داده است",
           icon: "error",
           confirmButtonText: "باشه",
         });
@@ -28,4 +29,4 @@ const UseUploadsliderPhotosMutation = () => {
   );
 };
 
-export default UseUploadsliderPhotosMutation;
+export default UseUploadPhotosAnnouncMutation;

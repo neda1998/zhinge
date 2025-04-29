@@ -101,7 +101,7 @@ const StepOne = () => {
   
     creatAnnouncementMutation.mutate(cleanPayload, {
       onSuccess: () => {
-        resetFields(); // 🔥 بعد از موفقیت ریست کن
+        resetFields();
       }
     });
   };

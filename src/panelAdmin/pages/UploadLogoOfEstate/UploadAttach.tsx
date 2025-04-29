@@ -4,36 +4,70 @@ import { pageUploadAttach } from "../../../utils/data"
 import camraadd from "../../../assets/images/Cameradd.png"
 import Swal from "sweetalert2";
 import UseUploadsliderPhotosMutation from "../../../hooks/mutation/uploadsliderPhotos/UseUploadsliderPhotosMutation";
+import Cookies from "js-cookie";
 
 const UploadAttach = () => {
     const [images, setImages] = useState<string[]>([]);
     const [files, setFiles] = useState<File[]>([]);
-    const [sliderId, setSliderId] = useState(""); 
+    const [uploadedImages, setUploadedImages] = useState<string[]>([]);
+
     const uploadSliderPhotosMutation = UseUploadsliderPhotosMutation();
+
+    const uid = Cookies.get("Uid") || "";
 
     const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
         const selectedFiles = event.target.files;
         if (selectedFiles) {
             const newFiles = Array.from(selectedFiles);
-            setFiles(prev => [...prev, ...newFiles].slice(0, 8));
-            const newImages = newFiles.map(file =>
-                URL.createObjectURL(file)
-            );
-            setImages(prev => [...prev, ...newImages].slice(0, 8));
+            if (files.length + newFiles.length > 10) {
+                Swal.fire({
+                    title: "خطا",
+                    text: "حداکثر 10 عکس می‌توانید انتخاب کنید.",
+                    icon: "warning",
+                    confirmButtonText: "باشه"
+                });
+                return;
+            }
+            const totalFiles = [...files, ...newFiles];
+            setFiles(totalFiles);
+            const newImages = newFiles.map(file => URL.createObjectURL(file));
+            const totalImages = [...images, ...newImages];
+            setImages(totalImages);
         }
     };
 
     const uploadAttach = () => {
-        if (files.length === 0 || !sliderId) {
+        if (!uid) {
             Swal.fire({
                 title: "خطا",
-                text: "لطفا تصویر و شناسه اسلایدر را وارد کنید.",
+                text: "شناسه کاربری یافت نشد.",
                 icon: "warning",
                 confirmButtonText: "باشه"
             });
             return;
         }
-        uploadSliderPhotosMutation.mutate({ files, id: sliderId });
+        if (files.length === 0) {
+            Swal.fire({
+                title: "خطا",
+                text: "لطفا تصویر را انتخاب کنید.",
+                icon: "warning",
+                confirmButtonText: "باشه"
+            });
+            return;
+        }
+        const formData = new FormData();
+        files.forEach(file => formData.append("images", file));
+        formData.append("Uid", uid);
+
+        uploadSliderPhotosMutation.mutate(formData as any, {
+            onSuccess: (response: any) => {
+                if (response?.data?.files && Array.isArray(response.data.files)) {
+                    setUploadedImages(response.data.files);
+                }
+                setFiles([]);
+                setImages([]);
+            }
+        });
     };
 
     return (
@@ -52,7 +86,7 @@ const UploadAttach = () => {
                     onClick={() => document.getElementById("fileInput")?.click()}
                 />
                 <span className="text-gray-400">
-                    آپلود تصویر
+                    آپلود تصویر (حداکثر 10 عکس)
                 </span>
                 <input
                     id="fileInput"
@@ -62,6 +96,9 @@ const UploadAttach = () => {
                     onChange={handleImageUpload}
                     className="hidden"
                 />
+                <div className="text-xs text-gray-500 mt-2">
+                    {files.length > 0 && `تعداد عکس انتخاب شده: ${files.length} (حداکثر 10 عکس)`}
+                </div>
                 <button
                     className="bg-main-color text-white rounded-full px-8 py-2 mt-4"
                     onClick={uploadAttach}
@@ -70,6 +107,35 @@ const UploadAttach = () => {
                     ثبت پیوست
                 </button>
             </div>
+
+            {/* نمایش عکس‌های انتخاب شده */}
+            {images.length > 0 && (
+                <div className="flex flex-wrap gap-3 justify-center my-4">
+                    {images.map((img, idx) => (
+                        <img
+                            key={idx}
+                            src={img}
+                            alt={`preview-${idx}`}
+                            className="w-24 h-24 object-cover rounded border"
+                        />
+                    ))}
+                </div>
+            )}
+
+            {/* نمایش عکس‌های آپلود شده */}
+            {uploadedImages.length > 0 && (
+                <div className="flex flex-wrap gap-3 justify-center my-4">
+                    {uploadedImages.map((img, idx) => (
+                        <img
+                            key={idx}
+                            src={img}
+                            alt={`uploaded-${idx}`}
+                            className="w-24 h-24 object-cover rounded border-2 border-green-500"
+                        />
+                    ))}
+                    <div className="w-full text-center text-green-600 text-xs mt-2">عکس‌ها با موفقیت آپلود شدند</div>
+                </div>
+            )}
         </>
     )
 }

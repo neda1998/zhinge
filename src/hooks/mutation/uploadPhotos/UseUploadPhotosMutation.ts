@@ -4,14 +4,14 @@ import { uploadPhotos } from "../../../services/admin/uploadPhotos";
 
 const UseUploadPhotosMutation = () => {
   return useMutation(
-    async (data) => {
+    async (data: FormData) => {
       return await uploadPhotos(data);
     },
     {
       onSuccess: async (response) => {
         Swal.fire({
           title: "موفق",
-          text: response?.data || "بازدید جدید با موفقیت ایجاد شد",
+          text: response?.data?.message || "عکس جدید با موفقیت آپلود شد",
           icon: "success",
           confirmButtonText: "باشه",
         });
@@ -19,7 +19,7 @@ const UseUploadPhotosMutation = () => {
       onError: async (error: any) => {
         Swal.fire({
           title: "خطا",
-          text: error.response?.data || "خطایی رخ داده است",
+          text: error?.response?.data?.message || "خطایی رخ داده است",
           icon: "error",
           confirmButtonText: "باشه",
         });

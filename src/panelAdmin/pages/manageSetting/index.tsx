@@ -83,10 +83,9 @@ const ManageSetting = () => {
                 {/* sidebar */}
                 <div className="lg:flex lg:flex-col lg:gap-6 grid sm:grid-cols-3 grid-cols-2 gap-3 lg:min-w-[200px] lg:pl-5 lg:border-l border-l-gray-200 lg:h-screen w-full lg:w-fit">
                     {submenus.map((item) => (
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-2" key={item.id}>
                             {activeItem === item.path && item.path !== "#" ? <FiChevronLeft color="#11a97f"/> : null}
                             <Link
-                                key={item.id}
                                 to={item.path}
                                 className={`block p-2 text-black lg:text-lg sm:text-sm text-xs whitespace-nowrap ${id === item.path.split("/").pop() ? "text-main-color" : ""
                                     }`}

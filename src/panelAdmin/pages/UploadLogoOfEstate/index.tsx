@@ -4,29 +4,52 @@ import camraadd from "../../../assets/images/Cameradd.png"
 import { useState } from "react"
 import Swal from "sweetalert2";
 import UseUploadPhotosMutation from "../../../hooks/mutation/uploadPhotos/UseUploadPhotosMutation";
+import Cookies from "js-cookie";
 
 const UploadLogoOfEstate = () => {
     const [images, setImages] = useState<string[]>([]);
-    const [uid, setUid] = useState("");
     const [files, setFiles] = useState<File[]>([]);
+    const [uploadedImages, setUploadedImages] = useState<string[]>([]); // عکس‌های آپلود شده
 
     const uploadPhotosMutation = UseUploadPhotosMutation();
+
+    const uid = Cookies.get("Uid") || "";
 
     const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
         const selectedFiles = event.target.files;
         if (selectedFiles) {
             const newFiles = Array.from(selectedFiles);
-            setFiles(prev => [...prev, ...newFiles].slice(0, 8));
+            if (files.length + newFiles.length > 10) {
+                Swal.fire({
+                    title: "خطا",
+                    text: "حداکثر 10 عکس می‌توانید انتخاب کنید.",
+                    icon: "warning",
+                    confirmButtonText: "باشه"
+                });
+                return;
+            }
+            const totalFiles = [...files, ...newFiles];
+            setFiles(totalFiles);
             const newImages = newFiles.map(file => URL.createObjectURL(file));
-            setImages(prev => [...prev, ...newImages].slice(0, 8));
+            const totalImages = [...images, ...newImages];
+            setImages(totalImages);
         }
     };
 
     const uploadLogo = async () => {
-        if (!uid || files.length === 0) {
+        if (!uid) {
             Swal.fire({
                 title: "خطا",
-                text: "لطفا Uid و تصویر را وارد کنید.",
+                text: "شناسه کاربری یافت نشد.",
+                icon: "warning",
+                confirmButtonText: "باشه"
+            });
+            return;
+        }
+        if (files.length === 0) {
+            Swal.fire({
+                title: "خطا",
+                text: "لطفا تصویر را وارد کنید.",
                 icon: "warning",
                 confirmButtonText: "باشه"
             });
@@ -36,7 +59,16 @@ const UploadLogoOfEstate = () => {
         files.forEach(file => formData.append("images", file));
         formData.append("Uid", uid);
 
-        uploadPhotosMutation.mutate(formData as any);
+        uploadPhotosMutation.mutate(formData as any, {
+            onSuccess: (response: any) => {
+                // اگر عکس‌ها برگشت داده شد، آن‌ها را نمایش بده
+                if (response?.data?.files && Array.isArray(response.data.files)) {
+                    setUploadedImages(response.data.files);
+                }
+                setFiles([]);
+                setImages([]);
+            }
+        });
     };
 
     return (
@@ -45,7 +77,6 @@ const UploadLogoOfEstate = () => {
                 <div>
                     <span className="font-extrabold text-lg whitespace-nowrap">تنظیمات مدیریتی</span>
                 </div>
-                <RouteChevron items={pageAdministrativeSettings} />
             </div>
             <div className="flex flex-col items-center justify-center bg-gray-50 px-6 py-9 mx-auto rounded-xl w-full cursor-pointer my-14">
                 <img
@@ -65,6 +96,9 @@ const UploadLogoOfEstate = () => {
                     onChange={handleImageUpload}
                     className="hidden"
                 />
+                <div className="text-xs text-gray-500 mt-2">
+                    {files.length > 0 && `تعداد عکس انتخاب شده: ${files.length} (حداکثر 10 عکس)`}
+                </div>
                 <button
                     className="bg-main-color text-white rounded-full px-8 py-2 mt-4"
                     onClick={uploadLogo}
@@ -72,6 +106,35 @@ const UploadLogoOfEstate = () => {
                     ثبت لوگو
                 </button>
             </div>
+
+            {/* نمایش عکس‌های انتخاب شده */}
+            {images.length > 0 && (
+                <div className="flex flex-wrap gap-3 justify-center my-4">
+                    {images.map((img, idx) => (
+                        <img
+                            key={idx}
+                            src={img}
+                            alt={`preview-${idx}`}
+                            className="w-24 h-24 object-cover rounded border"
+                        />
+                    ))}
+                </div>
+            )}
+
+            {/* نمایش عکس‌های آپلود شده */}
+            {uploadedImages.length > 0 && (
+                <div className="flex flex-wrap gap-3 justify-center my-4">
+                    {uploadedImages.map((img, idx) => (
+                        <img
+                            key={idx}
+                            src={img}
+                            alt={`uploaded-${idx}`}
+                            className="w-24 h-24 object-cover rounded border-2 border-green-500"
+                        />
+                    ))}
+                    <div className="w-full text-center text-green-600 text-xs mt-2">عکس‌ها با موفقیت آپلود شدند</div>
+                </div>
+            )}
         </>
     )
 }

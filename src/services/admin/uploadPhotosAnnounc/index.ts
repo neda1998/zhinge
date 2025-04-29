@@ -3,9 +3,11 @@ import apiRoutes from "../../../helpers/routes/apiRoutes";
 import { getRoute } from "../../service";
 import client from "../../utils/client";
 
-export const uploadsliderPhotos = async (formData: FormData) => {
+export const uploadPhotosAnnounc = async (formData: FormData) => {
   const url = getRoute({ route: `${apiRoutes.AllAnnounce.uploadFile}` });
-  const token = Cookies.get('accessToken');
+
+  const token = Cookies.get('accessToken'); 
+
   return await client({
     url,
     method: "POST",
