@@ -42,8 +42,11 @@ const RequestEstateTable: React.FC = () => {
             <table className="min-w-full bg-white">
                 <thead className="bg-gray-100">
                     <tr>
-                        {columns.map(col => (
-                            <th key={col.key} className="px-2 py-4 lg:p-6 text-center whitespace-nowrap text-[16px]">
+                        {columns.map((col, idx) => (
+                            <th
+                                key={col.key}
+                                className={`px-2 py-4 lg:p-6 text-center whitespace-nowrap text-[16px]${idx === 0 ? ' rounded-tr-full rounded-br-full' : ''}`}
+                            >
                                 {col.label}
                             </th>
                         ))}
@@ -54,7 +57,7 @@ const RequestEstateTable: React.FC = () => {
                     {paginatedData.map((item: any, index: number) => (
                         <tr key={item.id || index} className="py-2 text-center">
                             {columns.map(col => (
-                                <td key={col.key} className="p-4 whitespace-nowrap rounded-tr-full rounded-br-full">
+                                <td key={col.key} className="p-4 whitespace-nowrap ">
                                     {col.key === "created_at"
                                         ? (item.created_at ? new Date(item.created_at).toLocaleDateString() : "")
                                         : item[col.key]}

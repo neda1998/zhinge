@@ -1,5 +1,4 @@
 import RouteChevron from "../../../components/common/RouteChevron"
-import Search from "../../../components/common/Search"
 import { pageRequestEstate } from "../../../utils/data"
 import InitialLayout from "../../dashboard/initialLayoutAdmin"
 import RequestEstateTable from "./RequestEstateTable"
@@ -16,9 +15,8 @@ const RequestedEstate = () => {
                 </div>
                 <RouteChevron items={pageRequestEstate} />
             </div>
-            <div className="flex items-center">
-                <Search className="lg:w-1/2 w-full my-12" searchClass="w-12 h-11" />
-                <Link to="/panel-admin/dashboard/estate-management/requested-estate/new-house" className="flex flex-col items-center gap-3 mt-6">
+            <div className="flex items-center justify-end">
+                <Link to="/panel-admin/dashboard/estate-management" className="flex flex-col items-center gap-3 mt-6">
                     <div
                         className={`rounded-xl p-3 bg-white transition-colors duration-300 cursor-pointer`}
                         style={{
