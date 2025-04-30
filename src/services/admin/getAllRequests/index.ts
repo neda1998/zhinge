@@ -8,9 +8,8 @@ export const getAllRequests = async () => {
     url,
     method: "GET",
   });
-  // بازگرداندن users و number
   return {
-    users: response?.data?.users || [],
-    number: response?.data?.number || 0
+    users: response?.users || [],
+    number: response?.user?.number ?? response?.users?.length ?? 0
   };
 };

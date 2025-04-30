@@ -11,7 +11,7 @@ const columns = [
     { key: "lowest_price", label: "حداقل قیمت" },
     { key: "hieghest_price", label: "حداکثر قیمت" },
     { key: "region", label: "منطقه" },
-    { key: "created_at", label: "تاریخ درخواست" }
+    // { key: "created_at", label: "تاریخ درخواست" } // Remove or comment out if not present in response
 ];
 
 const RequestEstateTable: React.FC = () => {
@@ -37,7 +37,7 @@ const RequestEstateTable: React.FC = () => {
     return (
         <div className="overflow-x-auto">
             <div className="mb-4 text-right font-bold text-gray-700">
-                تعداد کل درخواست‌ها: {data.number}
+                تعداد کل درخواست‌ها: {data.number || data.users.length}
             </div>
             <table className="min-w-full bg-white">
                 <thead className="bg-gray-100">
@@ -58,9 +58,10 @@ const RequestEstateTable: React.FC = () => {
                         <tr key={item.id || index} className="py-2 text-center">
                             {columns.map(col => (
                                 <td key={col.key} className="p-4 whitespace-nowrap ">
-                                    {col.key === "created_at"
-                                        ? (item.created_at ? new Date(item.created_at).toLocaleDateString() : "")
-                                        : item[col.key]}
+                                    {/* Show value or a dash if missing */}
+                                    {item[col.key] !== undefined && item[col.key] !== null
+                                        ? item[col.key]
+                                        : "-"}
                                 </td>
                             ))}
                             <td className="py-2 px-4 text-center inline-block">
