@@ -45,7 +45,7 @@ export default function Header({ variant }: any) {
                   </span>
                 </Button>
               ) : (
-                <Button onClick={() => navigate('/Login')} borderradius={'100px'} bgcolor={"#09A380"} width={'140px'} height={'44px'} color='white' returnbtn={"true"} className={'flex items-center justify-center'}>
+                <Button onClick={() => navigate('/dashboard/realState')} borderradius={'100px'} bgcolor={"#09A380"} width={'140px'} height={'44px'} color='white' returnbtn={"true"} className={'flex items-center justify-center'}>
                   <span className=" text-[13px] font-bold ">
                     ورود به حساب
                   </span>

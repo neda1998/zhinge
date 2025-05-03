@@ -2,10 +2,12 @@ import { useMutation } from "react-query";
 import Swal from "sweetalert2";
 import { useCreateAnnounce } from "../../../services/userPanel/createAnnounce";
 import { useCookies } from "react-cookie";
+import { useNavigate } from "react-router-dom";
 
 const useCreateAnnounceMutation = () => {
   const createAnnounceCall = useCreateAnnounce();
   const [cookies, setCookie] = useCookies(["Uid"]);
+  const route = useNavigate()
   return useMutation(
     async (data: { accessToken: string; [key: string]: any }) => {
       return await createAnnounceCall(data);
@@ -15,6 +17,7 @@ const useCreateAnnounceMutation = () => {
         const uid = response?.newA?.Uid || response?.data?.newA?.Uid;
         if (uid) {
           setCookie("Uid", uid, { path: "/" });
+          route("/propertyImage");
         } else {
         }
         Swal.fire({

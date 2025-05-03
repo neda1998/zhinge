@@ -294,8 +294,8 @@ const routes: AllRoutes[] = [
   },
   {
     type: "link",
-    key: "RequestedEstate",
-    name: "RequestedEstate",
+    key: "RequestedEstateNewHouse",
+    name: "RequestedEstateNewHouse",
     route: "/panel-admin/dashboard/estate-management/requested-estate/new-house",
     component: <RequestedEstateNewHouse />
   },
