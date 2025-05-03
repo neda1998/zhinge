@@ -19,7 +19,7 @@ const Sidebar = () => {
             if (!refreshToken) {
                 removeCookie("refreshToken", { path: "/" });
                 removeCookie("accessToken", { path: "/" });
-                window.location.href = "/Login";
+                window.location.href = "/";
                 return;
             }
             await axios.delete("http://185.231.115.236:3000/api/V1/auth/logout", {
@@ -31,11 +31,11 @@ const Sidebar = () => {
             });
             removeCookie("refreshToken", { path: "/" });
             removeCookie("accessToken", { path: "/" });
-            window.location.href = "/Login";
+            window.location.href = "/";
         } catch (error: any) {
             removeCookie("refreshToken", { path: "/" });
             removeCookie("accessToken", { path: "/" });
-            window.location.href = "/Login";
+            window.location.href = "/";
         }
     };
 

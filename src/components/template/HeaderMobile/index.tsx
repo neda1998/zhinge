@@ -47,7 +47,9 @@ export default function HeaderMobile() {
     const handleLogout = () => {
         removeCookie("accessToken", { path: "/" });
         removeCookie("refreshToken", { path: "/" });
-        navigate("/Login");
+        removeCookie("name", { path: "/" });
+        navigate("/");
+        window.location.reload(); // اطمینان از ریفرش وضعیت
     };
 
     const [animationClass, setAnimationClass] = useState('');
@@ -79,13 +81,24 @@ export default function HeaderMobile() {
                 <div className="flex items-center sm:gap-3 gap-2">
                     <ChangeTheme />
                     {
-              cookies.accessToken ? (
+              !displayName ? (
                 <Button
-                  onClick={() => {
-                    setCookies("accessToken", "", { path: "/" });
-                    setCookies("refreshToken", "", { path: "/" });
-                    navigate("/Login");
-                  }}
+                  onClick={() => navigate('/Login')}
+                  borderradius={'100px'}
+                  bgcolor={"#09A380"}
+                  width={'140px'}
+                  height={'44px'}
+                  color='white'
+                  returnbtn={"true"}
+                  className={'flex items-center justify-center'}
+                >
+                  <span className=" text-[13px] font-bold ">
+                    ورود به حساب
+                  </span>
+                </Button>
+              ) : (
+                <Button
+                  onClick={() => navigate("/dashboard/realState")}
                   borderradius={"100px"}
                   bgcolor={"#09A380"}
                   width={"100px"}
@@ -95,13 +108,7 @@ export default function HeaderMobile() {
                   className={"flex items-center justify-center"}
                 >
                   <span className="text-[13px] font-bold">
-                    {displayName ? displayName : "خروج"}
-                  </span>
-                </Button>
-              ) : (
-                <Button onClick={() => navigate('/Login')} borderradius={'100px'} bgcolor={"#09A380"} width={'140px'} height={'44px'} color='white' returnbtn={"true"} className={'flex items-center justify-center'}>
-                  <span className=" text-[13px] font-bold ">
-                    ورود به حساب
+                    {displayName}
                   </span>
                 </Button>
               )

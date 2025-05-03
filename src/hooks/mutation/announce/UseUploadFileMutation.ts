@@ -6,13 +6,10 @@ const UseUploadFileMutation = () => {
   return useMutation(
     async (data: { file: File; uid: string }) => await uploadFile(data.file, data.uid),
     {
-      onSuccess: async (response) => {
-        console.log("اطلاعات با موفقیت دریافت شد");
-      },
       onError: async (error: any) => {
         Swal.fire({
-          title: "!خطا",
-          text: error.response?.data?.message || "خطایی رخ داده است",
+          title: "خطا!",
+          text: error.response?.data?.message || "خطایی در آپلود فایل رخ داده است.",
           icon: "error",
           confirmButtonText: "باشه",
         });

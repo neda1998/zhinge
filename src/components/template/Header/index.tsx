@@ -25,13 +25,24 @@ export default function Header({ variant }: any) {
           <div className='w-[38%] flex justify-end gap-3'>
             <ChangeTheme />
             {
-              cookies.accessToken ? (
+              !displayName ? (
                 <Button
-                  onClick={() => {
-                    setCookies("accessToken", "", { path: "/" });
-                    setCookies("refreshToken", "", { path: "/" });
-                    navigate("/Login");
-                  }}
+                  onClick={() => navigate('/Login')}
+                  borderradius={'100px'}
+                  bgcolor={"#09A380"}
+                  width={'140px'}
+                  height={'44px'}
+                  color='white'
+                  returnbtn={"true"}
+                  className={'flex items-center justify-center'}
+                >
+                  <span className=" text-[13px] font-bold ">
+                    ورود به حساب
+                  </span>
+                </Button>
+              ) : (
+                <Button
+                  onClick={() => navigate("/dashboard/realState")}
                   borderradius={"100px"}
                   bgcolor={"#09A380"}
                   width={"140px"}
@@ -41,13 +52,7 @@ export default function Header({ variant }: any) {
                   className={"flex items-center justify-center"}
                 >
                   <span className="text-[13px] font-bold">
-                    {displayName ? displayName : "خروج"}
-                  </span>
-                </Button>
-              ) : (
-                <Button onClick={() => navigate('/dashboard/realState')} borderradius={'100px'} bgcolor={"#09A380"} width={'140px'} height={'44px'} color='white' returnbtn={"true"} className={'flex items-center justify-center'}>
-                  <span className=" text-[13px] font-bold ">
-                    ورود به حساب
+                    {displayName}
                   </span>
                 </Button>
               )
