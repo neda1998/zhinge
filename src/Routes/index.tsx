@@ -77,6 +77,13 @@ const routes: AllRoutes[] = [
   },
   {
     type: "link",
+    key: "all",
+    name: "all",
+    route: "/Announcement-list/all",
+    component: <AnnouncementListContainer announcementType="all" />,
+  },
+  {
+    type: "link",
     key: "home",
     name: "home",
     route: "/house-details/:id",

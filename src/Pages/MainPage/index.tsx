@@ -13,9 +13,14 @@ import UseGetAboutQuery from '../../hooks/queries/admin/getAbout/UseGetAboutQuer
 
 const MainPage = () => {
     const navigate = useNavigate();
-    const {data} = UseGetAboutQuery();
+    const { data } = UseGetAboutQuery();
     console.log("data", data);
-    
+
+    // تغییر مسیر به همه آگهی‌ها (فروش و اجاره)
+    const handleSearchClick = () => {
+        navigate('/Announcement-list/all');
+    };
+
     return (
         <div className='w-full flex justify-center'>
             <Header variant={'main'} />
@@ -35,8 +40,16 @@ const MainPage = () => {
                             </span>
                         </div>
 
-                        <div className='w-full flex gap-4 mt-4 p-3 '>
-                            <Button bgcolor={"#09A380"} width={'180px'} height={'50px'} borderradius={'96px'} color='white' returnbtn={"true"} className={'flex items-center justify-center'}>
+                        <div className='w-full flex gap-4 mt-4 p-3' onClick={handleSearchClick}>
+                            <Button
+                                bgcolor={"#09A380"}
+                                width={'180px'}
+                                height={'50px'}
+                                borderradius={'96px'}
+                                color='white'
+                                returnbtn={"true"}
+                                className={'flex items-center justify-center'}
+                            >
                                 <img src={MagniFair} alt="logo" className="mobile:w-[20px]" />
                                 <span className="text-[15px] mobile:text-[13px] mobile:p-1 font-bold dark:text-white ">
                                     جست و جوی ملک

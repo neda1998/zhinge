@@ -8,7 +8,6 @@ import JingeTeamManagement from "../UploadLogoOfEstate/JingeTeamManagement";
 import UploadLogoOfEstate from "../UploadLogoOfEstate";
 import { FiChevronLeft } from "react-icons/fi";
 import { useState } from "react";
-import GeneralSettings from "../UploadLogoOfEstate/Settings";
 
 interface Submenu {
     id: number;
@@ -48,7 +47,6 @@ const submenus: Submenu[] = [
         icon: AiOutlineDashboard,
         path: "/panel-admin/dashboard/manage-setting/jinge-team-management",
     },
-    { id: 6, item: "تنظیمات عمومی", icon: AiOutlineDashboard, path: "/panel-admin/dashboard/manage-setting/general-settings" },
 ];
 
 const ManageSetting = () => {
@@ -70,8 +68,6 @@ const ManageSetting = () => {
                 return <ManagementAboutUs />;
             case "jinge-team-management":
                 return <JingeTeamManagement />;
-                case "general-settings":
-                return <GeneralSettings />;
             default:
                 return <div>لطفاً یکی از گزینه‌ها را انتخاب کنید.</div>;
         }

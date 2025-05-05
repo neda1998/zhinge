@@ -12,13 +12,23 @@ interface AnnouncementListProps {
   data: any[];
   isLoading: boolean;
   error: any;
-  announcementType: "rent" | "sell";
+  announcementType?: "rent" | "sell"; // اختیاری شد
   onAnnouncementClick?: (property: any) => void;
 }
 
-const AnnouncementList: React.FC<AnnouncementListProps> = ({ data, isLoading, announcementType, onAnnouncementClick }) => {
+const AnnouncementList: React.FC<AnnouncementListProps> = ({
+  data,
+  isLoading,
+  announcementType,
+  onAnnouncementClick,
+}) => {
   const [searchResults, setSearchResults] = useState<any[] | null>(null);
-  const titleLabel = announcementType === "rent" ? "ملک اجاره ای آپارتمانی" : "ملک فروش آپارتمانی";
+
+  // تعیین عنوان بر اساس نوع آگهی یا نمایش همه
+  let titleLabel = "آگهی آپارتمانی";
+  if (announcementType === "rent") titleLabel = "ملک اجاره ای آپارتمانی";
+  else if (announcementType === "sell") titleLabel = "ملک فروش آپارتمانی";
+  else titleLabel = "همه آگهی‌های آپارتمانی";
 
   return (
     <div className="flex flex-col items-center">

@@ -10,9 +10,9 @@ const ThemeLoader = () => {
   const { theme } = useAppContext();
 
   useEffect(() => {
-    const isPanelAdmin = window.location.pathname.includes("panel-admin");
+    const isPanelAdmin = window.location.pathname.includes("/panel-admin/dashboard/manage-setting") || window.location.pathname.includes("/panel-admin/dashboard/realState") || window.location.pathname.includes("/panel-admin/dashboard/estate") || window.location.pathname.includes("/panel-admin/dashboard/estate-detail") || window.location.pathname.includes("/panel-admin/dashboard/estate-management") || window.location.pathname.includes("/panel-admin/dashboard/estate-management-detail") || window.location.pathname.includes("/panel-admin/dashboard/estate-management-edit") || window.location.pathname.includes("/panel-admin/dashboard/estate-management-add") || window.location.pathname.includes("/panel-admin/dashboard/estate-management-edit-attach") || window.location.pathname.includes("/panel-admin/dashboard/estate-management-edit-attach-detail") || window.location.pathname.includes("/panel-admin/dashboard/estate-management-edit-attach-add");
 
-    if (isPanelAdmin) return; // در این مسیر تم تغییر نکند
+    if (isPanelAdmin) return; 
 
     const head = document.head;
     const link = document.createElement("link");

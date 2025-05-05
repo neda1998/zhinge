@@ -1,9 +1,9 @@
 import React from 'react';
-import AnnouncementList from './AnnouncementList';
 import UseGetAllAnnouncementQuery from '../hooks/queries/getAnnounce/UseAnnounceQuery';
+import AnnouncementList from './AnnouncementList';
 
 interface AnnouncementListContainerProps {
-  announcementType: "rent" | "sell";
+  announcementType?: "rent" | "sell" | "all";
 }
 
 const AnnouncementListContainer: React.FC<AnnouncementListContainerProps> = ({ announcementType }) => {
@@ -11,15 +11,26 @@ const AnnouncementListContainer: React.FC<AnnouncementListContainerProps> = ({ a
   
   const allData = data || [];
   
-  const filteredData = allData.filter((property: any) =>
-    announcementType === "rent" ? property.type === "اجاره" : property.type === "فروش"
-  );
+  let filteredData = allData;
+  if (announcementType === "rent") {
+    filteredData = allData.filter((property: any) => property.type === "اجاره");
+  } else if (announcementType === "sell") {
+    filteredData = allData.filter((property: any) => property.type === "فروش");
+  } else if (announcementType === "all" || !announcementType) {
+    filteredData = allData;
+  }
+
+  // فقط اگر announcementType مقدار rent یا sell بود، prop را اضافه کن
   return (
     <AnnouncementList
-      data={allData}
+      data={filteredData}
       isLoading={isLoading}
       error={error}
-      announcementType={announcementType}
+      {...(announcementType === "rent"
+        ? { announcementType: "rent" }
+        : announcementType === "sell"
+        ? { announcementType: "sell" }
+        : {})}
     />
   );
 };
