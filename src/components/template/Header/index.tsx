@@ -47,13 +47,11 @@ export default function Header({ variant }: any) {
                   onClick={() => navigate('/Login')}
                   borderradius={'100px'}
                   bgcolor={"#09A380"}
-                  width={'140px'}
-                  height={'44px'}
                   color='white'
                   returnbtn={"true"}
-                  className={'flex items-center justify-center'}
+                  className={'flex items-center justify-center w-[140px] h-[44px] sm:w-[110px] sm:h-[38px] mobile:w-[90px] mobile:h-[34px] !px-0'}
                 >
-                  <span className=" text-[13px] font-bold ">
+                  <span className="!text-[13px] font-bold ">
                     ورود به حساب
                   </span>
                 </Button>
@@ -62,13 +60,11 @@ export default function Header({ variant }: any) {
                   onClick={() => navigate("/dashboard/realState")}
                   borderradius={"100px"}
                   bgcolor={"#09A380"}
-                  width={"140px"}
-                  height={"44px"}
                   color="white"
                   returnbtn={"true"}
-                  className={"flex items-center justify-center"}
+                  className={"flex items-center justify-center w-[140px] h-[44px] sm:w-[110px] sm:h-[38px] mobile:w-[90px] mobile:h-[34px] !px-0"}
                 >
-                  <span className="text-[13px] font-bold">
+                  <span className="!text-[13px] font-bold whitespace-nowrap">
                     {displayName}
                   </span>
                 </Button>

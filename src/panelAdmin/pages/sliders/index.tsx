@@ -156,14 +156,14 @@ const Sliders = () => {
                     <table className="min-w-full bg-white">
                         <thead className="bg-gray-100 rounded-2xl">
                             <tr>
-                                <th className="sm:px-2 p-0 whitespace-nowrap sm:py-4 text-center rounded-tr-full rounded-br-full">
+                                <th className="sm:px-2 p-0 whitespace-nowrap sm:py-4 text-center rounded-tr-full rounded-br-full sm:text-[15px] text-[12px]">
                                     عنوان اسلایدر
                                 </th>
-                                <th className="sm:px-2 p-0 whitespace-nowrap sm:py-4 text-center">
+                                <th className="sm:px-2 p-0 !whitespace-nowrap sm:py-4 text-center sm:text-[15px] text-[12px]">
                                     متن کوتاه در مورد اسلایدر
                                 </th>
-                                <th className="sm:px-2 p-0 whitespace-nowrap sm:py-4 text-center">عکس‌ها</th>
-                                <th className="px-2 py-4 text-center rounded-tl-full rounded-bl-full">
+                                <th className="sm:px-2 p-0 whitespace-nowrap sm:py-4 text-center sm:text-[15px] text-[12px]">عکس‌ها</th>
+                                <th className="px-2 py-4 text-center rounded-tl-full rounded-bl-full sm:text-[15px] text-[12px]">
                                     عملیات
                                 </th>
                             </tr>

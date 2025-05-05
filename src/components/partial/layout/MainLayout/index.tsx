@@ -6,7 +6,7 @@ const MainLayout: React.FC<LayoutsInterface> = ({ children }: LayoutsInterface) 
         <>
             <main className="flex flex-col mx-auto">
                 {/* <Header /> */}
-                <div className="mb-5 tablet:mt-0 tablet:mb-0 mobile:mt-0 mobile:mb-0 ">
+                <div>
                     {children}
                 </div>
             </main>

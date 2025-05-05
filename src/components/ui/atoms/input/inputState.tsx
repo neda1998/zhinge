@@ -18,7 +18,7 @@ const InputState = ({
 }: Props) => {
   return (
     <div className={`flex flex-col w-full ${margin}`}>
-      <label className="mb-2 text-xs mr-5">{label}</label>
+      <label className="mb-2 text-xs mr-5 !whitespace-nowrap">{label}</label>
       <input
         type={type}
         name={name}

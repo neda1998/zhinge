@@ -42,9 +42,9 @@ const SidebarMobile: React.FC<SidebarMobileProps> = ({ show, onClose }) => {
                 style={{ transform: show ? "translateX(0)" : "translateX(100%)" }}
             >
                 <div className="sidebar-content">
-                    <button onClick={onClose} className="flex items-center justify-center">
+                    <Link to="/" className="flex items-center justify-center">
                         <img src={logo} alt="logo" className="mt-14 mb-9" />
-                    </button>
+                    </Link>
                     <ul className="relative">
                         {itemsSidebar.map((item) => (
                             <div className="relative" key={item.id}>
