@@ -9,9 +9,13 @@ import Image3 from '../../assets/images/Rectangle 44.svg'
 import Header from '../../components/template/Header';
 import MapPoint from '../../assets/images/Map Point FavouriteWhite.svg'
 import { useNavigate } from 'react-router-dom';
+import UseGetAboutQuery from '../../hooks/queries/admin/getAbout/UseGetAboutQuery';
 
 const MainPage = () => {
-    const navigate = useNavigate()
+    const navigate = useNavigate();
+    const {data} = UseGetAboutQuery();
+    console.log("data", data);
+    
     return (
         <div className='w-full flex justify-center'>
             <Header variant={'main'} />
@@ -26,7 +30,9 @@ const MainPage = () => {
                             <span className='text-[60px] font-bold text-center dark:text-white text-right-announe'>راحت خونه پیدا کن</span>
                         </div>
                         <div className='flex items-center mt-5 justify-start mobile:h-fit mobile:justify-center'>
-                            <span className='text-[22px] w-full  mobile:leading-8 mobile:text-[20px] mobile:text-center leading-[45px] dark:text-[#FFFFFF99] lorem-right-announce'>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است.لورم ایپسوم متن ساختگی با تولید سادگی</span>
+                            <span className='text-[22px] w-full  mobile:leading-8 mobile:text-[20px] mobile:text-center leading-[45px] dark:text-[#FFFFFF99] lorem-right-announce'>
+                                {data?.about || "ژینگه یک پلتفرم آنلاین است که به شما کمک می‌کند تا به راحتی و سریع خانه یا ملک مورد نظر خود را پیدا کنید. با استفاده از ژینگه، می‌توانید به صورت آنلاین جستجو کنید، اطلاعات ملک‌ها را مشاهده کنید و با مالکان یا مشاوران املاک تماس بگیرید."}
+                            </span>
                         </div>
 
                         <div className='w-full flex gap-4 mt-4 p-3 '>

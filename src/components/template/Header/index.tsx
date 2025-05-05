@@ -60,7 +60,6 @@ export default function Header({ variant }: any) {
           </div>
         </div>
       </div>
-
       <HeaderMobile />
     </>
   );
