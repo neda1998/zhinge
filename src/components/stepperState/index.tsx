@@ -52,7 +52,7 @@ const StepperState = () => {
             <div className="mb-4 flex w-full">
                 {stepComponents[currentStep - 1]}
             </div>
-            {/* <div className="flex justify-end mt-4 items-center gap-3">
+            <div className="flex justify-end mt-4 items-center gap-3">
                 {currentStep > 1 && (
                     <button
                         onClick={handlePreviousStep}
@@ -67,7 +67,7 @@ const StepperState = () => {
                 >
                     بعدی
                 </button>
-            </div> */}
+            </div>
         </div>
     );
 };
