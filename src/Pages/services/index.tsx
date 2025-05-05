@@ -28,7 +28,7 @@ const servicesList: IServicesList[] = [
   },
   {
     img: agreement,
-    title: "خدمات حقوقی",
+    title: "درباره ژینگه",
     path: "/services/service",
   },
   {
@@ -53,7 +53,7 @@ export default function Services() {
           {servicesList.map((item, index) => (
             <React.Fragment key={index}>
               <div
-                onClick={() => navigate(`${item.path}`, { replace: true })}
+                onClick={() => navigate(`${item.path}`)}
                 className="w-[300px] shadow-[0px_0px_20px_1px_rgba(0,0,0,0.3)] h-[17rem] bg-white gradient-box shadow-[#522f2f33] hover:text-white cursor-pointer rounded-[20px] flex flex-col items-center justify-center gap-4 mobile:w-[160px] mobile:h-[160px]"
               >
                 <Images

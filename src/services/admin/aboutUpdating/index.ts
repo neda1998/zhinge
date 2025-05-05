@@ -11,7 +11,6 @@ function getAccessToken() {
 }
 
 export const aboutUpdating = async (data: any) => {
-  // توجه: اگر apiRoutes.admin.aboutUpdating مقدار صحیح نیست، آن را بررسی و اصلاح کنید
   const url = getRoute({ route: apiRoutes.admin.aboutUpdating });
   const accessToken = getAccessToken();
 

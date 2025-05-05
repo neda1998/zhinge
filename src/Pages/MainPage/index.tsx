@@ -16,7 +16,6 @@ const MainPage = () => {
     const { data } = UseGetAboutQuery();
     console.log("data", data);
 
-    // تغییر مسیر به همه آگهی‌ها (فروش و اجاره)
     const handleSearchClick = () => {
         navigate('/Announcement-list/all');
     };
