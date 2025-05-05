@@ -1,14 +1,22 @@
-import { useMutation } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 import Swal from "sweetalert2";
 import { updatedeal } from "../../../services/admin/updatedeal";
 
 const UseUpdatedealMutation = () => {
+  const queryClient = useQueryClient();
   return useMutation(
     async (data) => {
       return await updatedeal(data);
     },
     {
       onSuccess: async (response) => {
+        Swal.fire({
+          title: "موفق",
+          text: response?.data?.message || "ویرایش با موفقیت انجام شد",
+          icon: "success",
+          confirmButtonText: "باشه",
+        });
+        queryClient.invalidateQueries("getAllDeals");
       },
       onError: async (error: any) => {
         Swal.fire({

@@ -3,6 +3,7 @@ import { FaChevronLeft, FaChevronRight } from 'react-icons/fa6';
 import dot from "../../../assets/images/MenuDotsSquare.svg";
 import UseGetAllRequests from "../../../hooks/queries/admin/getAllRequests/UseGetAllRequests";
 import { PuffLoader } from "react-spinners";
+import Swal from "sweetalert2";
 
 const columns = [
     { key: "id", label: "کد ملک" },
@@ -11,11 +12,12 @@ const columns = [
     { key: "lowest_price", label: "حداقل قیمت" },
     { key: "hieghest_price", label: "حداکثر قیمت" },
     { key: "region", label: "منطقه" },
-    // { key: "created_at", label: "تاریخ درخواست" } // Remove or comment out if not present in response
 ];
 
 const RequestEstateTable: React.FC = () => {
     const { data = { users: [], number: 0 }, isLoading, isError } = UseGetAllRequests();
+    console.log(data);
+    
     const [currentPage, setCurrentPage] = useState(1);
 
     const itemsPerPage = 10;
@@ -27,6 +29,28 @@ const RequestEstateTable: React.FC = () => {
 
     const startIndex = (currentPage - 1) * itemsPerPage;
     const paginatedData = data.users.slice(startIndex, startIndex + itemsPerPage);
+
+    const handleShowDetails = (item: any) => {
+        Swal.fire({
+            title: "جزئیات درخواست",
+            html: `
+                <div style="display:flex;flex-direction:column;gap:10px;text-align:right;direction:rtl">
+                    <div><b>کد ملک:</b> ${item.id ?? "-"}</div>
+                    <div><b>نام و نام خانوادگی:</b> ${item.full_name ?? "-"}</div>
+                    <div><b>شماره تماس:</b> ${item.phone ?? "-"}</div>
+                    <div><b>حداقل قیمت:</b> ${item.lowest_price ?? "-"}</div>
+                    <div><b>حداکثر قیمت:</b> ${item.hieghest_price ?? "-"}</div>
+                    <div><b>منطقه:</b> ${item.region ?? "-"}</div>
+                    <div><b>موقعیت:</b> ${item.location ?? "-"}</div>
+                    <div><b>نوع:</b> ${item.type ?? "-"}</div>
+                    <div><b>وضعیت:</b> ${item.status === true ? "فعال" : item.status === false ? "غیرفعال" : "-"}</div>
+                    <div><b>پیام:</b> ${item.message ?? "-"}</div>
+                </div>
+            `,
+            confirmButtonText: "بستن",
+            width: 400
+        });
+    };
 
     if (isError) return (
         <div className="flex items-center justify-center h-screen">
@@ -58,7 +82,6 @@ const RequestEstateTable: React.FC = () => {
                         <tr key={item.id || index} className="py-2 text-center">
                             {columns.map(col => (
                                 <td key={col.key} className="p-4 whitespace-nowrap ">
-                                    {/* Show value or a dash if missing */}
                                     {item[col.key] !== undefined && item[col.key] !== null
                                         ? item[col.key]
                                         : "-"}
@@ -69,6 +92,7 @@ const RequestEstateTable: React.FC = () => {
                                     src={dot}
                                     alt="dot"
                                     className="text-2xl cursor-pointer w-6 h-6 mt-1"
+                                    onClick={() => handleShowDetails(item)}
                                 />
                             </td>
                         </tr>

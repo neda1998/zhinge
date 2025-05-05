@@ -5,7 +5,7 @@ import { deletedeal } from "../../../services/admin/deletedeal";
 const UseDeletedealMutation = () => {
   const queryClient = useQueryClient();
   return useMutation(
-    async ({id}: {id: number}) => {
+    async ({id}: {id: string}) => {
       return await deletedeal(id);
     }
       ,
