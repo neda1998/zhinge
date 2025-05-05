@@ -15,7 +15,7 @@ const SidebarMobileProfile = ({ onClose }: SidebarMobileProfileProps) => {
     const [openModal, setOpenModal] = useState(false);
     const [animationClass, setAnimationClass] = useState('');
     const sidebarRef = useRef<HTMLDivElement | null>(null);
-    const [cookies, , removeCookie] = useCookies(["refreshToken", "accessToken"]);
+    const [cookies, , removeCookie] = useCookies(["refreshToken", "accessToken", "name", "full_name"]);
 
     const logoutUser = async () => {
         try {
@@ -23,6 +23,8 @@ const SidebarMobileProfile = ({ onClose }: SidebarMobileProfileProps) => {
             if (!refreshToken) {
                 removeCookie("refreshToken", { path: "/" });
                 removeCookie("accessToken", { path: "/" });
+                removeCookie("name", { path: "/" });
+                removeCookie("full_name", { path: "/" });
                 window.location.href = "/";
                 return;
             }
@@ -35,10 +37,14 @@ const SidebarMobileProfile = ({ onClose }: SidebarMobileProfileProps) => {
             });
             removeCookie("refreshToken", { path: "/" });
             removeCookie("accessToken", { path: "/" });
+            removeCookie("name", { path: "/" });
+            removeCookie("full_name", { path: "/" });
             window.location.href = "/";
         } catch (error: any) {
             removeCookie("refreshToken", { path: "/" });
             removeCookie("accessToken", { path: "/" });
+            removeCookie("name", { path: "/" });
+            removeCookie("full_name", { path: "/" });
             window.location.href = "/";
         }
     };

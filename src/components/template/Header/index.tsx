@@ -10,8 +10,9 @@ import { useCookies } from "react-cookie";
 
 export default function Header({ variant }: any) {
   const navigate = useNavigate();
-  const [cookies, setCookies] = useCookies(["accessToken", "refreshToken", "name"]);
+  const [cookies, setCookies] = useCookies(["accessToken", "refreshToken", "name", "role"]);
   const displayName = cookies.name || "";
+  const isAdmin = cookies.role === "true" || cookies.role === true;
   return (
     <>
       <div className={`w-full lg:flex hidden bg-transparent h-28 items-center justify-center ${variant === "main" ? "absolute" : 'relative'}`}>
@@ -24,6 +25,22 @@ export default function Header({ variant }: any) {
           </div>
           <div className='w-[38%] flex justify-end gap-3'>
             <ChangeTheme />
+            {isAdmin && (
+              <Button
+                onClick={() => navigate('/panel-admin/dashboard/management-dashboard')}
+                borderradius={'100px'}
+                bgcolor={"#F59E42"}
+                width={'150px'}
+                height={'44px'}
+                color='white'
+                returnbtn={"true"}
+                className={'flex items-center justify-center'}
+              >
+                <span className="text-[13px] font-bold">
+                  داشبورد ادمین
+                </span>
+              </Button>
+            )}
             {
               !displayName ? (
                 <Button

@@ -1,7 +1,4 @@
-import React from "react"
-import primisson from '../../../../../../assets/images/Frame 2.svg'
 import { Link, useLocation } from "react-router-dom"
-import Button from "../../../../../ui/atoms/Button"
 import User from '../../../../../../assets/images/dashboardicons/User Rounded.svg'
 import UserWhite from '../../../../../../assets/images/dashboardicons/User Roundedwhite.svg'
 import myads from '../../../../../../assets/images/dashboardicons/Buildings.svg'

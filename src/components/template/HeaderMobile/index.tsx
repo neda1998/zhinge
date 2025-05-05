@@ -27,7 +27,7 @@ const menuItems = [
 ];
 
 export default function HeaderMobile() {
-    const [cookies, setCookies, removeCookie] = useCookies(["accessToken", "refreshToken", "name"]);
+    const [cookies, setCookies, removeCookie] = useCookies(["accessToken", "refreshToken", "name","full_name"]);
     const displayName = cookies.name || "";
     const [showModal, setShowModal] = useState(false);
     const [Active, setActive] = useState(false);
@@ -43,13 +43,13 @@ export default function HeaderMobile() {
         }
     }
 
-    // خروج از حساب
     const handleLogout = () => {
         removeCookie("accessToken", { path: "/" });
         removeCookie("refreshToken", { path: "/" });
         removeCookie("name", { path: "/" });
+        removeCookie("full_name", { path: "/" });
         navigate("/");
-        window.location.reload(); // اطمینان از ریفرش وضعیت
+        window.location.reload();
     };
 
     const [animationClass, setAnimationClass] = useState('');
@@ -81,38 +81,38 @@ export default function HeaderMobile() {
                 <div className="flex items-center sm:gap-3 gap-2">
                     <ChangeTheme />
                     {
-              !displayName ? (
-                <Button
-                  onClick={() => navigate('/Login')}
-                  borderradius={'100px'}
-                  bgcolor={"#09A380"}
-                  width={'140px'}
-                  height={'44px'}
-                  color='white'
-                  returnbtn={"true"}
-                  className={'flex items-center justify-center'}
-                >
-                  <span className=" text-[13px] font-bold ">
-                    ورود به حساب
-                  </span>
-                </Button>
-              ) : (
-                <Button
-                  onClick={() => navigate("/dashboard/realState")}
-                  borderradius={"100px"}
-                  bgcolor={"#09A380"}
-                  width={"100px"}
-                  height={"44px"}
-                  color="white"
-                  returnbtn={"true"}
-                  className={"flex items-center justify-center"}
-                >
-                  <span className="text-[13px] font-bold">
-                    {displayName}
-                  </span>
-                </Button>
-              )
-            }
+                        !displayName ? (
+                            <Button
+                                onClick={() => navigate('/Login')}
+                                borderradius={'100px'}
+                                bgcolor={"#09A380"}
+                                width={'140px'}
+                                height={'44px'}
+                                color='white'
+                                returnbtn={"true"}
+                                className={'flex items-center justify-center'}
+                            >
+                                <span className=" text-[13px] font-bold ">
+                                    ورود به حساب
+                                </span>
+                            </Button>
+                        ) : (
+                            <Button
+                                onClick={() => navigate("/dashboard/realState")}
+                                borderradius={"100px"}
+                                bgcolor={"#09A380"}
+                                width={"100px"}
+                                height={"44px"}
+                                color="white"
+                                returnbtn={"true"}
+                                className={"flex items-center justify-center"}
+                            >
+                                <span className="text-[13px] font-bold">
+                                    {displayName}
+                                </span>
+                            </Button>
+                        )
+                    }
                 </div>
             </div>
             {Profile ? (
