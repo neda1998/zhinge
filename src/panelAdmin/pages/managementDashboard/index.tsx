@@ -1,7 +1,5 @@
 import RouteChevron from "../../../components/common/RouteChevron"
 import EstateOfManagement from "../../../components/estateOfManagement"
-import GraphicalReportsCircle from "../../../components/graphicalReportsCircle"
-import GraphicalReportsLine from "../../../components/graphicalReportsCircle/GraphicalReportsLine"
 import { pageAdmin } from "../../../utils/data"
 import InitialLayout from "../../dashboard/initialLayoutAdmin"
 
@@ -17,8 +15,8 @@ const ManagementDashboard = () => {
       </div>
       <EstateOfManagement />
       <div className="grid lg:grid-cols-2 gap-4 items-center lg:my-20 mt-20">
-        <GraphicalReportsCircle />
-        <GraphicalReportsLine />
+        {/* <GraphicalReportsCircle />
+        <GraphicalReportsLine /> */}
       </div>
     </InitialLayout>
   )

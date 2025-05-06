@@ -29,7 +29,7 @@ const useLoginMutation = () => {
       setCookies("role", role, { path: "/" });
       axios.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
       if (role === true) {
-        navigate("/panel-admin/dashboard/estate-management");
+        navigate("/panel-admin/dashboard/management-dashboard");
       } else if (role === false) {
         navigate("/dashboard");
       } else {

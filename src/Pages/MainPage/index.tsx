@@ -47,7 +47,7 @@ const MainPage = () => {
                             </span>
                         </div>
 
-                        <div className='w-full flex gap-4 mt-4 p-3' onClick={handleSearchClick}>
+                        <div className='w-full flex gap-4 mt-4 p-3'>
                             <Button
                                 bgcolor={"#09A380"}
                                 width={'180px'}
@@ -56,6 +56,7 @@ const MainPage = () => {
                                 color='white'
                                 returnbtn={"true"}
                                 className={'flex items-center justify-center'}
+                                onClick={handleSearchClick}
                             >
                                 <img src={MagniFair} alt="logo" className="mobile:w-[20px]" />
                                 <span className="text-[15px] mobile:text-[13px] mobile:p-1 font-bold dark:text-white ">

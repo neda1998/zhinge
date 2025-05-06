@@ -12,7 +12,6 @@ const UseCreatAnnouncementMutation = () => {
     },
     {
       onSuccess: async (response) => {
-        // بررسی هر دو حالت برای اطمینان
         const uid = response?.Uid || response?.data?.Uid;
         if (uid) {
           setCookies("Uid", uid, { path: "/" });

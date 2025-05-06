@@ -162,7 +162,7 @@ const FileUpload: React.FC<FileUploadProps> = ({ uid, uploadedImages, setUploade
         disabled={pendingFiles.length === 0}
         className="fixed left-6 bottom-6 z-50 bg-primary text-white px-6 py-3 rounded-[16px] shadow-lg disabled:opacity-50 bg-[#09A380] hover:bg-[#07a06c] transition-colors duration-300 flex items-center justify-center"
       >
-        ثبت همه تصاویر
+        ثبت
       </button>
     </div>
   );

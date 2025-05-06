@@ -11,7 +11,6 @@ interface Props {}
 const UnderReview = ({ }: Props) => {
     const { data, isLoading, isError } = UseInprogressQuery();
 
-    // تبدیل داده دریافتی به فرمت مورد نیاز Table
     const tableData = data?.inprogress?.map((item: any, idx: number) => ({
         "ردیف": idx + 1,
         "کد ملک": item.id,

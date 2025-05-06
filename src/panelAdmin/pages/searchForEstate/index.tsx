@@ -25,22 +25,11 @@ const SearchForEstate = () => {
 
   const handleSearch = () => {
     const payload = {
-      loan: form.loan || "",
-      type: form.type || "",
-      region: form.region || "",
+      phone: form.phone ? String(form.phone) : "",
+      full_name: form.full_name || "",
+      state_code: form.state_code,
       address: form.address || "",
     };
-
-    const allFilled = Object.values(payload).every(val => val !== "" && val !== undefined && val !== null);
-    if (!allFilled) {
-      Swal.fire({
-        title: "اخطار",
-        text: "لطفا همه فیلدها را پر کنید.",
-        icon: "warning",
-        confirmButtonText: "باشه",
-      });
-      return;
-    }
 
     searchMutation.mutate(payload);
   };
@@ -55,9 +44,9 @@ const SearchForEstate = () => {
       </div>
       <ChooseItemsOfState />
       <div className="grid lg:grid-cols-4 gap-x-5 gap-y-10 mb-9">
-        <InputState label="منطقه" value={form.region || ""} onChange={e => handleChange("region", e.target.value)} />
-        <InputState label="نوع ملک" value={form.type || ""} onChange={e => handleChange("type", e.target.value)} />
-        <InputState label="وام" value={form.loan || ""} onChange={e => handleChange("loan", Number(e.target.value))} />
+        <InputState label="کد ملک" value={form.state_code || ""} onChange={e => handleChange("state_code", e.target.value)} />
+        <InputState label="نام مالک" value={form.full_name || ""} onChange={e => handleChange("full_name", e.target.value)} />
+        <InputState label="شماره موبایل" value={form.phone || ""} onChange={e => handleChange("phone", e.target.value)} />
       </div>
       <div className="flex items-center justify-between md:w-1/2 w-full gap-5">
         <InputState label="آدرس ملک" value={form.address || ""} placeholder="آدرس را وارد کنید" onChange={e => handleChange("address", e.target.value)} />

@@ -3,6 +3,7 @@ import StepTwo from "./StepTwo";
 import StepThree from "./StepThree";
 import StepFour from "./StepFour";
 import StepOne from "./StepOne";
+import React from "react";
 
 const StepperState = () => {
     const [currentStep, setCurrentStep] = useState(1);
@@ -23,11 +24,14 @@ const StepperState = () => {
         setCurrentStep(1);
     }, []);
 
+    const [uploadedImages, setUploadedImages] = useState<any[]>([]);
+
+    // اضافه کردن prop برای نمایش دکمه ثبت آگهی در گام سوم
     const stepComponents = [
         <StepOne key="step1" />,
         <StepTwo key="step2" />,
-        <StepThree key="step3" />,
-        <StepFour key="step4" />
+        <StepThree key="step3" showSubmitButton={true} />,
+        <StepFour key="step4" uploadedImages={uploadedImages} setUploadedImages={setUploadedImages} />
     ];
 
     return (
@@ -61,12 +65,14 @@ const StepperState = () => {
                         قبلی
                     </button>
                 )}
-                <button
-                    onClick={handleNextStep}
-                    className="bg-main-color text-white px-8 py-2 rounded-full transition"
-                >
-                    بعدی
-                </button>
+                {currentStep < 4 && (
+                    <button
+                        onClick={handleNextStep}
+                        className="bg-main-color text-white px-8 py-2 rounded-full transition"
+                    >
+                        بعدی
+                    </button>
+                )}
             </div>
         </div>
     );
