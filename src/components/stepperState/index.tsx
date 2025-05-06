@@ -4,9 +4,32 @@ import StepThree from "./StepThree";
 import StepFour from "./StepFour";
 import StepOne from "./StepOne";
 import React from "react";
+import UseCreatAnnouncementMutation from "../../hooks/mutation/creatAnnouncement/UseCreatAnnouncementMutation";
 
 const StepperState = () => {
     const [currentStep, setCurrentStep] = useState(1);
+    const creatAnnouncementMutation = UseCreatAnnouncementMutation();
+    // --- تمام stateهای فرم را اینجا تعریف کنید ---
+    const [type, setType] = useState("");
+    const [usage, setUsage] = useState("");
+    const [region, setRegion] = useState("");
+    const [address, setAddress] = useState("");
+    const [location, setLocation] = useState("");
+    const [price, setPrice] = useState<number | undefined>();
+    const [loan, setLoan] = useState<number>(0);
+    const [year_of_build, setYearOfBuild] = useState<number | undefined>();
+    const [room_number, setRoomNumber] = useState<number | undefined>();
+    const [land_metrage, setLandMetrage] = useState<number | undefined>();
+    const [floor_number, setFloorNumber] = useState<number | undefined>();
+    const [floor, setFloor] = useState<number | undefined>();
+
+    const [Unit_in_floor, setUnitInFloor] = useState<number | undefined>();
+    const [document_type, setDocumentType] = useState<string>("");
+    const [features, setFeatures] = useState<string>("");
+    const [full_name, setFullName] = useState<string>("");
+    const [phone, setPhone] = useState<string>("");
+    const [state_code, setStateCode] = useState<string>("");
+    const [useful_metrage, setUsefulMetrage] = useState<number | undefined>();
 
     const handleNextStep = () => {
         if (currentStep < 4) {
@@ -28,9 +51,41 @@ const StepperState = () => {
 
     // اضافه کردن prop برای نمایش دکمه ثبت آگهی در گام سوم
     const stepComponents = [
-        <StepOne key="step1" />,
-        <StepTwo key="step2" />,
-        <StepThree key="step3" showSubmitButton={true} />,
+        <StepOne
+            key="step1"
+            type={type} setType={setType}
+            usage={usage} setUsage={setUsage}
+            region={region} setRegion={setRegion}
+            address={address} setAddress={setAddress}
+            location={location} setLocation={setLocation}
+            price={price} setPrice={setPrice}
+        />,
+        <StepTwo
+            key="step2"
+            loan={loan} setLoan={setLoan}
+            year_of_build={year_of_build} setYearOfBuild={setYearOfBuild}
+            room_number={room_number} setRoomNumber={setRoomNumber}
+            land_metrage={land_metrage} setLandMetrage={setLandMetrage}
+            floor_number={floor_number} setFloorNumber={setFloorNumber}
+            floor={floor} setFloor={setFloor}
+        />,
+        <StepThree
+            key="step3"
+            showSubmitButton={true}
+            creatAnnouncementMutation={creatAnnouncementMutation}
+            Unit_in_floor={Unit_in_floor} setUnitInFloor={setUnitInFloor}
+            document_type={document_type} setDocumentType={setDocumentType}
+            features={features} setFeatures={setFeatures}
+            full_name={full_name} setFullName={setFullName}
+            phone={phone} setPhone={setPhone}
+            state_code={state_code} setStateCode={setStateCode}
+            useful_metrage={useful_metrage} setUsefulMetrage={setUsefulMetrage}
+            type={type} usage={usage} region={region} address={address}
+            location={location} setLocation={setLocation} price={price} 
+            year_of_build={year_of_build} room_number={room_number}
+            land_metrage={land_metrage} floor_number={floor_number} floor={floor}
+        />
+        ,
         <StepFour key="step4" uploadedImages={uploadedImages} setUploadedImages={setUploadedImages} />
     ];
 
