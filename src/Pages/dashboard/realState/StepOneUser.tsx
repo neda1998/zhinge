@@ -14,6 +14,11 @@ function formatInputNumber(val: string) {
     const onlyNums = val.replace(/[^\d]/g, "");
     return onlyNums.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
+function formatNumber(val: string) {
+    if (!val) return "";
+    const num = Number(val.replace(/,/g, ""));
+    return isNaN(num) ? "" : num.toLocaleString("en-US");
+}
 
 const StepOneUser = ({
     loan, setLoan,
@@ -24,7 +29,7 @@ const StepOneUser = ({
 }: StepOneUserProps) => {
     return (
         <div className="w-full grid lg:grid-cols-4 sm:grid-cols-2 grid-cols-1 gap-5">
-             <div className="flex flex-col items-start">
+            <div className="flex flex-col items-start">
                 <InputState
                     label="وام"
                     value={loan !== undefined && loan !== null ? formatInputNumber(String(loan)) : ""}
@@ -34,17 +39,18 @@ const StepOneUser = ({
                         setLoan(formatted);
                     }}
                 />
-            <span className="text-xs text-red-600 my-1">اگر وام ندارید، عدد 0 رو وارد کنید</span>
-            <span className="text-xs text-gray-500 my-1">به تومان</span>
+                <span className="text-xs text-red-600 my-1">اگر وام ندارید، عدد 0 رو وارد کنید</span>
+                <span className="text-xs text-gray-500">{formatNumber(loan)} تومان</span>
             </div>
-            <div className="flex flex-col items-start">
+            <div className="flex flex-col">
                 <InputState
                     label="قیمت"
-                    placeholder="مثال: 500,000,000 تومان"
+                    placeholder="مثال: 2,000,000 تومان"
                     value={price}
                     onChange={e => setPrice(formatInputNumber(e.target.value))}
                 />
-                <span className="text-xs text-gray-500 my-1">به تومان</span>
+                <span className="text-xs text-gray-400 my-1">لطفا اعداد را به انگلیسی وارد کنید</span>
+                <span className="text-xs text-gray-500">{formatNumber(price)} تومان</span>
             </div>
             <InputState
                 label="منطقه"
