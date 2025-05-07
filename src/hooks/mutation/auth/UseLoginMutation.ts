@@ -31,7 +31,7 @@ const useLoginMutation = () => {
       if (role === true) {
         navigate("/panel-admin/dashboard/management-dashboard");
       } else if (role === false) {
-        navigate("/dashboard");
+        navigate("/dashboard/register-new-advertise");
       } else {
         navigate("/");
       }

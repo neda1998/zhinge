@@ -117,7 +117,7 @@ export const itemsProfile = [
     icon: HiSquaresPlus,
     path: "/dashboard/register-new-advertise",
   },
-  { id: 4, item: "خروج از حساب", icon: BsPersonFillDash, path:"#" },
+  { id: 4, item: "خروج از حساب", icon: BsPersonFillDash },
 ];
 export const pageAdmin = [
   { id: 1, item: "داشبورد" },
