@@ -1,94 +1,176 @@
-import { useFormik } from "formik";
-import Button from "../../../components/ui/atoms/Button";
+import { useEffect, useState } from "react";
 import LayoutProfile from "../../../components/profile/LayoutProfile";
-import InputState from "../../../components/ui/atoms/input/inputState";
+import Swal from "sweetalert2";
+import StepOneUser from "./StepOneUser";
+import StepTwoUser from "./StepTwoUser";
+import StepThreeUser from "./StepThreeUser";
+import StepFourUser from "./StepFourUser";
 import useCreateAnnounceMutation from "../../../hooks/mutation/announce/useCreateAnnounceMutation";
 
 export default function Realstate() {
   const { mutate } = useCreateAnnounceMutation();
 
-  const formik = useFormik({
-    initialValues: {
-      "loan" : "",
-      "type" : "",
-      "region" :"",
-      "address" : "",
-      "location" : "",
-      "usage"    : "",
-      "document_type" :"",
-      "land_metrage" :  "",
-      "useful_metrage" : "",
-      "floor_number" : "",
-      "floor" :"",
-      "Unit_in_floor" : "",
-      "year_of_build" : "",
-      "full_name" : "",
-      "price"     : "",
-      "room_number"  : "",
-      "features"     : ""
-  },
-    onSubmit: (values, {resetForm}) => {
-      const requestData = {
-        loan: values.loan ? Number(values.loan) : undefined,
-        type: values.type && values.type.trim() === "اجاره" ? "اجاره" : "فروش",
-        region: values.region,
-        address: values.address || "any",
-        location: values.location || "any",
-        usage: values.usage || "any",
-        document_type: values.document_type || "any",
-        land_metrage: values.land_metrage ? Number(values.land_metrage) : undefined,
-        useful_metrage: values.useful_metrage ? Number(values.useful_metrage) : undefined,
-        floor_number: values.floor_number ? Number(values.floor_number) : undefined,
-        floor: values.floor ? Number(values.floor) : undefined,
-        Unit_in_floor: values.Unit_in_floor ? Number(values.Unit_in_floor) : undefined,
-        year_of_build: values.year_of_build ? Number(values.year_of_build) : undefined,
-        full_name: values.full_name || "any",
-        price: values.price ? Number(values.price) : undefined,
-        room_number: values.room_number ? Number(values.room_number) : undefined,
-        features: values.features || "any"
-      };
-      mutate(requestData as any, {
-        onSuccess: () => {
-          resetForm();
-        }
+  // استیت‌های هر فیلد
+  const [loan, setLoan] = useState("");
+  const [type, setType] = useState("");
+  const [region, setRegion] = useState("");
+  const [address, setAddress] = useState("");
+  const [location, setLocation] = useState("");
+  const [usage, setUsage] = useState("");
+  const [document_type, setDocumentType] = useState("");
+  const [land_metrage, setLandMetrage] = useState("");
+  const [useful_metrage, setUsefulMetrage] = useState("");
+  const [floor_number, setFloorNumber] = useState("");
+  const [floor, setFloor] = useState("");
+  const [Unit_in_floor, setUnitInFloor] = useState("");
+  const [year_of_build, setYearOfBuild] = useState("");
+  const [full_name, setFullName] = useState("");
+  const [price, setPrice] = useState("");
+  const [room_number, setRoomNumber] = useState("");
+  const [features, setFeatures] = useState("");
+  const [uploadedImages, setUploadedImages] = useState<any[]>([]);
+  const [currentStep, setCurrentStep] = useState(1);
+  const [isAnnouncementSubmitted, setIsAnnouncementSubmitted] = useState(false);
+
+  const handleNextStep = () => {
+    if (currentStep === 3 && !isAnnouncementSubmitted) {
+      Swal.fire({
+        icon: "warning",
+        title: "اخطار",
+        text: "لطفا ابتدا اطلاعات را ثبت کنید!",
+        confirmButtonText: "باشه"
       });
-    },
-  });
+      return;
+    }
+    if (currentStep < 4) {
+      setCurrentStep((prevStep) => prevStep + 1);
+    }
+  };
+
+  const handlePreviousStep = () => {
+    if (currentStep > 1) {
+      setCurrentStep((prevStep) => prevStep - 1);
+      if (currentStep === 4) {
+        setIsAnnouncementSubmitted(false);
+      }
+    }
+  };
+
+  useEffect(() => {
+    setCurrentStep(1);
+  }, []);
+
+  const handleSubmit = () => {
+    const toNumberOrUndefined = (val: string) => {
+      if (val === undefined || val === null) return undefined;
+      const num = Number(val.toString().replace(/,/g, ""));
+      return isNaN(num) ? undefined : num;
+    };
+
+    const requestData = {
+      Unit_in_floor: toNumberOrUndefined(Unit_in_floor),
+      address: address || "",
+      document_type: document_type || "",
+      features: features || "",
+      floor: toNumberOrUndefined(floor),
+      floor_number: toNumberOrUndefined(floor_number),
+      full_name: full_name || "",
+      land_metrage: toNumberOrUndefined(land_metrage),
+      loan: toNumberOrUndefined(loan),
+      location: location || "", 
+      price: toNumberOrUndefined(price),
+      region: region || "",
+      room_number: toNumberOrUndefined(room_number),
+      type: type || "",
+      usage: usage || "",
+      useful_metrage: toNumberOrUndefined(useful_metrage),
+      year_of_build: toNumberOrUndefined(year_of_build),
+    };
+    mutate(requestData as any, {
+      onSuccess: () => {
+        setIsAnnouncementSubmitted(true);
+      }
+    });
+  };
+
+  const stepComponents = [
+    <StepOneUser
+      key="step1"
+      loan={loan} setLoan={setLoan}
+      type={type} setType={setType}
+      region={region} setRegion={setRegion}
+      address={address} setAddress={setAddress}
+      price={price} setPrice={setPrice}
+    />,
+    <StepTwoUser
+      key="step2"
+      usage={usage} setUsage={setUsage}
+      document_type={document_type} setDocumentType={setDocumentType}
+      location={location} setLocation={setLocation}
+      land_metrage={land_metrage} setLandMetrage={setLandMetrage}
+      useful_metrage={useful_metrage} setUsefulMetrage={setUsefulMetrage}
+      floor_number={floor_number} setFloorNumber={setFloorNumber}
+      floor={floor} setFloor={setFloor}
+      Unit_in_floor={Unit_in_floor} setUnitInFloor={setUnitInFloor}
+      year_of_build={year_of_build} setYearOfBuild={setYearOfBuild}
+    />,
+    <StepThreeUser
+      key="step3"
+      full_name={full_name} setFullName={setFullName}
+      room_number={room_number} setRoomNumber={setRoomNumber}
+      features={features} setFeatures={setFeatures}
+      onSubmit={handleSubmit}
+      isAnnouncementSubmitted={isAnnouncementSubmitted}
+    />,
+    <StepFourUser
+      key="step4"
+      uploadedImages={uploadedImages}
+      setUploadedImages={setUploadedImages}
+    />
+  ];
 
   return (
     <LayoutProfile>
-      <div className="w-full flex flex-col items-center justify-center my-16">
-        <div className="flex flex-col items-center gap-4 mobile:gap-2">
-          <h1 className="text-[1.5rem] mobile:text-[18px]">ثبت آگهی جدید</h1>
-          <span className="h-[2px] w-[70%] bg-[#09A380]"></span>
+      <div className="flex flex-col items-baseline my-10 w-full">
+        <div className="flex items-center justify-between lg:min-w-[800px] min-w-full max-w-full lg:mx-auto mb-14">
+          {[1, 2, 3, 4].map((step, idx) => (
+            <div className="flex items-center min-w-[25%]" key={idx}>
+              <div
+                className={`w-[48px] h-[48px] rounded-full flex items-center justify-center font-extrabold text-xl flex-none basis-[48px]
+                ${currentStep >= step ? 'bg-main-color text-white' : 'bg-gray-100 text-gray-400'}`}
+              >
+                {step}
+              </div>
+              {idx < 3 && (
+                <div
+                  className={`w-full h-[2px] ${currentStep > step ? 'bg-main-color text-white' : 'bg-gray-100 text-gray-400'}`}
+                ></div>
+              )}
+            </div>
+          ))}
+        </div>
+        <div className="mb-4 flex w-full">
+          {stepComponents[currentStep - 1]}
+        </div>
+        <div className="flex justify-end mt-4 items-center gap-3">
+          {currentStep > 1 && (
+            <button
+              onClick={handlePreviousStep}
+              className="px-8 py-2 rounded-full transition text-main-color border border-main-color bg-white"
+            >
+              قبلی
+            </button>
+          )}
+          {currentStep < 4 && (
+            <button
+              onClick={handleNextStep}
+              className="bg-main-color text-white px-8 py-2 rounded-full transition"
+            >
+              بعدی
+            </button>
+          )}
         </div>
       </div>
-      <form onSubmit={formik.handleSubmit}>
-        <div className="flex flex-col items-center justify-center w-full gap-5">
-          <div className="grid lg:grid-cols-2 grid-cols-1 lg:gap-10 w-full gap-5">
-              <InputState label="وام" name="loan" value={formik.values.loan} onChange={formik.handleChange} />
-              <InputState label="منطقه" name="region" value={formik.values.region} onChange={formik.handleChange} />
-              <InputState label="نوع کاربری" name="usage" value={formik.values.usage} onChange={formik.handleChange} />
-              <InputState label="نوع مالکیت" name="document_type" value={formik.values.document_type} onChange={formik.handleChange} />
-              <InputState label="موقعیت ملک" name="location" value={formik.values.location} onChange={formik.handleChange} />
-              <InputState label="متراژ زمین" name="land_metrage" value={formik.values.land_metrage.toString()} onChange={(e) => formik.setFieldValue("land_metrage", e.target.value)} />
-              <InputState label="متراژ مفید" name="useful_metrage" value={formik.values.useful_metrage.toString()} onChange={(e) => formik.setFieldValue("useful_metrage", e.target.value)} />
-              <InputState label="تعداد طبقات" name="floor_number" value={formik.values.floor_number.toString()} onChange={(e) => formik.setFieldValue("floor_number", e.target.value)} />
-              <InputState label="طبقه" name="floor" value={formik.values.floor.toString()} onChange={(e) => formik.setFieldValue("floor", e.target.value)} />
-              <InputState label="واحد در طبقه" name="Unit_in_floor" value={formik.values.Unit_in_floor.toString()} onChange={(e) => formik.setFieldValue("Unit_in_floor", e.target.value)} />
-              <InputState label="سال ساخت" name="year_of_build" value={formik.values.year_of_build.toString()} onChange={(e) => formik.setFieldValue("year_of_build", e.target.value)} />
-              <InputState label="نام مالک" name="full_name" value={formik.values.full_name} onChange={formik.handleChange} />
-              <InputState label="قیمت" name="price" value={formik.values.price.toString()} onChange={(e) => formik.setFieldValue("price", e.target.value)} />
-              <InputState label="تعداد اتاق‌ها" name="room_number" value={formik.values.room_number.toString()} onChange={(e) => formik.setFieldValue("room_number", e.target.value)} />
-              <InputState label="ویژگی‌ها" name="features" value={formik.values.features} onChange={formik.handleChange} />
-            </div>
-        </div>
-        <div className="flex items-center justify-end my-6">
-          <Button submit="true" width="80px" height="50px" bgcolor="#09A380" borderradius="30px" color="white" type="submit">
-            <p className="text-[1rem] font-bold">ثبت</p>
-          </Button>
-        </div>
-      </form>
     </LayoutProfile>
   );
 }

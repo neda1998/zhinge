@@ -124,7 +124,7 @@ const StepperState = () => {
             location={location} setLocation={setLocation} price={price} 
             year_of_build={year_of_build} room_number={room_number}
             land_metrage={land_metrage} floor_number={floor_number} floor={floor}
-            onReset={resetAllStates} // اضافه کردن prop جدید
+            onReset={resetAllStates} 
         />,
         <StepFour key="step4" uploadedImages={uploadedImages} setUploadedImages={setUploadedImages} />
     ];

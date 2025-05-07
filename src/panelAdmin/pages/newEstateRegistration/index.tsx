@@ -4,7 +4,6 @@ import { pageNewEstate } from "../../../utils/data"
 import RouteChevron from "../../../components/common/RouteChevron"
 import Stepper from "../../../components/stepperState"
 
-
 const NewEstateRegistration = () => {
   return (
     <InitialLayout>

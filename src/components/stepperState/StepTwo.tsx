@@ -8,6 +8,12 @@ interface StepTwoProps {
     floor?: number; setFloor: (v: number) => void;
 }
 
+// تابع فرمت سه رقم سه رقم
+function formatInputNumber(val: string) {
+    const onlyNums = val.replace(/[^\d]/g, "");
+    return onlyNums.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
 const StepTwo = ({
     loan, setLoan,
     year_of_build, setYearOfBuild,
@@ -21,10 +27,15 @@ const StepTwo = ({
             <div className="flex flex-col items-start">
                 <InputState
                     label="وام"
-                    value={loan !== undefined && loan !== null ? String(loan) : ""}
-                    onChange={(e) => setLoan(Number(e.target.value.replace(/,/g, "")))}
+                    value={loan !== undefined && loan !== null ? formatInputNumber(String(loan)) : ""}
+                    onChange={(e) => {
+                        const formatted = formatInputNumber(e.target.value);
+                        e.target.value = formatted;
+                        setLoan(Number(formatted.replace(/,/g, "")));
+                    }}
                 />
-            <span className="text-xs text-red-600 my-1">اگر وام ندارید، عدد 0 رو وارد کنید</span>
+                <span className="text-xs text-red-600 my-1">اگر وام ندارید، عدد 0 رو وارد کنید</span>
+                <span className="text-xs text-gray-500 my-1">به تومان</span>
             </div>
             <InputState
                 label="سال ساخت"

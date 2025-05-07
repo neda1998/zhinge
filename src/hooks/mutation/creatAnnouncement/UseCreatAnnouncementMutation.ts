@@ -3,7 +3,7 @@ import Swal from "sweetalert2";
 import { creatAnnouncement, CreatAnnouncementBody } from "../../../services/admin/creatAnnouncement";
 import { useCookies } from "react-cookie"; 
 
-const UseCreatAnnouncementMutation = () => {
+const UseCreatAnnouncementAdminMutation = () => {
   const [cookies, setCookies] = useCookies(["accessToken", "Uid"]); 
   
   return useMutation(
@@ -35,4 +35,4 @@ const UseCreatAnnouncementMutation = () => {
   );
 };
 
-export default UseCreatAnnouncementMutation;
+export default UseCreatAnnouncementAdminMutation;
