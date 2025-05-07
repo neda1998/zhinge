@@ -87,7 +87,7 @@ const StepThreeUser = ({
           انتخاب امکانات
         </button>
         {showFeaturePanel && (
-          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-40 z-[9999]">
+          <div className="fixed inset-0 flex items-center justify-center bg-[#302b2b66] bg-opacity-40 z-[9999]">
             <div className="bg-white rounded-2xl shadow-xl p-6 w-[350px] max-h-[80vh] overflow-y-auto relative">
               <button
                 type="button"

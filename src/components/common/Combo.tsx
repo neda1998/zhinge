@@ -10,7 +10,7 @@ interface ComboBoxProps {
 }
 
 const ComboBox: React.FC<ComboBoxProps> = ({ label, options, name, value, onChange }) => {
-  const [selected, setSelected] = useState<string>(options[0]);
+  const [selected, setSelected] = useState<string>("");
 
   useEffect(() => {
     if (value !== undefined) {
@@ -37,6 +37,9 @@ const ComboBox: React.FC<ComboBoxProps> = ({ label, options, name, value, onChan
           onChange={handleChange}
           className="appearance-none w-full py-3 px-4 focus:outline-none focus:ring-2 focus:ring-gray-400 !bg-[#f4f4f4] rounded-full"
         >
+          <option value="" disabled>
+            انتخاب کنید
+          </option>
           {options.map((option, idx) => (
             <option key={idx} value={option}>
               {option}

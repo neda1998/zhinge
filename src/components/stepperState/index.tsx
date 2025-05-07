@@ -26,7 +26,7 @@ const StepperState = () => {
     const [features, setFeatures] = useState<string>("");
     const [full_name, setFullName] = useState<string>("");
     const [phone, setPhone] = useState<string>("");
-    const [state_code, setStateCode] = useState<string>("");
+    const [state_code, setStateCode] = useState<string>("-");
     const [useful_metrage, setUsefulMetrage] = useState<number | undefined>();
     const [isAnnouncementSubmitted, setIsAnnouncementSubmitted] = useState(false);
 
