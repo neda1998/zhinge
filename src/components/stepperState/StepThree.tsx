@@ -185,12 +185,6 @@ const StepThree = ({
                 placeholder="09183456789"
             />
             <InputState
-                label="کد استان"
-                value={state_code}
-                onChange={e => setStateCode(e.target.value)}
-                placeholder="مثال: 10"
-            />
-            <InputState
                 label="متراژ مفید"
                 value={useful_metrage !== undefined && useful_metrage !== null ? String(useful_metrage) : ""}
                 onChange={e => setUsefulMetrage(Number(e.target.value.replace(/,/g, "")))}

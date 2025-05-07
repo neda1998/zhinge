@@ -40,7 +40,7 @@ const StepOneUser = ({
                     }}
                 />
                 <span className="text-xs text-red-600 my-1">اگر وام ندارید، عدد 0 رو وارد کنید</span>
-                <span className="text-xs text-gray-500">{formatNumber(loan)} تومان</span>
+                <span className="text-xs text-gray-500 my-1">به تومان</span>
             </div>
             <div className="flex flex-col">
                 <InputState
