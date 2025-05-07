@@ -1,13 +1,9 @@
 import InputState from "../ui/atoms/input/inputState"
-import ComboBox from "../common/Combo"
-import React from "react";
-import TitleCommon from "./TitleCommon"
 
 interface StepTwoProps {
-    loan: number; setLoan: (v: number) => void;
+    loan?: number; setLoan: (v: number) => void;
     year_of_build?: number; setYearOfBuild: (v: number) => void;
     room_number?: number; setRoomNumber: (v: number) => void;
-    land_metrage?: number; setLandMetrage: (v: number) => void;
     floor_number?: number; setFloorNumber: (v: number) => void;
     floor?: number; setFloor: (v: number) => void;
 }
@@ -16,20 +12,19 @@ const StepTwo = ({
     loan, setLoan,
     year_of_build, setYearOfBuild,
     room_number, setRoomNumber,
-    land_metrage, setLandMetrage,
     floor_number, setFloorNumber,
     floor, setFloor
 }: StepTwoProps) => {
 
     return (
         <div className="grid lg:grid-cols-4 grid-cols-1 w-full gap-5">
-            <div className="flex items-center gap-5">
+            <div className="flex flex-col items-start">
                 <InputState
                     label="وام"
-                    value={loan !== undefined && loan !== null ? Number(loan) : ""}
+                    value={loan !== undefined && loan !== null ? String(loan) : ""}
                     onChange={(e) => setLoan(Number(e.target.value.replace(/,/g, "")))}
                 />
-                
+            <span className="text-xs text-red-600 my-1">اگر وام ندارید، عدد 0 رو وارد کنید</span>
             </div>
             <InputState
                 label="سال ساخت"
@@ -40,11 +35,6 @@ const StepTwo = ({
                 label="تعداد اتاق"
                 value={room_number !== undefined && room_number !== null ? String(room_number) : ""}
                 onChange={(e) => setRoomNumber(Number(e.target.value.replace(/,/g, "")))}
-            />
-            <InputState
-                label="متراژ مفید"
-                value={land_metrage !== undefined && land_metrage !== null ? String(land_metrage) : ""}
-                onChange={(e) => setLandMetrage(Number(e.target.value.replace(/,/g, "")))}
             />
             <InputState
                 label="طبقه مورد نظر"

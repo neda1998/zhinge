@@ -6,11 +6,8 @@
       ? Number(value).toLocaleString("en-US")
       : "";
 
-  // helper for formatting input as user types
   function formatInputNumber(val: string) {
-    // حذف هر چیزی غیر از عدد
     const onlyNums = val.replace(/[^\d]/g, "");
-    // افزودن ویرگول سه‌رقمی
     return onlyNums.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
 
@@ -19,7 +16,6 @@
       usage: string; setUsage: (v: string) => void;
       region: string; setRegion: (v: string) => void;
       address: string; setAddress: (v: string) => void;
-      location: string; setLocation: (v: string) => void;
       price?: number; setPrice: (v: number) => void;
   }
 
@@ -28,7 +24,6 @@
       usage, setUsage,
       region, setRegion,
       address, setAddress,
-      location, setLocation,
       price, setPrice
   }: StepOneProps) => {
     return (
@@ -42,12 +37,9 @@
             onChange={setType}
             options={["آپارتمان", "ویلایی","مغازه", "زمین مسکونی", "زمین کشاورزی", "سایر"]}
           />
-          <InputState label="شهرستان" value={usage} onChange={(e) => setUsage(e.target.value)} />
-          <InputState label="استان" value={region} onChange={(e) => setRegion(e.target.value)} />
-          <InputState label="آدرس" value={address} onChange={(e) => setAddress(e.target.value)} />
-          <InputState label="منطقه" value={location} onChange={(e) => setLocation(e.target.value)} />
-
-          {/* قیمت */}
+          <ComboBox options={["مسکونی","اداری"]} label="کاربرد" value={usage} onChange={setUsage} />
+          <InputState placeholder="سنندج، خیابان پاسداران، کوچه ادب 2، پلاک 3" label="آدرس" value={address} onChange={(e) => setAddress(e.target.value)} />
+          <InputState label="منطقه" value={region} onChange={(e) => setRegion(e.target.value)} placeholder="مثال: 2" />
           <div className="flex flex-col">
             <InputState
               label="قیمت"
@@ -59,7 +51,7 @@
                 setPrice(Number(formatted.replace(/,/g, "")));
               }}
             />
-            <span className="text-xs text-gray-400">لطفا اعداد را به انگلیسی وارد کنید</span>
+            <span className="text-xs text-gray-400 my-1">لطفا اعداد را به انگلیسی وارد کنید</span>
             <span className="text-xs text-gray-500">{formatNumber(price)} تومان</span>
           </div>
         </form>

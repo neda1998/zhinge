@@ -3,26 +3,24 @@ import StepTwo from "./StepTwo";
 import StepThree from "./StepThree";
 import StepFour from "./StepFour";
 import StepOne from "./StepOne";
-import React from "react";
 import UseCreatAnnouncementMutation from "../../hooks/mutation/creatAnnouncement/UseCreatAnnouncementMutation";
+import Swal from "sweetalert2";
 
 const StepperState = () => {
     const [currentStep, setCurrentStep] = useState(1);
     const creatAnnouncementMutation = UseCreatAnnouncementMutation();
-    // --- تمام stateهای فرم را اینجا تعریف کنید ---
     const [type, setType] = useState("");
     const [usage, setUsage] = useState("");
     const [region, setRegion] = useState("");
     const [address, setAddress] = useState("");
     const [location, setLocation] = useState("");
     const [price, setPrice] = useState<number | undefined>();
-    const [loan, setLoan] = useState<number>(0);
+    const [loan, setLoan] = useState<number>();
     const [year_of_build, setYearOfBuild] = useState<number | undefined>();
     const [room_number, setRoomNumber] = useState<number | undefined>();
     const [land_metrage, setLandMetrage] = useState<number | undefined>();
     const [floor_number, setFloorNumber] = useState<number | undefined>();
     const [floor, setFloor] = useState<number | undefined>();
-
     const [Unit_in_floor, setUnitInFloor] = useState<number | undefined>();
     const [document_type, setDocumentType] = useState<string>("");
     const [features, setFeatures] = useState<string>("");
@@ -30,8 +28,18 @@ const StepperState = () => {
     const [phone, setPhone] = useState<string>("");
     const [state_code, setStateCode] = useState<string>("");
     const [useful_metrage, setUsefulMetrage] = useState<number | undefined>();
+    const [isAnnouncementSubmitted, setIsAnnouncementSubmitted] = useState(false);
 
     const handleNextStep = () => {
+        if (currentStep === 3 && !isAnnouncementSubmitted) {
+            Swal.fire({
+                icon: "warning",
+                title: "اخطار",
+                text: "لطفا ابتدا اطلاعات را ثبت کنید!",
+                confirmButtonText: "باشه"
+            });
+            return;
+        }
         if (currentStep < 4) {
             setCurrentStep((prevStep) => prevStep + 1);
         }
@@ -40,6 +48,9 @@ const StepperState = () => {
     const handlePreviousStep = () => {
         if (currentStep > 1) {
             setCurrentStep((prevStep) => prevStep - 1);
+            if (currentStep === 4) {
+                setIsAnnouncementSubmitted(false);
+            }
         }
     };
 
@@ -47,9 +58,40 @@ const StepperState = () => {
         setCurrentStep(1);
     }, []);
 
+    useEffect(() => {
+        if (creatAnnouncementMutation.isSuccess) {
+            setIsAnnouncementSubmitted(true);
+        }
+    }, [creatAnnouncementMutation.isSuccess]);
+
     const [uploadedImages, setUploadedImages] = useState<any[]>([]);
 
-    // اضافه کردن prop برای نمایش دکمه ثبت آگهی در گام سوم
+    // تابع ریست کردن همه استیت‌ها
+    const resetAllStates = () => {
+        setType("");
+        setUsage("");
+        setRegion("");
+        setAddress("");
+        setLocation("");
+        setPrice(undefined);
+        setLoan(undefined);
+        setYearOfBuild(undefined);
+        setRoomNumber(undefined);
+        setLandMetrage(undefined);
+        setFloorNumber(undefined);
+        setFloor(undefined);
+        setUnitInFloor(undefined);
+        setDocumentType("");
+        setFeatures("");
+        setFullName("");
+        setPhone("");
+        setStateCode("");
+        setUsefulMetrage(undefined);
+        setIsAnnouncementSubmitted(false);
+        setUploadedImages([]);
+        setCurrentStep(1);
+    };
+
     const stepComponents = [
         <StepOne
             key="step1"
@@ -57,7 +99,6 @@ const StepperState = () => {
             usage={usage} setUsage={setUsage}
             region={region} setRegion={setRegion}
             address={address} setAddress={setAddress}
-            location={location} setLocation={setLocation}
             price={price} setPrice={setPrice}
         />,
         <StepTwo
@@ -65,7 +106,6 @@ const StepperState = () => {
             loan={loan} setLoan={setLoan}
             year_of_build={year_of_build} setYearOfBuild={setYearOfBuild}
             room_number={room_number} setRoomNumber={setRoomNumber}
-            land_metrage={land_metrage} setLandMetrage={setLandMetrage}
             floor_number={floor_number} setFloorNumber={setFloorNumber}
             floor={floor} setFloor={setFloor}
         />,
@@ -84,8 +124,8 @@ const StepperState = () => {
             location={location} setLocation={setLocation} price={price} 
             year_of_build={year_of_build} room_number={room_number}
             land_metrage={land_metrage} floor_number={floor_number} floor={floor}
-        />
-        ,
+            onReset={resetAllStates} // اضافه کردن prop جدید
+        />,
         <StepFour key="step4" uploadedImages={uploadedImages} setUploadedImages={setUploadedImages} />
     ];
 
