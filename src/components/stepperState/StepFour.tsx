@@ -14,9 +14,10 @@ interface FileUploadProps {
   uid?: string;
   uploadedImages: UploadedImage[];
   setUploadedImages: React.Dispatch<React.SetStateAction<UploadedImage[]>>;
+  onReset: () => void; // added
 }
 
-const StepFour: React.FC<FileUploadProps> = ({ uid, uploadedImages, setUploadedImages }) => {
+const StepFour: React.FC<FileUploadProps> = ({ uid, uploadedImages, setUploadedImages, onReset }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [cookies] = useCookies(["Uid"]);
   const currentUid = uid || cookies.Uid;
@@ -77,6 +78,8 @@ const StepFour: React.FC<FileUploadProps> = ({ uid, uploadedImages, setUploadedI
         text: "تصاویر با موفقیت آپلود شدند.",
         icon: "success",
         confirmButtonText: "باشه",
+      }).then(() => {
+        onReset(); // ریست و بازگشت به مرحله اول بعد از تایید کاربر
       });
 
       setUploadedImages(prev => [...prev, ...uploadedResults]);

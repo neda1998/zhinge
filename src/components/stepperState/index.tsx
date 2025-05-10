@@ -10,7 +10,7 @@ const StepperState = () => {
     const [currentStep, setCurrentStep] = useState(1);
     const creatAnnouncementMutation = UseCreatAnnouncementMutation();
     const [type, setType] = useState("");
-    const [usage, setUsage] = useState("");
+    const [usage, setUsage] = useState("-");
     const [region, setRegion] = useState("");
     const [address, setAddress] = useState("");
     const [location, setLocation] = useState("");
@@ -61,6 +61,7 @@ const StepperState = () => {
     useEffect(() => {
         if (creatAnnouncementMutation.isSuccess) {
             setIsAnnouncementSubmitted(true);
+            setCurrentStep(4); // همیشه پس از ثبت موفق، کاربر را به مرحله ۴ ببر
         }
     }, [creatAnnouncementMutation.isSuccess]);
 
@@ -100,33 +101,40 @@ const StepperState = () => {
             region={region} setRegion={setRegion}
             address={address} setAddress={setAddress}
             price={price} setPrice={setPrice}
+            Unit_in_floor={Unit_in_floor} setUnitInFloor={setUnitInFloor}
+            document_type={document_type} setDocumentType={setDocumentType}
+            floor_number={floor_number} setFloorNumber={setFloorNumber}
+            floor={floor} setFloor={setFloor}
         />,
         <StepTwo
             key="step2"
             loan={loan} setLoan={setLoan}
             year_of_build={year_of_build} setYearOfBuild={setYearOfBuild}
             room_number={room_number} setRoomNumber={setRoomNumber}
-            floor_number={floor_number} setFloorNumber={setFloorNumber}
-            floor={floor} setFloor={setFloor}
+            setPrice={setPrice}
+            price={price}
+            features={features} setFeatures={setFeatures}
+            useful_metrage={useful_metrage} setUsefulMetrage={setUsefulMetrage}
+            location={location} setLocation={setLocation}
         />,
         <StepThree
             key="step3"
             showSubmitButton={true}
             creatAnnouncementMutation={creatAnnouncementMutation}
-            Unit_in_floor={Unit_in_floor} setUnitInFloor={setUnitInFloor}
-            document_type={document_type} setDocumentType={setDocumentType}
-            features={features} setFeatures={setFeatures}
             full_name={full_name} setFullName={setFullName}
             phone={phone} setPhone={setPhone}
-            state_code={state_code} setStateCode={setStateCode}
-            useful_metrage={useful_metrage} setUsefulMetrage={setUsefulMetrage}
             type={type} usage={usage} region={region} address={address}
             location={location} setLocation={setLocation} price={price} 
             year_of_build={year_of_build} room_number={room_number}
             land_metrage={land_metrage} floor_number={floor_number} floor={floor}
             onReset={resetAllStates} 
         />,
-        <StepFour key="step4" uploadedImages={uploadedImages} setUploadedImages={setUploadedImages} />
+        <StepFour
+            key="step4"
+            uploadedImages={uploadedImages}
+            setUploadedImages={setUploadedImages}
+            onReset={resetAllStates} // added
+        />
     ];
 
     return (
