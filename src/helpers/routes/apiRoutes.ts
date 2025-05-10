@@ -59,7 +59,10 @@ const apiRoutes = {
     search: "/announce/search"
   },
   request:{
-    createRequest:"/request/creatrequest"
+    createRequest:"/request/creatrequest",
+    getchecked:"/request/getchecked",
+    getunchecked:"/request/getunchecked",
+    checkRequest:"/request/check",
   }
 };
 

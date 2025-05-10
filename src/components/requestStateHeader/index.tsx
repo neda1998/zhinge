@@ -42,6 +42,22 @@ const RequestStateHeader = () => {
       });
       return;
     }
+    
+    if (
+      typeof lowest_price === "number" &&
+      typeof hieghest_price === "number" &&
+      !isNaN(lowest_price) &&
+      !isNaN(hieghest_price) &&
+      lowest_price > hieghest_price
+    ) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'خطا',
+        text: 'حداقل قیمت نمی‌تواند بیشتر از حداکثر قیمت باشد.',
+        confirmButtonText: 'باشه'
+      });
+      return;
+    }
 
     const requestData: any = {};
 
