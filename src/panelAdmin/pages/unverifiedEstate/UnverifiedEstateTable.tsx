@@ -6,7 +6,6 @@ interface TableProps {
 }
 
 const UnverifiedEstateTable: React.FC<TableProps> = ({ data, count }) => {
-    // اگر داده به صورت {deleted: [...], number: ...} است، باید data = data.deleted باشد
     const estates = Array.isArray(data)
         ? data
         : ('deleted' in data && Array.isArray(data.deleted) ? data.deleted : []);
