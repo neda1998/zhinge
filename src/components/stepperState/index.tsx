@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import StepTwo from "./StepTwo";
 import StepThree from "./StepThree";
-import StepFour from "./StepFour";
 import StepOne from "./StepOne";
 import UseCreatAnnouncementMutation from "../../hooks/mutation/creatAnnouncement/UseCreatAnnouncementMutation";
 import Swal from "sweetalert2";
@@ -31,16 +30,47 @@ const StepperState = () => {
     const [isAnnouncementSubmitted, setIsAnnouncementSubmitted] = useState(false);
 
     const handleNextStep = () => {
-        if (currentStep === 3 && !isAnnouncementSubmitted) {
-            Swal.fire({
-                icon: "warning",
-                title: "اخطار",
-                text: "لطفا ابتدا اطلاعات را ثبت کنید!",
-                confirmButtonText: "باشه"
-            });
-            return;
+        // اعتبارسنجی فیلدهای ضروری برای هر مرحله
+        if (currentStep === 1) {
+            if (
+                !type.trim() ||
+                !usage.trim() ||
+                !region.trim() ||
+                !address.trim() ||
+                !price ||
+                !Unit_in_floor ||
+                !document_type.trim() ||
+                !floor_number ||
+                !floor
+            ) {
+                Swal.fire({
+                    icon: "warning",
+                    title: "اخطار",
+                    text: "لطفا همه فیلدهای ضروری مرحله اول را پر کنید!",
+                    confirmButtonText: "باشه"
+                });
+                return;
+            }
         }
-        if (currentStep < 4) {
+        if (currentStep === 2) {
+            if (
+                !loan ||
+                !year_of_build ||
+                !room_number ||
+                !features.trim() ||
+                !useful_metrage ||
+                !location.trim()
+            ) {
+                Swal.fire({
+                    icon: "warning",
+                    title: "اخطار",
+                    text: "لطفا همه فیلدهای ضروری مرحله دوم را پر کنید!",
+                    confirmButtonText: "باشه"
+                });
+                return;
+            }
+        }
+        if (currentStep < 3) {
             setCurrentStep((prevStep) => prevStep + 1);
         }
     };
@@ -48,7 +78,7 @@ const StepperState = () => {
     const handlePreviousStep = () => {
         if (currentStep > 1) {
             setCurrentStep((prevStep) => prevStep - 1);
-            if (currentStep === 4) {
+            if (currentStep === 3) {
                 setIsAnnouncementSubmitted(false);
             }
         }
@@ -61,7 +91,7 @@ const StepperState = () => {
     useEffect(() => {
         if (creatAnnouncementMutation.isSuccess) {
             setIsAnnouncementSubmitted(true);
-            setCurrentStep(4); // همیشه پس از ثبت موفق، کاربر را به مرحله ۴ ببر
+            setCurrentStep(3); // بعد از ثبت موفق، کاربر را به مرحله ۳ ببر
         }
     }, [creatAnnouncementMutation.isSuccess]);
 
@@ -128,27 +158,21 @@ const StepperState = () => {
             year_of_build={year_of_build} room_number={room_number}
             land_metrage={land_metrage} floor_number={floor_number} floor={floor}
             onReset={resetAllStates} 
-        />,
-        <StepFour
-            key="step4"
-            uploadedImages={uploadedImages}
-            setUploadedImages={setUploadedImages}
-            onReset={resetAllStates} // added
         />
     ];
 
     return (
         <div className="flex flex-col items-baseline my-10 w-full">
             <div className="flex items-center justify-between lg:min-w-[800px] min-w-full max-w-full lg:mx-auto mb-14">
-                {[1, 2, 3, 4].map((step, idx) => (
-                    <div className="flex items-center min-w-[25%]" key={idx}>
+                {[1, 2, 3].map((step, idx) => (
+                    <div className="flex items-center min-w-[33%]" key={idx}>
                         <div
                             className={`w-[48px] h-[48px] rounded-full flex items-center justify-center font-extrabold text-xl flex-none basis-[48px]
                             ${currentStep >= step ? 'bg-main-color text-white' : 'bg-gray-100 text-gray-400'}`}
                         >
                             {step}
                         </div>
-                        {idx < 3 && (
+                        {idx < 2 && (
                             <div
                                 className={`w-full h-[2px] ${currentStep > step ? 'bg-main-color text-white' : 'bg-gray-100 text-gray-400'}`}
                             ></div>
@@ -168,7 +192,7 @@ const StepperState = () => {
                         قبلی
                     </button>
                 )}
-                {currentStep < 4 && (
+                {currentStep < 3 && (
                     <button
                         onClick={handleNextStep}
                         className="bg-main-color text-white px-8 py-2 rounded-full transition"

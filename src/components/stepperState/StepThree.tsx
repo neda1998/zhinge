@@ -37,6 +37,20 @@ const StepThree = ({
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setSubmitAttempted(true);
+
+        if (
+            !full_name.trim() ||
+            !phone.trim()
+        ) {
+            Swal.fire({
+                icon: "warning",
+                title: "اخطار",
+                text: "لطفا همه فیلدهای ضروری را پر کنید!",
+                confirmButtonText: "باشه"
+            });
+            return;
+        }
+
         if (!showSubmitButton) {
             Swal.fire({
                 icon: "warning",

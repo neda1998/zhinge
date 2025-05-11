@@ -11,7 +11,6 @@ interface Props {}
 const UnverifiedEstate = ({ }: Props) => {
     const { data, isLoading, isError } = UseNotconfirmedannouncementsQuery();
 
-    // تبدیل داده دریافتی به فرمت مورد نیاز Table
     const tableData = data?.deleted || [];
     const count = data?.number;
 console.log(data, "data in unverified estate page");

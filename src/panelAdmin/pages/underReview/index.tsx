@@ -1,34 +1,21 @@
 import React, { useEffect, useState } from "react";
 import InitialLayout from "../../dashboard/initialLayoutAdmin";
 import UseInprogressQuery from "../../../hooks/queries/admin/inprogress/UseInprogressQuery";
-import UseGetuncheckedQuery from "../../../hooks/queries/admin/getunchecked/UseGetuncheckedQuery";
 import UseGetcheckedQuery from "../../../hooks/queries/admin/getchecked/UseGetcheckedQuery";
 import Table from "../../../components/common/Table";
 import RouteChevron from "../../../components/common/RouteChevron";
 import { pageUnderReview } from "../../../utils/data";
 import { PuffLoader } from "react-spinners";
-import UseCheckRequestMutation from "../../../hooks/mutation/check/UseCheckRequestMutation";
+import UseVerifyAnnounceMutation from "../../../hooks/mutation/verifyAnnounce/UseVerifyAnnounceMutation";
+import ChooseItemsOfState from "../propertyManagement/ChooseItemsOfState";
+import UseRejectannounceMutatiojn from "../../../hooks/mutation/rejectannounce/UseRejectannounceMutatiojn";
 
 const UnderReview = () => {
-  const {
-    data: uncheckedData,
-    isLoading: isLoadingUnchecked,
-    isError: isErrorUnchecked,
-    refetch: refetchUnchecked,
-  } = UseGetuncheckedQuery();
-
-  const [localUnchecked, setLocalUnchecked] = useState<any[]>([]);
-  useEffect(() => {
-    if (uncheckedData?.users) {
-      setLocalUnchecked(uncheckedData.users);
-    }
-  }, [uncheckedData]);
-
   const {
     data: inprogressData,
     isLoading: isLoadingProgress,
     isError: isErrorProgress,
-    refetch: refetchInprogress, // اضافه کردن refetch
+    refetch: refetchInprogress,
   } = UseInprogressQuery();
 
   const {
@@ -38,88 +25,17 @@ const UnderReview = () => {
     refetch: refetchChecked,
   } = UseGetcheckedQuery();
 
-  const checkMutation = UseCheckRequestMutation();
+  const verifyAnnounceMutation = UseVerifyAnnounceMutation();
+  const rejectAnnounceMutation = UseRejectannounceMutatiojn();
 
-  const [activeTab, setActiveTab] = useState<"unchecked" | "inprogress" | "checked">("unchecked");
-
-  const handleCheck = async (item: any) => {
-    const requestData = {
-      Uid: item.Uid ?? item.uid,
-      id: item.id,
-      full_name: item.full_name,
-      phone: item.phone,
-      lowest_price: item.lowest_price ?? item.loan ?? 0,
-      highest_price: item.highest_price ?? item.hieghest_price ?? item.price ?? 0,
-      location: item.location,
-      region: item.region,
-      type: item.type,
-      message: item.message ?? "",
-      status: true
-    };
-
-    try {
-      await checkMutation.mutateAsync(requestData as any);
-      refetchUnchecked(); // به‌روزرسانی لیست بررسی‌نشده‌ها
-      refetchChecked(); // به‌روزرسانی لیست بررسی‌شده‌ها
-      refetchInprogress(); // به‌روزرسانی لیست در حال بررسی
-    } catch (error) {
-      console.error("خطا در بررسی:", error);
-    }
-  };
-
-  // دکمه تایید نهایی برای در حال بررسی
-  const handleFinalApprove = async (item: any) => {
-    // فرض بر این است که همان API و همان داده را باید بفرستی
-    const requestData = {
-      Uid: item.Uid ?? item.uid,
-      id: item.id,
-      full_name: item.full_name,
-      phone: item.phone,
-      lowest_price: item.lowest_price ?? item.loan ?? 0,
-      highest_price: item.highest_price ?? item.hieghest_price ?? item.price ?? 0,
-      location: item.location,
-      region: item.region,
-      type: item.type,
-      message: item.message ?? "",
-      status: true
-    };
-
-    try {
-      await checkMutation.mutateAsync(requestData as any);
-      refetchUnchecked();
-      refetchChecked();
+  useEffect(() => {
+    if (verifyAnnounceMutation.isSuccess || rejectAnnounceMutation.isSuccess) {
       refetchInprogress();
-    } catch (error) {
-      console.error("خطا در تایید نهایی:", error);
+      refetchChecked();
+      verifyAnnounceMutation.reset();
+      rejectAnnounceMutation.reset();
     }
-  };
-
-  const uncheckedTableData =
-    localUnchecked?.map((item: any, idx: number) => ({
-      "ردیف": idx + 1,
-      "کد ملک": item.id,
-      "نوع ملک": item.type,
-      "منطقه": item.region,
-      "نام مالک": item.full_name,
-      "شماره تماس": item.phone,
-      "وضعیت": "بررسی‌نشده",
-      "بازه قیمت": (
-        <div className="relative group cursor-default">
-          {item.lowest_price.toLocaleString()} - {item.hieghest_price.toLocaleString()} تومان
-          <div className="absolute w-[200px] bottom-full mb-2 hidden group-hover:block bg-gray-800 text-white text-xs rounded پ-2 z-10">
-            بازه قیمت وارد شده توسط کاربر (کمترین تا بیشترین مقدار)
-          </div>
-        </div>
-      ),
-      "عملیات": (
-        <button
-          onClick={() => handleCheck(item)}
-          className="bg-green-600 hover:bg-green-700 text-white text-sm px-3 py-1 rounded"
-        >
-          بررسی
-        </button>
-      ),
-    })) || [];
+  }, [verifyAnnounceMutation.isSuccess, rejectAnnounceMutation.isSuccess]);
 
   const inprogressTableData =
     inprogressData?.inprogress?.map((item: any, idx: number) => ({
@@ -129,19 +45,33 @@ const UnderReview = () => {
       "منطقه": item.region,
       "نام مالک": item.full_name,
       "شماره تماس": item.userID,
-      "وضعیت": "در حال بررسی",
+      "وضعیت": (
+        <span className="text-yellow-600 font-bold">در حال بررسی</span>
+      ),
       "بازه قیمت": (
         <span>
           {item.price?.toLocaleString()} تومان
         </span>
       ),
       "عملیات": (
-        <button
-          onClick={() => handleFinalApprove(item)}
-          className="bg-blue-600 hover:bg-blue-700 text-white text-sm px-3 py-1 rounded"
-        >
-          تایید نهایی
-        </button>
+        <div className="flex gap-2 justify-center">
+          <button
+            onClick={() => {
+              verifyAnnounceMutation.mutate(item);
+            }}
+            className="bg-green-600 hover:bg-green-700 text-white text-sm px-3 py-1 rounded"
+          >
+            بررسی
+          </button>
+          <button
+            onClick={() => {
+              rejectAnnounceMutation.mutate(item);
+            }}
+            className="bg-red-600 hover:bg-red-700 text-white text-sm px-3 py-1 rounded"
+          >
+            رد
+          </button>
+        </div>
       ),
     })) || [];
 
@@ -164,15 +94,12 @@ const UnderReview = () => {
       ),
     })) || [];
 
-  let tableData: any[] = [];
-  if (activeTab === "unchecked") tableData = uncheckedTableData;
-  else if (activeTab === "inprogress") tableData = inprogressTableData;
-  else if (activeTab === "checked") tableData = checkedTableData;
+  let tableData: any[] = inprogressTableData;
 
   const isLoading =
-    isLoadingUnchecked || isLoadingProgress || isLoadingChecked;
+    isLoadingProgress || isLoadingChecked;
   const isError =
-    isErrorUnchecked || isErrorProgress || isErrorChecked;
+    isErrorProgress || isErrorChecked;
 
   return (
     <InitialLayout>
@@ -180,48 +107,28 @@ const UnderReview = () => {
         <span className="font-extrabold sm:text-lg whitespace-nowrap ml-2">مدیریت درخواست‌ها</span>
         <RouteChevron items={pageUnderReview} />
       </div>
-
+      <ChooseItemsOfState />
+      {/* فقط تب در حال بررسی */}
       <div className="flex gap-2 mb-6">
         <button
           className={`px-4 py-2 rounded-t-md border-b-2 transition-all ${
-            activeTab === "unchecked"
-              ? "border-[#09A380] bg-[#09A380]/10 font-bold text-[#09A380]"
-              : "border-transparent bg-gray-100 text-gray-600"
+            "border-yellow-500 bg-yellow-100 font-bold text-yellow-700"
           }`}
-          onClick={() => setActiveTab("unchecked")}
-        >
-          بررسی‌نشده ({uncheckedTableData.length})
-        </button>
-        <button
-          className={`px-4 py-2 rounded-t-md border-b-2 transition-all ${
-            activeTab === "inprogress"
-              ? "border-yellow-500 bg-yellow-100 font-bold text-yellow-700"
-              : "border-transparent bg-gray-100 text-gray-600"
-          }`}
-          onClick={() => setActiveTab("inprogress")}
         >
           در حال بررسی ({inprogressTableData.length})
-        </button>
-        <button
-          className={`px-4 py-2 rounded-t-md border-b-2 transition-all ${
-            activeTab === "checked"
-              ? "border-green-600 bg-green-50 font-bold text-green-700"
-              : "border-transparent bg-gray-100 text-gray-600"
-          }`}
-          onClick={() => setActiveTab("checked")}
-        >
-          بررسی‌شده ({checkedTableData.length})
         </button>
       </div>
 
       {isLoading ? (
-        <div className="flex justify-center items-center h-[60vh]">
+        <div className="flex items-center justify-center h-screen">
           <PuffLoader color="#09A380" />
         </div>
       ) : isError ? (
         <div className="text-red-600 text-center">خطا در دریافت اطلاعات</div>
       ) : (
-        <Table data={tableData} />
+        <div className="overflow-x-auto mt-4">
+          <Table data={tableData} />
+        </div>
       )}
     </InitialLayout>
   );
