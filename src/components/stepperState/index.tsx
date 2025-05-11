@@ -30,7 +30,6 @@ const StepperState = () => {
     const [isAnnouncementSubmitted, setIsAnnouncementSubmitted] = useState(false);
 
     const handleNextStep = () => {
-        // اعتبارسنجی فیلدهای ضروری برای هر مرحله
         if (currentStep === 1) {
             if (
                 !type.trim() ||
@@ -91,13 +90,12 @@ const StepperState = () => {
     useEffect(() => {
         if (creatAnnouncementMutation.isSuccess) {
             setIsAnnouncementSubmitted(true);
-            setCurrentStep(3); // بعد از ثبت موفق، کاربر را به مرحله ۳ ببر
+            setCurrentStep(3); 
         }
     }, [creatAnnouncementMutation.isSuccess]);
 
     const [uploadedImages, setUploadedImages] = useState<any[]>([]);
 
-    // تابع ریست کردن همه استیت‌ها
     const resetAllStates = () => {
         setType("");
         setUsage("");

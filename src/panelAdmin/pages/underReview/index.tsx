@@ -108,7 +108,6 @@ const UnderReview = () => {
         <RouteChevron items={pageUnderReview} />
       </div>
       <ChooseItemsOfState />
-      {/* فقط تب در حال بررسی */}
       <div className="flex gap-2 mb-6">
         <button
           className={`px-4 py-2 rounded-t-md border-b-2 transition-all ${

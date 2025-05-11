@@ -3,6 +3,7 @@ import Swal from "sweetalert2";
 import camera from "../../assets/images/camera.svg";
 import UseUploadFileMutation from "../../hooks/mutation/announce/UseUploadFileMutation";
 import { useCookies } from "react-cookie";
+import { PuffLoader } from "react-spinners";
 
 export interface UploadedImage {
   id: string;
@@ -22,9 +23,11 @@ const FileUpload: React.FC<FileUploadProps> = ({ uid, uploadedImages, setUploade
   const currentUid = uid || cookies.Uid;
   const { mutateAsync: uploadFile } = UseUploadFileMutation();
   const [pendingFiles, setPendingFiles] = useState<{ file: File; preview: string }[]>([]);
+  const [isUploading, setIsUploading] = useState(false);
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
+      setIsUploading(true); 
       const file = e.target.files[0];
 
       if (uploadedImages.length + pendingFiles.length >= 10) {
@@ -35,13 +38,17 @@ const FileUpload: React.FC<FileUploadProps> = ({ uid, uploadedImages, setUploade
           confirmButtonText: "باشه",
         });
         e.target.value = "";
+        setIsUploading(false);
         return;
       }
 
       const reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onloadend = () => {
-        setPendingFiles(prev => [...prev, { file, preview: reader.result as string }]);
+        setTimeout(() => {
+          setPendingFiles(prev => [...prev, { file, preview: reader.result as string }]);
+          setIsUploading(false);
+        }, 500);
       };
 
       e.target.value = "";
@@ -123,10 +130,16 @@ const FileUpload: React.FC<FileUploadProps> = ({ uid, uploadedImages, setUploade
         <p className="text-[15px] text-[#1E1E1E80] mobile:text-[13px]">
           آپلود تصویر ملک (حداکثر 10 قطعه عکس)
         </p>
+        {isUploading && (
+          <div className="flex flex-col items-center justify-center mt-2">
+            <PuffLoader color="#09A380" size={32} />
+            <span className="text-xs text-gray-500 mt-2">در حال بارگذاری تصویر...</span>
+          </div>
+        )}
       </div>
 
       {pendingFiles.length > 0 && (
-        <div className="grid lg:grid-cols-4 sm:grid-cols-3 grid-cols-1 gap-4 mt-6">
+        <div className="grid lg:grid-cols-5 sm:grid-cols-2 grid-cols-1 gap-4 mt-6">
           {pendingFiles.map((item, idx) => (
             <div key={idx} className="relative w-[8rem] h-[8rem] rounded-[20px] bg-yellow-50 overflow-hidden border-2 border-yellow-400">
               <img src={item.preview} alt="pending" className="w-full h-full object-cover" />
