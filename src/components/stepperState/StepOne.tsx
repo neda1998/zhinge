@@ -13,10 +13,8 @@ function formatInputNumber(val: string) {
 
 interface StepOneProps {
   type: string; setType: (v: string) => void;
-  usage: string; setUsage: (v: string) => void;
   region: string; setRegion: (v: string) => void;
   address: string; setAddress: (v: string) => void;
-  price?: number; setPrice: (v: number) => void;
   Unit_in_floor?: number; setUnitInFloor: (v: number) => void;
   document_type: string; setDocumentType: (v: string) => void;
   floor_number?: number; setFloorNumber: (v: number) => void; // added
@@ -25,10 +23,8 @@ interface StepOneProps {
 
 const StepOne = ({
   type, setType,
-  usage, setUsage,
   region, setRegion,
   address, setAddress,
-  price, setPrice,
   Unit_in_floor, setUnitInFloor,
   document_type, setDocumentType,
   floor_number, setFloorNumber, // added

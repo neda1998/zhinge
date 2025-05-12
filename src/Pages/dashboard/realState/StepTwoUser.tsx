@@ -1,44 +1,64 @@
-import React from 'react';
+import React, { useState } from 'react';
 import InputState from "../../../components/ui/atoms/input/inputState";
 import ComboBox from '../../../components/common/Combo';
 
-interface StepTwoUserProps {
-    usage: string; setUsage: (v: string) => void;
-    document_type: string; setDocumentType: (v: string) => void;
-    location: string; setLocation: (v: string) => void;
-    land_metrage: string; setLandMetrage: (v: string) => void;
-    useful_metrage: string; setUsefulMetrage: (v: string) => void;
-    floor_number: string; setFloorNumber: (v: string) => void;
-    floor: string; setFloor: (v: string) => void;
-    Unit_in_floor: string; setUnitInFloor: (v: string) => void;
-    year_of_build: string; setYearOfBuild: (v: string) => void;
-}
+
+const FEATURES_OPTIONS = [
+    "آسانسور", "پارکینگ", "انباری", "تراس", "حیاط", "سرویس بهداشتی", "سرویس حمام", "کمد دیواری", "کابینت", "کولر", "پکیج", "شومینه", "دوربین مداربسته", "سیستم گرمایش", "سیستم سرمایش", "سونا", "جکوزی", "استخر", "زمین بازی", "باشگاه ورزشی",
+    "سالن اجتماعات", "سالن کنفرانس", "کتابخانه", "لابی", "آتش‌نشانی", "سیستم اعلام حریق", "سیستم تهویه مطبوع", "سیستم امنیتی", "سیستم کنترل دسترسی", "سیستم روشنایی هوشمند", "سیستم صوتی و تصویری", "سیستم اینترنت پرسرعت", "سیستم تلویزیون مرکزی ", "سیستم گرمایش از کف", "سیستم سرمایش از سقف", "سیستم تصفیه آب", "سیستم تصفیه هوا", "سیستم گرمایش و سرمایش مرکزی", "سیستم گرمایش و سرمایش مستقل", "سیستم گرمایش و سرمایش هوشمند", "سیستم گرمایش و سرمایش خودکار", "سیستم گرمایش و سرمایش دستی"
+];
 
 function formatInputNumber(val: string) {
     const onlyNums = val.replace(/[^\d]/g, "");
     return onlyNums.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
+
+interface StepTwoUserProps {
+    loan: string; setLoan: (v: string) => void;
+    location: string; setLocation: (v: string) => void;
+    useful_metrage: string; setUsefulMetrage: (v: string) => void;
+    land_metrage: string; setLandMetrage: (v: string) => void;
+    year_of_build: string; setYearOfBuild: (v: string) => void;
+    features: string; setFeatures: (v: string) => void;
+    room_number: string; setRoomNumber: (v: string) => void;
+}
 const StepTwoUser = ({
-    usage, setUsage,
-    document_type, setDocumentType,
+    room_number, setRoomNumber,
+    loan, setLoan,
+    features, setFeatures,
     location, setLocation,
-    land_metrage, setLandMetrage,
     useful_metrage, setUsefulMetrage,
-    floor_number, setFloorNumber,
-    floor, setFloor,
-    Unit_in_floor, setUnitInFloor,
+    land_metrage, setLandMetrage,
     year_of_build, setYearOfBuild
 }: StepTwoUserProps) => {
+const [showFeaturePanel, setShowFeaturePanel] = useState(false);
+const selectedFeatures: string[] = features ? features.split(",").map(f => f.trim()).filter(f => f) : [];
+
+    const handleFeatureSelect = (feature: string) => {
+        if (selectedFeatures.includes(feature)) {
+            const newFeatures = selectedFeatures.filter(f => f !== feature);
+            setFeatures(newFeatures.join(","));
+        } else {
+            const newFeatures = [...selectedFeatures, feature];
+            setFeatures(newFeatures.join(","));
+        }
+    };
     return (
         <div className="w-full grid lg:grid-cols-4 sm:grid-cols-2 grid-cols-1 gap-5">
-            <ComboBox options={["مسکونی", "اداری"]} label="کاربرد" value={usage} onChange={setUsage} />
-            <ComboBox
-                label="نوع سند"
-                value={document_type}
-                onChange={setDocumentType}
-                options={["سند تک برگ", "سند واگذاری", "مبایعه نامه (قولنامه‌ای)", "نسق", "اوقافی", "سایر"]}
-            />
+            <div className="flex flex-col items-start">
+                <InputState
+                    label="وام"
+                    value={loan !== undefined && loan !== null ? formatInputNumber(String(loan)) : ""}
+                    onChange={(e) => {
+                        const formatted = formatInputNumber(e.target.value);
+                        e.target.value = formatted;
+                        setLoan(formatted);
+                    }}
+                />
+                <span className="text-xs text-red-600 my-1">اگر وام ندارید، عدد 0 رو وارد کنید</span>
+                <span className="text-xs text-gray-500 my-1">به تومان</span>
+            </div>
             <InputState
                 label="موقعیت ملک"
                 placeholder="مثال: 35.6895, 51.3890"
@@ -46,34 +66,87 @@ const StepTwoUser = ({
                 onChange={e => setLocation(e.target.value)}
             />
             <InputState
+                label="تعداد اتاق‌ها"
+                placeholder="مثال: 3"
+                value={room_number}
+                onChange={e => setRoomNumber(formatInputNumber(e.target.value))}
+            />
+            <InputState
                 label="متراژ زمین"
                 placeholder="مثال: 200"
                 value={land_metrage}
                 onChange={e => setLandMetrage(formatInputNumber(e.target.value))}
             />
+            <div className="flex flex-col col-span-1">
+                <label className="mb-1 text-sm font-medium">امکانات</label>
+                <div className="flex overflow-x-auto gap-1 mb-2 pb-1 max-w-full">
+                    {selectedFeatures.map((feature) => (
+                        <span
+                            key={feature}
+                            className="bg-main-color text-white px-2 py-1 rounded-full text-xs flex items-center whitespace-nowrap"
+                        >
+                            {feature}
+                            <button
+                                type="button"
+                                className="ml-1 text-white"
+                                onClick={() => handleFeatureSelect(feature)}
+                            >
+                                ×
+                            </button>
+                        </span>
+                    ))}
+                </div>
+                <button
+                    type="button"
+                    className="border border-main-color text-main-color px-2 py-1 rounded-full text-xs w-fit mt-2"
+                    onClick={() => setShowFeaturePanel(true)}
+                >
+                    انتخاب امکانات
+                </button>
+                {showFeaturePanel && (
+                    <div className="fixed inset-0 flex items-center justify-center bg-[#302b2b66] bg-opacity-40 z-[9999]">
+                        <div className="bg-white rounded-2xl shadow-xl p-6 w-[350px] max-h-[80vh] overflow-y-auto relative">
+                            <button
+                                type="button"
+                                className="absolute top-2 left-2 text-gray-500 hover:text-red-500 text-xl font-bold"
+                                onClick={() => setShowFeaturePanel(false)}
+                                aria-label="بستن"
+                            >
+                                ×
+                            </button>
+                            <div className="flex flex-wrap gap-2">
+                                {FEATURES_OPTIONS.map((feature) => (
+                                    <button
+                                        type="button"
+                                        key={feature}
+                                        className={`border px-2 py-1 rounded-full text-xs transition
+                      ${selectedFeatures.includes(feature)
+                                                ? "bg-main-color text-white border-main-color"
+                                                : "border-main-color text-main-color hover:bg-main-color hover:text-white"}`}
+                                        onClick={() => handleFeatureSelect(feature)}
+                                    >
+                                        {feature}
+                                    </button>
+                                ))}
+                            </div>
+                            <div className="flex justify-end mt-4">
+                                <button
+                                    type="button"
+                                    className="bg-main-color text-white px-4 py-1 rounded-full"
+                                    onClick={() => setShowFeaturePanel(false)}
+                                >
+                                    تایید
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                )}
+            </div>
             <InputState
                 label="متراژ مفید"
                 placeholder="مثال: 150"
                 value={useful_metrage}
                 onChange={e => setUsefulMetrage(formatInputNumber(e.target.value))}
-            />
-            <InputState
-                label="تعداد طبقات"
-                placeholder="مثال: 3"
-                value={floor_number}
-                onChange={e => setFloorNumber(formatInputNumber(e.target.value))}
-            />
-            <InputState
-                label="طبقه"
-                placeholder="مثال: 2"
-                value={floor}
-                onChange={e => setFloor(formatInputNumber(e.target.value))}
-            />
-            <InputState
-                label="تعداد واحد در طبقه"
-                placeholder="مثال: 2"
-                value={Unit_in_floor}
-                onChange={e => setUnitInFloor(e.target.value.replace(/,/g, ""))}
             />
             <InputState
                 label="سال ساخت"

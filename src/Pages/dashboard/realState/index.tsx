@@ -16,7 +16,7 @@ export default function Realstate() {
   const [region, setRegion] = useState("");
   const [address, setAddress] = useState("");
   const [location, setLocation] = useState("");
-  const [usage, setUsage] = useState("");
+  const [usage, setUsage] = useState("-");
   const [document_type, setDocumentType] = useState("");
   const [land_metrage, setLandMetrage] = useState("");
   const [useful_metrage, setUsefulMetrage] = useState("");
@@ -96,29 +96,27 @@ export default function Realstate() {
   const stepComponents = [
     <StepOneUser
       key="step1"
-      loan={loan} setLoan={setLoan}
       type={type} setType={setType}
       region={region} setRegion={setRegion}
       address={address} setAddress={setAddress}
-      price={price} setPrice={setPrice}
+      Unit_in_floor={Unit_in_floor} setUnitInFloor={setUnitInFloor}
+      document_type={document_type} setDocumentType={setDocumentType}
+      floor_number={floor_number} setFloorNumber={setFloorNumber}
+      floor={floor} setFloor={setFloor}
     />,
     <StepTwoUser
       key="step2"
-      usage={usage} setUsage={setUsage}
-      document_type={document_type} setDocumentType={setDocumentType}
+      loan={loan} setLoan={setLoan}
+      year_of_build={year_of_build} setYearOfBuild={setYearOfBuild}
+      room_number={room_number} setRoomNumber={setRoomNumber}
+      useful_metrage={useful_metrage} setUsefulMetrage={setUsefulMetrage}
       location={location} setLocation={setLocation}
       land_metrage={land_metrage} setLandMetrage={setLandMetrage}
-      useful_metrage={useful_metrage} setUsefulMetrage={setUsefulMetrage}
-      floor_number={floor_number} setFloorNumber={setFloorNumber}
-      floor={floor} setFloor={setFloor}
-      Unit_in_floor={Unit_in_floor} setUnitInFloor={setUnitInFloor}
-      year_of_build={year_of_build} setYearOfBuild={setYearOfBuild}
+      features={features} setFeatures={setFeatures}
     />,
     <StepThreeUser
       key="step3"
       full_name={full_name} setFullName={setFullName}
-      room_number={room_number} setRoomNumber={setRoomNumber}
-      features={features} setFeatures={setFeatures}
       onSubmit={handleSubmit}
       isAnnouncementSubmitted={isAnnouncementSubmitted}
     />,

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import InitialLayout from "../../dashboard/initialLayoutAdmin";
 import UseInprogressQuery from "../../../hooks/queries/admin/inprogress/UseInprogressQuery";
 import UseGetcheckedQuery from "../../../hooks/queries/admin/getchecked/UseGetcheckedQuery";

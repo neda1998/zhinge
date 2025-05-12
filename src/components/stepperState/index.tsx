@@ -125,10 +125,8 @@ const StepperState = () => {
         <StepOne
             key="step1"
             type={type} setType={setType}
-            usage={usage} setUsage={setUsage}
             region={region} setRegion={setRegion}
             address={address} setAddress={setAddress}
-            price={price} setPrice={setPrice}
             Unit_in_floor={Unit_in_floor} setUnitInFloor={setUnitInFloor}
             document_type={document_type} setDocumentType={setDocumentType}
             floor_number={floor_number} setFloorNumber={setFloorNumber}

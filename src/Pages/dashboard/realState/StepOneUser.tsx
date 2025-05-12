@@ -3,11 +3,13 @@ import InputState from "../../../components/ui/atoms/input/inputState";
 import ComboBox from '../../../components/common/Combo';
 
 interface StepOneUserProps {
-    loan: string; setLoan: (v: string) => void;
     type: string; setType: (v: string) => void;
     region: string; setRegion: (v: string) => void;
     address: string; setAddress: (v: string) => void;
-    price: string; setPrice: (v: string) => void;
+    Unit_in_floor: string; setUnitInFloor: (v: string) => void;
+    floor_number: string; setFloorNumber: (v: string) => void;
+    floor: string; setFloor: (v: string) => void;
+    document_type?: string; setDocumentType?: (v: string) => void;
 }
 
 function formatInputNumber(val: string) {
@@ -21,42 +23,21 @@ function formatNumber(val: string) {
 }
 
 const StepOneUser = ({
-    loan, setLoan,
     type, setType,
     region, setRegion,
     address, setAddress,
-    price, setPrice
+    Unit_in_floor, setUnitInFloor,
+    floor_number, setFloorNumber,
+    floor, setFloor,
+    document_type, setDocumentType
 }: StepOneUserProps) => {
     return (
         <div className="w-full grid lg:grid-cols-4 sm:grid-cols-2 grid-cols-1 gap-5">
-            <div className="flex flex-col items-start">
-                <InputState
-                    label="وام"
-                    value={loan !== undefined && loan !== null ? formatInputNumber(String(loan)) : ""}
-                    onChange={(e) => {
-                        const formatted = formatInputNumber(e.target.value);
-                        e.target.value = formatted;
-                        setLoan(formatted);
-                    }}
-                />
-                <span className="text-xs text-red-600 my-1">اگر وام ندارید، عدد 0 رو وارد کنید</span>
-                <span className="text-xs text-gray-500 my-1">به تومان</span>
-            </div>
-            <div className="flex flex-col">
-                <InputState
-                    label="قیمت"
-                    placeholder="مثال: 2,000,000 تومان"
-                    value={price}
-                    onChange={e => setPrice(formatInputNumber(e.target.value))}
-                />
-                <span className="text-xs text-gray-400 my-1">لطفا اعداد را به انگلیسی وارد کنید</span>
-                <span className="text-xs text-gray-500">{formatNumber(price)} تومان</span>
-            </div>
-            <InputState
-                label="منطقه"
-                placeholder="مثال: 2"
-                value={region}
-                onChange={e => setRegion(e.target.value)}
+            <ComboBox
+                label="نوع سند"
+                value={document_type}
+                onChange={setDocumentType}
+                options={["سند تک برگ", "سند واگذاری", "مبایعه نامه (قولنامه‌ای)", "نسق", "اوقافی", "سایر"]}
             />
             <InputState
                 label="آدرس"
@@ -64,11 +45,36 @@ const StepOneUser = ({
                 value={address}
                 onChange={e => setAddress(e.target.value)}
             />
+            <InputState
+                label="منطقه"
+                placeholder="مثال: 2"
+                value={region}
+                onChange={e => setRegion(e.target.value)}
+            />
             <ComboBox
                 label="نوع ملک"
                 value={type}
                 onChange={setType}
                 options={["آپارتمان", "ویلایی", "مغازه", "زمین مسکونی", "زمین کشاورزی", "سایر"]}
+            />
+            <InputState
+                label="تعداد واحد در طبقه"
+                placeholder="مثال: 2"
+                value={Unit_in_floor}
+                onChange={e => setUnitInFloor(e.target.value.replace(/,/g, ""))}
+            />
+
+            <InputState
+                label="تعداد طبقات"
+                placeholder="مثال: 3"
+                value={floor_number}
+                onChange={e => setFloorNumber(formatInputNumber(e.target.value))}
+            />
+            <InputState
+                label="طبقه مورد نظر"
+                placeholder="مثال: 2"
+                value={floor}
+                onChange={e => setFloor(formatInputNumber(e.target.value))}
             />
         </div>
     );
