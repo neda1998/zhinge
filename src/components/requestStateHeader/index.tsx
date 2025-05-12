@@ -4,7 +4,7 @@ import InputState from '../ui/atoms/input/inputState';
 import useCreateRequestMutation from '../../hooks/mutation/request/useCreateRequestMutation';
 import Swal from 'sweetalert2';
 
-const RequestStateHeader = () => {
+const RequestStateHeader = ({ onSuccess }: { onSuccess?: () => void }) => {
   const { mutate } = useCreateRequestMutation();
 
   const [full_name, set_full_name] = useState('');
@@ -16,7 +16,6 @@ const RequestStateHeader = () => {
   const [location, set_location] = useState('');
   const [message, set_message] = useState('');
 
-  // Check if required fields are filled
   const isFormValid =
     full_name.trim() &&
     phone.trim() &&
@@ -26,6 +25,16 @@ const RequestStateHeader = () => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (phone.trim().length !== 11) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'خطا',
+        text: 'شماره همراه باید دقیقا ۱۱ رقم باشد.',
+        confirmButtonText: 'باشه'
+      });
+      return;
+    }
 
     if (
       !full_name.trim() ||
@@ -79,6 +88,7 @@ const RequestStateHeader = () => {
         set_lowest_price(undefined);
         set_location('');
         set_message('');
+        if (onSuccess) onSuccess();
       }
     });
   };

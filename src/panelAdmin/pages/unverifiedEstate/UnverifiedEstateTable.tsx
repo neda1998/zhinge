@@ -10,6 +10,8 @@ const UnverifiedEstateTable: React.FC<TableProps> = ({ data, count }) => {
         ? data
         : ('deleted' in data && Array.isArray(data.deleted) ? data.deleted : []);
 
+    const rejectedCount = estates.filter((item: any) => item.reject).length;
+
     if (!estates || estates.length === 0) {
         return (
             <div className="text-center py-8 text-gray-500">
@@ -20,8 +22,14 @@ const UnverifiedEstateTable: React.FC<TableProps> = ({ data, count }) => {
         );
     }
 
+    const reversedEstates = [...estates].reverse();
+
     return (
         <div className="overflow-x-auto">
+            <div className="flex flex-wrap gap-4 items-center justify-start my-3 text-sm text-gray-700">
+                <span className='font-extrabold'>تعداد کل: {typeof count === "number" ? count : estates.length}</span>
+                <span className='font-extrabold'>تعداد رد شده: {rejectedCount}</span>
+            </div>
             <table className="min-w-full bg-white">
                 <thead className='bg-gray-100'>
                     <tr className='rounded'>
@@ -34,7 +42,7 @@ const UnverifiedEstateTable: React.FC<TableProps> = ({ data, count }) => {
                     </tr>
                 </thead>
                 <tbody>
-                    {estates.map((item: any, idx: number) => (
+                    {reversedEstates.map((item: any, idx: number) => (
                         <tr key={idx} className="text-center">
                             <td className="p-4">{item.id}</td>
                             <td className="p-4">{item.full_name}</td>

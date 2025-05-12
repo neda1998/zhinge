@@ -43,7 +43,7 @@ client.interceptors.response.use(
                     error.config.headers["Authorization"] = `Bearer ${data.accessToken}`;
                     return axios(error.config);
                 } catch (refreshError) {
-                    console.error("Refresh token failed", refreshError);
+                    console.error("Refresh token failed", refreshError);    
                     return Promise.reject(refreshError);
                 }
             }

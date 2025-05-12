@@ -1,6 +1,3 @@
-import { IoMdNotificationsOutline } from "react-icons/io";
-import { GoPlus } from "react-icons/go";
-import { IoEarth } from "react-icons/io5";
 import edit from "../../assets/images/Edit.png";
 import gallery from "../../assets/images/gallery.png";
 import done from "../../assets/images/Done.png";
@@ -23,7 +20,6 @@ import { IoPerson } from "react-icons/io5";
 import { HiBuildingOffice2 } from "react-icons/hi2";
 import { HiSquaresPlus } from "react-icons/hi2";
 import { BsPersonFillDash } from "react-icons/bs";
-import { FaRegAddressBook } from "react-icons/fa6";
 import { HiOutlineDocumentPlus } from "react-icons/hi2";
 import { LuFolderMinus } from "react-icons/lu";
 import { HiOutlineBuildingOffice2 } from "react-icons/hi2";

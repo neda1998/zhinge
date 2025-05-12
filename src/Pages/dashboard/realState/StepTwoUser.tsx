@@ -32,8 +32,8 @@ const StepTwoUser = ({
     land_metrage, setLandMetrage,
     year_of_build, setYearOfBuild
 }: StepTwoUserProps) => {
-const [showFeaturePanel, setShowFeaturePanel] = useState(false);
-const selectedFeatures: string[] = features ? features.split(",").map(f => f.trim()).filter(f => f) : [];
+    const [showFeaturePanel, setShowFeaturePanel] = useState(false);
+    const selectedFeatures: string[] = features ? features.split(",").map(f => f.trim()).filter(f => f) : [];
 
     const handleFeatureSelect = (feature: string) => {
         if (selectedFeatures.includes(feature)) {
@@ -105,7 +105,7 @@ const selectedFeatures: string[] = features ? features.split(",").map(f => f.tri
                 </button>
                 {showFeaturePanel && (
                     <>
-                    <div className="fixed inset-0 flex items-center justify-center bg-[#302b2b66] bg-opacity-40"></div>
+                        <div className="fixed inset-0 flex items-center justify-center bg-[#302b2b66] bg-opacity-40"></div>
                         <div className="bg-white rounded-2xl shadow-xl p-6 w-[350px] max-h-[80vh] overflow-y-auto relative z-[9999]">
                             <button
                                 type="button"

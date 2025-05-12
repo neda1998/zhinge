@@ -1,16 +1,6 @@
 import InputState from "../ui/atoms/input/inputState";
 import ComboBox from "../common/Combo";
 
-const formatNumber = (value: number | string | undefined) =>
-  value !== undefined && value !== null && value !== ""
-    ? Number(value).toLocaleString("en-US")
-    : "";
-
-function formatInputNumber(val: string) {
-  const onlyNums = val.replace(/[^\d]/g, "");
-  return onlyNums.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-}
-
 interface StepOneProps {
   type: string; setType: (v: string) => void;
   region: string; setRegion: (v: string) => void;

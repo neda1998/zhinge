@@ -17,6 +17,7 @@ const TopNavbar = () => {
                         <span className="font-extrabold md:text-xl text-sm">داشبورد مشاور املاک ژینگه</span>
                     </div>
                     <div className="flex items-center justify-end gap-5">
+                        <Link to="/dashboard/register-new-advertise" className="flex items-center gap-2">   
                         <div className="flex flex-col justify-center text-center">
                             {
                                 cookies.accessToken ? (
@@ -28,6 +29,7 @@ const TopNavbar = () => {
                                 )}
                         </div>
                         <img src={admin} alt="admin" className='w-12 h-12 object-cover rounded-full' />
+                        </Link>
                     </div>
                 </nav>
             </div>

@@ -10,7 +10,6 @@ interface TableProps {
         "نام مالک": string;
         "شماره تماس"?: string | number;
         "وضعیت": string;
-        "بازه قیمت": string;
         "عملیات": React.ReactNode;
     }>;
 }
@@ -48,8 +47,10 @@ const Table: React.FC<TableProps> = ({ data }) => {
         return [];
     };
 
+    // ریورس کردن داده‌ها قبل از paginate
+    const reversedData = [...data].reverse();
     const startIndex = (currentPage - 1) * itemsPerPage;
-    const paginatedData = data.slice(startIndex, startIndex + itemsPerPage);
+    const paginatedData = reversedData.slice(startIndex, startIndex + itemsPerPage);
 
     return (
         <div className="overflow-x-auto">
@@ -63,24 +64,30 @@ const Table: React.FC<TableProps> = ({ data }) => {
                         <th className="px-2 py-4 text-center text-[16px]">نام مالک</th>
                         <th className="px-2 py-4 text-center text-[16px]">شماره تماس</th>
                         <th className="px-2 py-4 text-center text-[16px]">وضعیت</th>
-                        <th className="px-2 py-4 text-center text-[16px]">بازه قیمت</th>
                         <th className="px-2 py-4 text-center text-[16px]">عملیات</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {paginatedData.map((item, index) => (
-                        <tr key={index} className="text-center border-b">
-                            <td className="p-4">{item["ردیف"]}</td>
-                            <td className="p-4">{item["کد ملک"]}</td>
-                            <td className="p-4">{item["نوع ملک"]}</td>
-                            <td className="p-4">{item["منطقه"]}</td>
-                            <td className="p-4">{item["نام مالک"]}</td>
-                            <td className="p-4">{item["شماره تماس"]}</td>
-                            <td className="p-4">{item["وضعیت"]}</td>
-                            <td className="p-4">{item["بازه قیمت"]}</td>
-                            <td className="p-4">{item["عملیات"]}</td>
+                    {paginatedData.length === 0 ? (
+                        <tr>
+                            <td colSpan={8} className="text-center py-8 text-gray-500">
+                                دیتایی وجود ندارد
+                            </td>
                         </tr>
-                    ))}
+                    ) : (
+                        paginatedData.map((item, index) => (
+                            <tr key={index} className="text-center border-b">
+                                <td className="p-4">{data[startIndex + index]?.["ردیف"]}</td>
+                                <td className="p-4">{item["کد ملک"]}</td>
+                                <td className="p-4">{item["نوع ملک"]}</td>
+                                <td className="p-4">{item["منطقه"]}</td>
+                                <td className="p-4">{item["نام مالک"]}</td>
+                                <td className="p-4">{item["شماره تماس"]}</td>
+                                <td className="p-4">{item["وضعیت"]}</td>
+                                <td className="p-4">{item["عملیات"]}</td>
+                            </tr>
+                        ))
+                    )}
                 </tbody>
             </table>
 
