@@ -40,7 +40,6 @@ export default function Realstate() {
         text: "لطفا ابتدا اطلاعات را ثبت کنید!",
         confirmButtonText: "باشه"
       });
-      return;
     }
     if (currentStep < 4) {
       setCurrentStep((prevStep) => prevStep + 1);

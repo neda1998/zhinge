@@ -30,45 +30,6 @@ const StepperState = () => {
     const [isAnnouncementSubmitted, setIsAnnouncementSubmitted] = useState(false);
 
     const handleNextStep = () => {
-        if (currentStep === 1) {
-            if (
-                !type.trim() ||
-                !usage.trim() ||
-                !region.trim() ||
-                !address.trim() ||
-                !price ||
-                !Unit_in_floor ||
-                !document_type.trim() ||
-                !floor_number ||
-                !floor
-            ) {
-                Swal.fire({
-                    icon: "warning",
-                    title: "اخطار",
-                    text: "لطفا همه فیلدهای ضروری مرحله اول را پر کنید!",
-                    confirmButtonText: "باشه"
-                });
-                return;
-            }
-        }
-        if (currentStep === 2) {
-            if (
-                !loan ||
-                !year_of_build ||
-                !room_number ||
-                !features.trim() ||
-                !useful_metrage ||
-                !location.trim()
-            ) {
-                Swal.fire({
-                    icon: "warning",
-                    title: "اخطار",
-                    text: "لطفا همه فیلدهای ضروری مرحله دوم را پر کنید!",
-                    confirmButtonText: "باشه"
-                });
-                return;
-            }
-        }
         if (currentStep < 3) {
             setCurrentStep((prevStep) => prevStep + 1);
         }
