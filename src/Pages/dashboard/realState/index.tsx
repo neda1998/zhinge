@@ -60,6 +60,33 @@ export default function Realstate() {
   }, []);
 
   const handleSubmit = () => {
+    const requiredFields = [
+      { value: type, label: "نوع ملک" },
+      { value: region, label: "منطقه" },
+      { value: address, label: "آدرس" },
+      { value: Unit_in_floor, label: "تعداد واحد در طبقه" },
+      { value: document_type, label: "نوع سند" },
+      { value: floor_number, label: "تعداد طبقات" },
+      { value: floor, label: "طبقه" },
+      { value: loan, label: "وام" },
+      { value: year_of_build, label: "سال ساخت" },
+      { value: room_number, label: "تعداد اتاق" },
+      { value: useful_metrage, label: "متراژ مفید" },
+      { value: location, label: "موقعیت" },
+      { value: land_metrage, label: "متراژ زمین" },
+      { value: features, label: "امکانات" },
+      { value: full_name, label: "نام کامل" }
+    ];
+    const emptyField = requiredFields.find(f => !f.value || f.value === "");
+    if (emptyField) {
+      Swal.fire({
+        icon: "warning",
+        title: "اخطار",
+        text: `لطفا فیلد "${emptyField.label}" را تکمیل کنید.`,
+        confirmButtonText: "باشه"
+      });
+      return;
+    }
     const toNumberOrUndefined = (val: string) => {
       if (val === undefined || val === null) return undefined;
       const num = Number(val.toString().replace(/,/g, ""));

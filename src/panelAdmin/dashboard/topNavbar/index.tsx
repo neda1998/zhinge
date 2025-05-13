@@ -9,7 +9,7 @@ const TopNavbar = () => {
     const [cookies, setCookies] = useCookies(["accessToken", "refreshToken", "name"]);
     const displayName = cookies.name || "";
     return (
-        <div className="shadow-md lg:block hidden relative z-[999]">
+        <div className="shadow-md lg:block hidden relative">
             <div className="container mx-auto">
                 <nav className="grid lg:grid-cols-2 items-center justify-between md:py-8">
                     <div className="flex items-center gap-1 cursor-pointer" onClick={toggleSidebar}>
@@ -17,7 +17,7 @@ const TopNavbar = () => {
                         <span className="font-extrabold md:text-xl text-sm">داشبورد مشاور املاک ژینگه</span>
                     </div>
                     <div className="flex items-center justify-end gap-5">
-                        <Link to="/dashboard/register-new-advertise" className="flex items-center gap-2">   
+                        <Link to="/panel-admin/dashboard/management-dashboard" className="flex items-center gap-2">   
                         <div className="flex flex-col justify-center text-center">
                             {
                                 cookies.accessToken ? (

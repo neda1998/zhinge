@@ -18,7 +18,7 @@ const UnderReview = () => {
     isLoading: isLoadingProgress,
     isError: isErrorProgress,
     refetch: refetchInprogress,
-  } = UseInprogressQuery(); // حذف پارامتر limit
+  } = UseInprogressQuery(); 
 
   const {
     data: checkedData,
@@ -38,8 +38,13 @@ const UnderReview = () => {
 
   useEffect(() => {
     if (verifyAnnounceMutation.isSuccess || rejectAnnounceMutation.isSuccess || updateAnnounMutation.isSuccess) {
-      refetchInprogress();
-      refetchChecked();
+      // لاگ برای بررسی داده جدید
+      refetchInprogress().then(res => {
+        console.log("inprogress after update:", res?.data);
+      });
+      refetchChecked().then(res => {
+        console.log("checked after update:", res?.data);
+      });
       verifyAnnounceMutation.reset();
       rejectAnnounceMutation.reset();
       updateAnnounMutation.reset();
@@ -59,7 +64,7 @@ const UnderReview = () => {
 
   const inprogressTableData =
     inprogressData?.inprogress
-      ?.filter((item: any) => !item.reject) 
+      ?.filter((item: any) => !item.reject)
       .map((item: any, idx: number) => ({
         "ردیف": idx + 1,
         "کد ملک": item.id,
@@ -156,7 +161,7 @@ const UnderReview = () => {
       {/* Modal for editing */}
       {editModalOpen && selectedAnnounce && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
-          <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-lg relative">
+          <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-lg relative z-[9999] overflow-y-auto max-h-[90vh]">
             <button
               className="absolute left-2 top-2 text-gray-500 hover:text-gray-700"
               onClick={() => setEditModalOpen(false)}
@@ -167,7 +172,42 @@ const UnderReview = () => {
             <form
               onSubmit={e => {
                 e.preventDefault();
-                updateAnnounMutation.mutate(editForm);
+                if (!selectedAnnounce?.Uid) {
+                  Swal.fire({
+                    icon: "error",
+                    title: "خطا",
+                    text: "شناسه ملک (Uid) یافت نشد!",
+                  });
+                  return;
+                }
+                // همه فیلدهای مورد انتظار را ارسال کن
+                updateAnnounMutation.mutate({
+                  Uid: selectedAnnounce.Uid,
+                  type: editForm.type,
+                  address: editForm.address,
+                  location: editForm.location,
+                  usage: editForm.usage,
+                  document_type: editForm.document_type,
+                  land_metrage: editForm.land_metrage,
+                  useful_metrage: editForm.useful_metrage,
+                  floor_number: editForm.floor_number,
+                  floor: editForm.floor,
+                  Unit_in_floor: editForm.Unit_in_floor,
+                  year_of_build: editForm.year_of_build,
+                  full_name: editForm.full_name,
+                  price: editForm.price,
+                  room_number: editForm.room_number,
+                  features: editForm.features,
+                  phone: editForm.userID,
+                  description: editForm.description,
+                  tour3dlink: editForm.tour3dlink,
+                  tour3dRequest: editForm.tour3dRequest,
+                  loan: editForm.loan,
+                  region: editForm.region,
+                  lowest_price: editForm.lowest_price,
+                  highest_price: editForm.highest_price,
+                  // اگر فیلد دیگری در Realstate داری، همینجا اضافه کن
+                });
               }}
               className="space-y-3"
             >
@@ -212,23 +252,65 @@ const UnderReview = () => {
                   onChange={e => setEditForm({ ...editForm, price: Number(e.target.value) })}
                 />
               </div>
-
               <div>
                 <label className="block text-sm mb-1">کد ملک</label>
                 <input
-                  type="text"
                   className="border rounded px-2 py-1 w-full"
                   value={editForm.state_code || ""}
                   onChange={e => setEditForm({ ...editForm, state_code: e.target.value })}
                 />
               </div>
               <div>
-                <label className="block text-sm mb-1">کد ملک</label>
+                <label className="block text-sm mb-1">متراژ</label>
                 <input
-                  type="text"
+                  type="number"
                   className="border rounded px-2 py-1 w-full"
-                  value={editForm.tour3dlink || ""}
-                  onChange={e => setEditForm({ ...editForm, tour3dlink: e.target.value })}
+                  value={editForm.metrage || ""}
+                  onChange={e => setEditForm({ ...editForm, metrage: Number(e.target.value) })}
+                />
+              </div>
+              <div>
+                <label className="block text-sm mb-1">آدرس</label>
+                <input
+                  className="border rounded px-2 py-1 w-full"
+                  value={editForm.address || ""}
+                  onChange={e => setEditForm({ ...editForm, address: e.target.value })}
+                />
+              </div>
+              <div>
+                <label className="block text-sm mb-1">وام</label>
+                <input
+                  type="number"
+                  className="border rounded px-2 py-1 w-full"
+                  value={editForm.loan || ""}
+                  onChange={e => setEditForm({ ...editForm, loan: Number(e.target.value) })}
+                />
+              </div>
+              <div>
+                <label className="block text-sm mb-1">کمترین قیمت</label>
+                <input
+                  type="number"
+                  className="border rounded px-2 py-1 w-full"
+                  value={editForm.lowest_price || ""}
+                  onChange={e => setEditForm({ ...editForm, lowest_price: Number(e.target.value) })}
+                />
+              </div>
+              <div>
+                <label className="block text-sm mb-1">بیشترین قیمت</label>
+                <input
+                  type="number"
+                  className="border rounded px-2 py-1 w-full"
+                  value={editForm.highest_price || ""}
+                  onChange={e => setEditForm({ ...editForm, highest_price: Number(e.target.value) })}
+                />
+              </div>
+              <div>
+                <label className="block text-sm mb-1">توضیحات</label>
+                <textarea
+                  className="border rounded px-2 py-1 w-full"
+                  rows={4}
+                  value={editForm.description || ""}
+                  onChange={e => setEditForm({ ...editForm, description: e.target.value })}
                 />
               </div>
               <button
@@ -242,7 +324,6 @@ const UnderReview = () => {
           </div>
         </div>
       )}
-
       {isLoading ? (
         <div className="flex items-center justify-center h-screen">
           <PuffLoader color="#09A380" />

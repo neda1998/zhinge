@@ -26,17 +26,19 @@ const TopNavbarMobile = () => {
             </div>
             <div className="flex items-center justify-between my-6">
                 <div className="flex items-center justify-end gap-5">
-                    <div className="flex flex-col justify-center text-center">
-                        {
-                            cookies.accessToken ? (
-                                <span className="font-extrabold md:text-lg text-sm">
-                                    {displayName ? displayName : "خروج"}
-                                </span>
-                            ) : (
-                                <Link to="/Login" className="font-extrabold md:text-lg text-sm">ورود به حساب</Link>
-                            )}
-                    </div>
-                    <img src={admin} alt="admin" className='w-12 h-12 object-cover rounded-full' />
+                    <Link to="/panel-admin/dashboard/management-dashboard" className="flex items-center gap-2">
+                        <div className="flex flex-col justify-center text-center">
+                            {
+                                cookies.accessToken ? (
+                                    <span className="font-extrabold md:text-lg text-sm">
+                                        {displayName ? displayName : "خروج"}
+                                    </span>
+                                ) : (
+                                    <Link to="/Login" className="font-extrabold md:text-lg text-sm">ورود به حساب</Link>
+                                )}
+                        </div>
+                        <img src={admin} alt="admin" className='w-12 h-12 object-cover rounded-full' />
+                    </Link>
                 </div>
             </div>
         </div>
