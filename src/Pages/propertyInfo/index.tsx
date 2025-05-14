@@ -1,6 +1,5 @@
 import { useNavigate } from "react-router-dom";
 import Button from "../../components/ui/atoms/Button";
-import Input from "../../components/ui/atoms/input";
 import LayoutProfile from "../../components/profile/LayoutProfile";
 import InputState from "../../components/ui/atoms/input/inputState";
 
@@ -98,7 +97,7 @@ export default function PropertyInfo() {
             borderradius={"30px"}
             color={"white"}
             className={'mobile:mb-10'}
-            onClick={() => navigate("/propertyImage", { replace: true })}
+            onClick={() => navigate("/dashboard/propertyImageDashboard", { replace: true })}
           >
             <p className="text-[1rem] font-bold">بعدی</p>
           </Button>

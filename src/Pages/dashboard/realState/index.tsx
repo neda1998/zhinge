@@ -10,7 +10,6 @@ import useCreateAnnounceMutation from "../../../hooks/mutation/announce/useCreat
 export default function Realstate() {
   const { mutate } = useCreateAnnounceMutation();
 
-  // استیت‌های هر فیلد
   const [loan, setLoan] = useState("");
   const [type, setType] = useState("");
   const [region, setRegion] = useState("");
@@ -75,7 +74,8 @@ export default function Realstate() {
       { value: location, label: "موقعیت" },
       { value: land_metrage, label: "متراژ زمین" },
       { value: features, label: "امکانات" },
-      { value: full_name, label: "نام کامل" }
+      { value: full_name, label: "نام کامل" },
+      { value: price, label: "قیمت" }, 
     ];
     const emptyField = requiredFields.find(f => !f.value || f.value === "");
     if (emptyField) {
@@ -139,6 +139,7 @@ export default function Realstate() {
       location={location} setLocation={setLocation}
       land_metrage={land_metrage} setLandMetrage={setLandMetrage}
       features={features} setFeatures={setFeatures}
+      price={price} setPrice={setPrice}
     />,
     <StepThreeUser
       key="step3"

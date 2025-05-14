@@ -1,5 +1,4 @@
 import InputState from "../ui/atoms/input/inputState"
-import ComboBox from "../common/Combo";
 import React, { useState } from "react";
 
 interface StepTwoProps {
@@ -10,15 +9,14 @@ interface StepTwoProps {
     features: string; setFeatures: (v: string) => void;
     useful_metrage?: number; setUsefulMetrage: (v: number) => void;
     location?: string; setLocation: (v: string) => void;
+    land_metrage?: number; setLandMetrage: (v: number) => void; 
 }
 
-// تابع فرمت سه رقم سه رقم
 function formatInputNumber(val: string) {
     const onlyNums = val.replace(/[^\d]/g, "");
     return onlyNums.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
-// اضافه کردن فرمت نمایش عدد
 const formatNumber = (value: number | string | undefined) =>
     value !== undefined && value !== null && value !== ""
         ? Number(value).toLocaleString("en-US")
@@ -36,7 +34,8 @@ const StepTwo = ({
     price, setPrice,
     features, setFeatures,
     useful_metrage, setUsefulMetrage,
-    location, setLocation
+    location, setLocation,
+    land_metrage, setLandMetrage
 }: StepTwoProps) => {
     const [showFeaturePanel, setShowFeaturePanel] = useState(false);
     const selectedFeatures: string[] = features ? features.split(",").map(f => f.trim()).filter(f => f) : [];
@@ -156,6 +155,16 @@ const StepTwo = ({
                     </>
                 )}
             </div>
+            <InputState
+                label="متراژ کل زمین"
+                placeholder="مثال: 200"
+                value={land_metrage !== undefined && land_metrage !== null ? formatInputNumber(String(land_metrage)) : ""}
+                onChange={e => {
+                    const formatted = formatInputNumber(e.target.value);
+                    e.target.value = formatted;
+                    setLandMetrage(Number(formatted.replace(/,/g, "")));
+                }}
+            />
             <InputState
                 label="متراژ مفید"
                 value={useful_metrage !== undefined && useful_metrage !== null ? String(useful_metrage) : ""}

@@ -47,10 +47,7 @@ const Table: React.FC<TableProps> = ({ data }) => {
         return [];
     };
 
-    // ریورس کردن داده‌ها قبل از paginate
-    const reversedData = [...data].reverse();
-    const startIndex = (currentPage - 1) * itemsPerPage;
-    const paginatedData = reversedData.slice(startIndex, startIndex + itemsPerPage);
+    const paginatedData = data.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
     return (
         <div className="overflow-x-auto">
@@ -77,7 +74,7 @@ const Table: React.FC<TableProps> = ({ data }) => {
                     ) : (
                         paginatedData.map((item, index) => (
                             <tr key={index} className="text-center border-b">
-                                <td className="p-4">{data[startIndex + index]?.["ردیف"]}</td>
+                                <td className="p-4">{paginatedData[index]?.["ردیف"]}</td>
                                 <td className="p-4">{item["کد ملک"]}</td>
                                 <td className="p-4">{item["نوع ملک"]}</td>
                                 <td className="p-4">{item["منطقه"]}</td>

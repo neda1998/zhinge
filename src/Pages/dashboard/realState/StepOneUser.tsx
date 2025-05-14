@@ -57,13 +57,7 @@ const StepOneUser = ({
                 onChange={setType}
                 options={["آپارتمان", "ویلایی", "مغازه", "زمین مسکونی", "زمین کشاورزی", "سایر"]}
             />
-            <InputState
-                label="تعداد واحد در طبقه"
-                placeholder="مثال: 2"
-                value={Unit_in_floor}
-                onChange={e => setUnitInFloor(e.target.value.replace(/,/g, ""))}
-            />
-
+            
             <InputState
                 label="تعداد طبقات"
                 placeholder="مثال: 3"
@@ -75,6 +69,12 @@ const StepOneUser = ({
                 placeholder="مثال: 2"
                 value={floor}
                 onChange={e => setFloor(formatInputNumber(e.target.value))}
+            />
+            <InputState
+                label="تعداد واحد در طبقه"
+                placeholder="مثال: 2"
+                value={Unit_in_floor}
+                onChange={e => setUnitInFloor(e.target.value.replace(/,/g, ""))}
             />
         </div>
     );

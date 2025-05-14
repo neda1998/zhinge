@@ -3,7 +3,6 @@ import StepTwo from "./StepTwo";
 import StepThree from "./StepThree";
 import StepOne from "./StepOne";
 import UseCreatAnnouncementMutation from "../../hooks/mutation/creatAnnouncement/UseCreatAnnouncementMutation";
-import Swal from "sweetalert2";
 
 const StepperState = () => {
     const [currentStep, setCurrentStep] = useState(1);
@@ -59,7 +58,7 @@ const StepperState = () => {
 
     const resetAllStates = () => {
         setType("");
-        setUsage("");
+        setUsage("-");
         setRegion("");
         setAddress("");
         setLocation("");
@@ -103,6 +102,7 @@ const StepperState = () => {
             features={features} setFeatures={setFeatures}
             useful_metrage={useful_metrage} setUsefulMetrage={setUsefulMetrage}
             location={location} setLocation={setLocation}
+            land_metrage={land_metrage} setLandMetrage={setLandMetrage}
         />,
         <StepThree
             key="step3"

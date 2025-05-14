@@ -22,6 +22,7 @@ interface StepTwoUserProps {
     year_of_build: string; setYearOfBuild: (v: string) => void;
     features: string; setFeatures: (v: string) => void;
     room_number: string; setRoomNumber: (v: string) => void;
+    price: string; setPrice: (v: string) => void;
 }
 const StepTwoUser = ({
     room_number, setRoomNumber,
@@ -30,7 +31,8 @@ const StepTwoUser = ({
     location, setLocation,
     useful_metrage, setUsefulMetrage,
     land_metrage, setLandMetrage,
-    year_of_build, setYearOfBuild
+    year_of_build, setYearOfBuild,
+    price, setPrice
 }: StepTwoUserProps) => {
     const [showFeaturePanel, setShowFeaturePanel] = useState(false);
     const selectedFeatures: string[] = features ? features.split(",").map(f => f.trim()).filter(f => f) : [];
@@ -72,7 +74,7 @@ const StepTwoUser = ({
                 onChange={e => setRoomNumber(formatInputNumber(e.target.value))}
             />
             <InputState
-                label="متراژ زمین"
+                label="متراژ کل زمین"
                 placeholder="مثال: 200"
                 value={land_metrage}
                 onChange={e => setLandMetrage(formatInputNumber(e.target.value))}
@@ -143,6 +145,16 @@ const StepTwoUser = ({
                     </>
                 )}
             </div>
+            <InputState
+                label="قیمت"
+                placeholder="مثال: 50000000"
+                value={price !== undefined && price !== null ? formatInputNumber(String(price)) : ""}
+                onChange={(e) => {
+                    const formatted = formatInputNumber(e.target.value);
+                    e.target.value = formatted;
+                    setPrice(formatted);
+                }}  
+            />
             <InputState
                 label="متراژ مفید"
                 placeholder="مثال: 150"

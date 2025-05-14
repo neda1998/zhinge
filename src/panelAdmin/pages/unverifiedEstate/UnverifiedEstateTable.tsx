@@ -1,7 +1,7 @@
 import React from 'react';
 
 interface TableProps {
-    data: any[] | { deleted: any[] };
+    data: any[] | { deleted: any[] }
     count?: number;
 }
 

@@ -31,14 +31,23 @@ const UnderReview = () => {
   const rejectAnnounceMutation = UseRejectannounceMutatiojn();
   const updateAnnounMutation = UseUpdateAnnounMutation();
 
-  // state for modal
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [selectedAnnounce, setSelectedAnnounce] = useState<any>(null);
   const [editForm, setEditForm] = useState<any>({});
 
+  const handleOpenEditModal = (item: any) => {
+    setSelectedAnnounce(item);
+    setEditForm({
+      ...item,
+      price: item.price ?? "",
+      loan: item.loan ?? "",
+      metrage: item.land_metrage ?? "", 
+    });
+    setEditModalOpen(true);
+  };
+
   useEffect(() => {
     if (verifyAnnounceMutation.isSuccess || rejectAnnounceMutation.isSuccess || updateAnnounMutation.isSuccess) {
-      // لاگ برای بررسی داده جدید
       refetchInprogress().then(res => {
         console.log("inprogress after update:", res?.data);
       });
@@ -65,6 +74,8 @@ const UnderReview = () => {
   const inprogressTableData =
     inprogressData?.inprogress
       ?.filter((item: any) => !item.reject)
+      .slice() 
+      .reverse()
       .map((item: any, idx: number) => ({
         "ردیف": idx + 1,
         "کد ملک": item.id,
@@ -83,11 +94,7 @@ const UnderReview = () => {
         "عملیات": (
           <div className="flex gap-2 justify-center">
             <button
-              onClick={() => {
-                setSelectedAnnounce(item);
-                setEditForm(item);
-                setEditModalOpen(true);
-              }}
+              onClick={() => handleOpenEditModal(item)}
               className="bg-green-600 hover:bg-green-700 text-white text-sm px-3 py-1 rounded"
             >
               بررسی
@@ -158,7 +165,6 @@ const UnderReview = () => {
         </button>
       </div>
 
-      {/* Modal for editing */}
       {editModalOpen && selectedAnnounce && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
           <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-lg relative z-[9999] overflow-y-auto max-h-[90vh]">
@@ -180,7 +186,6 @@ const UnderReview = () => {
                   });
                   return;
                 }
-                // همه فیلدهای مورد انتظار را ارسال کن
                 updateAnnounMutation.mutate({
                   Uid: selectedAnnounce.Uid,
                   type: editForm.type,
@@ -188,7 +193,7 @@ const UnderReview = () => {
                   location: editForm.location,
                   usage: editForm.usage,
                   document_type: editForm.document_type,
-                  land_metrage: editForm.land_metrage,
+                  land_metrage: editForm.metrage, 
                   useful_metrage: editForm.useful_metrage,
                   floor_number: editForm.floor_number,
                   floor: editForm.floor,
@@ -206,7 +211,6 @@ const UnderReview = () => {
                   region: editForm.region,
                   lowest_price: editForm.lowest_price,
                   highest_price: editForm.highest_price,
-                  // اگر فیلد دیگری در Realstate داری، همینجا اضافه کن
                 });
               }}
               className="space-y-3"
@@ -248,16 +252,8 @@ const UnderReview = () => {
                 <input
                   type="number"
                   className="border rounded px-2 py-1 w-full"
-                  value={editForm.price || ""}
+                  value={editForm.price !== undefined && editForm.price !== null ? editForm.price : ""}
                   onChange={e => setEditForm({ ...editForm, price: Number(e.target.value) })}
-                />
-              </div>
-              <div>
-                <label className="block text-sm mb-1">کد ملک</label>
-                <input
-                  className="border rounded px-2 py-1 w-full"
-                  value={editForm.state_code || ""}
-                  onChange={e => setEditForm({ ...editForm, state_code: e.target.value })}
                 />
               </div>
               <div>
@@ -265,7 +261,7 @@ const UnderReview = () => {
                 <input
                   type="number"
                   className="border rounded px-2 py-1 w-full"
-                  value={editForm.metrage || ""}
+                  value={editForm.metrage !== undefined && editForm.metrage !== null ? editForm.metrage : ""}
                   onChange={e => setEditForm({ ...editForm, metrage: Number(e.target.value) })}
                 />
               </div>
@@ -282,35 +278,8 @@ const UnderReview = () => {
                 <input
                   type="number"
                   className="border rounded px-2 py-1 w-full"
-                  value={editForm.loan || ""}
+                  value={editForm.loan !== undefined && editForm.loan !== null ? editForm.loan : ""}
                   onChange={e => setEditForm({ ...editForm, loan: Number(e.target.value) })}
-                />
-              </div>
-              <div>
-                <label className="block text-sm mb-1">کمترین قیمت</label>
-                <input
-                  type="number"
-                  className="border rounded px-2 py-1 w-full"
-                  value={editForm.lowest_price || ""}
-                  onChange={e => setEditForm({ ...editForm, lowest_price: Number(e.target.value) })}
-                />
-              </div>
-              <div>
-                <label className="block text-sm mb-1">بیشترین قیمت</label>
-                <input
-                  type="number"
-                  className="border rounded px-2 py-1 w-full"
-                  value={editForm.highest_price || ""}
-                  onChange={e => setEditForm({ ...editForm, highest_price: Number(e.target.value) })}
-                />
-              </div>
-              <div>
-                <label className="block text-sm mb-1">توضیحات</label>
-                <textarea
-                  className="border rounded px-2 py-1 w-full"
-                  rows={4}
-                  value={editForm.description || ""}
-                  onChange={e => setEditForm({ ...editForm, description: e.target.value })}
                 />
               </div>
               <button
