@@ -3,8 +3,6 @@ import Image2 from '../../assets/images/Rectangle 43.svg';
 import Image3 from '../../assets/images/Rectangle 44.svg';
 import Header from '../../components/template/Header';
 import ImageGallery from '../../components/ui/molecules/ImageGallery';
-import Phone from '../../assets/images/Phone Calling Rounded.svg';
-import MapPoint from '../../assets/images/MapPointFavourite.svg';
 import { useState, useEffect } from 'react';
 import { useFormik } from "formik";
 import UseByUidAnnounceMutation from '../../hooks/mutation/announce/UseByUidAnnounceMutation';
@@ -93,24 +91,6 @@ const HouseDetails = () => {
                     <div className="w-full h-fit mobile:h-fit grid grid-cols-2">
                         <div className="p-7 col-span-1 mobile:col-span-2 flex flex-col justify-around">
                             <div className='w-full h-fit flex flex-col gap-10 p-4'>
-                                <div className='flex flex-col h-32 items-start justify-around'>
-                                    <div className='flex justify-end w-full'>
-                                        <div className={`${isBoxVisible ? 'bg-[#09A380]' : ''} flex justify-start h-12 rounded-full relative`}>
-                                            <div className={`transition-all duration-300 ease-in-out overflow-hidden ${isBoxVisible ? 'max-w-xs p-2' : 'max-w-0'} bg-[#09A380] rounded-full`}>
-                                                <span className='text-white ml-2 flex'>فروشنده : 09046364944</span>
-                                            </div>
-                                            <div onClick={toggleBox} className="w-12 cursor-pointer h-12 flex justify-center items-center bg-white rounded-full shadow-md">
-                                                <img src={Phone} alt="" width={40} />
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className='w-full p-2'>
-                                        <span className="flex items-center text-[#1E1E1E80] dark:text-white text-[16px] gap-1">
-                                            <img src={MapPoint} alt="" width={20} className='-mr-4' />
-                                            {selectedProperty?.address || "آدرس نامشخص"}
-                                        </span>
-                                    </div>
-                                </div>
                                 <div className='mt-2 flex w-full justify-center'>
                                     <span className='text-[40px] mobile:text-[30px] font-bold'>
                                         {selectedProperty?.type === 'اجاره' ? 'ملک اجاره‌ای آپارتمانی' : 'ملک فروشی آپارتمانی'}

@@ -24,7 +24,6 @@ const AnnouncementList: React.FC<AnnouncementListProps> = ({
 }) => {
   const [searchResults, setSearchResults] = useState<any[] | null>(null);
 
-  // تعیین عنوان بر اساس نوع آگهی یا نمایش همه
   let titleLabel = "آگهی آپارتمانی";
   if (announcementType === "rent") titleLabel = "ملک اجاره ای آپارتمانی";
   else if (announcementType === "sell") titleLabel = "ملک فروش آپارتمانی";
@@ -50,7 +49,7 @@ const AnnouncementList: React.FC<AnnouncementListProps> = ({
           </div>
         ) : searchResults !== null ? (
           searchResults.length > 0 ? (
-            <div className="w-full grid lg:grid-cols-4 sm:grid-cols-2 mobile:mt-5 mobile:gap-0 gap-4 place-items-center grid-cols-1">
+            <div className="w-full grid lg:grid-cols-4 sm:grid-cols-2 mobile:mt-5 mobile:gap-0 gap-4 place-items-center grid-cols-1 px-4">
               {searchResults.map((property) => (
                 <div key={property.id} className="flex flex-col justify-start items-center">
                   <img src={House} alt="icons" width={350} />
@@ -78,7 +77,7 @@ const AnnouncementList: React.FC<AnnouncementListProps> = ({
           )
         ) : (
           data.length === 0 ? null : (
-            <div className="w-full grid lg:grid-cols-4 sm:grid-cols-2 mobile:mt-5 mobile:gap-0 gap-4 place-items-center grid-cols-1">
+            <div className="w-full grid lg:grid-cols-4 sm:grid-cols-2 mobile:mt-5 mobile:gap-0 gap-4 place-items-center grid-cols-1 px-4">
               {data.map((property) => (
                 <div key={property.id} className="flex flex-col justify-start items-center">
                   <img src={House} alt="icons" width={350} />
