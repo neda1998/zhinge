@@ -32,6 +32,7 @@ export default function Realstate() {
   const [isAnnouncementSubmitted, setIsAnnouncementSubmitted] = useState(false);
 
   const handleNextStep = () => {
+    // فقط برای مراحل ۱ تا ۲ چک کن، برای رفتن به مرحله ۴ چک نکن
     if (currentStep === 3 && !isAnnouncementSubmitted) {
       Swal.fire({
         icon: "warning",
@@ -39,6 +40,7 @@ export default function Realstate() {
         text: "لطفا ابتدا اطلاعات را ثبت کنید!",
         confirmButtonText: "باشه"
       });
+      return;
     }
     if (currentStep < 4) {
       setCurrentStep((prevStep) => prevStep + 1);

@@ -11,8 +11,10 @@ import ChooseItemsOfState from "../propertyManagement/ChooseItemsOfState";
 import UseRejectannounceMutatiojn from "../../../hooks/mutation/rejectannounce/UseRejectannounceMutatiojn";
 import UseUpdateAnnounMutation from "../../../hooks/mutation/updateAnnounAdmin/UseUpdateAnnounMutation";
 import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
 
 const UnderReview = () => {
+  const navigate = useNavigate();
   const {
     data: inprogressData,
     isLoading: isLoadingProgress,
@@ -41,13 +43,20 @@ const UnderReview = () => {
       ...item,
       price: item.price ?? "",
       loan: item.loan ?? "",
-      metrage: item.land_metrage ?? "", 
+      metrage: item.land_metrage ?? "",
     });
     setEditModalOpen(true);
   };
 
   useEffect(() => {
-    if (verifyAnnounceMutation.isSuccess || rejectAnnounceMutation.isSuccess || updateAnnounMutation.isSuccess) {
+    if (updateAnnounMutation.isSuccess && selectedAnnounce?.Uid) {
+      navigate(`/house-details/${selectedAnnounce.Uid}`);
+      updateAnnounMutation.reset();
+      setEditModalOpen(false);
+      setSelectedAnnounce(null);
+      return;
+    }
+    if (verifyAnnounceMutation.isSuccess || rejectAnnounceMutation.isSuccess) {
       refetchInprogress().then(res => {
         console.log("inprogress after update:", res?.data);
       });
@@ -56,7 +65,6 @@ const UnderReview = () => {
       });
       verifyAnnounceMutation.reset();
       rejectAnnounceMutation.reset();
-      updateAnnounMutation.reset();
       setEditModalOpen(false);
       setSelectedAnnounce(null);
     }
@@ -68,13 +76,15 @@ const UnderReview = () => {
     refetchChecked,
     verifyAnnounceMutation,
     rejectAnnounceMutation,
-    updateAnnounMutation
+    updateAnnounMutation,
+    navigate,
+    selectedAnnounce
   ]);
 
   const inprogressTableData =
     inprogressData?.inprogress
       ?.filter((item: any) => !item.reject)
-      .slice() 
+      .slice()
       .reverse()
       .map((item: any, idx: number) => ({
         "ردیف": idx + 1,

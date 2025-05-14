@@ -1,3 +1,4 @@
+import ComboBox from "../common/Combo";
 import InputState from "../ui/atoms/input/inputState"
 import React, { useState } from "react";
 
@@ -10,6 +11,7 @@ interface StepTwoProps {
     useful_metrage?: number; setUsefulMetrage: (v: number) => void;
     location?: string; setLocation: (v: string) => void;
     land_metrage?: number; setLandMetrage: (v: number) => void; 
+    description?: string; setDescription: (v: string) => void;
 }
 
 function formatInputNumber(val: string) {
@@ -27,6 +29,15 @@ const FEATURES_OPTIONS = [
     , "سالن اجتماعات", "سالن کنفرانس", "کتابخانه", "لابی", "آتش‌نشانی", "سیستم اعلام حریق", "سیستم تهویه مطبوع", "سیستم امنیتی", "سیستم کنترل دسترسی", "سیستم روشنایی هوشمند", "سیستم صوتی و تصویری", "سیستم اینترنت پرسرعت", "سیستم تلویزیون مرکزی ", "سیستم گرمایش از کف", "سیستم سرمایش از سقف", "سیستم تصفیه آب", "سیستم تصفیه هوا", "سیستم گرمایش و سرمایش مرکزی", "سیستم گرمایش و سرمایش مستقل", "سیستم گرمایش و سرمایش هوشمند", "سیستم گرمایش و سرمایش خودکار", "سیستم گرمایش و سرمایش دستی"
 ];
 
+const LOCATION_OPTIONS = [
+    "شمالی",
+    "جنوبی",
+    "شمالی دو نبش",
+    "جنوبی دو نبش",
+    "دوکله",
+    "سه نبش"
+];
+
 const StepTwo = ({
     loan, setLoan,
     year_of_build, setYearOfBuild,
@@ -35,7 +46,8 @@ const StepTwo = ({
     features, setFeatures,
     useful_metrage, setUsefulMetrage,
     location, setLocation,
-    land_metrage, setLandMetrage
+    land_metrage, setLandMetrage,
+    description,setDescription
 }: StepTwoProps) => {
     const [showFeaturePanel, setShowFeaturePanel] = useState(false);
     const selectedFeatures: string[] = features ? features.split(",").map(f => f.trim()).filter(f => f) : [];
@@ -171,12 +183,22 @@ const StepTwo = ({
                 onChange={e => setUsefulMetrage(Number(e.target.value.replace(/,/g, "")))}
                 placeholder="مثال: 100"
             />
-            <InputState
+            <ComboBox
                 label="موقعیت مکانی"
+                options={LOCATION_OPTIONS}
                 value={location}
-                onChange={e => setLocation(e.target.value)}
-                placeholder="35.6895, 51.3890"
+                onChange={setLocation}
             />
+            <div className="col-span-1 lg:col-span-4 flex flex-col">
+                <label className="mb-1 text-sm font-medium">توضیحات</label>
+                <textarea
+                    value={description}
+                    onChange={e => setDescription(e.target.value)}
+                    placeholder="توضیحات ملک را وارد کنید"
+                    className="border rounded px-2 py-1 w-full"
+                    rows={4}
+                />
+            </div>
         </div>
     )
 }

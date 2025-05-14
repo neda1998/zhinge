@@ -8,6 +8,15 @@ const FEATURES_OPTIONS = [
     "سالن اجتماعات", "سالن کنفرانس", "کتابخانه", "لابی", "آتش‌نشانی", "سیستم اعلام حریق", "سیستم تهویه مطبوع", "سیستم امنیتی", "سیستم کنترل دسترسی", "سیستم روشنایی هوشمند", "سیستم صوتی و تصویری", "سیستم اینترنت پرسرعت", "سیستم تلویزیون مرکزی ", "سیستم گرمایش از کف", "سیستم سرمایش از سقف", "سیستم تصفیه آب", "سیستم تصفیه هوا", "سیستم گرمایش و سرمایش مرکزی", "سیستم گرمایش و سرمایش مستقل", "سیستم گرمایش و سرمایش هوشمند", "سیستم گرمایش و سرمایش خودکار", "سیستم گرمایش و سرمایش دستی"
 ];
 
+const LOCATION_OPTIONS = [
+    "شمالی",
+    "جنوبی",
+    "شمالی دو نبش",
+    "جنوبی دو نبش",
+    "دوکله",
+    "سه نبش"
+];
+
 function formatInputNumber(val: string) {
     const onlyNums = val.replace(/[^\d]/g, "");
     return onlyNums.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -61,11 +70,11 @@ const StepTwoUser = ({
                 <span className="text-xs text-red-600 my-1">اگر وام ندارید، عدد 0 رو وارد کنید</span>
                 <span className="text-xs text-gray-500 my-1">به تومان</span>
             </div>
-            <InputState
+            <ComboBox
                 label="موقعیت ملک"
-                placeholder="مثال: 35.6895, 51.3890"
+                options={LOCATION_OPTIONS}
                 value={location}
-                onChange={e => setLocation(e.target.value)}
+                onChange={setLocation}
             />
             <InputState
                 label="تعداد اتاق‌ها"

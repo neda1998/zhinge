@@ -135,7 +135,7 @@ const routes: AllRoutes[] = [
     type: "link",
     key: "realState",
     name: "realState",
-    route: "/dashboard/realState",
+    route: "/dashboard/register-new-advertise",
     component: <Realstate />,
   },
   {

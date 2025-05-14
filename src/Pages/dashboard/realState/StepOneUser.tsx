@@ -47,7 +47,7 @@ const StepOneUser = ({
             />
             <InputState
                 label="منطقه"
-                placeholder="مثال: 2"
+                placeholder="مثال: مبارک آباد"
                 value={region}
                 onChange={e => setRegion(e.target.value)}
             />

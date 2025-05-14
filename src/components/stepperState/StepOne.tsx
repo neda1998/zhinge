@@ -7,8 +7,8 @@ interface StepOneProps {
   address: string; setAddress: (v: string) => void;
   Unit_in_floor?: number; setUnitInFloor: (v: number) => void;
   document_type: string; setDocumentType: (v: string) => void;
-  floor_number?: number; setFloorNumber: (v: number) => void; // added
-  floor?: number; setFloor: (v: number) => void; // added
+  floor_number?: number; setFloorNumber: (v: number) => void;
+  floor?: number; setFloor: (v: number) => void;
 }
 
 const StepOne = ({
@@ -17,8 +17,8 @@ const StepOne = ({
   address, setAddress,
   Unit_in_floor, setUnitInFloor,
   document_type, setDocumentType,
-  floor_number, setFloorNumber, // added
-  floor, setFloor // added
+  floor_number, setFloorNumber, 
+  floor, setFloor 
 }: StepOneProps) => {
   return (
     <div className="w-full">
@@ -41,7 +41,7 @@ const StepOne = ({
           label="منطقه"
           value={region}
           onChange={(e) => setRegion(e.target.value)}
-          placeholder="مثال: 2"
+          placeholder="مثال: مبارک آباد"
         />
         <InputState
           label="تعداد واحد در طبقه"

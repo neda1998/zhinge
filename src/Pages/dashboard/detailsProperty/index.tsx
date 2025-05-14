@@ -139,7 +139,7 @@ export default function DetailsPropertyDashboard() {
                 height={"50px"}
                 bgcolor={"#D9D9D94D"}
                 borderradius={"30px"}
-                onClick={() => navigate("/dashboard/realState", { replace: true })}
+                onClick={() => navigate("/dashboard/register-new-advertise", { replace: true })}
               >
                 <p className="text-[1rem] font-bold">قبلی</p>
               </Button>
