@@ -52,7 +52,7 @@ const StepperState = () => {
     useEffect(() => {
         if (creatAnnouncementMutation.isSuccess) {
             setIsAnnouncementSubmitted(true);
-            setCurrentStep(3); 
+            setCurrentStep(3);
         }
     }, [creatAnnouncementMutation.isSuccess]);
 
@@ -93,12 +93,12 @@ const StepperState = () => {
             document_type={document_type} setDocumentType={setDocumentType}
             floor_number={floor_number} setFloorNumber={setFloorNumber}
             floor={floor} setFloor={setFloor}
+            room_number={room_number} setRoomNumber={setRoomNumber}
         />,
         <StepTwo
             key="step2"
             loan={loan} setLoan={setLoan}
             year_of_build={year_of_build} setYearOfBuild={setYearOfBuild}
-            room_number={room_number} setRoomNumber={setRoomNumber}
             setPrice={setPrice}
             price={price}
             features={features} setFeatures={setFeatures}
@@ -114,10 +114,10 @@ const StepperState = () => {
             full_name={full_name} setFullName={setFullName}
             phone={phone} setPhone={setPhone}
             type={type} usage={usage} region={region} address={address}
-            location={location} setLocation={setLocation} price={price} 
+            location={location} setLocation={setLocation} price={price}
             year_of_build={year_of_build} room_number={room_number}
             land_metrage={land_metrage} floor_number={floor_number} floor={floor}
-            onReset={resetAllStates} 
+            onReset={resetAllStates}
         />,
         <StepFourUser
             key="step4"
@@ -157,7 +157,7 @@ const StepperState = () => {
                         قبلی
                     </button>
                 )}
-                {currentStep < 3 && (
+                {currentStep < 4 && (
                     <button
                         onClick={handleNextStep}
                         className="bg-main-color text-white px-8 py-2 rounded-full transition"

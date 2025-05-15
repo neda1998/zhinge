@@ -5,7 +5,6 @@ import React, { useState } from "react";
 interface StepTwoProps {
     loan?: number; setLoan: (v: number) => void;
     year_of_build?: number; setYearOfBuild: (v: number) => void;
-    room_number?: number; setRoomNumber: (v: number) => void;
     price?: number; setPrice: (v: number) => void;
     features: string; setFeatures: (v: string) => void;
     useful_metrage?: number; setUsefulMetrage: (v: number) => void;
@@ -41,7 +40,6 @@ const LOCATION_OPTIONS = [
 const StepTwo = ({
     loan, setLoan,
     year_of_build, setYearOfBuild,
-    room_number, setRoomNumber,
     price, setPrice,
     features, setFeatures,
     useful_metrage, setUsefulMetrage,
@@ -64,6 +62,33 @@ const StepTwo = ({
 
     return (
         <div className="grid lg:grid-cols-4 grid-cols-1 w-full gap-5">
+            <InputState
+                label="متراژ کل زمین"
+                placeholder="مثال: 200"
+                value={land_metrage !== undefined && land_metrage !== null ? formatInputNumber(String(land_metrage)) : ""}
+                onChange={e => {
+                    const formatted = formatInputNumber(e.target.value);
+                    e.target.value = formatted;
+                    setLandMetrage(Number(formatted.replace(/,/g, "")));
+                }}
+            />
+            <InputState
+                label="متراژ مفید"
+                value={useful_metrage !== undefined && useful_metrage !== null ? String(useful_metrage) : ""}
+                onChange={e => setUsefulMetrage(Number(e.target.value.replace(/,/g, "")))}
+                placeholder="مثال: 100"
+            />
+            <ComboBox
+                label="موقعیت ملک"
+                options={LOCATION_OPTIONS}
+                value={location}
+                onChange={setLocation}
+            />
+             <InputState
+                label="سال ساخت"
+                value={year_of_build !== undefined && year_of_build !== null ? String(year_of_build) : ""}
+                onChange={(e) => setYearOfBuild(Number(e.target.value.replace(/,/g, "")))}
+            />
             <div className="flex flex-col items-start">
                 <InputState
                     label="وام"
@@ -77,16 +102,6 @@ const StepTwo = ({
                 <span className="text-xs text-red-600 my-1">اگر وام ندارید، عدد 0 رو وارد کنید</span>
                 <span className="text-xs text-gray-500 my-1">به تومان</span>
             </div>
-            <InputState
-                label="سال ساخت"
-                value={year_of_build !== undefined && year_of_build !== null ? String(year_of_build) : ""}
-                onChange={(e) => setYearOfBuild(Number(e.target.value.replace(/,/g, "")))}
-            />
-            <InputState
-                label="تعداد اتاق"
-                value={room_number !== undefined && room_number !== null ? String(room_number) : ""}
-                onChange={(e) => setRoomNumber(Number(e.target.value.replace(/,/g, "")))}
-            />
             <div className="flex flex-col">
                 <InputState
                     label="قیمت"
@@ -167,28 +182,6 @@ const StepTwo = ({
                     </>
                 )}
             </div>
-            <InputState
-                label="متراژ کل زمین"
-                placeholder="مثال: 200"
-                value={land_metrage !== undefined && land_metrage !== null ? formatInputNumber(String(land_metrage)) : ""}
-                onChange={e => {
-                    const formatted = formatInputNumber(e.target.value);
-                    e.target.value = formatted;
-                    setLandMetrage(Number(formatted.replace(/,/g, "")));
-                }}
-            />
-            <InputState
-                label="متراژ مفید"
-                value={useful_metrage !== undefined && useful_metrage !== null ? String(useful_metrage) : ""}
-                onChange={e => setUsefulMetrage(Number(e.target.value.replace(/,/g, "")))}
-                placeholder="مثال: 100"
-            />
-            <ComboBox
-                label="موقعیت مکانی"
-                options={LOCATION_OPTIONS}
-                value={location}
-                onChange={setLocation}
-            />
             <div className="col-span-1 lg:col-span-4 flex flex-col">
                 <label className="mb-1 text-sm font-medium">توضیحات</label>
                 <textarea

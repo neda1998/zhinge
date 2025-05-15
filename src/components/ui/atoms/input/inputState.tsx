@@ -25,7 +25,7 @@ const InputState = ({
         placeholder={placeholder}
         onChange={onChange}
         value={value}
-        className="appearance-none w-full py-3 px-4 rounded-full focus:outline-none focus:ring-2 focus:ring-gray-400 bg-[#f4f4f4]"
+        className="appearance-none w-full py-3 px-4 rounded-full focus:outline-none focus:ring-2 focus:ring-gray-400 bg-[#f4f4f4] text-[13px]"
         {...rest}
       />
     </div>

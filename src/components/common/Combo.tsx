@@ -35,7 +35,7 @@ const ComboBox: React.FC<ComboBoxProps> = ({ label, options, name, value, onChan
           name={name}
           value={value !== undefined ? value : selected}
           onChange={handleChange}
-          className="appearance-none w-full py-3 px-4 focus:outline-none focus:ring-2 focus:ring-gray-400 !bg-[#f4f4f4] rounded-full"
+          className="appearance-none w-full py-3 px-4 focus:outline-none focus:ring-2 focus:ring-gray-400 !bg-[#f4f4f4] rounded-full text-[13px]"
         >
           <option value="" disabled>
             انتخاب کنید
