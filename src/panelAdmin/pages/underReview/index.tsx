@@ -94,7 +94,7 @@ const UnderReview = () => {
         "نام مالک": item.full_name,
         "شماره تماس": item.userID,
         "وضعیت": (
-          <span className="text-yellow-600 font-bold">در حال بررسی</span>
+          <span className="text-yellow-600 font-bold whitespace-nowrap">در حال بررسی</span>
         ),
         "بازه قیمت": (
           <span>
@@ -177,7 +177,7 @@ const UnderReview = () => {
 
       {editModalOpen && selectedAnnounce && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
-          <div className="bg-white rounded-lg shadow-lg p-6 w-full mx-12 relative z-[9999] overflow-y-auto max-h-[90vh]">
+          <div className="bg-white rounded-lg shadow-lg p-4 sm:p-6 w-full max-w-full sm:max-w-2xl lg:max-w-4xl mx-2 sm:mx-8 relative z-[9999] overflow-y-auto max-h-[90vh]">
             <button
               className="absolute left-2 top-2 text-gray-500 hover:text-gray-700"
               onClick={() => setEditModalOpen(false)}
@@ -185,7 +185,7 @@ const UnderReview = () => {
               ×
             </button>
             <h2 className="font-bold mb-4 text-lg">ویرایش ملک</h2>
-              <form
+            <form
               onSubmit={e => {
                 e.preventDefault();
                 if (!selectedAnnounce?.Uid) {
@@ -224,7 +224,7 @@ const UnderReview = () => {
                 });
               }}
             >
-              <div  className="grid lg:grid-cols-2 sm:grid-cols-2 grid-cols-1 gap-x-2 lg:gap-y-7 gap-y-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-2 lg:gap-y-7 gap-y-4">
               <div>
                 <label className="block text-sm mb-1">نوع ملک</label>
                 <select
@@ -371,7 +371,7 @@ const UnderReview = () => {
                   onChange={e => setEditForm({ ...editForm, price: Number(e.target.value) })}
                 />
               </div>
-              <div className="col-span-4">
+              <div className="sm:col-span-2 lg:col-span-3">
                 <label className="block text-sm mb-1">امکانات</label>
                 <textarea
                   className="border rounded px-2 py-1 w-full"
@@ -379,7 +379,7 @@ const UnderReview = () => {
                   onChange={e => setEditForm({ ...editForm, features: e.target.value })}
                 />
               </div>
-              <div className="col-span-4">
+              <div className="sm:col-span-2 lg:col-span-3">
                 <label className="block text-sm mb-1">توضیحات</label>
                 <textarea
                   className="border rounded px-2 py-1 w-full"
@@ -405,7 +405,7 @@ const UnderReview = () => {
               </div>
               <button
                 type="submit"
-                className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded w-full mt-4 col-span-4"
+                className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded w-full mt-4 sm:col-span-2 lg:col-span-3"
                 disabled={updateAnnounMutation.isLoading}
               >
                 {updateAnnounMutation.isLoading ? "در حال ذخیره..." : "ذخیره تغییرات"}
