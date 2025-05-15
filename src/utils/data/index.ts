@@ -239,7 +239,7 @@ export const newStates = [
     id: 3,
     img: search,
     text: "جستجو برای ملک",
-    path: "/panel-admin/dashboard/estate-management/search-for-estate",
+    path: "/panel-admin/dashboard/estate-management/search-estate",
   },
 ];
 export const dataTable = [

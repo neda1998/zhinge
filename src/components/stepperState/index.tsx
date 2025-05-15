@@ -4,6 +4,7 @@ import StepThree from "./StepThree";
 import StepOne from "./StepOne";
 import UseCreatAnnouncementMutation from "../../hooks/mutation/creatAnnouncement/UseCreatAnnouncementMutation";
 import StepFourUser from "../../Pages/dashboard/realState/StepFourUser";
+import Swal from "sweetalert2";
 
 const StepperState = () => {
     const [currentStep, setCurrentStep] = useState(1);
@@ -31,7 +32,16 @@ const StepperState = () => {
     const [describetion, setDescription] = useState<string>("");
 
     const handleNextStep = () => {
-        if (currentStep < 3) {
+        if (currentStep === 3 && !creatAnnouncementMutation.isSuccess) {
+            Swal.fire({
+                icon: "warning",
+                title: "اخطار",
+                text: "لطفا ابتدا اطلاعات را ثبت کنید!",
+                confirmButtonText: "باشه"
+            });
+            return;
+        }
+        if (currentStep < 4) {
             setCurrentStep((prevStep) => prevStep + 1);
         }
     };
@@ -39,7 +49,7 @@ const StepperState = () => {
     const handlePreviousStep = () => {
         if (currentStep > 1) {
             setCurrentStep((prevStep) => prevStep - 1);
-            if (currentStep === 3) {
+            if (currentStep === 4) {
                 setIsAnnouncementSubmitted(false);
             }
         }

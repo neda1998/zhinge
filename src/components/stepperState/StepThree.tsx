@@ -85,7 +85,7 @@ const StepThree = ({
                 label="نام مالک"
                 value={full_name}
                 onChange={e => setFullName(e.target.value)}
-                placeholder="علی احمدی"
+                placeholder="مثال: علی احمدی"
             />
             <InputState
                 label="شماره تماس"

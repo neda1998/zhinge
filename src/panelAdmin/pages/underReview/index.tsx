@@ -20,7 +20,7 @@ const UnderReview = () => {
     isLoading: isLoadingProgress,
     isError: isErrorProgress,
     refetch: refetchInprogress,
-  } = UseInprogressQuery(); 
+  } = UseInprogressQuery();
 
   const {
     data: checkedData,
@@ -177,7 +177,7 @@ const UnderReview = () => {
 
       {editModalOpen && selectedAnnounce && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
-          <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-lg relative z-[9999] overflow-y-auto max-h-[90vh]">
+          <div className="bg-white rounded-lg shadow-lg p-6 w-full mx-12 relative z-[9999] overflow-y-auto max-h-[90vh]">
             <button
               className="absolute left-2 top-2 text-gray-500 hover:text-gray-700"
               onClick={() => setEditModalOpen(false)}
@@ -185,7 +185,7 @@ const UnderReview = () => {
               ×
             </button>
             <h2 className="font-bold mb-4 text-lg">ویرایش ملک</h2>
-            <form
+              <form
               onSubmit={e => {
                 e.preventDefault();
                 if (!selectedAnnounce?.Uid) {
@@ -203,7 +203,7 @@ const UnderReview = () => {
                   location: editForm.location,
                   usage: editForm.usage,
                   document_type: editForm.document_type,
-                  land_metrage: editForm.metrage, 
+                  land_metrage: editForm.metrage,
                   useful_metrage: editForm.useful_metrage,
                   floor_number: editForm.floor_number,
                   floor: editForm.floor,
@@ -223,8 +223,170 @@ const UnderReview = () => {
                   highest_price: editForm.highest_price,
                 });
               }}
-              className="space-y-3"
             >
+              <div  className="grid lg:grid-cols-2 sm:grid-cols-2 grid-cols-1 gap-x-2 lg:gap-y-7 gap-y-4">
+              <div>
+                <label className="block text-sm mb-1">نوع ملک</label>
+                <select
+                  className="border rounded px-2 py-1 w-full"
+                  value={editForm.type || ""}
+                  onChange={e => setEditForm({ ...editForm, type: e.target.value })}
+                >
+                  <option value="آپارتمان">آپارتمان</option>
+                  <option value="ویلایی">ویلایی</option>
+                  <option value="زمین">زمین</option>
+                  <option value="مغازه">مغازه</option>
+                  <option value="زمین مسکونی">زمین مسکونی</option>
+                  <option value="زمین کشاورزی">زمین کشاورزی</option>
+                  <option value="سایر">سایر</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm mb-1">منطقه</label>
+                <input
+                  className="border rounded px-2 py-1 w-full"
+                  value={editForm.region || ""}
+                  onChange={e => setEditForm({ ...editForm, region: e.target.value })}
+                />
+              </div>
+              <div>
+                <label className="block text-sm mb-1">آدرس ملک</label>
+                <input
+                  className="border rounded px-2 py-1 w-full"
+                  value={editForm.address || ""}
+                  onChange={e => setEditForm({ ...editForm, address: e.target.value })}
+                />
+              </div>
+              <div>
+                <label className="block text-sm mb-1">طبقه مورد نظر</label>
+                <input
+                  type="number"
+                  className="border rounded px-2 py-1 w-full"
+                  value={editForm.floor_number || ""}
+                  onChange={e => setEditForm({ ...editForm, floor_number: Number(e.target.value) })}
+                />
+              </div>
+              <div>
+                <label className="block text-sm mb-1">تعداد طبقات</label>
+                <input
+                  type="number"
+                  className="border rounded px-2 py-1 w-full"
+                  value={editForm.floor || ""}
+                  onChange={e => setEditForm({ ...editForm, floor: Number(e.target.value) })}
+                />
+              </div>
+              <div>
+                <label className="block text-sm mb-1">تعداد واحد در طبقه</label>
+                <input
+                  type="number"
+                  className="border rounded px-2 py-1 w-full"
+                  value={editForm.Unit_in_floor || ""}
+                  onChange={e => setEditForm({ ...editForm, Unit_in_floor: Number(e.target.value) })}
+                />
+              </div>
+              <div>
+                <label className="block text-sm mb-1">تعداد اتاق‌ها</label>
+                <input
+                  type="number"
+                  className="border rounded px-2 py-1 w-full"
+                  value={editForm.room_number || ""}
+                  onChange={e => setEditForm({ ...editForm, room_number: Number(e.target.value) })}
+                />
+              </div>
+              <div>
+                <label className="block text-sm mb-1">نوع سند</label>
+                <select
+                  className="border rounded px-2 py-1 w-full"
+                  value={editForm.document_type || ""}
+                  onChange={e => setEditForm({ ...editForm, document_type: e.target.value })}
+                >
+                  <option value="رسمی">رسمی</option>
+                  <option value="قولنامه‌ای">قولنامه‌ای</option>
+                  <option value="مشاع">مشاع</option>
+                  <option value="سند تک برگ">سند تک برگ</option>
+                  options={["سند تک برگ", "سند واگذاری", "مبایعه نامه (قولنامه‌ای)", "نسق", "اوقافی", "سایر"]}
+                  <option value="مبایعه نامه">مبایعه نامه</option>
+                  <option value="نسق">نسق</option>
+                  <option value="اوقافی">اوقافی</option>
+                  <option value="سایر">سایر</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm mb-1">متراژ کل زمین</label>
+                <input
+                  type="number"
+                  className="border rounded px-2 py-1 w-full"
+                  value={editForm.land_metrage || ""}
+                  onChange={e => setEditForm({ ...editForm, land_metrage: Number(e.target.value) })}
+                />
+              </div>
+              <div>
+                <label className="block text-sm mb-1">متراژ مفید</label>
+                <input
+                  type="number"
+                  className="border rounded px-2 py-1 w-full"
+                  value={editForm.useful_metrage || ""}
+                  onChange={e => setEditForm({ ...editForm, useful_metrage: Number(e.target.value) })}
+                />
+              </div>
+              <div>
+                <label className="block text-sm mb-1">موقعیت ملک</label>
+                <select
+                  className="border rounded px-2 py-1 w-full"
+                  value={editForm.location || ""}
+                  onChange={e => setEditForm({ ...editForm, location: e.target.value })}
+                >
+                  <option value="شمالی">شمالی</option>
+                  <option value="جنوبی">جنوبی</option>
+                  <option value="دوکله">دوکله</option>
+                  <option value="شمالی دو نبش">شمالی دو نبش</option>
+                  <option value="جنوبی دو نبش">جنوبی دو نبش</option>
+                  <option value="سه نبش">سه نبش</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm mb-1">سال ساخت</label>
+                <input
+                  type="number"
+                  className="border rounded px-2 py-1 w-full"
+                  value={editForm.year_of_build || ""}
+                  onChange={e => setEditForm({ ...editForm, year_of_build: Number(e.target.value) })}
+                />
+              </div>
+              <div>
+                <label className="block text-sm mb-1">وام</label>
+                <input
+                  type="number"
+                  className="border rounded px-2 py-1 w-full"
+                  value={editForm.loan !== undefined && editForm.loan !== null ? editForm.loan : ""}
+                  onChange={e => setEditForm({ ...editForm, loan: Number(e.target.value) })}
+                />
+              </div>
+              <div>
+                <label className="block text-sm mb-1">قیمت</label>
+                <input
+                  type="number"
+                  className="border rounded px-2 py-1 w-full"
+                  value={editForm.price || ""}
+                  onChange={e => setEditForm({ ...editForm, price: Number(e.target.value) })}
+                />
+              </div>
+              <div className="col-span-4">
+                <label className="block text-sm mb-1">امکانات</label>
+                <textarea
+                  className="border rounded px-2 py-1 w-full"
+                  value={editForm.features || ""}
+                  onChange={e => setEditForm({ ...editForm, features: e.target.value })}
+                />
+              </div>
+              <div className="col-span-4">
+                <label className="block text-sm mb-1">توضیحات</label>
+                <textarea
+                  className="border rounded px-2 py-1 w-full"
+                  value={editForm.description || ""}
+                  onChange={e => setEditForm({ ...editForm, description: e.target.value })}
+                />
+              </div>
               <div>
                 <label className="block text-sm mb-1">نام مالک</label>
                 <input
@@ -241,64 +403,14 @@ const UnderReview = () => {
                   onChange={e => setEditForm({ ...editForm, userID: e.target.value })}
                 />
               </div>
-              <div>
-                <label className="block text-sm mb-1">نوع ملک</label>
-                <input
-                  className="border rounded px-2 py-1 w-full"
-                  value={editForm.type || ""}
-                  onChange={e => setEditForm({ ...editForm, type: e.target.value })}
-                />
-              </div>
-              <div>
-                <label className="block text-sm mb-1">منطقه</label>
-                <input
-                  className="border rounded px-2 py-1 w-full"
-                  value={editForm.region || ""}
-                  onChange={e => setEditForm({ ...editForm, region: e.target.value })}
-                />
-              </div>
-              <div>
-                <label className="block text-sm mb-1">قیمت</label>
-                <input
-                  type="number"
-                  className="border rounded px-2 py-1 w-full"
-                  value={editForm.price !== undefined && editForm.price !== null ? editForm.price : ""}
-                  onChange={e => setEditForm({ ...editForm, price: Number(e.target.value) })}
-                />
-              </div>
-              <div>
-                <label className="block text-sm mb-1">متراژ</label>
-                <input
-                  type="number"
-                  className="border rounded px-2 py-1 w-full"
-                  value={editForm.metrage !== undefined && editForm.metrage !== null ? editForm.metrage : ""}
-                  onChange={e => setEditForm({ ...editForm, metrage: Number(e.target.value) })}
-                />
-              </div>
-              <div>
-                <label className="block text-sm mb-1">آدرس</label>
-                <input
-                  className="border rounded px-2 py-1 w-full"
-                  value={editForm.address || ""}
-                  onChange={e => setEditForm({ ...editForm, address: e.target.value })}
-                />
-              </div>
-              <div>
-                <label className="block text-sm mb-1">وام</label>
-                <input
-                  type="number"
-                  className="border rounded px-2 py-1 w-full"
-                  value={editForm.loan !== undefined && editForm.loan !== null ? editForm.loan : ""}
-                  onChange={e => setEditForm({ ...editForm, loan: Number(e.target.value) })}
-                />
-              </div>
               <button
                 type="submit"
-                className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded w-full mt-4"
+                className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded w-full mt-4 col-span-4"
                 disabled={updateAnnounMutation.isLoading}
               >
                 {updateAnnounMutation.isLoading ? "در حال ذخیره..." : "ذخیره تغییرات"}
               </button>
+            </div>
             </form>
           </div>
         </div>

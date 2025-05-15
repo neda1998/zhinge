@@ -64,7 +64,7 @@ const StepOne = ({
           placeholder="مثال: 2"
         />
         <InputState
-          label="تعداد اتاق"
+          label="تعداد اتاق ها"
           value={room_number !== undefined && room_number !== null ? String(room_number) : ""}
           onChange={(e) => setRoomNumber(Number(e.target.value.replace(/,/g, "")))}
           placeholder="مثال: 3"

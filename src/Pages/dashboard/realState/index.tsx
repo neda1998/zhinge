@@ -32,7 +32,6 @@ export default function Realstate() {
   const [isAnnouncementSubmitted, setIsAnnouncementSubmitted] = useState(false);
 
   const handleNextStep = () => {
-    // فقط برای مراحل ۱ تا ۲ چک کن، برای رفتن به مرحله ۴ چک نکن
     if (currentStep === 3 && !isAnnouncementSubmitted) {
       Swal.fire({
         icon: "warning",
@@ -131,17 +130,19 @@ export default function Realstate() {
       document_type={document_type} setDocumentType={setDocumentType}
       floor_number={floor_number} setFloorNumber={setFloorNumber}
       floor={floor} setFloor={setFloor}
+            room_number={room_number} setRoomNumber={setRoomNumber}
     />,
     <StepTwoUser
       key="step2"
       loan={loan} setLoan={setLoan}
       year_of_build={year_of_build} setYearOfBuild={setYearOfBuild}
-      room_number={room_number} setRoomNumber={setRoomNumber}
       useful_metrage={useful_metrage} setUsefulMetrage={setUsefulMetrage}
       location={location} setLocation={setLocation}
       land_metrage={land_metrage} setLandMetrage={setLandMetrage}
       features={features} setFeatures={setFeatures}
       price={price} setPrice={setPrice}
+      description={""}
+      setDescription={() => {}}
     />,
     <StepThreeUser
       key="step3"

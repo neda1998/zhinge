@@ -282,7 +282,7 @@ const routes: AllRoutes[] = [
     type: "link",
     key: "SearchForState",
     name: "SearchForState",
-    route: "/panel-admin/dashboard/estate-management/search-for-estate",
+    route: "/panel-admin/dashboard/estate-management/search-estate",
     component: <SearchForEstate />
   },
   {

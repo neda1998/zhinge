@@ -5,7 +5,6 @@ import InitialLayout from "../../dashboard/initialLayoutAdmin"
 import ChooseItemsOfState from "../propertyManagement/ChooseItemsOfState"
 import UseSearchStateMutation from "../../../hooks/mutation/searchState/UseSearchStateMutation"
 import { useState } from "react"
-import Swal from "sweetalert2"
 
 const SearchForEstate = () => {
   const [form, setForm] = useState<any>({});

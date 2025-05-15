@@ -10,6 +10,7 @@ interface StepOneUserProps {
     floor_number: string; setFloorNumber: (v: string) => void;
     floor: string; setFloor: (v: string) => void;
     document_type?: string; setDocumentType?: (v: string) => void;
+        room_number: string; setRoomNumber: (v: string) => void;
 }
 
 function formatInputNumber(val: string) {
@@ -23,6 +24,7 @@ function formatNumber(val: string) {
 }
 
 const StepOneUser = ({
+    room_number, setRoomNumber,
     type, setType,
     region, setRegion,
     address, setAddress,
@@ -34,16 +36,10 @@ const StepOneUser = ({
     return (
         <div className="w-full grid lg:grid-cols-4 sm:grid-cols-2 grid-cols-1 gap-5">
             <ComboBox
-                label="نوع سند"
-                value={document_type}
-                onChange={setDocumentType}
-                options={["سند تک برگ", "سند واگذاری", "مبایعه نامه (قولنامه‌ای)", "نسق", "اوقافی", "سایر"]}
-            />
-            <InputState
-                label="آدرس"
-                placeholder="سنندج، خیابان پاسداران، کوچه ادب 2، پلاک 3"
-                value={address}
-                onChange={e => setAddress(e.target.value)}
+                label="نوع ملک"
+                value={type}
+                onChange={setType}
+                options={["آپارتمان", "ویلایی", "مغازه", "زمین مسکونی", "زمین کشاورزی", "سایر"]}
             />
             <InputState
                 label="منطقه"
@@ -51,19 +47,13 @@ const StepOneUser = ({
                 value={region}
                 onChange={e => setRegion(e.target.value)}
             />
-            <ComboBox
-                label="نوع ملک"
-                value={type}
-                onChange={setType}
-                options={["آپارتمان", "ویلایی", "مغازه", "زمین مسکونی", "زمین کشاورزی", "سایر"]}
+            <InputState
+                label="آدرس ملک"
+                placeholder="سنندج، خیابان پاسداران، کوچه ادب 2، پلاک 3"
+                value={address}
+                onChange={e => setAddress(e.target.value)}
             />
             
-            <InputState
-                label="تعداد طبقات"
-                placeholder="مثال: 3"
-                value={floor_number}
-                onChange={e => setFloorNumber(formatInputNumber(e.target.value))}
-            />
             <InputState
                 label="طبقه مورد نظر"
                 placeholder="مثال: 2"
@@ -71,10 +61,28 @@ const StepOneUser = ({
                 onChange={e => setFloor(formatInputNumber(e.target.value))}
             />
             <InputState
+                label="تعداد طبقات"
+                placeholder="مثال: 3"
+                value={floor_number}
+                onChange={e => setFloorNumber(formatInputNumber(e.target.value))}
+            />
+            <InputState
                 label="تعداد واحد در طبقه"
                 placeholder="مثال: 2"
                 value={Unit_in_floor}
                 onChange={e => setUnitInFloor(e.target.value.replace(/,/g, ""))}
+            />
+             <InputState
+                label="تعداد اتاق‌ها"
+                placeholder="مثال: 3"
+                value={room_number}
+                onChange={e => setRoomNumber(formatInputNumber(e.target.value))}
+            />
+            <ComboBox
+                label="نوع سند"
+                value={document_type}
+                onChange={setDocumentType}
+                options={["سند تک برگ", "سند واگذاری", "مبایعه نامه (قولنامه‌ای)", "نسق", "اوقافی", "سایر"]}
             />
         </div>
     );

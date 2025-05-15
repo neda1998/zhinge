@@ -30,18 +30,18 @@ interface StepTwoUserProps {
     land_metrage: string; setLandMetrage: (v: string) => void;
     year_of_build: string; setYearOfBuild: (v: string) => void;
     features: string; setFeatures: (v: string) => void;
-    room_number: string; setRoomNumber: (v: string) => void;
     price: string; setPrice: (v: string) => void;
+    description: string; setDescription: (v: string) => void;
 }
 const StepTwoUser = ({
-    room_number, setRoomNumber,
     loan, setLoan,
     features, setFeatures,
     location, setLocation,
     useful_metrage, setUsefulMetrage,
     land_metrage, setLandMetrage,
     year_of_build, setYearOfBuild,
-    price, setPrice
+    price, setPrice,
+    description, setDescription
 }: StepTwoUserProps) => {
     const [showFeaturePanel, setShowFeaturePanel] = useState(false);
     const selectedFeatures: string[] = features ? features.split(",").map(f => f.trim()).filter(f => f) : [];
@@ -57,6 +57,30 @@ const StepTwoUser = ({
     };
     return (
         <div className="w-full grid lg:grid-cols-4 sm:grid-cols-2 grid-cols-1 gap-5">
+            <InputState
+                label="متراژ کل زمین"
+                placeholder="مثال: 200"
+                value={land_metrage}
+                onChange={e => setLandMetrage(formatInputNumber(e.target.value))}
+            />
+            <InputState
+                label="متراژ مفید"
+                placeholder="مثال: 150"
+                value={useful_metrage}
+                onChange={e => setUsefulMetrage(formatInputNumber(e.target.value))}
+            />
+            <ComboBox
+                label="موقعیت ملک"
+                options={LOCATION_OPTIONS}
+                value={location}
+                onChange={setLocation}
+            />
+            <InputState
+                label="سال ساخت"
+                placeholder="مثال: 1395"
+                value={year_of_build}
+                onChange={e => setYearOfBuild(e.target.value.replace(/,/g, ""))}
+            />
             <div className="flex flex-col items-start">
                 <InputState
                     label="وام"
@@ -70,23 +94,15 @@ const StepTwoUser = ({
                 <span className="text-xs text-red-600 my-1">اگر وام ندارید، عدد 0 رو وارد کنید</span>
                 <span className="text-xs text-gray-500 my-1">به تومان</span>
             </div>
-            <ComboBox
-                label="موقعیت ملک"
-                options={LOCATION_OPTIONS}
-                value={location}
-                onChange={setLocation}
-            />
             <InputState
-                label="تعداد اتاق‌ها"
-                placeholder="مثال: 3"
-                value={room_number}
-                onChange={e => setRoomNumber(formatInputNumber(e.target.value))}
-            />
-            <InputState
-                label="متراژ کل زمین"
-                placeholder="مثال: 200"
-                value={land_metrage}
-                onChange={e => setLandMetrage(formatInputNumber(e.target.value))}
+                label="قیمت"
+                placeholder="مثال: 50000000"
+                value={price !== undefined && price !== null ? formatInputNumber(String(price)) : ""}
+                onChange={(e) => {
+                    const formatted = formatInputNumber(e.target.value);
+                    e.target.value = formatted;
+                    setPrice(formatted);
+                }}
             />
             <div className="flex flex-col col-span-1">
                 <label className="mb-1 text-sm font-medium">امکانات</label>
@@ -141,6 +157,16 @@ const StepTwoUser = ({
                                     </button>
                                 ))}
                             </div>
+                            <div className="col-span-1 lg:col-span-4 flex flex-col">
+                                <label className="mb-1 text-sm font-medium">توضیحات</label>
+                                <textarea
+                                    value={description}
+                                    onChange={e => setDescription(e.target.value)}
+                                    placeholder="توضیحات ملک را وارد کنید"
+                                    className="border rounded px-2 py-1 w-full"
+                                    rows={4}
+                                />
+                            </div>
                             <div className="flex justify-end mt-4">
                                 <button
                                     type="button"
@@ -154,28 +180,6 @@ const StepTwoUser = ({
                     </>
                 )}
             </div>
-            <InputState
-                label="قیمت"
-                placeholder="مثال: 50000000"
-                value={price !== undefined && price !== null ? formatInputNumber(String(price)) : ""}
-                onChange={(e) => {
-                    const formatted = formatInputNumber(e.target.value);
-                    e.target.value = formatted;
-                    setPrice(formatted);
-                }}  
-            />
-            <InputState
-                label="متراژ مفید"
-                placeholder="مثال: 150"
-                value={useful_metrage}
-                onChange={e => setUsefulMetrage(formatInputNumber(e.target.value))}
-            />
-            <InputState
-                label="سال ساخت"
-                placeholder="مثال: 1395"
-                value={year_of_build}
-                onChange={e => setYearOfBuild(e.target.value.replace(/,/g, ""))}
-            />
         </div>
     );
 };

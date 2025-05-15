@@ -21,7 +21,7 @@ const FileUpload: React.FC<FileUploadProps> = ({ uid, uploadedImages, setUploade
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [cookies] = useCookies(["Uid"]);
   const currentUid = uid || cookies.Uid;
-  const { mutateAsync: uploadFile } = UseUploadFileMutation();
+  const { mutateAsync: uploadFile,isLoading } = UseUploadFileMutation();
   const [pendingFiles, setPendingFiles] = useState<{ file: File; preview: string }[]>([]);
   const [isUploading, setIsUploading] = useState(false);
 
@@ -172,10 +172,14 @@ const FileUpload: React.FC<FileUploadProps> = ({ uid, uploadedImages, setUploade
 
       <button
         onClick={handleUploadAll}
-        disabled={pendingFiles.length === 0}
+        disabled={pendingFiles.length === 0 || isLoading}
         className="fixed left-6 bottom-6 z-50 bg-primary text-white px-6 py-3 rounded-[16px] shadow-lg disabled:opacity-50 bg-[#09A380] hover:bg-[#07a06c] transition-colors duration-300 flex items-center justify-center"
       >
-        ثبت
+        {isLoading ? (
+          "در حال ثبت و بارگذاری ..."
+        ) : (
+          "ثبت"
+        )}
       </button>
     </div>
   );
