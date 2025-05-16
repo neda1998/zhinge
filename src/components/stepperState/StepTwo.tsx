@@ -71,12 +71,18 @@ const StepTwo = ({
                     e.target.value = formatted;
                     setLandMetrage(Number(formatted.replace(/,/g, "")));
                 }}
+                numeric
             />
             <InputState
                 label="متراژ مفید"
-                value={useful_metrage !== undefined && useful_metrage !== null ? String(useful_metrage) : ""}
-                onChange={e => setUsefulMetrage(Number(e.target.value.replace(/,/g, "")))}
+                value={useful_metrage !== undefined && useful_metrage !== null ? formatInputNumber(String(useful_metrage)) : ""}
+                onChange={e => {
+                    const formatted = formatInputNumber(e.target.value);
+                    e.target.value = formatted;
+                    setUsefulMetrage(Number(e.target.value.replace(/,/g, "")))}
+                }
                 placeholder="مثال: 100"
+                numeric
             />
             <ComboBox
                 label="موقعیت ملک"
@@ -88,6 +94,7 @@ const StepTwo = ({
                 label="سال ساخت"
                 value={year_of_build !== undefined && year_of_build !== null ? String(year_of_build) : ""}
                 onChange={(e) => setYearOfBuild(Number(e.target.value.replace(/,/g, "")))}
+                numeric 
             />
             <div className="flex flex-col items-start">
                 <InputState
@@ -98,6 +105,7 @@ const StepTwo = ({
                         e.target.value = formatted;
                         setLoan(Number(formatted.replace(/,/g, "")));
                     }}
+                    numeric
                 />
                 <span className="text-xs text-red-600 my-1">اگر وام ندارید، عدد 0 رو وارد کنید</span>
                 <span className="text-xs text-gray-500 my-1">به تومان</span>
@@ -112,11 +120,12 @@ const StepTwo = ({
                         e.target.value = formatted;
                         setPrice(Number(formatted.replace(/,/g, "")));
                     }}
+                    numeric
                 />
                 <span className="text-xs text-gray-400 my-1">لطفا اعداد را به انگلیسی وارد کنید</span>
                 <span className="text-xs text-gray-500">{formatNumber(price)} تومان</span>
             </div>
-            <div className="flex flex-col col-span-1">
+            <div className="flex flex-col col-span-1 relative">
                 <label className="mb-1 text-sm font-medium">امکانات</label>
                 <div className="flex overflow-x-auto gap-1 mb-2 pb-1 max-w-full">
                     {selectedFeatures.map((feature) => (
@@ -145,7 +154,7 @@ const StepTwo = ({
                 {showFeaturePanel && (
                     <>
                         <div className="fixed inset-0 flex items-center justify-center bg-[#302b2b66] bg-opacity-40 z-[999]"></div>
-                        <div className="bg-white rounded-2xl shadow-xl p-6 w-[320px] max-h-[80vh] overflow-y-auto relative z-[9999]">
+                        <div className="bg-white rounded-2xl shadow-xl p-6 w-[260px] sm:w-[320px] max-h-[80vh] overflow-y-auto absolute top-[80px] z-[9999]">
                             <button
                                 type="button"
                                 className="absolute top-2 left-2 text-gray-500 hover:text-red-500 text-xl font-bold"

@@ -24,7 +24,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => {
     state,
     type = "button", 
   } = props;
-  const baseClasses = `font-iranSans flex items-center font-[500] leading-[17.77px] px-3 justify-evenly`;
+  const baseClasses = `font-iranSans flex items-center font-[500] leading-[17.77px] sm:px-3 justify-evenly`;
 
   const sizeClasses = useClassNames({
     "w-full": fullwidth,

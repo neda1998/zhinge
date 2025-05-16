@@ -59,24 +59,28 @@ const StepOneUser = ({
                 placeholder="مثال: 2"
                 value={floor}
                 onChange={e => setFloor(formatInputNumber(e.target.value))}
+                numeric
             />
             <InputState
                 label="تعداد طبقات"
                 placeholder="مثال: 3"
                 value={floor_number}
                 onChange={e => setFloorNumber(formatInputNumber(e.target.value))}
+                numeric
             />
             <InputState
                 label="تعداد واحد در طبقه"
                 placeholder="مثال: 2"
                 value={Unit_in_floor}
                 onChange={e => setUnitInFloor(e.target.value.replace(/,/g, ""))}
+                numeric
             />
              <InputState
                 label="تعداد اتاق‌ها"
                 placeholder="مثال: 3"
                 value={room_number}
                 onChange={e => setRoomNumber(formatInputNumber(e.target.value))}
+                numeric
             />
             <ComboBox
                 label="نوع سند"

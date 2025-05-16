@@ -60,14 +60,24 @@ const StepTwoUser = ({
             <InputState
                 label="متراژ کل زمین"
                 placeholder="مثال: 200"
-                value={land_metrage}
-                onChange={e => setLandMetrage(formatInputNumber(e.target.value))}
+                value={land_metrage !== undefined && land_metrage !== null ? formatInputNumber(String(land_metrage)) : ""}
+                onChange={e => {
+                    const formatted = formatInputNumber(e.target.value);
+                    e.target.value = formatted;
+                    setLandMetrage(formatted.replace(/,/g, ""));
+                }}
+                numeric
             />
             <InputState
                 label="متراژ مفید"
-                placeholder="مثال: 150"
-                value={useful_metrage}
-                onChange={e => setUsefulMetrage(formatInputNumber(e.target.value))}
+                value={useful_metrage !== undefined && useful_metrage !== null ? formatInputNumber(String(useful_metrage)) : ""}
+                onChange={e => {
+                    const formatted = formatInputNumber(e.target.value);
+                    e.target.value = formatted;
+                    setUsefulMetrage(formatted);
+                }}
+                placeholder="مثال: 100"
+                numeric
             />
             <ComboBox
                 label="موقعیت ملک"
@@ -80,6 +90,7 @@ const StepTwoUser = ({
                 placeholder="مثال: 1395"
                 value={year_of_build}
                 onChange={e => setYearOfBuild(e.target.value.replace(/,/g, ""))}
+                numeric
             />
             <div className="flex flex-col items-start">
                 <InputState
@@ -90,6 +101,7 @@ const StepTwoUser = ({
                         e.target.value = formatted;
                         setLoan(formatted);
                     }}
+                    numeric
                 />
                 <span className="text-xs text-red-600 my-1">اگر وام ندارید، عدد 0 رو وارد کنید</span>
                 <span className="text-xs text-gray-500 my-1">به تومان</span>
@@ -103,8 +115,9 @@ const StepTwoUser = ({
                     e.target.value = formatted;
                     setPrice(formatted);
                 }}
+                numeric
             />
-            <div className="flex flex-col col-span-1">
+            <div className="flex flex-col col-span-1 relative">
                 <label className="mb-1 text-sm font-medium">امکانات</label>
                 <div className="flex overflow-x-auto gap-1 mb-2 pb-1 max-w-full">
                     {selectedFeatures.map((feature) => (
@@ -133,7 +146,7 @@ const StepTwoUser = ({
                 {showFeaturePanel && (
                     <>
                         <div className="fixed inset-0 flex items-center justify-center bg-[#302b2b66] bg-opacity-40"></div>
-                        <div className="bg-white rounded-2xl shadow-xl p-6 w-[350px] max-h-[80vh] overflow-y-auto relative z-[9999]">
+                        <div className="bg-white rounded-2xl shadow-xl p-6 w-[260px] sm:w-[320px] max-h-[80vh] overflow-y-auto absolute top-[80px] z-[9999]">
                             <button
                                 type="button"
                                 className="absolute top-2 left-2 text-gray-500 hover:text-red-500 text-xl font-bold"

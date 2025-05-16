@@ -92,6 +92,7 @@ const StepThree = ({
                 value={phone}
                 onChange={e => setPhone(e.target.value)}
                 placeholder="09183456789"
+                numeric
             />
             {showSubmitButton && (
                 <div className="flex justify-end col-span-4">

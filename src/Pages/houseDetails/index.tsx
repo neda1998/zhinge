@@ -22,12 +22,10 @@ const HouseDetails = () => {
         mutate({ Uid }); 
     }, [mutate, Uid]);
 
-    // یافتن ملک موردنظر از API
     const selectedProperty = Array.isArray(data) 
         ? data.find((property: any) => property.id.toString() === Uid) 
         : data;
 
-    // مقداردهی اولیه `Formik`
     const formik = useFormik<Record<string, any>>({
         enableReinitialize: true,
         initialValues: {
@@ -52,9 +50,6 @@ const HouseDetails = () => {
         }
     });
 
-    console.log("Formik initialValues:", formik.values);
-
-    // فیلدهای موردنیاز برای نمایش اطلاعات ملک
     const fields = [
         { name: 'type', label: 'نوع آگهی' },
         { name: 'id', label: 'کد ملک' },
@@ -88,41 +83,47 @@ const HouseDetails = () => {
             {!isLoading && !error && (
                 <>
                     <Header variant={'main'} />
-                    <div className="w-full h-fit mobile:h-fit grid grid-cols-2">
-                        <div className="p-7 col-span-1 mobile:col-span-2 flex flex-col justify-around">
-                            <div className='w-full h-fit flex flex-col gap-10 p-4'>
-                                <div className='mt-2 flex w-full justify-center'>
-                                    <span className='text-[40px] mobile:text-[30px] font-bold'>
+                    <div className="w-full h-fit mobile:h-fit grid grid-cols-2 p-7">
+                        <div className="col-span-1 mobile:col-span-2 flex flex-col justify-around mb-10">
+                            <div className="w-full h-fit flex flex-col gap-10 sm:p-4">
+                                <div className="mt-20 flex w-full justify-center">
+                                    <span className="text-[42px] mobile:text-[28px] font-extrabold text-transparent bg-clip-text bg-gradient-to-l from-green-400 to-blue-500 drop-shadow-lg">
                                         {selectedProperty?.type === 'اجاره' ? 'ملک اجاره‌ای آپارتمانی' : 'ملک فروشی آپارتمانی'}
                                     </span>
                                 </div>
-                                <div className='flex flex-col w-full bg-white border-[1px] shadow-md rounded-[12px] p-4'>
-                                    <div className='w-full flex justify-center h-12'>
-                                        <div className='w-[90%] bg-[#09A380] flex items-center justify-center rounded-[100px] text-white'>
+                                <div className="flex flex-col w-full bg-white/90 border border-gray-100 shadow-2xl rounded-3xl p-8">
+                                    <div className="w-full flex justify-center h-14 mb-6">
+                                        <div className="w-[90%] bg-gradient-to-l from-green-400 to-blue-400 flex items-center justify-center rounded-full text-white font-extrabold text-xl shadow-lg tracking-wide py-2">
                                             جزئیات ملک
                                         </div>
                                     </div>
-                                    <div className='w-full h-fit overflow-auto p-2'>
-                                        {fields.map((field) => (
-                                            <div key={field.name} className='w-full flex flex-row items-center justify-between'>
-                                                <label className='mb-1'>{field.label}</label>
-                                                <p>
-                                                    {formik.values[field.name] 
-                                                        ? field.format?.(formik.values[field.name]) ?? formik.values[field.name]
-                                                        : "اطلاعات موجود نیست"}
-                                                </p>
-                                            </div>
-                                        ))}
+                                    <div className="w-full h-fit overflow-auto p-2">
+                                        <div className="divide-y divide-gray-100">
+                                            {fields.map((field) => (
+                                                <div
+                                                    key={field.name}
+                                                    className="flex flex-row items-center justify-between py-4 px-2 hover:bg-gray-50 transition rounded-xl"
+                                                >
+                                                    <label className="mb-0 text-gray-500 text-[15px] font-semibold">{field.label}</label>
+                                                    <p className="font-extrabold text-gray-800 text-[17px] text-left">
+                                                        {formik.values[field.name]
+                                                            ? field.format?.(formik.values[field.name]) ?? formik.values[field.name]
+                                                            : <span className="text-gray-400 font-normal">اطلاعات موجود نیست</span>
+                                                        }
+                                                    </p>
+                                                </div>
+                                            ))}
+                                        </div>
                                     </div>
                                 </div>
-                                <div className='flex w-full flex-col gap-5 justify-start bg-white border-[1px] shadow-md rounded-[12px] p-4'>
-                                    <div className='w-full flex justify-center h-12'>
-                                        <div className='w-[90%] bg-[#09A380] flex items-center justify-center rounded-[100px] text-black'>
+                                <div className="flex w-full flex-col gap-5 justify-start bg-white/90 border border-gray-100 shadow-2xl rounded-3xl p-8">
+                                    <div className="w-full flex justify-center h-14 mb-2">
+                                        <div className="w-[90%] bg-gradient-to-l from-green-400 to-blue-400 flex items-center justify-center rounded-full text-white font-extrabold text-xl shadow-lg tracking-wide py-2">
                                             توضیحات بیشتر ملک
                                         </div>
                                     </div>
-                                    <div className='w-full flex justify-center'>
-                                        <span className='text-[16px]'>
+                                    <div className="w-full flex justify-center">
+                                        <span className="text-[16px] text-gray-700 font-medium leading-relaxed text-justify">
                                             {selectedProperty?.description || "توضیحات موجود نیست"}
                                         </span>
                                     </div>
