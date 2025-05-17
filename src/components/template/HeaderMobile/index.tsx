@@ -52,7 +52,10 @@ export default function HeaderMobile() {
     return (
         <>
             <div className="rounded-[100px] z-10 lg:hidden fixed top-0 left-3 right-3 mt-3 bg-white flex  h-[54px]  justify-between  border-[1px] border-primary-border pl-1 pr-2">
-                <div onClick={HanellModal} className="flex sm:w-[25%] justify-start cursor-pointer items-center">
+                <div
+                    onClick={() => setShowModal(true)}
+                    className="flex sm:w-[25%] justify-start cursor-pointer items-center"
+                >
                     <img src={menu} alt="icons" width={25} />
                 </div>
                 <div className="flex items-center justify-center sm:w-[45%] w-[25%] ">
@@ -105,7 +108,37 @@ export default function HeaderMobile() {
                     }
                 </div>
             </div>
-           
+            {/* منوی موبایل */}
+            {showModal && (
+                <div className={`fixed inset-0 z-50 bg-gray-600 bg-opacity-40 flex`}>
+                    <div className={`bg-white dark:bg-gray-600 w-3/4 h-full shadow-lg p-4 ${animationClass} relative`}>
+                        <button
+                            className="absolute top-2 left-2 text-gray-500 text-2xl"
+                            onClick={() => setShowModal(false)}
+                        >
+                            ×
+                        </button>
+                        <ul className="flex flex-col gap-4 mt-8">
+                            {menuItems.map(item => (
+                                <li key={item.href}>
+                                    <button
+                                        className="flex items-center gap-2 w-full text-right"
+                                        onClick={() => {
+                                            navigate(item.href);
+                                            setShowModal(false);
+                                        }}
+                                    >
+                                        <img src={item.iconBlack} alt="" width={20} />
+                                        <span>{item.name}</span>
+                                    </button>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                    {/* کلیک روی پس‌زمینه برای بستن منو */}
+                    <div className="flex-1" onClick={() => setShowModal(false)} />
+                </div>
+            )}
         </>
     );
 }
