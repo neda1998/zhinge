@@ -10,6 +10,7 @@ interface StepOneUserProps {
     floor_number: string; setFloorNumber: (v: string) => void;
     floor: string; setFloor: (v: string) => void;
     document_type?: string; setDocumentType?: (v: string) => void;
+    isAdmin?: boolean; // add this line
 }
 
 function formatInputNumber(val: string) {
@@ -29,7 +30,8 @@ const StepOneUser = ({
     Unit_in_floor, setUnitInFloor,
     floor_number, setFloorNumber,
     floor, setFloor,
-    document_type, setDocumentType
+    document_type, setDocumentType,
+    isAdmin // add this line
 }: StepOneUserProps) => {
     return (
         <div className="w-full grid lg:grid-cols-4 sm:grid-cols-2 grid-cols-1 gap-5">
@@ -45,12 +47,14 @@ const StepOneUser = ({
                 value={address}
                 onChange={e => setAddress(e.target.value)}
             />
-            <InputState
-                label="منطقه"
-                placeholder="مثال: 2"
-                value={region}
-                onChange={e => setRegion(e.target.value)}
-            />
+            {isAdmin && (
+                <InputState
+                    label="منطقه"
+                    placeholder="مثال: 2"
+                    value={region}
+                    onChange={e => setRegion(e.target.value)}
+                />
+            )}
             <ComboBox
                 label="نوع ملک"
                 value={type}
