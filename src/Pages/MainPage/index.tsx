@@ -64,7 +64,7 @@ const MainPage = () => {
                                 </span>
                             </Button>
 
-                            <Button onClick={() => navigate('/dashboard/realState')} borderradius={'96px'} width={'180px'} variant='outlined' height={'50px'} submit={"true"} className={'flex w-[180px] items-center border-[1px] border-[#09A380] justify-center text-[#09A380] bg-white-btn-announce dark:bg-transparent'}>
+                            <Button onClick={() => navigate('/dashboard/register-new-advertise')} borderradius={'96px'} width={'180px'} variant='outlined' height={'50px'} submit={"true"} className={'flex w-[180px] items-center border-[1px] border-[#09A380] justify-center text-[#09A380] bg-white-btn-announce dark:bg-transparent'}>
                                 <img src={HomeIcons} alt="logo" />
                                 <p className="text-[15px] mobile:text-[13px] mobile:p-1 font-bold dark:text-[#09A380] text-green-announce">
                                     ایجاد آگهی جدید

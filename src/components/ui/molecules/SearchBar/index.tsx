@@ -117,7 +117,7 @@ export default function SearchBar({
   };
 
   return (
-    <div className="relative flex justify-center w-full pb-10" onBlur={handleBlur} ref={searchRef}>
+    <div className="relative flex justify-center w-full pb-10 pt-12 sm:pt-6" onBlur={handleBlur} ref={searchRef}>
       <div className={`relative flex flex-col items-center w-full lg:w-[50%] p-4 rounded-[20px] ${divStyles}`}>
         <div className={`flex h-[45px] w-full relative ${customStyles}`}>
           <input

@@ -3,7 +3,7 @@ import { useMutation } from "react-query";
 import Swal from "sweetalert2";
 import { adminSearch } from "../../../services/admin/adminSearch";
 
-const UseSearchStateMutation = (options?: { onSuccess?: () => void }) => {
+const UseSearchStateMutation = (options?: { onSuccess?: (response?: any) => void, onError?: (error?: any) => void }) => {
   const [cookies] = useCookies(["accessToken"]);
   const token = cookies.accessToken;
 
@@ -13,22 +13,29 @@ const UseSearchStateMutation = (options?: { onSuccess?: () => void }) => {
     },
     {
       onSuccess: async (response) => {
-        console.log("✅ جستجو موفقیت‌آمیز بود", response);
-        Swal.fire({
-          title: "موفقیت",
-          text: "✅ جستجو انجام شد",
-          icon: "success",
-          confirmButtonText: "باشه",
-        });
-        options?.onSuccess?.();
+        if (options?.onSuccess) {
+          options.onSuccess(response);
+        } else {
+          console.log("✅ جستجو موفقیت‌آمیز بود", response);
+          Swal.fire({
+            title: "موفقیت",
+            text: "✅ جستجو انجام شد",
+            icon: "success",
+            confirmButtonText: "باشه",
+          });
+        }
       },
       onError: async (error: any) => {
-        Swal.fire({
-          title: "!خطا",
-          text: error.response?.data?.message || "خطایی رخ داده است",
-          icon: "error",
-          confirmButtonText: "باشه",
-        });
+        if (options?.onError) {
+          options.onError(error);
+        } else {
+          Swal.fire({
+            title: "!خطا",
+            text: error?.response?.data?.message || "خطایی رخ داده است",
+            icon: "error",
+            confirmButtonText: "باشه",
+          });
+        }
       },
     }
   );

@@ -229,17 +229,17 @@ export const newStates = [
     text: "ملک های در حال بررسی",
     path: "/panel-admin/dashboard/estate-management/under-review",
   },
+  // {
+  //   id: 3,
+  //   img: essential,
+  //   text: "ملک های تایید نشده",
+  //   path: "/panel-admin/dashboard/estate-management/unverified-estate",
+  // },
   {
     id: 3,
-    img: essential,
-    text: "ملک های تایید نشده",
-    path: "/panel-admin/dashboard/estate-management/unverified-estate",
-  },
-  {
-    id: 4,
     img: search,
     text: "جستجو برای ملک",
-    path: "/panel-admin/dashboard/estate-management/search-for-estate",
+    path: "/panel-admin/dashboard/estate-management/search-estate",
   },
 ];
 export const dataTable = [

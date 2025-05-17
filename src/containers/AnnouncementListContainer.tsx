@@ -20,7 +20,6 @@ const AnnouncementListContainer: React.FC<AnnouncementListContainerProps> = ({ a
     filteredData = allData;
   }
 
-  // فقط اگر announcementType مقدار rent یا sell بود، prop را اضافه کن
   return (
     <AnnouncementList
       data={filteredData}

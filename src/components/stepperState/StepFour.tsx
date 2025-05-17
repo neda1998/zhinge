@@ -14,7 +14,7 @@ interface FileUploadProps {
   uid?: string;
   uploadedImages: UploadedImage[];
   setUploadedImages: React.Dispatch<React.SetStateAction<UploadedImage[]>>;
-  onReset: () => void; // added
+  onReset: () => void; 
 }
 
 const StepFour: React.FC<FileUploadProps> = ({ uid, uploadedImages, setUploadedImages, onReset }) => {
@@ -95,8 +95,27 @@ const StepFour: React.FC<FileUploadProps> = ({ uid, uploadedImages, setUploadedI
   };
 
   const handleClick = () => fileInputRef.current?.click();
-  const handleRemoveImage = (id: string) => setUploadedImages(prev => prev.filter(img => img.id !== id));
-  const handleRemovePending = (idx: number) => setPendingFiles(prev => prev.filter((_, i) => i !== idx));
+  const handleRemoveImage = (id: string | number) => setUploadedImages(prev => prev.filter(img => img.id !== id));
+  const handleRemovePending = (idx: number | string) => setPendingFiles(prev => prev.filter((_, i) => i !== idx));
+
+  const renderImageGrid = (images: { preview: string; id?: string; name?: string }[], onRemove: (index: number | string) => void, isPending: boolean) => (
+    <div className="grid lg:grid-cols-4 sm:grid-cols-3 grid-cols-1 gap-4 mt-6">
+      {images.map((item, idx) => (
+        <div
+          key={item.id || idx}
+          className={`relative w-[8rem] h-[8rem] rounded-[20px] ${isPending ? "bg-yellow-50 border-2 border-yellow-400" : "bg-[#f9f9f9]"} overflow-hidden`}
+        >
+          <img src={item.preview} alt={item.name || "pending"} className="w-full h-full object-cover" />
+          <button
+            onClick={() => onRemove(isPending ? idx : item.id!)}
+            className="absolute top-1 right-1 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs"
+          >
+            ✕
+          </button>
+        </div>
+      ))}
+    </div>
+  );
 
   return (
     <div className="flex flex-col items-center justify-center relative w-full">
@@ -134,37 +153,9 @@ const StepFour: React.FC<FileUploadProps> = ({ uid, uploadedImages, setUploadedI
         </p>
       </div>
 
-      {pendingFiles.length > 0 && (
-        <div className="grid lg:grid-cols-4 sm:grid-cols-3 grid-cols-1 gap-4 mt-6">
-          {pendingFiles.map((item, idx) => (
-            <div key={idx} className="relative w-[8rem] h-[8rem] rounded-[20px] bg-yellow-50 overflow-hidden border-2 border-yellow-400">
-              <img src={item.preview} alt="pending" className="w-full h-full object-cover" />
-              <button
-                onClick={() => handleRemovePending(idx)}
-                className="absolute top-1 right-1 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs"
-              >
-                ✕
-              </button>
-            </div>
-          ))}
-        </div>
-      )}
+      {pendingFiles.length > 0 && renderImageGrid(pendingFiles, handleRemovePending, true)}
 
-      {uploadedImages.length > 0 && (
-        <div className="grid lg:grid-cols-4 sm:grid-cols-3 grid-cols-1 gap-4 mt-6">
-          {uploadedImages.map((img) => (
-            <div key={img.id} className="relative w-[8rem] h-[8rem] rounded-[20px] bg-[#f9f9f9] overflow-hidden">
-              <img src={img.preview} alt={img.name} className="w-full h-full object-cover" />
-              <button
-                onClick={() => handleRemoveImage(img.id)}
-                className="absolute top-1 right-1 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs"
-              >
-                ✕
-              </button>
-            </div>
-          ))}
-        </div>
-      )}
+      {uploadedImages.length > 0 && renderImageGrid(uploadedImages, handleRemoveImage, false)}
 
       <button
         onClick={handleUploadAll}

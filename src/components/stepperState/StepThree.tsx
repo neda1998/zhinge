@@ -82,16 +82,17 @@ const StepThree = ({
     return (
         <form onSubmit={handleSubmit} className="w-full grid lg:grid-cols-4 sm:grid-cols-2 grid-cols-1 lg:gap-x-5 lg:gap-y-10 gap-y-4">
             <InputState
-                label="نام کامل مالک"
+                label="نام مالک"
                 value={full_name}
                 onChange={e => setFullName(e.target.value)}
-                placeholder="علی احمدی"
+                placeholder="مثال: علی احمدی"
             />
             <InputState
                 label="شماره تماس"
                 value={phone}
                 onChange={e => setPhone(e.target.value)}
                 placeholder="09183456789"
+                numeric
             />
             {showSubmitButton && (
                 <div className="flex justify-end col-span-4">

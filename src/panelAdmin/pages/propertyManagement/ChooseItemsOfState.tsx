@@ -4,7 +4,7 @@ import { newStates } from "../../../utils/data"
 const ChooseItemsOfState = () => {
     const location = useLocation();
     return (
-        <div className="grid lg:grid-cols-4 grid-cols-2 items-center lg:gap-10 gap-5 justify-center mx-auto mb-14">
+        <div className="grid lg:grid-cols-3 grid-cols-2 items-center lg:gap-10 gap-5 justify-center mx-auto mb-14">
             {
                 newStates.map(item => {
                     const isActive = location.pathname === item.path;

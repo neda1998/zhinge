@@ -15,7 +15,7 @@ const urlSplit = (path: string): string => {
 const menuItems = [
     { name: 'داشبورد', href: '/dashboard', iconWhite: UserWhite, iconBlack: User },
     { name: 'آگهی های من ', href: '/dashboard/myads', iconWhite: myadswhite, iconBlack: myads },
-    { name: 'ثبت آگهی جدید', href: '/dashboard/realState', iconWhite: weightwhite, iconBlack: weight },
+    { name: 'ثبت آگهی جدید', href: '/dashboard/register-new-advertise', iconWhite: weightwhite, iconBlack: weight },
     { name: 'خروج از حساب', href: '/dashboard/logout', iconWhite: "", iconBlack: LogOut },
 ];
 export default function Sidbars() {

@@ -39,6 +39,7 @@ export default function Realstate() {
         text: "لطفا ابتدا اطلاعات را ثبت کنید!",
         confirmButtonText: "باشه"
       });
+      return;
     }
     if (currentStep < 4) {
       setCurrentStep((prevStep) => prevStep + 1);
@@ -129,17 +130,19 @@ export default function Realstate() {
       document_type={document_type} setDocumentType={setDocumentType}
       floor_number={floor_number} setFloorNumber={setFloorNumber}
       floor={floor} setFloor={setFloor}
+            room_number={room_number} setRoomNumber={setRoomNumber}
     />,
     <StepTwoUser
       key="step2"
       loan={loan} setLoan={setLoan}
       year_of_build={year_of_build} setYearOfBuild={setYearOfBuild}
-      room_number={room_number} setRoomNumber={setRoomNumber}
       useful_metrage={useful_metrage} setUsefulMetrage={setUsefulMetrage}
       location={location} setLocation={setLocation}
       land_metrage={land_metrage} setLandMetrage={setLandMetrage}
       features={features} setFeatures={setFeatures}
       price={price} setPrice={setPrice}
+      description={""}
+      setDescription={() => {}}
     />,
     <StepThreeUser
       key="step3"

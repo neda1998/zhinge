@@ -57,7 +57,7 @@ export default function Header({ variant }: any) {
                 </Button>
               ) : (
                 <Button
-                  onClick={() => navigate("/dashboard/realState")}
+                  onClick={() => navigate("/dashboard/register-new-advertise")}
                   borderradius={"100px"}
                   bgcolor={"#09A380"}
                   color="white"

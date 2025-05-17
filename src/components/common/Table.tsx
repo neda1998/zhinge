@@ -73,7 +73,7 @@ const Table: React.FC<TableProps> = ({ data }) => {
                         </tr>
                     ) : (
                         paginatedData.map((item, index) => (
-                            <tr key={index} className="text-center border-b">
+                            <tr key={index} className="text-center border-b whitespace-nowrap">
                                 <td className="p-4">{paginatedData[index]?.["ردیف"]}</td>
                                 <td className="p-4">{item["کد ملک"]}</td>
                                 <td className="p-4">{item["نوع ملک"]}</td>

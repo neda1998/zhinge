@@ -1,15 +1,16 @@
+import ComboBox from "../common/Combo";
 import InputState from "../ui/atoms/input/inputState"
 import React, { useState } from "react";
 
 interface StepTwoProps {
     loan?: number; setLoan: (v: number) => void;
     year_of_build?: number; setYearOfBuild: (v: number) => void;
-    room_number?: number; setRoomNumber: (v: number) => void;
     price?: number; setPrice: (v: number) => void;
     features: string; setFeatures: (v: string) => void;
     useful_metrage?: number; setUsefulMetrage: (v: number) => void;
     location?: string; setLocation: (v: string) => void;
     land_metrage?: number; setLandMetrage: (v: number) => void; 
+    description?: string; setDescription: (v: string) => void;
 }
 
 function formatInputNumber(val: string) {
@@ -27,15 +28,24 @@ const FEATURES_OPTIONS = [
     , "سالن اجتماعات", "سالن کنفرانس", "کتابخانه", "لابی", "آتش‌نشانی", "سیستم اعلام حریق", "سیستم تهویه مطبوع", "سیستم امنیتی", "سیستم کنترل دسترسی", "سیستم روشنایی هوشمند", "سیستم صوتی و تصویری", "سیستم اینترنت پرسرعت", "سیستم تلویزیون مرکزی ", "سیستم گرمایش از کف", "سیستم سرمایش از سقف", "سیستم تصفیه آب", "سیستم تصفیه هوا", "سیستم گرمایش و سرمایش مرکزی", "سیستم گرمایش و سرمایش مستقل", "سیستم گرمایش و سرمایش هوشمند", "سیستم گرمایش و سرمایش خودکار", "سیستم گرمایش و سرمایش دستی"
 ];
 
+const LOCATION_OPTIONS = [
+    "شمالی",
+    "جنوبی",
+    "شمالی دو نبش",
+    "جنوبی دو نبش",
+    "دوکله",
+    "سه نبش"
+];
+
 const StepTwo = ({
     loan, setLoan,
     year_of_build, setYearOfBuild,
-    room_number, setRoomNumber,
     price, setPrice,
     features, setFeatures,
     useful_metrage, setUsefulMetrage,
     location, setLocation,
-    land_metrage, setLandMetrage
+    land_metrage, setLandMetrage,
+    description,setDescription
 }: StepTwoProps) => {
     const [showFeaturePanel, setShowFeaturePanel] = useState(false);
     const selectedFeatures: string[] = features ? features.split(",").map(f => f.trim()).filter(f => f) : [];
@@ -52,6 +62,40 @@ const StepTwo = ({
 
     return (
         <div className="grid lg:grid-cols-4 grid-cols-1 w-full gap-5">
+            <InputState
+                label="متراژ کل زمین"
+                placeholder="مثال: 200"
+                value={land_metrage !== undefined && land_metrage !== null ? formatInputNumber(String(land_metrage)) : ""}
+                onChange={e => {
+                    const formatted = formatInputNumber(e.target.value);
+                    e.target.value = formatted;
+                    setLandMetrage(Number(formatted.replace(/,/g, "")));
+                }}
+                numeric
+            />
+            <InputState
+                label="متراژ مفید"
+                value={useful_metrage !== undefined && useful_metrage !== null ? formatInputNumber(String(useful_metrage)) : ""}
+                onChange={e => {
+                    const formatted = formatInputNumber(e.target.value);
+                    e.target.value = formatted;
+                    setUsefulMetrage(Number(e.target.value.replace(/,/g, "")))}
+                }
+                placeholder="مثال: 100"
+                numeric
+            />
+            <ComboBox
+                label="موقعیت ملک"
+                options={LOCATION_OPTIONS}
+                value={location}
+                onChange={setLocation}
+            />
+             <InputState
+                label="سال ساخت"
+                value={year_of_build !== undefined && year_of_build !== null ? String(year_of_build) : ""}
+                onChange={(e) => setYearOfBuild(Number(e.target.value.replace(/,/g, "")))}
+                numeric 
+            />
             <div className="flex flex-col items-start">
                 <InputState
                     label="وام"
@@ -61,20 +105,11 @@ const StepTwo = ({
                         e.target.value = formatted;
                         setLoan(Number(formatted.replace(/,/g, "")));
                     }}
+                    numeric
                 />
                 <span className="text-xs text-red-600 my-1">اگر وام ندارید، عدد 0 رو وارد کنید</span>
                 <span className="text-xs text-gray-500 my-1">به تومان</span>
             </div>
-            <InputState
-                label="سال ساخت"
-                value={year_of_build !== undefined && year_of_build !== null ? String(year_of_build) : ""}
-                onChange={(e) => setYearOfBuild(Number(e.target.value.replace(/,/g, "")))}
-            />
-            <InputState
-                label="تعداد اتاق"
-                value={room_number !== undefined && room_number !== null ? String(room_number) : ""}
-                onChange={(e) => setRoomNumber(Number(e.target.value.replace(/,/g, "")))}
-            />
             <div className="flex flex-col">
                 <InputState
                     label="قیمت"
@@ -85,11 +120,12 @@ const StepTwo = ({
                         e.target.value = formatted;
                         setPrice(Number(formatted.replace(/,/g, "")));
                     }}
+                    numeric
                 />
                 <span className="text-xs text-gray-400 my-1">لطفا اعداد را به انگلیسی وارد کنید</span>
                 <span className="text-xs text-gray-500">{formatNumber(price)} تومان</span>
             </div>
-            <div className="flex flex-col col-span-1">
+            <div className="flex flex-col col-span-1 relative">
                 <label className="mb-1 text-sm font-medium">امکانات</label>
                 <div className="flex overflow-x-auto gap-1 mb-2 pb-1 max-w-full">
                     {selectedFeatures.map((feature) => (
@@ -118,7 +154,7 @@ const StepTwo = ({
                 {showFeaturePanel && (
                     <>
                         <div className="fixed inset-0 flex items-center justify-center bg-[#302b2b66] bg-opacity-40 z-[999]"></div>
-                        <div className="bg-white rounded-2xl shadow-xl p-6 w-[320px] max-h-[80vh] overflow-y-auto relative z-[9999]">
+                        <div className="bg-white rounded-2xl shadow-xl p-6 w-[260px] sm:w-[320px] max-h-[80vh] overflow-y-auto absolute top-[80px] z-[9999]">
                             <button
                                 type="button"
                                 className="absolute top-2 left-2 text-gray-500 hover:text-red-500 text-xl font-bold"
@@ -155,28 +191,16 @@ const StepTwo = ({
                     </>
                 )}
             </div>
-            <InputState
-                label="متراژ کل زمین"
-                placeholder="مثال: 200"
-                value={land_metrage !== undefined && land_metrage !== null ? formatInputNumber(String(land_metrage)) : ""}
-                onChange={e => {
-                    const formatted = formatInputNumber(e.target.value);
-                    e.target.value = formatted;
-                    setLandMetrage(Number(formatted.replace(/,/g, "")));
-                }}
-            />
-            <InputState
-                label="متراژ مفید"
-                value={useful_metrage !== undefined && useful_metrage !== null ? String(useful_metrage) : ""}
-                onChange={e => setUsefulMetrage(Number(e.target.value.replace(/,/g, "")))}
-                placeholder="مثال: 100"
-            />
-            <InputState
-                label="موقعیت مکانی"
-                value={location}
-                onChange={e => setLocation(e.target.value)}
-                placeholder="35.6895, 51.3890"
-            />
+            <div className="col-span-1 lg:col-span-4 flex flex-col">
+                <label className="mb-1 text-sm font-medium">توضیحات</label>
+                <textarea
+                    value={description}
+                    onChange={e => setDescription(e.target.value)}
+                    placeholder="توضیحات ملک را وارد کنید"
+                    className="border rounded px-2 py-1 w-full"
+                    rows={4}
+                />
+            </div>
         </div>
     )
 }
