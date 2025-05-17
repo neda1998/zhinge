@@ -53,7 +53,7 @@ const Table: React.FC<TableProps> = ({ data }) => {
         <div className="overflow-x-auto">
             <table className="min-w-full bg-white border border-gray-200">
                 <thead className="bg-gray-100">
-                    <tr>
+                    <tr className="whitespace-nowrap">
                         <th className="px-2 py-4 text-center text-[16px]">ردیف</th>
                         <th className="px-2 py-4 text-center text-[16px]">کد ملک</th>
                         <th className="px-2 py-4 text-center text-[16px]">نوع ملک</th>

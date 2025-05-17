@@ -46,6 +46,7 @@ const apiRoutes = {
     verifyAnnounce: "/admin/varifyannounce",
     deleteSlider: "/admin/deleteslider",
     getAbout: "/admin/getabout",
+    confirmedAnnounce:"/admin/confirmed_announce"
   },
   user: {
     myAnnouncements: "/auth/getAnnouncements",

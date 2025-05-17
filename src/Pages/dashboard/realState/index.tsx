@@ -30,6 +30,7 @@ export default function Realstate() {
   const [uploadedImages, setUploadedImages] = useState<any[]>([]);
   const [currentStep, setCurrentStep] = useState(1);
   const [isAnnouncementSubmitted, setIsAnnouncementSubmitted] = useState(false);
+  const [description, setDescription] = useState<string>("");
 
   const handleNextStep = () => {
     if (currentStep === 3 && !isAnnouncementSubmitted) {
@@ -141,8 +142,8 @@ export default function Realstate() {
       land_metrage={land_metrage} setLandMetrage={setLandMetrage}
       features={features} setFeatures={setFeatures}
       price={price} setPrice={setPrice}
-      description={""}
-      setDescription={() => { }}
+      description={description}
+      setDescription={setDescription}
     />,
     <StepThreeUser
       key="step3"

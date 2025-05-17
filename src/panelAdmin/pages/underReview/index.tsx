@@ -12,6 +12,7 @@ import UseRejectannounceMutatiojn from "../../../hooks/mutation/rejectannounce/U
 import UseUpdateAnnounMutation from "../../../hooks/mutation/updateAnnounAdmin/UseUpdateAnnounMutation";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
+import UseConfirmedAnnounceQuery from "../../../hooks/queries/admin/confirmedAnnounce/UseConfirmedAnnounceQuery";
 
 const UnderReview = () => {
   const navigate = useNavigate();
@@ -36,6 +37,14 @@ const UnderReview = () => {
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [selectedAnnounce, setSelectedAnnounce] = useState<any>(null);
   const [editForm, setEditForm] = useState<any>({});
+  const [activeTab, setActiveTab] = useState<"inprogress" | "confirmed">("inprogress");
+
+  const {
+    data: confirmedData,
+    isLoading: isLoadingConfirmed,
+    isError: isErrorConfirmed,
+    refetch: refetchConfirmed,
+  } = UseConfirmedAnnounceQuery();
 
   const handleOpenEditModal = (item: any) => {
     setSelectedAnnounce(item);
@@ -133,31 +142,42 @@ const UnderReview = () => {
         ),
       })) || [];
 
-  const checkedTableData =
-    checkedData?.checked?.map((item: any, idx: number) => ({
-      "ردیف": idx + 1,
-      "کد ملک": item.id,
-      "نوع ملک": item.type,
-      "منطقه": item.region,
-      "نام مالک": item.full_name,
-      "شماره تماس": item.userID,
-      "وضعیت": "چک‌شده",
-      "بازه قیمت": (
-        <span>
-          {item.lowest_price?.toLocaleString()} - {item.highest_price?.toLocaleString()} تومان
-        </span>
-      ),
-      "عملیات": (
-        <span className="text-green-700 font-bold">✓</span>
-      ),
-    })) || [];
+  const confirmedTableData =
+    confirmedData?.confirmed
+      ?.slice()
+      .reverse()
+      .map((item: any, idx: number) => ({
+        "ردیف": idx + 1,
+        "کد ملک": item.id,
+        "نوع ملک": item.type,
+        "منطقه": item.region,
+        "نام مالک": item.full_name,
+        "شماره تماس": item.userID,
+        "وضعیت": (
+          <span className="text-green-600 font-bold whitespace-nowrap">بررسی شده</span>
+        ),
+        "بازه قیمت": (
+          <span>
+            {item.price?.toLocaleString()} تومان
+          </span>
+        ),
+        "عملیات": (
+          <div className="flex gap-2 justify-center">
+            <button
+              onClick={() => handleOpenEditModal(item)}
+              className="bg-blue-600 hover:bg-blue-700 text-white text-sm px-3 py-1 rounded"
+            >
+              مشاهده/ویرایش
+            </button>
+          </div>
+        ),
+      })) || [];
 
-  let tableData: any[] = inprogressTableData;
-
+  let tableData: any[] = activeTab === "inprogress" ? inprogressTableData : confirmedTableData;
   const isLoading =
-    isLoadingProgress || isLoadingChecked;
+    (activeTab === "inprogress" ? (isLoadingProgress || isLoadingChecked) : isLoadingConfirmed);
   const isError =
-    isErrorProgress || isErrorChecked;
+    (activeTab === "inprogress" ? (isErrorProgress || isErrorChecked) : isErrorConfirmed);
 
   return (
     <InitialLayout>
@@ -168,13 +188,29 @@ const UnderReview = () => {
       <ChooseItemsOfState />
       <div className="flex gap-2 mb-6">
         <button
-          className={`px-4 py-2 rounded-t-md border-b-2 transition-all ${"border-yellow-500 bg-yellow-100 font-bold text-yellow-700"
-            }`}
+          className={`px-4 py-2 rounded-t-md border-b-2 transition-all ${
+            activeTab === "inprogress"
+              ? "border-yellow-500 bg-yellow-100 font-bold text-yellow-700"
+              : "border-transparent bg-gray-100 text-gray-600"
+          }`}
+          onClick={() => setActiveTab("inprogress")}
         >
           در حال بررسی ({inprogressTableData.length})
         </button>
+        <button
+          className={`px-4 py-2 rounded-t-md border-b-2 transition-all ${
+            activeTab === "confirmed"
+              ? "border-green-500 bg-green-100 font-bold text-green-700"
+              : "border-transparent bg-gray-100 text-gray-600"
+          }`}
+          onClick={() => setActiveTab("confirmed")}
+        >
+          بررسی شده‌ها ({confirmedTableData.length})
+        </button>
       </div>
-
+      <div className="mb-2 text-sm text-gray-600">
+        تعداد کل: <span className="font-bold">{tableData.length}</span>
+      </div>
       {editModalOpen && selectedAnnounce && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
           <div className="bg-white rounded-lg shadow-lg p-4 sm:p-6 w-full max-w-full sm:max-w-2xl lg:max-w-4xl mx-2 sm:mx-8 relative z-[9999] overflow-y-auto max-h-[90vh]">
