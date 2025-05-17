@@ -1,6 +1,7 @@
 import React from 'react';
 import InputState from "../../../components/ui/atoms/input/inputState";
 import ComboBox from '../../../components/common/Combo';
+import { useCookies } from 'react-cookie';
 
 interface StepOneUserProps {
     type: string; setType: (v: string) => void;
@@ -10,7 +11,7 @@ interface StepOneUserProps {
     floor_number: string; setFloorNumber: (v: string) => void;
     floor: string; setFloor: (v: string) => void;
     document_type?: string; setDocumentType?: (v: string) => void;
-    isAdmin?: boolean; 
+    role?: boolean; 
     room_number?: string; setRoomNumber?: (v: string) => void;
 }
 
@@ -32,9 +33,11 @@ const StepOneUser = ({
     floor_number, setFloorNumber,
     floor, setFloor,
     document_type, setDocumentType,
-    isAdmin,
+    role,
     room_number, setRoomNumber
 }: StepOneUserProps) => {
+    const [cookies] = useCookies(["role"]);
+    const isRoleTrue = cookies.role === true || cookies.role === "true";
     return (
         <div className="w-full grid lg:grid-cols-4 sm:grid-cols-2 grid-cols-1 gap-5">
             <ComboBox
@@ -45,7 +48,7 @@ const StepOneUser = ({
             />
             
             {
-                isAdmin && (
+                isRoleTrue && (
                     <InputState
                         label="منطقه"
                         placeholder="مثال: 2"
