@@ -110,26 +110,43 @@ export default function HeaderMobile() {
             </div>
             {/* منوی موبایل */}
             {showModal && (
-                <div className={`fixed inset-0 z-50 bg-gray-600 bg-opacity-40 flex`}>
-                    <div className={`bg-white dark:bg-gray-600 w-3/4 h-full shadow-lg p-4 ${animationClass} relative`}>
+                <div className="fixed inset-0 z-50 bg-[#4e4e4e94] dark:bg-[#323436a8] bg-opacity-40 flex transition-all duration-300">
+                    {/* اسلاید منو از سمت راست */}
+                    <div className={`bg-gray-900 w-4/5 max-w-xs h-full shadow-2xl p-6 flex flex-col relative animate-slide-in-right`}>
+                        {/* دکمه بستن */}
                         <button
-                            className="absolute top-2 left-2 text-gray-500 text-2xl"
+                            className="absolute top-3 left-3 text-gray-400 hover:text-red-500 text-3xl transition"
                             onClick={() => setShowModal(false)}
+                            aria-label="بستن"
                         >
-                            ×
+                            <svg width="28" height="28" viewBox="0 0 20 20" fill="none">
+                                <path d="M6 6L14 14M14 6L6 14" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+                            </svg>
                         </button>
-                        <ul className="flex flex-col gap-4 mt-8">
+                        {/* لوگو */}
+                        <div className="flex items-center justify-center mb-8 mt-2">
+                            <img src={ZhingeLogo} alt="logo" width={90} />
+                        </div>
+                        {/* آیتم‌های منو */}
+                        <ul className="flex flex-col gap-3">
                             {menuItems.map(item => (
                                 <li key={item.href}>
                                     <button
-                                        className="flex items-center gap-2 w-full text-right"
+                                        className={`
+                                            flex items-center gap-3 w-full px-4 py-3 rounded-lg transition
+                                            text-right hover:bg-main-color/10 dark:hover:bg-main-color/20
+                                            hover:text-main-color dark:hover:text-main-color
+                                            font-medium
+                                        `}
                                         onClick={() => {
                                             navigate(item.href);
                                             setShowModal(false);
                                         }}
                                     >
-                                        <img src={item.iconBlack} alt="" width={20} />
-                                        <span>{item.name}</span>
+                                        <span className="flex items-center justify-center w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-800">
+                                            <img src={item.iconBlack} alt="" width={22} />
+                                        </span>
+                                        <span className="text-base dark:text-white">{item.name}</span>
                                     </button>
                                 </li>
                             ))}
@@ -139,6 +156,16 @@ export default function HeaderMobile() {
                     <div className="flex-1" onClick={() => setShowModal(false)} />
                 </div>
             )}
+            {/* انیمیشن اسلاید */}
+            <style>{`
+                @keyframes slide-in-right {
+                    0% { transform: translateX(100%);}
+                    100% { transform: translateX(0);}
+                }
+                .animate-slide-in-right {
+                    animation: slide-in-right 0.3s cubic-bezier(0.4,0,0.2,1);
+                }
+            `}</style>
         </>
     );
 }
