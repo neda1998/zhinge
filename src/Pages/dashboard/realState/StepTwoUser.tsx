@@ -193,6 +193,16 @@ const StepTwoUser = ({
                     </>
                 )}
             </div>
+             <div className="col-span-1 lg:col-span-4 flex flex-col">
+                <label className="mb-1 text-sm font-medium">توضیحات</label>
+                <textarea
+                    value={description}
+                    onChange={e => setDescription(e.target.value)}
+                    placeholder="توضیحات ملک را وارد کنید"
+                    className="border rounded px-2 py-1 w-full"
+                    rows={4}
+                />
+            </div>
         </div>
     );
 };

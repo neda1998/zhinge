@@ -76,7 +76,7 @@ export default function Realstate() {
       { value: land_metrage, label: "متراژ زمین" },
       { value: features, label: "امکانات" },
       { value: full_name, label: "نام کامل" },
-      { value: price, label: "قیمت" }, 
+      { value: price, label: "قیمت" },
     ];
     const emptyField = requiredFields.find(f => !f.value || f.value === "");
     if (emptyField) {
@@ -104,7 +104,7 @@ export default function Realstate() {
       full_name: full_name || "",
       land_metrage: toNumberOrUndefined(land_metrage),
       loan: toNumberOrUndefined(loan),
-      location: location || "", 
+      location: location || "",
       price: toNumberOrUndefined(price),
       region: region || "",
       room_number: toNumberOrUndefined(room_number),
@@ -130,7 +130,7 @@ export default function Realstate() {
       document_type={document_type} setDocumentType={setDocumentType}
       floor_number={floor_number} setFloorNumber={setFloorNumber}
       floor={floor} setFloor={setFloor}
-            room_number={room_number} setRoomNumber={setRoomNumber}
+      room_number={room_number} setRoomNumber={setRoomNumber}
     />,
     <StepTwoUser
       key="step2"
@@ -142,7 +142,7 @@ export default function Realstate() {
       features={features} setFeatures={setFeatures}
       price={price} setPrice={setPrice}
       description={""}
-      setDescription={() => {}}
+      setDescription={() => { }}
     />,
     <StepThreeUser
       key="step3"
