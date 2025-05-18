@@ -4,6 +4,7 @@ import { pageSearchForEstate } from "../../../utils/data"
 import InitialLayout from "../../dashboard/initialLayoutAdmin"
 import ChooseItemsOfState from "../propertyManagement/ChooseItemsOfState"
 import UseSearchStateMutation from "../../../hooks/mutation/searchState/UseSearchStateMutation"
+import UseUpdateAnnounMutation from "../../../hooks/mutation/updateAnnounAdmin/UseUpdateAnnounMutation"
 import React, { useState, useRef } from "react"
 
 const SearchForEstate = () => {
@@ -11,6 +12,8 @@ const SearchForEstate = () => {
   const [results, setResults] = useState<any[]>([]);
   const [isSearching, setIsSearching] = useState(false);
   const [detailsModal, setDetailsModal] = useState<{ open: boolean; data: any | null }>({ open: false, data: null });
+  const [editModal, setEditModal] = useState<{ open: boolean; data: any | null }>({ open: false, data: null });
+  const [editForm, setEditForm] = useState<any>({});
   const debounceRef = useRef<NodeJS.Timeout | null>(null);
   const cleanForm = (formData: any) => {
     const cleaned: any = {};
@@ -54,6 +57,8 @@ const SearchForEstate = () => {
     }
   });
 
+  const updateMutation = UseUpdateAnnounMutation();
+
   const triggerSearch = (payload: any) => {
     if (debounceRef.current) clearTimeout(debounceRef.current);
     debounceRef.current = setTimeout(() => {
@@ -64,18 +69,30 @@ const SearchForEstate = () => {
     }, 400);
   };
 
-  const handleSearch = () => {
-    const cleaned = cleanForm(form);
-    if (Object.keys(cleaned).length === 0) return;
-    setIsSearching(true);
-    searchMutation.mutate(cleaned);
-    resetForm(); 
+  const handleEditClick = (estate: any) => {
+    setEditForm({ ...estate });
+    setEditModal({ open: true, data: estate });
+  };
+
+  const handleEditFormChange = (key: string, value: any) => {
+    setEditForm((prev: any) => ({ ...prev, [key]: value }));
+  };
+
+  const handleEditSave = () => {
+    updateMutation.mutate(editForm, {
+      onSuccess: () => { 
+        setResults((prev) =>
+          prev.map((item) => (item.Uid === editForm.Uid ? { ...item, ...editForm } : item))
+        );
+        setEditModal({ open: false, data: null });
+      },
+    });
   };
 
   const DetailsModal = ({ open, data, onClose }: { open: boolean; data: any; onClose: () => void }) => {
     if (!open || !data) return null;
     const details: Array<{ label: string, value?: any }> = [
-      { label: "کد ملک",        value: data.state_code || "-" },
+      { label: "کد ملک",        value: data.id || "-" },
       { label: "نام مالک",      value: data.full_name || "-" },
       { label: "شماره تماس",    value: data.userID || data.phone || "-" },
       { label: "نوع ملک",      value: data.type || "-" },
@@ -143,6 +160,87 @@ const SearchForEstate = () => {
     );
   };
 
+  const EditEstateModal = ({ open, data, onClose }: { open: boolean; data: any; onClose: () => void }) => {
+    if (!open || !data) return null;
+    // فیلدهای قابل ویرایش
+    const fields: Array<{ key: string; label: string; type?: string }> = [
+      { key: "id", label: "کد ملک" },
+      { key: "full_name", label: "نام مالک" },
+      { key: "phone", label: "شماره تماس" },
+      { key: "type", label: "نوع ملک" },
+      { key: "region", label: "منطقه" },
+      { key: "address", label: "آدرس" },
+      { key: "land_metrage", label: "متراژ زمین", type: "number" },
+      { key: "useful_metrage", label: "متراژ مفید", type: "number" },
+      { key: "year_of_build", label: "سال ساخت", type: "number" },
+      { key: "floor_number", label: "تعداد طبقات", type: "number" },
+      { key: "floor", label: "طبقه", type: "number" },
+      { key: "Unit_in_floor", label: "واحد در طبقه", type: "number" },
+      { key: "room_number", label: "تعداد اتاق", type: "number" },
+      { key: "document_type", label: "نوع سند" },
+      { key: "price", label: "قیمت", type: "number" },
+      { key: "features", label: "امکانات" },
+      { key: "location", label: "موقعیت مکانی" },
+    ];
+    return (
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-[3px] p-4">
+        <div className="bg-white/95 rounded-3xl shadow-2xl max-w-2xl w-full relative overflow-y-auto max-h-[95vh] border border-gray-200 flex flex-col animate-fadeIn">
+          <button
+            className="absolute top-4 left-4 text-gray-400 hover:text-red-500 transition text-3xl"
+            onClick={onClose}
+            aria-label="بستن"
+            style={{ fontWeight: 'bold', lineHeight: 1 }}
+          >
+            ×
+          </button>
+          <div className="flex flex-col items-center justify-center pt-8">
+            <div className="w-16 h-16 rounded-full bg-gradient-to-tr from-blue-400 to-green-400 flex items-center justify-center shadow-lg mb-4">
+              <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                <path d="M12 3v2m0 14v2m9-9h-2M5 12H3m15.364-6.364l-1.414 1.414M6.343 17.657l-1.414 1.414m12.728 0l-1.414-1.414M6.343 6.343L4.929 4.929" />
+              </svg>
+            </div>
+            <h2 className="font-extrabold text-3xl mb-4 text-gray-700 text-center tracking-wide">
+              <span className="inline-block bg-gradient-to-l from-blue-400 to-green-400 bg-clip-text text-transparent">
+                ویرایش ملک
+              </span>
+            </h2>
+          </div>
+          <div className="px-8 py-6 w-full">
+            <div className="grid gap-x-8 gap-y-5 grid-cols-1 sm:grid-cols-2">
+              {fields.map((item, idx) => (
+                <div key={idx} className="flex flex-col mb-1">
+                  <label className="text-gray-500 text-[13px] mb-1">{item.label}</label>
+                  <input
+                    className="font-bold text-gray-800 text-[16px] rounded-lg border border-gray-200 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-300 transition"
+                    type={item.type || "text"}
+                    value={editForm[item.key] ?? ""}
+                    onChange={e => handleEditFormChange(item.key, item.type === "number" ? Number(e.target.value) : e.target.value)}
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="flex justify-center gap-4 pb-6">
+            <button
+              onClick={handleEditSave}
+              className="mt-4 px-8 py-2 rounded-full bg-gradient-to-l from-blue-400 to-green-400 text-white font-bold shadow hover:scale-105 transition"
+              disabled={updateMutation.isLoading}
+            >
+              {updateMutation.isLoading ? "در حال ذخیره..." : "ذخیره تغییرات"}
+            </button>
+            <button
+              onClick={onClose}
+              className="mt-4 px-8 py-2 rounded-full bg-gray-200 text-gray-700 font-bold shadow hover:scale-105 transition"
+              disabled={updateMutation.isLoading}
+            >
+              لغو
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   const renderTable = () => {
     if (isSearching) {
       return <div>در حال جستجو...</div>;
@@ -171,7 +269,7 @@ const SearchForEstate = () => {
             {results.map((item, idx) => (
               <tr key={idx} className="text-center border-b whitespace-nowrap">
                 <td className="p-4">{idx + 1}</td>
-                <td className="p-4">{item.state_code || "-"}</td>
+                <td className="p-4">{item.id || "-"}</td>
                 <td className="p-4">{item.type || "-"}</td>
                 <td className="p-4">{item.region || "-"}</td>
                 <td className="p-4">{item.full_name || "-"}</td>
@@ -184,12 +282,19 @@ const SearchForEstate = () => {
                   >
                     جزئیات
                   </button>
+                  <button
+                    className="bg-green-500 text-white px-4 py-1 rounded-full hover:bg-green-600 transition mr-2"
+                    onClick={() => handleEditClick(item)}
+                  >
+                    ویرایش
+                  </button>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
         <DetailsModal open={detailsModal.open} data={detailsModal.data} onClose={() => setDetailsModal({ open: false, data: null })} />
+        <EditEstateModal open={editModal.open} data={editModal.data} onClose={() => setEditModal({ open: false, data: null })} />
       </div>
     );
   };
@@ -213,16 +318,6 @@ const SearchForEstate = () => {
 
       <div className="flex items-center justify-between md:w-1/2 w-full gap-5">
         <InputState label="آدرس ملک" value={form.address || ""} placeholder="آدرس را وارد کنید" onChange={e => handleChange("address", e.target.value)} />
-      </div>
-
-      <div className="flex justify-end items-center my-8">
-        <button
-          className="bg-main-color rounded-full px-10 py-2 text-white"
-          onClick={handleSearch}
-          disabled={searchMutation.isLoading || isSearching}
-        >
-          {(searchMutation.isLoading || isSearching) ? "در حال جستجو..." : "جستجو"}
-        </button>
       </div>
       {renderTable()}
     </InitialLayout>

@@ -10,7 +10,7 @@ export const updateAnnoun = async (data: any) => {
   }
 
   // Map frontend fields to backend expected fields
-  const body = {
+  const rawBody = {
     Uid: data.Uid,
     type: data.type,
     address: data.address,
@@ -31,6 +31,17 @@ export const updateAnnoun = async (data: any) => {
     state_code: data.state_code,
     // ...add more mappings if needed
   };
+
+  // Clean body: remove undefined, null, and empty string values
+  const body: any = {};
+  (Object.keys(rawBody) as Array<keyof typeof rawBody>).forEach((key) => {
+    const value = rawBody[key];
+    // اگر مقدار رشته‌ای است و خالی است، ارسال نشود
+    if (typeof value === "string" && value.trim() === "") return;
+    // اگر مقدار undefined یا null است، ارسال نشود
+    if (value === undefined || value === null) return;
+    body[key] = value;
+  });
 
   return await client({
     url: getRoute({ route: apiRoutes.admin.updateAnnoun }),

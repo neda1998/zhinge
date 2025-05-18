@@ -13,8 +13,6 @@ const UseUpdateAnnounMutation = () => {
       });
     },
     onError: (error: any) => {
-      console.error("❌ Error details:", error?.response);
-
       if (error.response?.status === 409) {
         Swal.fire({
           title: "خطا",
