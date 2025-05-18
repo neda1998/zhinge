@@ -31,12 +31,7 @@ const SearchForEstate = () => {
     setForm(updatedForm);
     triggerSearch(updatedForm);
   };
-
-  const resetForm = () => {
-    setForm({});
-    setResults([]);
-  };
-
+  
   const searchMutation = UseSearchStateMutation({
     onSuccess: (response: any) => {
       let resultArr: any[] = [];
@@ -106,14 +101,22 @@ const SearchForEstate = () => {
       { label: "واحد در طبقه",  value: data.Unit_in_floor || "-" },
       { label: "تعداد اتاق",    value: data.room_number || "-" },
       { label: "نوع سند",       value: data.document_type || "-" },
-      { label: "قیمت",          value: data.price || "-" },
+      { label: "قیمت",          value: data.price ? data.price.toLocaleString() + " تومان" : "-" },
       { label: "امکانات",      value: data.features || "-" },
       { label: "موقعیت مکانی", value: data.location || "-" },
       { label: "وضعیت",        value: data.check ? "تایید شده" : data.reject ? "رد شده" : "در حال بررسی" },
     ];
+
+    const mainPhoto =
+      Array.isArray(data.photo) && data.photo.length > 0
+        ? data.photo[0]
+        : (typeof data.photo === "string" && data.photo)
+          ? data.photo
+          : "https://via.placeholder.com/400x300?text=No+Image";
+
     return (
-      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-[3px] p-4">
-        <div className="bg-white/90 rounded-3xl shadow-2xl max-w-2xl w-full relative overflow-y-auto max-h-[95vh] border border-gray-200 flex flex-col animate-fadeIn">
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-[2px] p-4">
+        <div className="bg-gradient-to-br from-white via-blue-50 to-green-50 rounded-3xl shadow-2xl max-w-3xl w-full relative overflow-y-auto max-h-[95vh] border border-gray-200 flex flex-col animate-fadeIn">
           <button
             className="absolute top-4 left-4 text-gray-400 hover:text-red-500 transition text-3xl"
             onClick={onClose}
@@ -122,35 +125,44 @@ const SearchForEstate = () => {
           >
             ×
           </button>
-          <div className="flex flex-col items-center justify-center pt-8">
-            <div className="w-16 h-16 rounded-full bg-gradient-to-tr from-green-400 to-blue-400 flex items-center justify-center shadow-lg mb-4">
-              <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                <path d="M12 3v2m0 14v2m9-9h-2M5 12H3m15.364-6.364l-1.414 1.414M6.343 17.657l-1.414 1.414m12.728 0l-1.414-1.414M6.343 6.343L4.929 4.929" />
-              </svg>
+          <div className="flex flex-col md:flex-row items-center justify-center pt-8 gap-10">
+            {/* عکس ملک */}
+            <div className="flex-shrink-0 flex flex-col items-center">
+              <div className="rounded-3xl overflow-hidden shadow-2xl border-4 border-white bg-gradient-to-tr from-green-100 to-blue-100">
+                <img
+                  src={mainPhoto}
+                  alt="عکس ملک"
+                  className="object-cover w-[340px] h-[260px] transition-transform duration-300 hover:scale-105"
+                  style={{ background: "#f3f4f6" }}
+                />
+              </div>
+              <div className="mt-4 text-center text-blue-700 font-extrabold text-xl drop-shadow">
+                {data.type || "نوع ملک"}
+              </div>
             </div>
-            <h2 className="font-extrabold text-3xl mb-4 text-gray-700 text-center tracking-wide">
-              <span className="inline-block bg-gradient-to-l from-green-400 to-blue-400 bg-clip-text text-transparent">
-                جزئیات ملک
-              </span>
-            </h2>
-          </div>
-          <div className="px-8 py-6 w-full">
-            <div className="grid gap-x-8 gap-y-5 grid-cols-1 sm:grid-cols-2">
-              {details.map((item, idx) => (
-                <div
-                  key={idx}
-                  className="flex flex-col bg-gradient-to-br from-gray-50 to-white rounded-xl p-4 mb-1 border border-gray-100 shadow transition hover:shadow-lg"
-                >
-                  <span className="text-gray-500 text-[13px] mb-1">{item.label}</span>
-                  <span className="font-bold text-gray-800 text-[16px]">{item.value}</span>
-                </div>
-              ))}
+            <div className="flex-1 w-full px-2">
+              <h2 className="font-extrabold text-3xl mb-6 text-gray-700 text-center tracking-wide drop-shadow">
+                <span className="inline-block bg-gradient-to-l from-green-400 to-blue-400 bg-clip-text text-transparent">
+                  جزئیات ملک
+                </span>
+              </h2>
+              <div className="grid gap-x-8 gap-y-5 grid-cols-1 sm:grid-cols-2">
+                {details.map((item, idx) => (
+                  <div
+                    key={idx}
+                    className="flex flex-col bg-gradient-to-br from-white to-blue-50 rounded-2xl p-4 mb-1 border border-gray-100 shadow transition hover:shadow-2xl hover:scale-[1.04]"
+                  >
+                    <span className="text-gray-500 text-[14px] mb-1 font-semibold">{item.label}</span>
+                    <span className="font-extrabold text-gray-800 text-[17px]">{item.value}</span>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
-          <div className="flex justify-center pb-6">
+          <div className="flex justify-center pb-8 mt-8">
             <button
               onClick={onClose}
-              className="mt-4 px-8 py-2 rounded-full bg-gradient-to-l from-green-400 to-blue-400 text-white font-bold shadow hover:scale-105 transition"
+              className="mt-4 px-12 py-3 rounded-full bg-gradient-to-l from-green-400 to-blue-400 text-white font-extrabold shadow-xl hover:scale-105 transition text-lg"
             >
               بستن
             </button>
@@ -162,7 +174,6 @@ const SearchForEstate = () => {
 
   const EditEstateModal = ({ open, data, onClose }: { open: boolean; data: any; onClose: () => void }) => {
     if (!open || !data) return null;
-    // فیلدهای قابل ویرایش
     const fields: Array<{ key: string; label: string; type?: string }> = [
       { key: "id", label: "کد ملک" },
       { key: "full_name", label: "نام مالک" },
@@ -243,47 +254,63 @@ const SearchForEstate = () => {
 
   const renderTable = () => {
     if (isSearching) {
-      return <div>در حال جستجو...</div>;
+      return (
+        <div className="flex justify-center items-center py-10">
+          <span className="text-lg font-bold text-blue-500 animate-pulse">در حال جستجو...</span>
+        </div>
+      );
     }
     if (!results || results.length === 0) {
       const isFormEmpty = Object.values(form).every(v => !v);
       if (isFormEmpty) return null;
-      return <div className="text-center text-gray-500 mt-4">هیچ نتیجه‌ای یافت نشد.</div>;
+      return (
+        <div className="flex justify-center items-center py-10">
+          <span className="text-lg font-bold text-gray-400">هیچ نتیجه‌ای یافت نشد.</span>
+        </div>
+      );
     }
     return (
-      <div className="overflow-x-auto my-6">
-        <table className="min-w-full bg-white border border-gray-200">
-          <thead className="bg-gray-100">
+      <div className="overflow-x-auto my-8 rounded-3xl shadow-2xl border border-gray-200 bg-gradient-to-br from-white via-blue-50 to-green-50">
+        <table className="min-w-full bg-white/80 border border-gray-200 rounded-3xl overflow-hidden">
+          <thead className="bg-gradient-to-l from-green-100 to-blue-100">
             <tr className="whitespace-nowrap">
-              <th className="px-2 py-4 text-center text-[16px]">ردیف</th>
-              <th className="px-2 py-4 text-center text-[16px]">کد ملک</th>
-              <th className="px-2 py-4 text-center text-[16px]">نوع ملک</th>
-              <th className="px-2 py-4 text-center text-[16px]">منطقه</th>
-              <th className="px-2 py-4 text-center text-[16px]">نام مالک</th>
-              <th className="px-2 py-4 text-center text-[16px]">شماره تماس</th>
-              <th className="px-2 py-4 text-center text-[16px]">وضعیت</th>
-              <th className="px-2 py-4 text-center text-[16px]">عملیات</th>
+              <th className="px-2 py-4 text-center text-[16px] font-bold text-blue-700">ردیف</th>
+              <th className="px-2 py-4 text-center text-[16px] font-bold text-blue-700">کد ملک</th>
+              <th className="px-2 py-4 text-center text-[16px] font-bold text-blue-700">نوع ملک</th>
+              <th className="px-2 py-4 text-center text-[16px] font-bold text-blue-700">منطقه</th>
+              <th className="px-2 py-4 text-center text-[16px] font-bold text-blue-700">نام مالک</th>
+              <th className="px-2 py-4 text-center text-[16px] font-bold text-blue-700">شماره تماس</th>
+              <th className="px-2 py-4 text-center text-[16px] font-bold text-blue-700">وضعیت</th>
+              <th className="px-2 py-4 text-center text-[16px] font-bold text-blue-700">عملیات</th>
             </tr>
           </thead>
           <tbody>
             {results.map((item, idx) => (
-              <tr key={idx} className="text-center border-b whitespace-nowrap">
-                <td className="p-4">{idx + 1}</td>
+              <tr key={idx} className="text-center border-b whitespace-nowrap hover:bg-blue-50 transition">
+                <td className="p-4 font-bold text-blue-700">{idx + 1}</td>
                 <td className="p-4">{item.id || "-"}</td>
                 <td className="p-4">{item.type || "-"}</td>
                 <td className="p-4">{item.region || "-"}</td>
                 <td className="p-4">{item.full_name || "-"}</td>
                 <td className="p-4">{item.userID || "-"}</td>
-                <td className="p-4">{item.check ? "تایید شده" : item.reject ? "رد شده" : "در حال بررسی"}</td>
                 <td className="p-4">
+                  <span className={
+                    item.check ? "text-green-600 font-bold" :
+                    item.reject ? "text-red-500 font-bold" :
+                    "text-yellow-500 font-bold"
+                  }>
+                    {item.check ? "تایید شده" : item.reject ? "رد شده" : "در حال بررسی"}
+                  </span>
+                </td>
+                <td className="p-4 flex flex-col gap-2 items-center">
                   <button
-                    className="bg-blue-500 text-white px-4 py-1 rounded-full hover:bg-blue-600 transition"
+                    className="bg-gradient-to-l from-blue-400 to-green-400 text-white px-5 py-1 rounded-full font-bold shadow hover:scale-105 transition"
                     onClick={() => setDetailsModal({ open: true, data: item })}
                   >
                     جزئیات
                   </button>
                   <button
-                    className="bg-green-500 text-white px-4 py-1 rounded-full hover:bg-green-600 transition mr-2"
+                    className="bg-gradient-to-l from-green-400 to-blue-400 text-white px-5 py-1 rounded-full font-bold shadow hover:scale-105 transition"
                     onClick={() => handleEditClick(item)}
                   >
                     ویرایش

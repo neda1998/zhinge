@@ -1,12 +1,9 @@
 import { useState } from "react";
 import { FaCaretDown } from "react-icons/fa";
 import { SlLocationPin } from "react-icons/sl";
-import { FiSearch } from "react-icons/fi";
-import { AiOutlineDelete } from "react-icons/ai";
 import InitialLayout from "../../dashboard/initialLayoutAdmin";
 import RouteChevron from "../../../components/common/RouteChevron";
-import { pageBasicEstateInformation, tableZone } from "../../../utils/data";
-import { IoCloseSharp } from "react-icons/io5";
+import { pageBasicEstateInformation } from "../../../utils/data";
 import { CgMathPlus } from "react-icons/cg";
 import Search from "../../../components/common/Search";
 import BasicEstateInformationModal from "./BasicEstateInformationModal";

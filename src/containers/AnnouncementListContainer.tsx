@@ -8,21 +8,13 @@ interface AnnouncementListContainerProps {
 
 const AnnouncementListContainer: React.FC<AnnouncementListContainerProps> = ({ announcementType }) => {
   const { data, isLoading, error } = UseGetAllAnnouncementQuery();
-  
-  const allData = data || [];
-  
-  let filteredData = allData;
-  if (announcementType === "rent") {
-    filteredData = allData.filter((property: any) => property.type === "اجاره");
-  } else if (announcementType === "sell") {
-    filteredData = allData.filter((property: any) => property.type === "فروش");
-  } else if (announcementType === "all" || !announcementType) {
-    filteredData = allData;
-  }
+
+  const allData = Array.isArray(data) ? data : [];
+  console.log("allData", allData);
 
   return (
     <AnnouncementList
-      data={filteredData}
+      data={allData}
       isLoading={isLoading}
       error={error}
       {...(announcementType === "rent"

@@ -144,6 +144,7 @@ export default function Realstate() {
       price={price} setPrice={setPrice}
       description={description}
       setDescription={setDescription}
+      type={type} 
     />,
     <StepThreeUser
       key="step3"

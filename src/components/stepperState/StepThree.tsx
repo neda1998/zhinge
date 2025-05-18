@@ -23,6 +23,9 @@ interface StepThreeProps {
     onReset?: () => void; 
 }
 
+const shouldHideFields = (type?: string) =>
+    type === "مغازه" || type === "زمین مسکونی" || type === "زمین کشاورزی";
+
 const StepThree = ({
     showSubmitButton,
     creatAnnouncementMutation,
@@ -33,6 +36,7 @@ const StepThree = ({
     onReset
 }: StepThreeProps) => {
     const [submitAttempted, setSubmitAttempted] = useState(false);
+    const hideFields = shouldHideFields(type);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();

@@ -12,7 +12,7 @@ interface AnnouncementListProps {
   data: any[];
   isLoading: boolean;
   error: any;
-  announcementType?: "rent" | "sell"; // اختیاری شد
+  announcementType?: "rent" | "sell"; 
   onAnnouncementClick?: (property: any) => void;
 }
 
@@ -23,6 +23,8 @@ const AnnouncementList: React.FC<AnnouncementListProps> = ({
   onAnnouncementClick,
 }) => {
   const [searchResults, setSearchResults] = useState<any[] | null>(null);
+  console.log("searchResults", searchResults);
+  
 
   let titleLabel = "آگهی آپارتمانی";
   if (announcementType === "rent") titleLabel = "ملک اجاره ای آپارتمانی";
@@ -51,16 +53,23 @@ const AnnouncementList: React.FC<AnnouncementListProps> = ({
           searchResults.length > 0 ? (
             <div className="w-full grid lg:grid-cols-4 sm:grid-cols-2 mobile:mt-5 mobile:gap-0 gap-4 place-items-center grid-cols-1 p-4 pb-16">
               {searchResults.map((property) => (
-                <div key={property.id} className="flex flex-col justify-start items-center">
-                  <img src={House} alt="icons" width={350} />
-                  <div className="w-full flex gap-2 mt-2 mobile:w-full flex-col">
-                    <div className="w-full">
-                      <span className="text-[17px] mobile:text-[15px] font-bold">{titleLabel}</span>
+                <div key={property.id} className="flex flex-col justify-start items-center border rounded-xl shadow p-2 bg-white w-full max-w-xs">
+                  {(Array.isArray(property.photo) && property.photo.length > 0) ? (
+                    <img src={property.photo[0]} alt="عکس ملک" className="rounded-xl w-full h-48 object-cover" />
+                  ) : (typeof property.photo === "string" && property.photo) ? (
+                    <img src={property.photo} alt="عکس ملک" className="rounded-xl w-full h-48 object-cover" />
+                  ) : (
+                    <img src={House} alt="icons" width={350} className="rounded-xl w-full h-48 object-cover" />
+                  )}
+                  <div className="w-full flex flex-col gap-2 mt-2">
+                    <div className="flex justify-between items-center">
+                      <span className="text-[17px] mobile:text-[15px] font-bold">{property.type || "-"}</span>
+                      <span className="text-[15px] font-bold text-main-color">{property.price?.toLocaleString() || "-"}</span>
                     </div>
-                    <div className="flex justify-between items-center w-full">
-                      <span className="flex text-[14px] gap-1">
+                    <div className="flex justify-between items-center">
+                      <span className="flex text-[14px] gap-1 items-center">
                         <img src={MapPoint} alt="" width={20} />
-                        شهرک بهاران
+                        {property.region || "-"}، {property.address || "-"}
                       </span>
                       <Link to={`/house-details/${property.Uid}`} onClick={() => onAnnouncementClick?.(property)}>
                         <img src={MenuDots} alt="" width={30} />
@@ -79,16 +88,23 @@ const AnnouncementList: React.FC<AnnouncementListProps> = ({
           data.length === 0 ? null : (
             <div className="w-full grid lg:grid-cols-4 sm:grid-cols-2 mobile:mt-5 mobile:gap-0 gap-4 place-items-center grid-cols-1 p-4 pb-16">
               {data.map((property) => (
-                <div key={property.id} className="flex flex-col justify-start items-center">
-                  <img src={House} alt="icons" width={350} />
-                  <div className="w-full flex gap-2 mt-2 mobile:w-full flex-col">
-                    <div className="w-full">
-                      <span className="text-[17px] mobile:text-[15px] font-bold">{titleLabel}</span>
+                <div key={property.id} className="flex flex-col justify-start items-center border rounded-xl shadow p-2 bg-white w-full max-w-xs">
+                  {(Array.isArray(property.photo) && property.photo.length > 0) ? (
+                    <img src={property.photo[0]} alt="عکس ملک" className="rounded-xl w-full h-48 object-cover" />
+                  ) : (typeof property.photo === "string" && property.photo) ? (
+                    <img src={property.photo} alt="عکس ملک" className="rounded-xl w-full h-48 object-cover" />
+                  ) : (
+                    <img src={House} alt="icons" width={350} className="rounded-xl w-full h-48 object-cover" />
+                  )}
+                  <div className="w-full flex flex-col gap-2 mt-2">
+                    <div className="flex justify-between items-center">
+                      <span className="text-[17px] mobile:text-[15px] font-bold">{property.type || "-"}</span>
+                      <span className="text-[15px] font-bold text-main-color">{property.price?.toLocaleString() || "-"}</span>
                     </div>
-                    <div className="flex justify-between items-center w-full">
-                      <span className="flex text-[14px] gap-1">
+                    <div className="flex justify-between items-center">
+                      <span className="flex text-[14px] gap-1 items-center">
                         <img src={MapPoint} alt="" width={20} />
-                        شهرک بهاران
+                        {property.region || "-"}، {property.address || "-"}
                       </span>
                       <Link to={`/house-details/${property.Uid}`} onClick={() => onAnnouncementClick?.(property)}>
                         <img src={MenuDots} alt="" width={30} />

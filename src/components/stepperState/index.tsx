@@ -116,6 +116,7 @@ const StepperState = () => {
             location={location} setLocation={setLocation}
             land_metrage={land_metrage} setLandMetrage={setLandMetrage}
             description={describetion} setDescription={setDescription}
+            type={type}
         />,
         <StepThree
             key="step3"

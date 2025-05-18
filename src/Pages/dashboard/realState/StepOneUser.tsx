@@ -23,6 +23,9 @@ function formatNumber(val: string) {
     return isNaN(num) ? "" : num.toLocaleString("en-US");
 }
 
+const shouldHideFields = (type: string) =>
+    type === "مغازه" || type === "زمین مسکونی" || type === "زمین کشاورزی";
+
 const StepOneUser = ({
     type, setType,
     region, setRegion,
@@ -33,6 +36,7 @@ const StepOneUser = ({
     document_type, setDocumentType,
     room_number, setRoomNumber
 }: StepOneUserProps) => {
+    const hideFields = shouldHideFields(type);
     return (
         <div className="w-full grid lg:grid-cols-4 sm:grid-cols-2 grid-cols-1 gap-5">
             <ComboBox
@@ -55,30 +59,34 @@ const StepOneUser = ({
                 onChange={e => setAddress(e.target.value)}
             />
 
-            <InputState
-                label="طبقه مورد نظر"
-                placeholder="مثال: 2"
-                value={floor}
-                onChange={e => setFloor(formatInputNumber(e.target.value))}
-            />
-            <InputState
-                label="تعداد طبقات"
-                placeholder="مثال: 3"
-                value={floor_number}
-                onChange={e => setFloorNumber(formatInputNumber(e.target.value))}
-            />
-            <InputState
-                label="تعداد واحد در طبقه"
-                placeholder="مثال: 2"
-                value={Unit_in_floor}
-                onChange={e => setUnitInFloor(e.target.value.replace(/,/g, ""))}
-            />
-            <InputState
-                label="تعداد اتاق ها"
-                placeholder="مثال: 2"
-                value={room_number}
-                onChange={e => setRoomNumber && setRoomNumber(e.target.value.replace(/,/g, ""))}
-            />
+            {!hideFields && (
+                <>
+                    <InputState
+                        label="طبقه مورد نظر"
+                        placeholder="مثال: 2"
+                        value={floor}
+                        onChange={e => setFloor(formatInputNumber(e.target.value))}
+                    />
+                    <InputState
+                        label="تعداد طبقات"
+                        placeholder="مثال: 3"
+                        value={floor_number}
+                        onChange={e => setFloorNumber(formatInputNumber(e.target.value))}
+                    />
+                    <InputState
+                        label="تعداد واحد در طبقه"
+                        placeholder="مثال: 2"
+                        value={Unit_in_floor}
+                        onChange={e => setUnitInFloor(e.target.value.replace(/,/g, ""))}
+                    />
+                    <InputState
+                        label="تعداد اتاق ها"
+                        placeholder="مثال: 2"
+                        value={room_number}
+                        onChange={e => setRoomNumber && setRoomNumber(e.target.value.replace(/,/g, ""))}
+                    />
+                </>
+            )}
             <ComboBox
                 label="نوع سند"
                 value={document_type}

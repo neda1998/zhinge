@@ -1,9 +1,6 @@
 import ImageMainPage from '../../assets/images/Rectangle 60.svg';
-import Image2 from '../../assets/images/Rectangle 43.svg';
-import Image3 from '../../assets/images/Rectangle 44.svg';
 import Header from '../../components/template/Header';
-import ImageGallery from '../../components/ui/molecules/ImageGallery';
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useFormik } from "formik";
 import UseByUidAnnounceMutation from '../../hooks/mutation/announce/UseByUidAnnounceMutation';
 import { useLocation } from "react-router-dom";
@@ -11,7 +8,6 @@ import { PuffLoader } from 'react-spinners';
 
 const HouseDetails = () => {
     const { mutate, data, isLoading, error } = UseByUidAnnounceMutation();
-    const [isBoxVisible, setIsBoxVisible] = useState(false);
     const location = useLocation();
     const Uid = location.pathname.split('/').pop();
 
@@ -50,27 +46,34 @@ const HouseDetails = () => {
         }
     });
 
-    const fields = [
-        { name: 'type', label: 'نوع آگهی' },
-        { name: 'id', label: 'کد ملک' },
-        { name: 'region', label: 'منطقه' },
-        { name: 'useful_metrage', label: 'زیر بنا (مترمربع)', format: (v: string | number) => v + ' متر' },
-        { name: 'room_number', label: 'تعداد اتاق' },
-        { name: 'floor_number', label: 'طبقه مورد نظر' },
-        { name: 'floor', label: 'تعداد طبقات' },
-        { name: 'Unit_in_floor', label: 'تعداد واحد در طبقه' },
-        { name: 'year_of_build', label: 'سال ساخت' },
-        { name: 'features', label: 'آسانسور' },
-        { name: 'parking', label: 'پارکینگ' },
-        { name: 'storage', label: 'انباری' },
-        { name: 'address', label: 'آدرس ملک' },
-        { name: 'price', label: 'قیمت ملک', format: (v: string | number) => `${v} تومان` },
-        { name: 'loan', label: 'مبلغ وام' }
-    ];
+    const mainPhoto =
+        Array.isArray(selectedProperty?.photo) && selectedProperty.photo.length > 0
+            ? selectedProperty.photo[0]
+            : (typeof selectedProperty?.photo === "string" && selectedProperty.photo)
+                ? selectedProperty.photo
+                : ImageMainPage;
 
-    const toggleBox = () => {
-        setIsBoxVisible(!isBoxVisible);
-    };
+    const fields = [
+        { name: 'id', label: 'کد ملک' },
+        { name: 'type', label: 'نوع ملک' },
+        { name: 'region', label: 'منطقه' },
+        { name: 'address', label: 'آدرس' },
+        { name: 'location', label: 'موقعیت مکانی' },
+        { name: 'document_type', label: 'نوع سند' },
+        { name: 'land_metrage', label: 'متراژ زمین', format: (v: string | number) => v + ' متر' },
+        { name: 'useful_metrage', label: 'متراژ مفید', format: (v: string | number) => v + ' متر' },
+        { name: 'floor_number', label: 'تعداد طبقات' },
+        { name: 'floor', label: 'طبقه' },
+        { name: 'Unit_in_floor', label: 'واحد در طبقه' },
+        { name: 'room_number', label: 'تعداد اتاق' },
+        { name: 'year_of_build', label: 'سال ساخت' },
+        { name: 'full_name', label: 'مالک' },
+        { name: 'userID', label: 'شماره تماس' },
+        { name: 'price', label: 'قیمت', format: (v: string | number) => `${v?.toLocaleString?.() || v} تومان` },
+        { name: 'loan', label: 'مبلغ وام' },
+        { name: 'features', label: 'امکانات' },
+        { name: 'check', label: 'وضعیت', format: (v: any, obj: any) => obj.check ? "تایید شده" : obj.reject ? "رد شده" : "در حال بررسی" },
+    ];
 
     return (
         <div className='flex flex-col items-center'>
@@ -83,15 +86,17 @@ const HouseDetails = () => {
             {!isLoading && !error && (
                 <>
                     <Header variant={'main'} />
-                    <div className="w-full h-fit mobile:h-fit grid grid-cols-2 p-7">
-                        <div className="col-span-1 mobile:col-span-2 flex flex-col justify-around mb-10">
-                            <div className="w-full h-fit flex flex-col gap-10 sm:p-4">
-                                <div className="mt-20 flex w-full justify-center">
+                    <div className="w-full h-fit mobile:h-fit grid grid-cols-2 gap-8 p-7 mt-36">
+                        <div className="col-span-1 flex flex-col justify-around items-center">
+                            <div className="w-full h-fit flex flex-col gap-10">
+                                <div className="flex w-full justify-center">
                                     <span className="text-[42px] mobile:text-[28px] font-extrabold text-transparent bg-clip-text bg-gradient-to-l from-green-400 to-blue-500 drop-shadow-lg">
-                                        {selectedProperty?.type === 'اجاره' ? 'ملک اجاره‌ای آپارتمانی' : 'ملک فروشی آپارتمانی'}
+                                        {selectedProperty?.type
+                                            ? `ملک ${selectedProperty.type}`
+                                            : "جزئیات ملک"}
                                     </span>
                                 </div>
-                                <div className="flex flex-col w-full bg-white/90 border border-gray-100 shadow-2xl rounded-3xl p-8">
+                                <div className="flex flex-col w-full bg-white/90 border border-gray-100 shadow-2xl rounded-3xl">
                                     <div className="w-full flex justify-center h-14 mb-6">
                                         <div className="w-[90%] bg-gradient-to-l from-green-400 to-blue-400 flex items-center justify-center rounded-full text-white font-extrabold text-xl shadow-lg tracking-wide py-2">
                                             جزئیات ملک
@@ -106,8 +111,10 @@ const HouseDetails = () => {
                                                 >
                                                     <label className="mb-0 text-gray-500 text-[15px] font-semibold">{field.label}</label>
                                                     <p className="font-extrabold text-gray-800 text-[17px] text-left">
-                                                        {formik.values[field.name]
-                                                            ? field.format?.(formik.values[field.name]) ?? formik.values[field.name]
+                                                        {selectedProperty && selectedProperty[field.name] !== undefined && selectedProperty[field.name] !== ""
+                                                            ? field.format
+                                                                ? field.format(selectedProperty[field.name], selectedProperty)
+                                                                : selectedProperty[field.name]
                                                             : <span className="text-gray-400 font-normal">اطلاعات موجود نیست</span>
                                                         }
                                                     </p>
@@ -130,8 +137,13 @@ const HouseDetails = () => {
                                 </div>
                             </div>
                         </div>
-                        <div className="col-span-1 mobile:col-span-2">
-                            <ImageGallery ImageMainPage={ImageMainPage} Image2={Image2} Image3={Image3} />
+                        <div className="col-span-1 flex flex-col items-center justify-start">
+                            <img
+                                src={mainPhoto}
+                                alt="عکس ملک"
+                                className="rounded-2xl w-full h-[500px] object-cover border shadow"
+                                style={{ minHeight: 350, maxHeight: 600 }}
+                            />
                         </div>
                     </div>
                 </>

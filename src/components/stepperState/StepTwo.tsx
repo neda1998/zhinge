@@ -11,6 +11,7 @@ interface StepTwoProps {
     location?: string; setLocation: (v: string) => void;
     land_metrage?: number; setLandMetrage: (v: number) => void; 
     description?: string; setDescription: (v: string) => void;
+    type: string; // اضافه شد
 }
 
 function formatInputNumber(val: string) {
@@ -37,6 +38,9 @@ const LOCATION_OPTIONS = [
     "سه نبش"
 ];
 
+const shouldHideFields = (type: string) =>
+    type === "مغازه" || type === "زمین مسکونی" || type === "زمین کشاورزی";
+
 const StepTwo = ({
     loan, setLoan,
     year_of_build, setYearOfBuild,
@@ -45,10 +49,12 @@ const StepTwo = ({
     useful_metrage, setUsefulMetrage,
     location, setLocation,
     land_metrage, setLandMetrage,
-    description,setDescription
+    description, setDescription,
+    type
 }: StepTwoProps) => {
     const [showFeaturePanel, setShowFeaturePanel] = useState(false);
     const selectedFeatures: string[] = features ? features.split(",").map(f => f.trim()).filter(f => f) : [];
+    const hideFields = shouldHideFields(type);
 
     const handleFeatureSelect = (feature: string) => {
         if (selectedFeatures.includes(feature)) {
@@ -73,43 +79,53 @@ const StepTwo = ({
                 }}
                 numeric
             />
-            <InputState
-                label="متراژ مفید"
-                value={useful_metrage !== undefined && useful_metrage !== null ? formatInputNumber(String(useful_metrage)) : ""}
-                onChange={e => {
-                    const formatted = formatInputNumber(e.target.value);
-                    e.target.value = formatted;
-                    setUsefulMetrage(Number(e.target.value.replace(/,/g, "")))}
-                }
-                placeholder="مثال: 100"
-                numeric
-            />
+            {!hideFields && (
+                <>
+                    <InputState
+                        label="متراژ مفید"
+                        value={useful_metrage !== undefined && useful_metrage !== null ? formatInputNumber(String(useful_metrage)) : ""}
+                        onChange={e => {
+                            const formatted = formatInputNumber(e.target.value);
+                            e.target.value = formatted;
+                            setUsefulMetrage(Number(e.target.value.replace(/,/g, "")))}
+                        }
+                        placeholder="مثال: 100"
+                        numeric
+                    />
+                </>
+            )}
             <ComboBox
                 label="موقعیت ملک"
                 options={LOCATION_OPTIONS}
                 value={location}
                 onChange={setLocation}
             />
-             <InputState
-                label="سال ساخت"
-                value={year_of_build !== undefined && year_of_build !== null ? String(year_of_build) : ""}
-                onChange={(e) => setYearOfBuild(Number(e.target.value.replace(/,/g, "")))}
-                numeric 
-            />
-            <div className="flex flex-col items-start">
-                <InputState
-                    label="وام"
-                    value={loan !== undefined && loan !== null ? formatInputNumber(String(loan)) : ""}
-                    onChange={(e) => {
-                        const formatted = formatInputNumber(e.target.value);
-                        e.target.value = formatted;
-                        setLoan(Number(formatted.replace(/,/g, "")));
-                    }}
-                    numeric
-                />
-                <span className="text-xs text-red-600 my-1">اگر وام ندارید، عدد 0 رو وارد کنید</span>
-                <span className="text-xs text-gray-500 my-1">به تومان</span>
-            </div>
+            {!hideFields && (
+                <>
+                    <InputState
+                        label="سال ساخت"
+                        value={year_of_build !== undefined && year_of_build !== null ? String(year_of_build) : ""}
+                        onChange={(e) => setYearOfBuild(Number(e.target.value.replace(/,/g, "")))}
+                        numeric 
+                    />
+                </>
+            )}
+            {!hideFields && (
+                <div className="flex flex-col items-start">
+                    <InputState
+                        label="وام"
+                        value={loan !== undefined && loan !== null ? formatInputNumber(String(loan)) : ""}
+                        onChange={(e) => {
+                            const formatted = formatInputNumber(e.target.value);
+                            e.target.value = formatted;
+                            setLoan(Number(formatted.replace(/,/g, "")));
+                        }}
+                        numeric
+                    />
+                    <span className="text-xs text-red-600 my-1">اگر وام ندارید، عدد 0 رو وارد کنید</span>
+                    <span className="text-xs text-gray-500 my-1">به تومان</span>
+                </div>
+            )}
             <div className="flex flex-col">
                 <InputState
                     label="قیمت"
@@ -125,72 +141,74 @@ const StepTwo = ({
                 <span className="text-xs text-gray-400 my-1">لطفا اعداد را به انگلیسی وارد کنید</span>
                 <span className="text-xs text-gray-500">{formatNumber(price)} تومان</span>
             </div>
-            <div className="flex flex-col col-span-1 relative">
-                <label className="mb-1 text-sm font-medium">امکانات</label>
-                <div className="flex overflow-x-auto gap-1 mb-2 pb-1 max-w-full">
-                    {selectedFeatures.map((feature) => (
-                        <span
-                            key={feature}
-                            className="bg-main-color text-white px-2 py-1 rounded-full text-xs flex items-center whitespace-nowrap"
-                        >
-                            {feature}
-                            <button
-                                type="button"
-                                className="ml-1 text-white"
-                                onClick={() => handleFeatureSelect(feature)}
+            {!hideFields && (
+                <div className="flex flex-col col-span-1 relative">
+                    <label className="mb-1 text-sm font-medium">امکانات</label>
+                    <div className="flex overflow-x-auto gap-1 mb-2 pb-1 max-w-full">
+                        {selectedFeatures.map((feature) => (
+                            <span
+                                key={feature}
+                                className="bg-main-color text-white px-2 py-1 rounded-full text-xs flex items-center whitespace-nowrap"
                             >
-                                ×
-                            </button>
-                        </span>
-                    ))}
-                </div>
-                <button
-                    type="button"
-                    className="border border-main-color text-main-color px-2 py-1 rounded-full text-xs w-fit mt-2"
-                    onClick={() => setShowFeaturePanel(true)}
-                >
-                    انتخاب امکانات
-                </button>
-                {showFeaturePanel && (
-                    <>
-                        <div className="fixed inset-0 flex items-center justify-center bg-[#302b2b66] bg-opacity-40 z-[999]"></div>
-                        <div className="bg-white rounded-2xl shadow-xl p-6 w-[260px] sm:w-[320px] max-h-[80vh] overflow-y-auto absolute top-[80px] z-[9999]">
-                            <button
-                                type="button"
-                                className="absolute top-2 left-2 text-gray-500 hover:text-red-500 text-xl font-bold"
-                                onClick={() => setShowFeaturePanel(false)}
-                                aria-label="بستن"
-                            >
-                                ×
-                            </button>
-                            <div className="flex flex-wrap gap-2">
-                                {FEATURES_OPTIONS.map((feature) => (
-                                    <button
-                                        type="button"
-                                        key={feature}
-                                        className={`border px-2 py-1 rounded-full text-xs transition
-                                            ${selectedFeatures.includes(feature)
-                                                ? "bg-main-color text-white border-main-color"
-                                                : "border-main-color text-main-color hover:bg-main-color hover:text-white"}`}
-                                        onClick={() => handleFeatureSelect(feature)}
-                                    >
-                                        {feature}
-                                    </button>
-                                ))}
-                            </div>
-                            <div className="flex justify-end mt-4">
+                                {feature}
                                 <button
                                     type="button"
-                                    className="bg-main-color text-white px-4 py-1 rounded-full"
-                                    onClick={() => setShowFeaturePanel(false)}
+                                    className="ml-1 text-white"
+                                    onClick={() => handleFeatureSelect(feature)}
                                 >
-                                    تایید
+                                    ×
                                 </button>
+                            </span>
+                        ))}
+                    </div>
+                    <button
+                        type="button"
+                        className="border border-main-color text-main-color px-2 py-1 rounded-full text-xs w-fit mt-2"
+                        onClick={() => setShowFeaturePanel(true)}
+                    >
+                        انتخاب امکانات
+                    </button>
+                    {showFeaturePanel && (
+                        <>
+                            <div className="fixed inset-0 flex items-center justify-center bg-[#302b2b66] bg-opacity-40 z-[999]"></div>
+                            <div className="bg-white rounded-2xl shadow-xl p-6 w-[260px] sm:w-[320px] max-h-[80vh] overflow-y-auto absolute top-[80px] z-[9999]">
+                                <button
+                                    type="button"
+                                    className="absolute top-2 left-2 text-gray-500 hover:text-red-500 text-xl font-bold"
+                                    onClick={() => setShowFeaturePanel(false)}
+                                    aria-label="بستن"
+                                >
+                                    ×
+                                </button>
+                                <div className="flex flex-wrap gap-2">
+                                    {FEATURES_OPTIONS.map((feature) => (
+                                        <button
+                                            type="button"
+                                            key={feature}
+                                            className={`border px-2 py-1 rounded-full text-xs transition
+                                                ${selectedFeatures.includes(feature)
+                                                    ? "bg-main-color text-white border-main-color"
+                                                    : "border-main-color text-main-color hover:bg-main-color hover:text-white"}`}
+                                            onClick={() => handleFeatureSelect(feature)}
+                                        >
+                                            {feature}
+                                        </button>
+                                    ))}
+                                </div>
+                                <div className="flex justify-end mt-4">
+                                    <button
+                                        type="button"
+                                        className="bg-main-color text-white px-4 py-1 rounded-full"
+                                        onClick={() => setShowFeaturePanel(false)}
+                                    >
+                                        تایید
+                                    </button>
+                                </div>
                             </div>
-                        </div>
-                    </>
-                )}
-            </div>
+                        </>
+                    )}
+                </div>
+            )}
             <div className="col-span-1 lg:col-span-4 flex flex-col">
                 <label className="mb-1 text-sm font-medium">توضیحات</label>
                 <textarea
