@@ -38,7 +38,7 @@ const StepOneUser = ({
 }: StepOneUserProps) => {
     const hideFields = shouldHideFields(type);
     return (
-        <div className="w-full grid lg:grid-cols-4 sm:grid-cols-2 grid-cols-1 gap-5">
+        <div className="w-full grid lg:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-5">
             <ComboBox
                 label="نوع ملک"
                 value={type}

@@ -38,14 +38,16 @@ const InputState = ({
 
   return (
     <div className={`flex flex-col w-full ${margin}`}>
-      <label className="mb-2 text-xs mr-5 !whitespace-nowrap">{label}</label>
+      {label && (
+        <label className="mb-2 text-xs mr-5 font-bold text-main-color tracking-tight">{label}</label>
+      )}
       <input
         type={type}
         name={name}
         placeholder={placeholder}
         onChange={handleChange}
         value={value}
-        className="appearance-none w-full py-3 px-4 rounded-full focus:outline-none focus:ring-2 focus:ring-gray-400 bg-[#f4f4f4] text-[13px]"
+        className="appearance-none w-full py-3 px-4 rounded-full focus:outline-none focus:ring-2 focus:ring-main-color bg-[#f4f4f4] text-[14px] font-medium shadow-sm transition-all duration-200 border border-gray-200 placeholder-gray-400"
         {...((numeric || type === "number") ? { inputMode: "numeric", pattern: "[0-9]*" } : {})}
         {...rest}
       />

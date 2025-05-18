@@ -161,44 +161,53 @@ export default function Realstate() {
 
   return (
     <LayoutProfile>
-      <div className="flex flex-col items-baseline my-10 w-full">
-        <div className="flex items-center justify-between lg:min-w-[800px] min-w-full max-w-full lg:mx-auto mb-14">
-          {[1, 2, 3, 4].map((step, idx) => (
-            <div className="flex items-center min-w-[25%]" key={idx}>
-              <div
-                className={`w-[48px] h-[48px] rounded-full flex items-center justify-center font-extrabold text-xl flex-none basis-[48px]
-                ${currentStep >= step ? 'bg-main-color text-white' : 'bg-gray-100 text-gray-400'}`}
-              >
-                {step}
-              </div>
-              {idx < 3 && (
+      <div className="flex flex-col items-center py-10">
+        <div className="w-full max-w-5xl bg-white rounded-3xl shadow-2xl py-6 px-3 md:p-10 flex flex-col items-center border border-gray-100">
+          <h1 className="text-2xl md:text-3xl font-extrabold text-main-color mb-2 tracking-tight text-center">
+            ثبت آگهی ملک جدید
+          </h1>
+          <p className="text-gray-500 mb-8 text-center text-base md:text-lg">
+            لطفا اطلاعات ملک خود را مرحله به مرحله وارد کنید. پس از ثبت، کارشناسان ما در اسرع وقت با شما تماس خواهند گرفت.
+          </p>
+          <div className="flex items-center justify-between w-full max-w-xl mb-12">
+            {[1, 2, 3, 4].map((step, idx) => (
+              <div className="flex items-center min-w-[25%]" key={idx}>
                 <div
-                  className={`w-full h-[2px] ${currentStep > step ? 'bg-main-color text-white' : 'bg-gray-100 text-gray-400'}`}
-                ></div>
-              )}
-            </div>
-          ))}
-        </div>
-        <div className="mb-4 flex w-full">
-          {stepComponents[currentStep - 1]}
-        </div>
-        <div className="flex justify-end mt-4 items-center gap-3">
-          {currentStep > 1 && (
-            <button
-              onClick={handlePreviousStep}
-              className="px-8 py-2 rounded-full transition text-main-color border border-main-color bg-white"
-            >
-              قبلی
-            </button>
-          )}
-          {currentStep < 4 && (
-            <button
-              onClick={handleNextStep}
-              className="bg-main-color text-white px-8 py-2 rounded-full transition"
-            >
-              بعدی
-            </button>
-          )}
+                  className={`sm:w-12 w-10 sm:h-12 h-10 rounded-full flex items-center justify-center font-extrabold text-lg flex-none shadow-md transition-all duration-300
+                  ${currentStep >= step ? 'bg-main-color text-white scale-110' : 'bg-gray-100 text-gray-400'}`}
+                >
+                  {step}
+                </div>
+                {idx < 3 && (
+                  <div
+                    className={`w-full h-1 mx-1 transition-all duration-300 rounded-full
+                    ${currentStep > step ? 'bg-main-color' : 'bg-gray-200'}`}
+                  ></div>
+                )}
+              </div>
+            ))}
+          </div>
+          <div className="mb-4 w-full">
+            {stepComponents[currentStep - 1]}
+          </div>
+          <div className="flex justify-end mt-6 items-center gap-4 w-full">
+            {currentStep > 1 && (
+              <button
+                onClick={handlePreviousStep}
+                className="px-8 py-2 rounded-full border border-main-color text-main-color bg-white font-bold shadow-sm hover:bg-main-color hover:text-white transition-all duration-200"
+              >
+                قبلی
+              </button>
+            )}
+            {currentStep < 4 && (
+              <button
+                onClick={handleNextStep}
+                className="bg-main-color text-white px-8 py-2 rounded-full font-bold shadow-md hover:bg-green-700 transition-all duration-200"
+              >
+                بعدی
+              </button>
+            )}
+          </div>
         </div>
       </div>
     </LayoutProfile>
