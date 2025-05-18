@@ -11,7 +11,7 @@ interface StepTwoProps {
     location?: string; setLocation: (v: string) => void;
     land_metrage?: number; setLandMetrage: (v: number) => void; 
     description?: string; setDescription: (v: string) => void;
-    type: string; // اضافه شد
+    type: string; 
 }
 
 function formatInputNumber(val: string) {

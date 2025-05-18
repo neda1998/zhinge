@@ -29,7 +29,7 @@ const StepperState = () => {
     const [state_code, setStateCode] = useState<string>("-");
     const [useful_metrage, setUsefulMetrage] = useState<number | undefined>();
     const [isAnnouncementSubmitted, setIsAnnouncementSubmitted] = useState(false);
-    const [describetion, setDescription] = useState<string>("");
+    const [description, setDescription] = useState<string>("");
 
     const handleNextStep = () => {
         if (currentStep === 3 && !creatAnnouncementMutation.isSuccess) {
@@ -115,7 +115,7 @@ const StepperState = () => {
             useful_metrage={useful_metrage} setUsefulMetrage={setUsefulMetrage}
             location={location} setLocation={setLocation}
             land_metrage={land_metrage} setLandMetrage={setLandMetrage}
-            description={describetion} setDescription={setDescription}
+            description={description} setDescription={setDescription}
             type={type}
         />,
         <StepThree
