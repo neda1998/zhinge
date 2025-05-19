@@ -72,7 +72,6 @@ const HouseDetails = () => {
         { name: 'price', label: 'قیمت', format: (v: string | number) => `${v?.toLocaleString?.() || v} تومان` },
         { name: 'loan', label: 'مبلغ وام' },
         { name: 'features', label: 'امکانات' },
-        { name: 'check', label: 'وضعیت', format: (v: any, obj: any) => obj.check ? "تایید شده" : obj.reject ? "رد شده" : "در حال بررسی" },
     ];
 
     return (
@@ -89,14 +88,22 @@ const HouseDetails = () => {
                     <div className="w-full h-fit mobile:h-fit grid grid-cols-2 gap-8 p-7 mt-36">
                         <div className="col-span-1 flex flex-col justify-around items-center">
                             <div className="w-full h-fit flex flex-col gap-10">
-                                <div className="flex w-full justify-center">
+                                <div className="flex w-full justify-center items-center gap-4 mb-2">
                                     <span className="text-[42px] mobile:text-[28px] font-extrabold text-transparent bg-clip-text bg-gradient-to-l from-green-400 to-blue-500 drop-shadow-lg">
                                         {selectedProperty?.type
                                             ? `ملک ${selectedProperty.type}`
                                             : "جزئیات ملک"}
                                     </span>
+                                    {selectedProperty?.userID && selectedProperty.userID !== "0" && (
+                                        <span className="flex items-center gap-2 px-4 py-1 rounded-full bg-gradient-to-l from-green-400 to-blue-400 text-white text-[18px] mobile:text-[13px] font-bold shadow">
+                                            <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 mobile:w-4 mobile:h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H5a2 2 0 01-2-2V5zm0 12a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H5a2 2 0 01-2-2v-2zm12-12a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zm0 12a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+                                            </svg>
+                                            {selectedProperty.userID}
+                                        </span>
+                                    )}
                                 </div>
-                                <div className="flex flex-col w-full bg-white/90 border border-gray-100 shadow-2xl rounded-3xl">
+                                <div className="flex flex-col w-full bg-white/90 border border-gray-100 shadow-2xl rounded-3xl p-4">
                                     <div className="w-full flex justify-center h-14 mb-6">
                                         <div className="w-[90%] bg-gradient-to-l from-green-400 to-blue-400 flex items-center justify-center rounded-full text-white font-extrabold text-xl shadow-lg tracking-wide py-2">
                                             جزئیات ملک
@@ -104,22 +111,30 @@ const HouseDetails = () => {
                                     </div>
                                     <div className="w-full h-fit overflow-auto p-2">
                                         <div className="divide-y divide-gray-100">
-                                            {fields.map((field) => (
-                                                <div
-                                                    key={field.name}
-                                                    className="flex flex-row items-center justify-between py-4 px-2 hover:bg-gray-50 transition rounded-xl"
-                                                >
-                                                    <label className="mb-0 text-gray-500 text-[15px] font-semibold">{field.label}</label>
-                                                    <p className="font-extrabold text-gray-800 text-[17px] text-left">
-                                                        {selectedProperty && selectedProperty[field.name] !== undefined && selectedProperty[field.name] !== ""
-                                                            ? field.format
-                                                                ? field.format(selectedProperty[field.name], selectedProperty)
-                                                                : selectedProperty[field.name]
-                                                            : <span className="text-gray-400 font-normal">اطلاعات موجود نیست</span>
-                                                        }
-                                                    </p>
-                                                </div>
-                                            ))}
+                                            {fields.map((field) => {
+                                                const value = selectedProperty?.[field.name];
+                                                if (
+                                                    (typeof value === "number" && value === 0) ||
+                                                    value === "" ||
+                                                    value === undefined ||
+                                                    value === null
+                                                ) {
+                                                    return null;
+                                                }
+                                                return (
+                                                    <div
+                                                        key={field.name}
+                                                        className="flex flex-row items-center justify-between py-4 px-2 hover:bg-gray-50 transition rounded-xl"
+                                                    >
+                                                        <label className="mb-0 text-gray-500 text-[15px] font-semibold">{field.label}</label>
+                                                        <p className="font-extrabold text-gray-800 text-[17px] text-left">
+                                                            {field.format
+                                                                ? field.format(value)
+                                                                : value}
+                                                        </p>
+                                                    </div>
+                                                );
+                                            })}
                                         </div>
                                     </div>
                                 </div>
