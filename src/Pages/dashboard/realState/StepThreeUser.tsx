@@ -5,11 +5,13 @@ interface StepThreeUserProps {
   full_name: string; setFullName: (v: string) => void;
   onSubmit: () => void;
   isAnnouncementSubmitted: boolean;
+  type?: string;
 }
 
 const StepThreeUser = ({
   full_name, setFullName,
   onSubmit,
+  type,
   isAnnouncementSubmitted
 }: StepThreeUserProps) => {
   return (

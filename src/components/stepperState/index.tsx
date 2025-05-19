@@ -138,8 +138,8 @@ const StepperState = () => {
     ];
 
     return (
-        <div className="w-full min-h-screen bg-gradient-to-tr from-[#f8fafc] to-[#e6f7f2] flex flex-col items-center py-10 px-2">
-            <div className="w-full max-w-4xl bg-white rounded-3xl shadow-2xl p-6 md:p-10 flex flex-col items-center border border-gray-100">
+        <div className="w-full min-h-screen flex flex-col items-center py-10 px-2">
+            <div className="w-full max-w-5xl bg-white rounded-3xl shadow-2xl p-6 md:p-10 flex flex-col items-center border border-gray-100">
                 <h1 className="text-2xl md:text-3xl font-extrabold text-main-color mb-2 tracking-tight text-center">
                     ثبت آگهی ملک جدید
                 </h1>

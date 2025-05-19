@@ -168,6 +168,7 @@ export default function Realstate() {
       full_name={full_name} setFullName={setFullName}
       onSubmit={handleSubmit}
       isAnnouncementSubmitted={isAnnouncementSubmitted}
+      type={type}
     />,
     <StepFourUser
       key="step4"

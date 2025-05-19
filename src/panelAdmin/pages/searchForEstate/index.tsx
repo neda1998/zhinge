@@ -5,7 +5,7 @@ import InitialLayout from "../../dashboard/initialLayoutAdmin"
 import ChooseItemsOfState from "../propertyManagement/ChooseItemsOfState"
 import UseSearchStateMutation from "../../../hooks/mutation/searchState/UseSearchStateMutation"
 import UseUpdateAnnounMutation from "../../../hooks/mutation/updateAnnounAdmin/UseUpdateAnnounMutation"
-import React, { useState, useRef } from "react"
+import { useState, useRef } from "react"
 
 const SearchForEstate = () => {
   const [form, setForm] = useState<any>({});
@@ -174,12 +174,39 @@ const SearchForEstate = () => {
 
   const EditEstateModal = ({ open, data, onClose }: { open: boolean; data: any; onClose: () => void }) => {
     if (!open || !data) return null;
-    const fields: Array<{ key: string; label: string; type?: string }> = [
+    const TYPE_OPTIONS = [
+      "آپارتمان",
+      "ویلایی",
+      "مغازه",
+      "زمین مسکونی",
+      "زمین کشاورزی",
+      "سایر"
+    ];
+    const REGION_OPTIONS = [
+      "منطقه 1", "منطقه 2", "منطقه 3", "منطقه 4"
+    ];
+    const LOCATION_OPTIONS = [
+      "شمالی",
+      "جنوبی",
+      "شمالی دو نبش",
+      "جنوبی دو نبش",
+      "دوکله",
+      "سه نبش"
+    ];
+    const DOCUMENT_TYPE_OPTIONS = [
+      "سند تک برگ",
+      "سند واگذاری",
+      "مبایعه نامه (قولنامه‌ای)",
+      "نسق",
+      "اوقافی",
+      "سایر"
+    ];
+    const fields: Array<{ key: string; label: string; type?: string; options?: string[] }> = [
       { key: "id", label: "کد ملک" },
       { key: "full_name", label: "نام مالک" },
-      { key: "phone", label: "شماره تماس" },
-      { key: "type", label: "نوع ملک" },
-      { key: "region", label: "منطقه" },
+      { key: "userID", label: "شماره تماس" },
+      { key: "type", label: "نوع ملک", options: TYPE_OPTIONS },
+      { key: "region", label: "منطقه", options: REGION_OPTIONS },
       { key: "address", label: "آدرس" },
       { key: "land_metrage", label: "متراژ زمین", type: "number" },
       { key: "useful_metrage", label: "متراژ مفید", type: "number" },
@@ -188,10 +215,10 @@ const SearchForEstate = () => {
       { key: "floor", label: "طبقه", type: "number" },
       { key: "Unit_in_floor", label: "واحد در طبقه", type: "number" },
       { key: "room_number", label: "تعداد اتاق", type: "number" },
-      { key: "document_type", label: "نوع سند" },
+      { key: "document_type", label: "نوع سند", options: DOCUMENT_TYPE_OPTIONS },
       { key: "price", label: "قیمت", type: "number" },
       { key: "features", label: "امکانات" },
-      { key: "location", label: "موقعیت مکانی" },
+      { key: "location", label: "موقعیت مکانی", options: LOCATION_OPTIONS },
     ];
     return (
       <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-[3px] p-4">
@@ -221,12 +248,34 @@ const SearchForEstate = () => {
               {fields.map((item, idx) => (
                 <div key={idx} className="flex flex-col mb-1">
                   <label className="text-gray-500 text-[13px] mb-1">{item.label}</label>
-                  <input
-                    className="font-bold text-gray-800 text-[16px] rounded-lg border border-gray-200 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-300 transition"
-                    type={item.type || "text"}
-                    value={editForm[item.key] ?? ""}
-                    onChange={e => handleEditFormChange(item.key, item.type === "number" ? Number(e.target.value) : e.target.value)}
-                  />
+                  {/* اگر گزینه‌ها وجود داشت، دراپ‌داون نمایش بده */}
+                  {item.options ? (
+                    <select
+                      className="font-bold text-gray-800 text-[16px] rounded-lg border border-gray-200 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-300 transition"
+                      value={editForm[item.key] ?? ""}
+                      onChange={e => handleEditFormChange(item.key, e.target.value)}
+                    >
+                      <option value="">انتخاب کنید</option>
+                      {/* اگر مقدار قبلی انتخاب شده بود، آن را هم در لیست قرار بده */}
+                      {item.options
+                        .concat(
+                          editForm[item.key] && !item.options.includes(editForm[item.key])
+                            ? [editForm[item.key]]
+                            : []
+                        )
+                        .filter((v, i, arr) => arr.indexOf(v) === i)
+                        .map(opt => (
+                          <option key={opt} value={opt}>{opt}</option>
+                        ))}
+                    </select>
+                  ) : (
+                    <input
+                      className="font-bold text-gray-800 text-[16px] rounded-lg border border-gray-200 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-300 transition"
+                      type={item.type || "text"}
+                      value={editForm[item.key] ?? ""}
+                      onChange={e => handleEditFormChange(item.key, item.type === "number" ? Number(e.target.value) : e.target.value)}
+                    />
+                  )}
                 </div>
               ))}
             </div>

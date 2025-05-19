@@ -29,7 +29,7 @@ const StepOne = ({
   return (
     <div className="w-full">
       <form
-        className="grid lg:grid-cols-4 sm:grid-cols-2 grid-cols-1 lg:gap-x-2 lg:gap-y-7 gap-y-4"
+        className="grid lg:grid-cols-3 sm:grid-cols-2 grid-cols-1 lg:gap-x-2 lg:gap-y-7 gap-y-4"
       >
         <ComboBox
           label="نوع ملک"

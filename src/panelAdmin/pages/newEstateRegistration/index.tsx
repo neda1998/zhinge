@@ -13,7 +13,6 @@ const NewEstateRegistration = () => {
       </div>
       <ChooseItemsOfState />
       <div className="flex justify-center items-center flex-col w-full">
-        <span className="text-black font-extrabold lg:text-2xl">فرم ثبت ملک جدید</span>
         <Stepper />
       </div>
     </InitialLayout>
