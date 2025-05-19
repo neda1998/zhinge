@@ -32,7 +32,7 @@ interface StepTwoUserProps {
     features: string; setFeatures: (v: string) => void;
     price: string; setPrice: (v: string) => void;
     description: string; setDescription: (v: string) => void;
-    type: string; // <-- add type prop
+    type: string;
 }
 const shouldHideFields = (type: string) =>
     type === "مغازه" || type === "زمین مسکونی" || type === "زمین کشاورزی";
@@ -46,11 +46,12 @@ const StepTwoUser = ({
     year_of_build, setYearOfBuild,
     price, setPrice,
     description, setDescription,
-    type // <-- get type prop
+    type 
 }: StepTwoUserProps) => {
     const [showFeaturePanel, setShowFeaturePanel] = useState(false);
     const selectedFeatures: string[] = features ? features.split(",").map(f => f.trim()).filter(f => f) : [];
     const hideFields = shouldHideFields(type);
+
 
     const handleFeatureSelect = (feature: string) => {
         if (selectedFeatures.includes(feature)) {
@@ -135,69 +136,66 @@ const StepTwoUser = ({
             />
             {!hideFields && (
                 <div className="flex flex-col col-span-1 relative">
-                    <label className="mb-1 text-sm font-medium">امکانات</label>
-                    <div className="flex overflow-x-auto gap-1 mb-2 pb-1 max-w-full">
-                        {selectedFeatures.map((feature) => (
-                            <span
-                                key={feature}
-                                className="bg-main-color text-white px-2 py-1 rounded-full text-xs flex items-center whitespace-nowrap"
-                            >
-                                {feature}
-                                <button
-                                    type="button"
-                                    className="ml-1 text-white"
-                                    onClick={() => handleFeatureSelect(feature)}
-                                >
-                                    ×
-                                </button>
-                            </span>
-                        ))}
-                    </div>
+                    <label className="mb-1 text-sm font-semibold text-gray-700">امکانات</label>
                     <button
                         type="button"
-                        className="border border-main-color text-main-color px-2 py-1 rounded-full text-xs w-fit mt-2"
+                        className="border border-main-color text-main-color px-4 py-2 rounded-full text-base w-fit mt-2 flex items-center gap-2 shadow-lg transition-all duration-200 hover:bg-main-color hover:text-white hover:scale-105"
                         onClick={() => setShowFeaturePanel(true)}
                     >
-                        انتخاب امکانات
+                        <span className="font-semibold">امکانات</span>
+                        <span className="bg-gradient-to-l from-green-400 to-blue-400 text-white rounded-full px-3 py-0.5 text-sm font-bold shadow">
+                            {selectedFeatures.length}
+                        </span>
                     </button>
+                    {/* Modal */}
                     {showFeaturePanel && (
-                        <>
-                            <div className="fixed inset-0 flex items-center justify-center bg-[#302b2b66] bg-opacity-40"></div>
-                            <div className="bg-white rounded-2xl shadow-xl p-6 w-[260px] sm:w-[320px] max-h-[80vh] overflow-y-auto absolute top-[80px] z-[9999]">
+                        <div
+                            className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/50 backdrop-blur-sm animate-fade-in"
+                            onClick={() => setShowFeaturePanel(false)}
+                        >
+                            <div
+                                className="bg-white rounded-3xl shadow-2xl p-8 w-[95vw] max-w-xl max-h-[85vh] overflow-y-auto relative border border-main-color animate-fade-in-up"
+                                onClick={e => e.stopPropagation()}
+                            >
                                 <button
                                     type="button"
-                                    className="absolute top-2 left-2 text-gray-500 hover:text-red-500 text-xl font-bold"
+                                    className="absolute top-4 left-4 text-gray-400 hover:text-red-500 text-3xl font-bold transition"
                                     onClick={() => setShowFeaturePanel(false)}
                                     aria-label="بستن"
                                 >
                                     ×
                                 </button>
-                                <div className="flex flex-wrap gap-2">
-                                    {FEATURES_OPTIONS.map((feature) => (
-                                        <button
-                                            type="button"
-                                            key={feature}
-                                            className={`border px-2 py-1 rounded-full text-xs transition
-                      ${selectedFeatures.includes(feature)
-                                                ? "bg-main-color text-white border-main-color"
-                                                : "border-main-color text-main-color hover:bg-main-color hover:text-white"}`}
-                                            onClick={() => handleFeatureSelect(feature)}
-                                        >
-                                            {feature}
-                                        </button>
-                                    ))}
+                                <div className="mb-6 text-2xl font-extrabold text-main-color text-center tracking-tight">انتخاب امکانات</div>
+                                <div className="flex flex-wrap gap-3 justify-center">
+                                    {FEATURES_OPTIONS.map((feature) => {
+                                        const isSelected = selectedFeatures.includes(feature);
+                                        return (
+                                            <button
+                                                type="button"
+                                                key={feature}
+                                                className={`px-4 py-2 rounded-full border transition-all duration-150 text-base font-medium shadow-sm
+                                                    ${isSelected
+                                                        ? "bg-gradient-to-l from-green-400 to-blue-400 text-white border-main-color scale-105"
+                                                        : "bg-gray-100 text-gray-700 border-gray-300 hover:bg-main-color hover:text-white hover:border-main-color"}
+                                                `}
+                                                onClick={() => handleFeatureSelect(feature)}
+                                            >
+                                                {feature}
+                                            </button>
+                                        );
+                                    })}
                                 </div>
-                                <div className="flex justify-end mt-4">
+                                <div className="flex justify-end mt-8">
                                     <button
                                         type="button"
-                                        className="bg-main-color text-white px-4 py-1 rounded-full"
+                                        className="bg-gradient-to-l from-green-400 to-blue-400 text-white px-8 py-2 rounded-full font-bold shadow-lg hover:scale-105 transition-all duration-200"
                                         onClick={() => setShowFeaturePanel(false)}
                                     >
-                                        تایید
+                                        تایید و بستن
                                     </button>
                                 </div>
                             </div>
-                        </>
+                        </div>
                     )}
                 </div>
             )}

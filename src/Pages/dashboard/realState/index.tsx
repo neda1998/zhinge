@@ -6,9 +6,13 @@ import StepTwoUser from "./StepTwoUser";
 import StepThreeUser from "./StepThreeUser";
 import StepFourUser from "./StepFourUser";
 import useCreateAnnounceMutation from "../../../hooks/mutation/announce/useCreateAnnounceMutation";
+import { useCookies } from "react-cookie";
+import { useNavigate } from "react-router-dom";
 
 export default function Realstate() {
   const { mutate } = useCreateAnnounceMutation();
+   const [cookies] = useCookies(["accessToken"]);
+    const navigate = useNavigate();
 
   const [loan, setLoan] = useState("");
   const [type, setType] = useState("");
@@ -59,6 +63,19 @@ export default function Realstate() {
   useEffect(() => {
     setCurrentStep(1);
   }, []);
+  
+   useEffect(() => {
+    if (!cookies.accessToken) {
+      Swal.fire({
+        icon: "warning",
+        title: "ورود الزامی است",
+        text: "لطفا ابتدا ثبت‌ نام یا وارد شوید.",
+        confirmButtonText: "ورود به حساب کاربری"
+      }).then(() => {
+        navigate("/Login", { replace: true });
+      });
+    }
+  }, [cookies, navigate]);
 
   const handleSubmit = () => {
     const requiredFields = [
