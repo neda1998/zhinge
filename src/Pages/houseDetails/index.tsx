@@ -67,8 +67,6 @@ const HouseDetails = () => {
         { name: 'Unit_in_floor', label: 'واحد در طبقه' },
         { name: 'room_number', label: 'تعداد اتاق' },
         { name: 'year_of_build', label: 'سال ساخت' },
-        { name: 'full_name', label: 'مالک' },
-        { name: 'userID', label: 'شماره تماس' },
         { name: 'price', label: 'قیمت', format: (v: string | number) => `${v?.toLocaleString?.() || v} تومان` },
         { name: 'loan', label: 'مبلغ وام' },
         { name: 'features', label: 'امکانات' },
@@ -94,12 +92,22 @@ const HouseDetails = () => {
                                             ? `ملک ${selectedProperty.type}`
                                             : "جزئیات ملک"}
                                     </span>
-                                    {selectedProperty?.userID && selectedProperty.userID !== "0" && (
-                                        <span className="flex items-center gap-2 px-4 py-1 rounded-full bg-gradient-to-l from-green-400 to-blue-400 text-white text-[18px] mobile:text-[13px] font-bold shadow">
-                                            <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 mobile:w-4 mobile:h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    {(selectedProperty?.full_name || (selectedProperty?.userID && selectedProperty.userID !== "0")) && (
+                                        <span className="flex items-center gap-2 px-4 py-1 rounded-full bg-white border border-blue-200 shadow text-blue-700 text-[18px] mobile:text-[13px] font-bold">
+                                            <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 mobile:w-4 mobile:h-4 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H5a2 2 0 01-2-2V5zm0 12a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H5a2 2 0 01-2-2v-2zm12-12a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zm0 12a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
                                             </svg>
-                                            {selectedProperty.userID}
+                                            <span>
+                                                {selectedProperty?.full_name && (
+                                                    <span className="ml-2">{selectedProperty.full_name}</span>
+                                                )}
+                                                {selectedProperty?.userID && selectedProperty.userID !== "0" && (
+                                                    <span className="ltr:ml-2 rtl:mr-2">
+                                                        <span className="text-gray-400">|</span>
+                                                        <span className="mx-1 text-blue-700">{selectedProperty.userID}</span>
+                                                    </span>
+                                                )}
+                                            </span>
                                         </span>
                                     )}
                                 </div>
@@ -111,30 +119,32 @@ const HouseDetails = () => {
                                     </div>
                                     <div className="w-full h-fit overflow-auto p-2">
                                         <div className="divide-y divide-gray-100">
-                                            {fields.map((field) => {
-                                                const value = selectedProperty?.[field.name];
-                                                if (
-                                                    (typeof value === "number" && value === 0) ||
-                                                    value === "" ||
-                                                    value === undefined ||
-                                                    value === null
-                                                ) {
-                                                    return null;
-                                                }
-                                                return (
-                                                    <div
-                                                        key={field.name}
-                                                        className="flex flex-row items-center justify-between py-4 px-2 hover:bg-gray-50 transition rounded-xl"
-                                                    >
-                                                        <label className="mb-0 text-gray-500 text-[15px] font-semibold">{field.label}</label>
-                                                        <p className="font-extrabold text-gray-800 text-[17px] text-left">
-                                                            {field.format
-                                                                ? field.format(value)
-                                                                : value}
-                                                        </p>
-                                                    </div>
-                                                );
-                                            })}
+                                            {fields
+                                                .filter(field => field.name !== 'userID' && field.name !== 'full_name')
+                                                .map((field) => {
+                                                    const value = selectedProperty?.[field.name];
+                                                    if (
+                                                        (typeof value === "number" && value === 0) ||
+                                                        value === "" ||
+                                                        value === undefined ||
+                                                        value === null
+                                                    ) {
+                                                        return null;
+                                                    }
+                                                    return (
+                                                        <div
+                                                            key={field.name}
+                                                            className="flex flex-row items-center justify-between py-4 px-2 hover:bg-gray-50 transition rounded-xl"
+                                                        >
+                                                            <label className="mb-0 text-gray-500 text-[15px] font-semibold">{field.label}</label>
+                                                            <p className="font-extrabold text-gray-800 text-[17px] text-left">
+                                                                {field.format
+                                                                    ? field.format(value)
+                                                                    : value}
+                                                            </p>
+                                                        </div>
+                                                    );
+                                                })}
                                         </div>
                                     </div>
                                 </div>
@@ -154,7 +164,13 @@ const HouseDetails = () => {
                         </div>
                         <div className="col-span-1 flex flex-col items-center justify-start">
                             <img
-                                src={mainPhoto}
+                                src={
+                                    (Array.isArray(selectedProperty?.photo) && selectedProperty.photo.length > 0 && selectedProperty.photo[0])
+                                        ? selectedProperty.photo[0]
+                                        : (typeof selectedProperty?.photo === "string" && selectedProperty.photo)
+                                            ? selectedProperty.photo
+                                            : ImageMainPage // عکس دیفالت اگر عکسی وجود نداشت
+                                }
                                 alt="عکس ملک"
                                 className="rounded-2xl w-full h-[500px] object-cover border shadow"
                                 style={{ minHeight: 350, maxHeight: 600 }}
