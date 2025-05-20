@@ -96,16 +96,6 @@ export default function Realstate() {
       { value: full_name, label: "نام کامل" },
       { value: price, label: "قیمت" },
     ];
-    const emptyField = requiredFields.find(f => !f.value || f.value === "");
-    if (emptyField) {
-      Swal.fire({
-        icon: "warning",
-        title: "اخطار",
-        text: `لطفا فیلد "${emptyField.label}" را تکمیل کنید.`,
-        confirmButtonText: "باشه"
-      });
-      return;
-    }
     const toNumberOrUndefined = (val: string) => {
       if (val === undefined || val === null) return undefined;
       const num = Number(val.toString().replace(/,/g, ""));
