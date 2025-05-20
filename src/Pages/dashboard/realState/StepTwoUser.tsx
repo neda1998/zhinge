@@ -22,17 +22,21 @@ function formatInputNumber(val: string) {
     return onlyNums.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
+const formatNumber = (value: number | string | undefined) =>
+    value !== undefined && value !== null && value !== ""
+        ? Number(value).toLocaleString("en-US")
+        : "";
 
 interface StepTwoUserProps {
-    loan: string; setLoan: (v: string) => void;
-    location: string; setLocation: (v: string) => void;
-    useful_metrage: string; setUsefulMetrage: (v: string) => void;
-    land_metrage: string; setLandMetrage: (v: string) => void;
-    year_of_build: string; setYearOfBuild: (v: string) => void;
-    features: string; setFeatures: (v: string) => void;
-    price: string; setPrice: (v: string) => void;
-    description: string; setDescription: (v: string) => void;
-    type: string;
+    loan?: number; setLoan: (v: number) => void;
+    year_of_build?: number; setYearOfBuild: (v: number) => void;
+    price?: number; setPrice: (v: number) => void;
+    features?: string; setFeatures: (v: string) => void;
+    useful_metrage?: number; setUsefulMetrage: (v: number) => void;
+    location?: string; setLocation: (v: string) => void;
+    land_metrage?: number; setLandMetrage: (v: number) => void; 
+    description?: string; setDescription: (v: string) => void;
+    type: string; 
 }
 const shouldHideFields = (type: string) =>
     type === "مغازه" || type === "زمین مسکونی" || type === "زمین کشاورزی";
@@ -52,8 +56,8 @@ const StepTwoUser = ({
     const selectedFeatures: string[] = features ? features.split(",").map(f => f.trim()).filter(f => f) : [];
     const hideFields = shouldHideFields(type);
 
-
     const handleFeatureSelect = (feature: string) => {
+        if (!setFeatures) return;
         if (selectedFeatures.includes(feature)) {
             const newFeatures = selectedFeatures.filter(f => f !== feature);
             setFeatures(newFeatures.join(","));
@@ -62,6 +66,7 @@ const StepTwoUser = ({
             setFeatures(newFeatures.join(","));
         }
     };
+
     return (
         <div className="w-full grid lg:grid-cols-4 sm:grid-cols-2 grid-cols-1 gap-5">
             <InputState
@@ -71,43 +76,42 @@ const StepTwoUser = ({
                 onChange={e => {
                     const formatted = formatInputNumber(e.target.value);
                     e.target.value = formatted;
-                    setLandMetrage(formatted.replace(/,/g, ""));
+                    setLandMetrage(Number(formatted.replace(/,/g, "")));
                 }}
                 numeric
             />
             {!hideFields && (
-                <>
-                    <InputState
-                        label="متراژ مفید"
-                        value={useful_metrage !== undefined && useful_metrage !== null ? formatInputNumber(String(useful_metrage)) : ""}
-                        onChange={e => {
-                            const formatted = formatInputNumber(e.target.value);
-                            e.target.value = formatted;
-                            setUsefulMetrage(formatted);
-                        }}
-                        placeholder="مثال: 100"
-                        numeric
-                    />
-                </>
-            )}
+                           <>
+                               <InputState
+                                   label="متراژ مفید"
+                                   value={useful_metrage !== undefined && useful_metrage !== null ? formatInputNumber(String(useful_metrage)) : ""}
+                                   onChange={e => {
+                                       const formatted = formatInputNumber(e.target.value);
+                                       e.target.value = formatted;
+                                       setUsefulMetrage(Number(e.target.value.replace(/,/g, "")))}
+                                   }
+                                   placeholder="مثال: 100"
+                                   numeric
+                               />
+                           </>
+                       )}
             <ComboBox
                 label="موقعیت ملک"
                 options={LOCATION_OPTIONS}
                 value={location}
                 onChange={setLocation}
             />
-            {!hideFields && (
+             {!hideFields && (
                 <>
                     <InputState
                         label="سال ساخت"
-                        placeholder="مثال: 1395"
-                        value={year_of_build}
-                        onChange={e => setYearOfBuild(e.target.value.replace(/,/g, ""))}
-                        numeric
+                        value={year_of_build !== undefined && year_of_build !== null ? String(year_of_build) : ""}
+                        onChange={(e) => setYearOfBuild(Number(e.target.value.replace(/,/g, "")))}
+                        numeric 
                     />
                 </>
             )}
-            {!hideFields && (
+             {!hideFields && (
                 <div className="flex flex-col items-start">
                     <InputState
                         label="وام"
@@ -115,7 +119,7 @@ const StepTwoUser = ({
                         onChange={(e) => {
                             const formatted = formatInputNumber(e.target.value);
                             e.target.value = formatted;
-                            setLoan(formatted);
+                            setLoan(Number(formatted.replace(/,/g, "")));
                         }}
                         numeric
                     />
@@ -123,18 +127,22 @@ const StepTwoUser = ({
                     <span className="text-xs text-gray-500 my-1">به تومان</span>
                 </div>
             )}
-            <InputState
-                label="قیمت"
-                placeholder="مثال: 50000000"
-                value={price !== undefined && price !== null ? formatInputNumber(String(price)) : ""}
-                onChange={(e) => {
-                    const formatted = formatInputNumber(e.target.value);
-                    e.target.value = formatted;
-                    setPrice(formatted);
-                }}
-                numeric
-            />
-            {!hideFields && (
+            <div className="flex flex-col">
+                <InputState
+                    label="قیمت"
+                    placeholder="مثال: 2,000,000 تومان"
+                    value={price !== undefined && price !== null ? formatInputNumber(String(price)) : ""}
+                    onChange={(e) => {
+                        const formatted = formatInputNumber(e.target.value);
+                        e.target.value = formatted;
+                        setPrice(Number(formatted.replace(/,/g, "")));
+                    }}
+                    numeric
+                />
+                <span className="text-xs text-gray-400 my-1">لطفا اعداد را به انگلیسی وارد کنید</span>
+                <span className="text-xs text-gray-500">{formatNumber(price)} تومان</span>
+            </div>
+             {!hideFields && (
                 <div className="flex flex-col col-span-1 relative">
                     <label className="mb-1 text-sm font-semibold text-gray-700">امکانات</label>
                     <button

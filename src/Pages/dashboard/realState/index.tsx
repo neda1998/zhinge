@@ -14,27 +14,29 @@ export default function Realstate() {
    const [cookies] = useCookies(["accessToken"]);
     const navigate = useNavigate();
 
-  const [loan, setLoan] = useState("");
+  const [loan, setLoan] = useState<number>(0);
   const [type, setType] = useState("");
   const [region, setRegion] = useState("");
   const [address, setAddress] = useState("");
   const [location, setLocation] = useState("");
-  const [usage, setUsage] = useState("-");
-  const [document_type, setDocumentType] = useState("");
-  const [land_metrage, setLandMetrage] = useState("");
-  const [useful_metrage, setUsefulMetrage] = useState("");
-  const [floor_number, setFloorNumber] = useState("");
-  const [floor, setFloor] = useState("");
-  const [Unit_in_floor, setUnitInFloor] = useState("");
-  const [year_of_build, setYearOfBuild] = useState("");
-  const [full_name, setFullName] = useState("");
-  const [price, setPrice] = useState("");
-  const [room_number, setRoomNumber] = useState("");
-  const [features, setFeatures] = useState("");
+  const [document_type, setDocumentType] = useState<string>("");
+   const [land_metrage, setLandMetrage] = useState<number | undefined>();
+  const [useful_metrage, setUsefulMetrage] = useState<number | undefined>(0);
+  const [floor_number, setFloorNumber] = useState<number | undefined>(0);
+  const [floor, setFloor] = useState<number | undefined>(0);
+  const [Unit_in_floor, setUnitInFloor] = useState<number | undefined>(0);
+  const [year_of_build, setYearOfBuild] = useState<number | undefined>(0);
+  const [full_name, setFullName] = useState<string>("");
+  const [price, setPrice] = useState<number | undefined>();
+  const [room_number, setRoomNumber] = useState<number | undefined>(0);
+  const [features, setFeatures] = useState<string>("-");
   const [uploadedImages, setUploadedImages] = useState<any[]>([]);
   const [currentStep, setCurrentStep] = useState(1);
   const [isAnnouncementSubmitted, setIsAnnouncementSubmitted] = useState(false);
   const [description, setDescription] = useState<string>("");
+  const [state_code, setStateCode] = useState<string>("-");
+  const [phone, setPhone] = useState<string>("");
+  const [usage, setUsage] = useState<string>("-");
 
   const handleNextStep = () => {
     if (currentStep === 3 && !isAnnouncementSubmitted) {
@@ -78,31 +80,13 @@ export default function Realstate() {
   }, [cookies, navigate]);
 
   const handleSubmit = () => {
-    const requiredFields = [
-      { value: type, label: "نوع ملک" },
-      { value: region, label: "منطقه" },
-      { value: address, label: "آدرس" },
-      { value: Unit_in_floor, label: "تعداد واحد در طبقه" },
-      { value: document_type, label: "نوع سند" },
-      { value: floor_number, label: "تعداد طبقات" },
-      { value: floor, label: "طبقه" },
-      { value: loan, label: "وام" },
-      { value: year_of_build, label: "سال ساخت" },
-      { value: room_number, label: "تعداد اتاق" },
-      { value: useful_metrage, label: "متراژ مفید" },
-      { value: location, label: "موقعیت" },
-      { value: land_metrage, label: "متراژ زمین" },
-      { value: features, label: "امکانات" },
-      { value: full_name, label: "نام کامل" },
-      { value: price, label: "قیمت" },
-    ];
-    const toNumberOrUndefined = (val: string) => {
+    const toNumberOrUndefined = (val: any) => {
       if (val === undefined || val === null) return undefined;
       const num = Number(val.toString().replace(/,/g, ""));
       return isNaN(num) ? undefined : num;
     };
 
-    const requestData = {
+    const rawData = {
       Unit_in_floor: toNumberOrUndefined(Unit_in_floor),
       address: address || "",
       document_type: document_type || "",
@@ -117,16 +101,40 @@ export default function Realstate() {
       region: region || "",
       room_number: toNumberOrUndefined(room_number),
       type: type || "",
-      usage: usage || "",
       useful_metrage: toNumberOrUndefined(useful_metrage),
       year_of_build: toNumberOrUndefined(year_of_build),
+      usage:usage || "-",
     };
-    mutate(requestData as any, {
+    mutate(rawData as any, {
       onSuccess: () => {
         setIsAnnouncementSubmitted(true);
       }
     });
   };
+  const 
+  resetAllStates = () => {
+        setType("");
+        setRegion("");
+        setAddress("");
+        setLocation("");
+        setPrice(undefined);
+        setLoan(0);
+        setYearOfBuild(undefined);
+        setRoomNumber(undefined);
+        setLandMetrage(undefined);
+        setFloorNumber(undefined);
+        setFloor(undefined);
+        setUnitInFloor(undefined);
+        setDocumentType("");
+        setFeatures("");
+        setFullName("");
+        setStateCode("");
+        setUsefulMetrage(undefined);
+        setIsAnnouncementSubmitted(false);
+        setUploadedImages([]);
+        setCurrentStep(1);
+    };
+
 
   const stepComponents = [
     <StepOneUser
@@ -156,9 +164,11 @@ export default function Realstate() {
     <StepThreeUser
       key="step3"
       full_name={full_name} setFullName={setFullName}
-      onSubmit={handleSubmit}
+      onSibmit={handleSubmit}
       isAnnouncementSubmitted={isAnnouncementSubmitted}
+      onReset={resetAllStates}
       type={type}
+      setLocation={setLocation}
     />,
     <StepFourUser
       key="step4"

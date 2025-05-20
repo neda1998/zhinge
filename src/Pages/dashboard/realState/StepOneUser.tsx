@@ -3,24 +3,14 @@ import InputState from "../../../components/ui/atoms/input/inputState";
 import ComboBox from '../../../components/common/Combo';
 
 interface StepOneUserProps {
-    type: string; setType: (v: string) => void;
-    region: string; setRegion: (v: string) => void;
-    address: string; setAddress: (v: string) => void;
-    Unit_in_floor: string; setUnitInFloor: (v: string) => void;
-    floor_number: string; setFloorNumber: (v: string) => void;
-    floor: string; setFloor: (v: string) => void;
-    document_type?: string; setDocumentType?: (v: string) => void;
-    room_number?: string; setRoomNumber?: (v: string) => void;
-}
-
-function formatInputNumber(val: string) {
-    const onlyNums = val.replace(/[^\d]/g, "");
-    return onlyNums.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-}
-function formatNumber(val: string) {
-    if (!val) return "";
-    const num = Number(val.replace(/,/g, ""));
-    return isNaN(num) ? "" : num.toLocaleString("en-US");
+  type: string; setType: (v: string) => void;
+  region: string; setRegion: (v: string) => void;
+  address: string; setAddress: (v: string) => void;
+  Unit_in_floor?: number; setUnitInFloor: (v: number) => void;
+  document_type: string; setDocumentType: (v: string) => void;
+  floor_number?: number; setFloorNumber: (v: number) => void;
+  floor?: number; setFloor: (v: number) => void;
+  room_number?: number; setRoomNumber: (v: number) => void;
 }
 
 const shouldHideFields = (type: string) =>
@@ -36,7 +26,7 @@ const StepOneUser = ({
     document_type, setDocumentType,
     room_number, setRoomNumber
 }: StepOneUserProps) => {
-    const hideFields = shouldHideFields(type);
+   const hideFields = shouldHideFields(type);
     return (
         <div className="w-full grid lg:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-5">
             <ComboBox
@@ -48,7 +38,7 @@ const StepOneUser = ({
 
             <InputState
                 label="منطقه"
-                placeholder="مثال: 2"
+                placeholder="مثال: مبارک آباد"
                 value={region}
                 onChange={e => setRegion(e.target.value)}
             />
@@ -59,34 +49,38 @@ const StepOneUser = ({
                 onChange={e => setAddress(e.target.value)}
             />
 
-            {!hideFields && (
-                <>
-                    <InputState
-                        label="طبقه مورد نظر"
-                        placeholder="مثال: 2"
-                        value={floor}
-                        onChange={e => setFloor(formatInputNumber(e.target.value))}
-                    />
-                    <InputState
-                        label="تعداد طبقات"
-                        placeholder="مثال: 3"
-                        value={floor_number}
-                        onChange={e => setFloorNumber(formatInputNumber(e.target.value))}
-                    />
-                    <InputState
-                        label="تعداد واحد در طبقه"
-                        placeholder="مثال: 2"
-                        value={Unit_in_floor}
-                        onChange={e => setUnitInFloor(e.target.value.replace(/,/g, ""))}
-                    />
-                    <InputState
-                        label="تعداد اتاق ها"
-                        placeholder="مثال: 2"
-                        value={room_number}
-                        onChange={e => setRoomNumber && setRoomNumber(e.target.value.replace(/,/g, ""))}
-                    />
-                </>
-            )}
+             {!hideFields && (
+          <>
+            <InputState
+              label="طبقه مورد نظر"
+              value={floor_number !== undefined && floor_number !== null ? String(floor_number) : ""}
+              onChange={e => setFloorNumber(Number(e.target.value.replace(/,/g, "")))}
+              placeholder="مثال: 2"
+              numeric
+            />
+            <InputState
+              label="تعداد طبقات"
+              value={floor !== undefined && floor !== null ? String(floor) : ""}
+              onChange={e => setFloor(Number(e.target.value.replace(/,/g, "")))}
+              placeholder="مثال: 5"
+              numeric
+            />
+            <InputState
+              label="تعداد واحد در طبقه"
+              value={Unit_in_floor !== undefined && Unit_in_floor !== null ? String(Unit_in_floor) : ""}
+              onChange={e => setUnitInFloor(Number(e.target.value.replace(/,/g, "")))}
+              placeholder="مثال: 2"
+              numeric
+            />
+            <InputState
+              label="تعداد اتاق ها"
+              value={room_number !== undefined && room_number !== null ? String(room_number) : ""}
+              onChange={(e) => setRoomNumber(Number(e.target.value.replace(/,/g, "")))}
+              placeholder="مثال: 3"
+              numeric
+            />
+          </>
+        )}
             <ComboBox
                 label="نوع سند"
                 value={document_type}
