@@ -11,7 +11,7 @@ const Sidebar = () => {
     const { showSidebar } = useAppContext();
     const [selectedItem, setSelectedItem] = useState<number | null>(null);
     const [openModal, setOpenModal] = useState(false);
-    const [cookies, , removeCookie] = useCookies(["refreshToken", "accessToken", "full_name", "name"]);
+    const [cookies, , removeCookie] = useCookies(["refreshToken", "accessToken", "full_name", "name","role"]);
 
     const logoutUser = async () => {
         try {
@@ -21,6 +21,7 @@ const Sidebar = () => {
                 removeCookie("accessToken", { path: "/" });
                 removeCookie("name", { path: "/" });
                 removeCookie("full_name", { path: "/" });
+                removeCookie("role", { path: "/" });
                 window.location.href = "/";
                 return;
             }
@@ -35,12 +36,14 @@ const Sidebar = () => {
             removeCookie("accessToken", { path: "/" });
             removeCookie("name", { path: "/" });
             removeCookie("full_name", { path: "/" });
+            removeCookie("role", { path: "/" });
             window.location.href = "/";
         } catch (error: any) {
             removeCookie("refreshToken", { path: "/" });
             removeCookie("accessToken", { path: "/" });
             removeCookie("full_name", { path: "/" });
             removeCookie("name", { path: "/" });
+            removeCookie("role", { path: "/" });
             window.location.href = "/";
         }
     };

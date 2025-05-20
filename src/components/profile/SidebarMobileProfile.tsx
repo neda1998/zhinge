@@ -15,7 +15,7 @@ const SidebarMobileProfile = ({ onClose }: SidebarMobileProfileProps) => {
     const [openModal, setOpenModal] = useState(false);
     const [animationClass, setAnimationClass] = useState('');
     const sidebarRef = useRef<HTMLDivElement | null>(null);
-    const [cookies, , removeCookie] = useCookies(["refreshToken", "accessToken", "name", "full_name"]);
+    const [cookies, , removeCookie] = useCookies(["refreshToken", "accessToken", "name", "full_name", "role"]);
 
     const logoutUser = async () => {
         try {
@@ -25,6 +25,7 @@ const SidebarMobileProfile = ({ onClose }: SidebarMobileProfileProps) => {
                 removeCookie("accessToken", { path: "/" });
                 removeCookie("name", { path: "/" });
                 removeCookie("full_name", { path: "/" });
+                removeCookie("role", { path: "/" });
                 window.location.href = "/";
                 return;
             }
@@ -39,12 +40,14 @@ const SidebarMobileProfile = ({ onClose }: SidebarMobileProfileProps) => {
             removeCookie("accessToken", { path: "/" });
             removeCookie("name", { path: "/" });
             removeCookie("full_name", { path: "/" });
+            removeCookie("role", { path: "/" });
             window.location.href = "/";
         } catch (error: any) {
             removeCookie("refreshToken", { path: "/" });
             removeCookie("accessToken", { path: "/" });
             removeCookie("name", { path: "/" });
             removeCookie("full_name", { path: "/" });
+            removeCookie("role", { path: "/" });
             window.location.href = "/";
         }
     };
@@ -59,7 +62,6 @@ const SidebarMobileProfile = ({ onClose }: SidebarMobileProfileProps) => {
 
     return (
         <>
-            {/* Backdrop only for area outside sidebar */}
             <div
                 className="fixed inset-0 z-[998]"
                 style={{ right: '60%', left: 0, background: 'rgba(0,0,0,0.3)' }}
