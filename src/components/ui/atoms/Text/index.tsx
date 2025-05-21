@@ -3,7 +3,7 @@ import React from 'react';
 const Text = ({ children, className }: any) => {
   return (
     <>
-      <span className={className} >{children}</span>
+      <p className={className} >{children}</p>
     </>
   )
 };

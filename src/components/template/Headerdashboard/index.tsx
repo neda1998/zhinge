@@ -1,7 +1,7 @@
 import ZhingeLogo from '../../../assets/images/Zhinge.svg'
 import { navItems } from "./navItems";
-import NavList from "../../ui/molecules/NavList";
 import ImageProfile from '../../../assets/images/dashboardicons/Ellipse 381.svg'
+import NavList from '../../ui/molecules/NavList';
 export default function HeaderDashboard({ variant }: any) {
   return (
     <>

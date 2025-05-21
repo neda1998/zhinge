@@ -1,11 +1,11 @@
 import Button from "../../ui/atoms/Button";
 import ZhingeLogo from '../../../assets/images/Zhinge.svg'
 import { navItems } from "../../../utils/data";
-import NavList from "../../ui/molecules/NavList";
 import { Link, useNavigate } from "react-router-dom";
 import HeaderMobile from "../HeaderMobile";
 import ChangeTheme from "../../changeTheme";
 import { useCookies } from "react-cookie";
+import NavList from "../../ui/molecules/NavList";
 
 
 export default function Header({ variant }: any) {

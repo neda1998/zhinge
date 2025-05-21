@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Button from "../../ui/atoms/Button";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import User from '../../../assets/images/dashboardicons/User Rounded.svg'
 import UserWhite from '../../../assets/images/dashboardicons/User Roundedwhite.svg'
 import ZhingeLogo from '../../../assets/images/Zhinge.svg'
@@ -48,6 +48,7 @@ export default function HeaderMobile() {
     }, [showModal]);
 
     const navigate = useNavigate()
+    const location = useLocation()
 
     return (
         <>
@@ -111,7 +112,6 @@ export default function HeaderMobile() {
             {showModal && (
                 <div className="fixed inset-0 z-50 bg-[#4e4e4e94] dark:bg-[#323436a8] bg-opacity-40 flex transition-all duration-300">
                     <div className={`bg-gray-900 w-4/5 max-w-xs h-full shadow-2xl p-6 flex flex-col relative animate-slide-in-right`}>
-                        {/* دکمه بستن */}
                         <button
                             className="absolute top-3 left-3 text-gray-400 hover:text-red-500 text-3xl transition"
                             onClick={() => setShowModal(false)}
@@ -133,6 +133,7 @@ export default function HeaderMobile() {
                                             text-right hover:bg-main-color/10 dark:hover:bg-main-color/20
                                             hover:text-main-color dark:hover:text-main-color
                                             font-medium
+                                            ${location.pathname === item.href ? "bg-main-color/10 text-main-color dark:bg-main-color/20 dark:text-main-color" : ""}
                                         `}
                                         onClick={() => {
                                             navigate(item.href);

@@ -6,7 +6,6 @@ import eye from "../../assets/images/Eye.png";
 import newHouse from "../../assets/images/newHouse.png";
 import time from "../../assets/images/time.png";
 import search from "../../assets/images/search.png";
-import essential from "../../assets/images/essential.png";
 import slider from "../../assets/images/slider-table.png";
 import house from "../../assets/images/Home.png";
 import close from "../../assets/images/Close-Circle.png";
