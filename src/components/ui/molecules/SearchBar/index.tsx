@@ -56,6 +56,14 @@ export default function SearchBar({
 
   const toggleDropdown = () => setIsOpen((prev) => !prev);
 
+  // تابع ساده برای خواندن مقدار کوکی
+  function getCookie(name: string) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop()?.split(';').shift() || "";
+    return "";
+  }
+
   const handleSearch = () => {
     if (minPrice && maxPrice) {
       const min = parseFloat(minPrice);
@@ -71,39 +79,41 @@ export default function SearchBar({
       }
     }
 
+    const Uid = getCookie("Uid"); 
+
     const searchData = {
-      id: propertyCode ? parseInt(propertyCode) : null,
-      userID: "",
+      id: propertyCode ? parseInt(propertyCode) : undefined,
+      userID: "", 
+      Uid: Uid,     
       tour3dRequest: false,
       tour3dlink: "",
       loan: loan ? parseInt(loan) : 0,
-      type: propertyType, 
-      region: region,
-      address: "", 
-      location: "",
-      usage: usage,
-      document_type: "",
+      type: propertyType || "any",
+      region: region || "any",
+      address: "",
+      location: "any",
+      usage: usage || "any",
+      document_type: "any",
       land_metrage: landMetrage ? parseInt(landMetrage) : 0,
       useful_metrage: 0,
       floor_number: floorNumber ? parseInt(floorNumber) : 0,
-      floor: 0, 
-      Unit_in_floor: 0, 
+      floor: 0,
+      Unit_in_floor: 0,
       year_of_build: yearOfBuild ? parseInt(yearOfBuild) : 0,
-      full_name: "", 
-      price: 0, 
+      full_name: "any",
+      price: minPrice ? parseInt(minPrice) : 0,
       room_number: roomNumber ? parseInt(roomNumber) : 0,
-      features: "", 
+      features: "any",
       photo: {},
-      phone: "", 
+      phone: "",
       check: false,
       reject: false,
       state_code: "",
-      Uid: "" 
     };
 
     searchMutation.mutate(searchData as any, {
       onSuccess: (response: any) => {
-        const results = Array.isArray(response) ? response : response?.announce_search_bodyUp;
+        const results = Array.isArray(response) ? response : [];
         setHasSearched(true);
         if (!results || results.length === 0) {
           setSearchResults([]);

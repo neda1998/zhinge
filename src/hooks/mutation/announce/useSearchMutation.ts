@@ -1,16 +1,18 @@
 import { useMutation } from "react-query";
 import Swal from "sweetalert2";
 import { search } from "../../../services/search";
+import Cookies from "js-cookie";
 
 const useSearchMutation = () => {
+  const uid = Cookies.get("Uid")
   return useMutation(
-    async (data) => {
+    async (data: any) => {
       return await search(data);
     },
     {
       onSuccess: async (response) => {
         console.log("✅ جستجو موفقیت‌آمیز بود", response);
-        if (response?.announce_search_bodyUp && response.announce_search_bodyUp.length > 0) {
+        if (Array.isArray(response) && response.length > 0) {
           Swal.fire({
             title: "موفقیت",
             text: "✅ جستجو انجام شد",
