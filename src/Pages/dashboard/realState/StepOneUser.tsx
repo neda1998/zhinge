@@ -51,13 +51,15 @@ const StepOneUser = ({
 
              {!hideFields && (
           <>
-            <InputState
-              label="طبقه مورد نظر"
-              value={floor_number !== undefined && floor_number !== null ? String(floor_number) : ""}
-              onChange={e => setFloorNumber(Number(e.target.value.replace(/,/g, "")))}
-              placeholder="مثال: 2"
-              numeric
-            />
+            {type !== "ویلایی" && (
+              <InputState
+                label="طبقه مورد نظر"
+                value={floor_number !== undefined && floor_number !== null ? String(floor_number) : ""}
+                onChange={e => setFloorNumber(Number(e.target.value.replace(/,/g, "")))}
+                placeholder="مثال: 2"
+                numeric
+              />
+            )}
             <InputState
               label="تعداد طبقات"
               value={floor !== undefined && floor !== null ? String(floor) : ""}

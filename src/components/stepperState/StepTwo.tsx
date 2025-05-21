@@ -1,6 +1,9 @@
 import ComboBox from "../common/Combo";
 import InputState from "../ui/atoms/input/inputState"
 import React, { useState } from "react";
+import DatePicker from "react-multi-date-picker";
+import persian from "react-date-object/calendars/persian";
+import persian_fa from "react-date-object/locales/persian_fa";
 
 interface StepTwoProps {
     loan?: number; setLoan: (v: number) => void;
@@ -25,9 +28,7 @@ const formatNumber = (value: number | string | undefined) =>
         : "";
 
 const FEATURES_OPTIONS = [
-    "آسانسور", "پارکینگ", "انباری", "تراس", "حیاط", "سرویس بهداشتی", "سرویس حمام", "کمد دیواری", "کابینت", "کولر", "پکیج", "شومینه", "دوربین مداربسته", "سیستم گرمایش", "سیستم سرمایش", "سونا", "جکوزی", "استخر", "زمین بازی", "باشگاه ورزشی"
-    , "سالن اجتماعات", "سالن کنفرانس", "کتابخانه", "لابی", "آتش‌نشانی", "سیستم اعلام حریق", "سیستم تهویه مطبوع", "سیستم امنیتی", "سیستم کنترل دسترسی", "سیستم روشنایی هوشمند", "سیستم صوتی و تصویری", "سیستم اینترنت پرسرعت", "سیستم تلویزیون مرکزی ", "سیستم گرمایش از کف", "سیستم سرمایش از سقف", "سیستم تصفیه آب", "سیستم تصفیه هوا", "سیستم گرمایش و سرمایش مرکزی", "سیستم گرمایش و سرمایش مستقل", "سیستم گرمایش و سرمایش هوشمند", "سیستم گرمایش و سرمایش خودکار", "سیستم گرمایش و سرمایش دستی"
-];
+    "آسانسور", "پارکینگ", "انباری", "تراس", "حیاط", "سرویس بهداشتی", "سرویس حمام", "کمد دیواری", "کابینت", "کولر", "پکیج", "شومینه", "دوربین مداربسته", "سونا", "جکوزی", "استخر", "لابی", "سیستم امنیتی", "سیستم گرمایش از کف", "سیستم سرمایش از سقف","سقف کناف","درب ضد سرقت","کف سرامیک","کف پارکت"];
 
 const LOCATION_OPTIONS = [
     "شمالی",
@@ -66,6 +67,43 @@ const StepTwo = ({
         }
     };
 
+    function numberToPersianWords(num: number | undefined): string {
+        if (num === undefined || num === null || isNaN(num)) return "";
+        const units = ["", "هزار", "میلیون", "میلیارد"];
+        const numbers = [
+            "", "یک", "دو", "سه", "چهار", "پنج", "شش", "هفت", "هشت", "نه", "ده",
+            "یازده", "دوازده", "سیزده", "چهارده", "پانزده", "شانزده", "هفده", "هجده", "نوزده", "بیست"
+        ];
+        const tens = ["", "", "بیست", "سی", "چهل", "پنجاه", "شصت", "هفتاد", "هشتاد", "نود"];
+        const hundreds = ["", "صد", "دویست", "سیصد", "چهارصد", "پانصد", "ششصد", "هفتصد", "هشتصد", "نهصد"];
+
+        if (num === 0) return "صفر";
+        let parts: string[] = [];
+        let unitIndex = 0;
+        while (num > 0 && unitIndex < units.length) {
+            let n = num % 1000;
+            if (n !== 0) {
+                let str = "";
+                let h = Math.floor(n / 100);
+                let t = n % 100;
+                if (h) str += hundreds[h];
+                if (h && t) str += " و ";
+                if (t > 0 && t <= 20) str += numbers[t];
+                else if (t > 20) {
+                    let ten = Math.floor(t / 10);
+                    let one = t % 10;
+                    str += tens[ten];
+                    if (one) str += " و " + numbers[one];
+                }
+                if (units[unitIndex]) str += " " + units[unitIndex];
+                parts.unshift(str.trim());
+            }
+            num = Math.floor(num / 1000);
+            unitIndex++;
+        }
+        return parts.join(" و ");
+    }
+
     return (
         <div className="grid lg:grid-cols-4 grid-cols-1 w-full gap-5">
             <InputState
@@ -102,12 +140,26 @@ const StepTwo = ({
             />
             {!hideFields && (
                 <>
-                    <InputState
-                        label="سال ساخت"
-                        value={year_of_build !== undefined && year_of_build !== null ? String(year_of_build) : ""}
-                        onChange={(e) => setYearOfBuild(Number(e.target.value.replace(/,/g, "")))}
-                        numeric 
-                    />
+                    <div className="flex flex-col">
+                        <label className="mb-1 text-sm font-semibold text-gray-700">سال ساخت</label>
+                        <DatePicker
+                            value={year_of_build ? year_of_build.toString() : ""}
+                            onChange={date => {
+                                if (date && typeof date.year === "number") {
+                                    setYearOfBuild(date.year);
+                                } else if (typeof date === "string" && date) {
+                                    setYearOfBuild(Number(date));
+                                }
+                            }}
+                            calendar={persian}
+                            locale={persian_fa}
+                            inputClass="appearance-none w-full py-3 px-4 rounded-full focus:outline-none focus:ring-2 focus:ring-gray-400 bg-[#f4f4f4]"
+                            format="YYYY/MM/DD"
+                            calendarPosition="bottom-right"
+                            style={{ width: "100%" }}
+                            placeholder="انتخاب سال"
+                        />
+                    </div>
                 </>
             )}
             {!hideFields && (
@@ -140,6 +192,11 @@ const StepTwo = ({
                 />
                 <span className="text-xs text-gray-400 my-1">لطفا اعداد را به انگلیسی وارد کنید</span>
                 <span className="text-xs text-gray-500">{formatNumber(price)} تومان</span>
+                {price ? (
+                    <span className="text-xs text-blue-600 my-1">
+                        {numberToPersianWords(price)} تومان
+                    </span>
+                ) : null}
             </div>
             {!hideFields && (
                 <div className="flex flex-col col-span-1 relative">
@@ -212,8 +269,8 @@ const StepTwo = ({
                     value={description}
                     onChange={e => setDescription(e.target.value)}
                     placeholder="توضیحات ملک را وارد کنید"
-                    className="border rounded px-2 py-1 w-full"
-                    rows={4}
+                    className="border rounded px-2 py-1 w-full min-h-48 resize-none focus:outline-none focus:ring-2 focus:ring-main-color transition duration-200"
+                    maxLength={500}
                 />
             </div>
         </div>

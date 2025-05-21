@@ -35,7 +35,6 @@ export default function Realstate() {
   const [isAnnouncementSubmitted, setIsAnnouncementSubmitted] = useState(false);
   const [description, setDescription] = useState<string>("");
   const [state_code, setStateCode] = useState<string>("-");
-  const [phone, setPhone] = useState<string>("");
   const [usage, setUsage] = useState<string>("-");
 
   const handleNextStep = () => {

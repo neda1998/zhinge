@@ -20,7 +20,7 @@ const InitialLayout = ({ children }: Props) => {
       <div className={`col-span-2 panelAdmin always-light main w-full md:overflow-x-hidden ${showSidebar ? "-mr-[15rem]" : "mr-0"}`}>
         <TopNavbar />
         <TopNavbarMobile />
-        <main className="mx-10 panelAdmin always-light">
+        <main className="sm:mx-10 panelAdmin always-light mx-5">
           {children}
         </main>
       </div>
