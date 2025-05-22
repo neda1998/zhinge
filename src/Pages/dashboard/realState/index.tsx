@@ -15,7 +15,7 @@ export default function Realstate() {
     const navigate = useNavigate();
 
   const [loan, setLoan] = useState<number>(0);
-  const [type, setType] = useState("");
+  const [type, setType] = useState("-");
   const [region, setRegion] = useState("");
   const [address, setAddress] = useState("");
   const [location, setLocation] = useState("");
@@ -35,7 +35,7 @@ export default function Realstate() {
   const [isAnnouncementSubmitted, setIsAnnouncementSubmitted] = useState(false);
   const [description, setDescription] = useState<string>("");
   const [state_code, setStateCode] = useState<string>("-");
-  const [usage, setUsage] = useState<string>("-");
+  const [usage, setUsage] = useState<string>("");
 
   const handleNextStep = () => {
     if (currentStep === 3 && !isAnnouncementSubmitted) {
@@ -103,6 +103,7 @@ export default function Realstate() {
       useful_metrage: toNumberOrUndefined(useful_metrage),
       year_of_build: toNumberOrUndefined(year_of_build),
       usage:usage || "-",
+      description: description || "",
     };
     mutate(rawData as any, {
       onSuccess: () => {
@@ -132,6 +133,8 @@ export default function Realstate() {
         setIsAnnouncementSubmitted(false);
         setUploadedImages([]);
         setCurrentStep(1);
+        setUsage("");
+        setDescription("");
     };
 
 
@@ -146,6 +149,7 @@ export default function Realstate() {
       floor_number={floor_number} setFloorNumber={setFloorNumber}
       floor={floor} setFloor={setFloor}
       room_number={room_number} setRoomNumber={setRoomNumber}
+      usage={usage} setUsage={setUsage}
     />,
     <StepTwoUser
       key="step2"

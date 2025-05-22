@@ -248,7 +248,6 @@ const SearchForEstate = () => {
               {fields.map((item, idx) => (
                 <div key={idx} className="flex flex-col mb-1">
                   <label className="text-gray-500 text-[13px] mb-1">{item.label}</label>
-                  {/* اگر گزینه‌ها وجود داشت، دراپ‌داون نمایش بده */}
                   {item.options ? (
                     <select
                       className="font-bold text-gray-800 text-[16px] rounded-lg border border-gray-200 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-300 transition"
@@ -256,7 +255,6 @@ const SearchForEstate = () => {
                       onChange={e => handleEditFormChange(item.key, e.target.value)}
                     >
                       <option value="">انتخاب کنید</option>
-                      {/* اگر مقدار قبلی انتخاب شده بود، آن را هم در لیست قرار بده */}
                       {item.options
                         .concat(
                           editForm[item.key] && !item.options.includes(editForm[item.key])

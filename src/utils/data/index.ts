@@ -31,8 +31,7 @@ import { VscFileSymlinkDirectory } from "react-icons/vsc";
 
 export const navItems = [
   { text: "صفحه اصلی", url: "/" },
-  { text: "آگهی فروش", url: "/Announcement-list/sell" },
-  { text: "آگهی اجاره", url: "/Announcement-list/rent" },
+  { text: "آگهی ها", url: "/Announcement-list" },
   { text: "خدمات", url: "/services" },
   { text: "درخواست ملک", url: "/request-state" },
 ];

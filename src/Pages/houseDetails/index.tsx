@@ -3,13 +3,12 @@ import Header from '../../components/template/Header';
 import { useEffect } from 'react';
 import { useFormik } from "formik";
 import UseByUidAnnounceMutation from '../../hooks/mutation/announce/UseByUidAnnounceMutation';
-import { useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { PuffLoader } from 'react-spinners';
 
 const HouseDetails = () => {
     const { mutate, data, isLoading, error } = UseByUidAnnounceMutation();
-    const location = useLocation();
-    const Uid = location.pathname.split('/').pop();
+    const { id: Uid } = useParams<{ id: string }>();
 
     useEffect(() => {
         if (!Uid) {
@@ -19,13 +18,13 @@ const HouseDetails = () => {
     }, [mutate, Uid]);
 
     const selectedProperty = Array.isArray(data) 
-        ? data.find((property: any) => property.id.toString() === Uid) 
+        ? data.find((property: any) => property.Uid?.toString() === Uid) 
         : data;
 
     const formik = useFormik<Record<string, any>>({
         enableReinitialize: true,
         initialValues: {
-            type: selectedProperty?.type || '',
+            usage: selectedProperty?.usage || '',
             id: selectedProperty?.id || '',
             region: selectedProperty?.region || '',
             useful_metrage: selectedProperty?.useful_metrage || '',
@@ -55,7 +54,7 @@ const HouseDetails = () => {
 
     const fields = [
         { name: 'id', label: 'کد ملک' },
-        { name: 'type', label: 'نوع ملک' },
+        { name: 'usage', label: 'نوع ملک' },
         { name: 'region', label: 'منطقه' },
         { name: 'address', label: 'آدرس' },
         { name: 'location', label: 'موقعیت مکانی' },
@@ -88,8 +87,8 @@ const HouseDetails = () => {
                             <div className="w-full h-fit flex flex-col gap-10">
                                 <div className="flex w-full justify-center items-center gap-4 mb-2">
                                     <span className="text-[42px] mobile:text-[28px] font-extrabold text-transparent bg-clip-text bg-gradient-to-l from-green-400 to-blue-500 drop-shadow-lg">
-                                        {selectedProperty?.type
-                                            ? `ملک ${selectedProperty.type}`
+                                        {selectedProperty?.usage
+                                            ? `ملک ${selectedProperty.usage}`
                                             : "جزئیات ملک"}
                                     </span>
                                     {(selectedProperty?.full_name || (selectedProperty?.userID && selectedProperty.userID !== "0")) && (
@@ -169,7 +168,7 @@ const HouseDetails = () => {
                                         ? selectedProperty.photo[0]
                                         : (typeof selectedProperty?.photo === "string" && selectedProperty.photo)
                                             ? selectedProperty.photo
-                                            : ImageMainPage // عکس دیفالت اگر عکسی وجود نداشت
+                                            : ImageMainPage 
                                 }
                                 alt="عکس ملک"
                                 className="rounded-2xl w-full h-[500px] object-cover border shadow"

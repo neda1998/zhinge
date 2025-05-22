@@ -2,7 +2,6 @@ import apiRoutes from "../../../helpers/routes/apiRoutes";
 import { getRoute } from "../../service";
 import client from "../../utils/client";
 
-// نوع ورودی بر اساس داکیومنت
 export interface CreatAnnouncementBody {
   loan?: number;
   usage?: string;
@@ -31,6 +30,7 @@ export interface CreatAnnouncementBody {
   state_code?: string;
   tour3dlink?: string;
   land_metrage?: number;
+  description?: string;
 }
 
 export const creatAnnouncement = async (data: CreatAnnouncementBody, token: string) => {
@@ -46,4 +46,6 @@ export const creatAnnouncement = async (data: CreatAnnouncementBody, token: stri
     }
   });
 };
+
+// Confirm that description is present in CreatAnnouncementBody and sent in data
 

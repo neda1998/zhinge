@@ -1,17 +1,23 @@
 import { useState } from "react";
-import { FaCaretDown } from "react-icons/fa";
 import { SlLocationPin } from "react-icons/sl";
 import InitialLayout from "../../dashboard/initialLayoutAdmin";
 import RouteChevron from "../../../components/common/RouteChevron";
 import { pageBasicEstateInformation } from "../../../utils/data";
 import { CgMathPlus } from "react-icons/cg";
-import Search from "../../../components/common/Search";
 import BasicEstateInformationModal from "./BasicEstateInformationModal";
 import BasicEstateInformationTable from "./BasicEstateInformationTable";
+import UseGetAllregionsQuery from "../../../hooks/queries/admin/getAllregions/UseGetAllregionsQuery";
+import UsedeleteregionMutation from "../../../hooks/mutation/deleteregion/UsedeleteregionMutation";
+import UseCreatregionMutation from "../../../hooks/mutation/creatregion/UseCreatregionMutation";
+import { useQueryClient } from "react-query";
 
 const BasicEstateInformation = () => {
     const [modalOpen, setModalOpen] = useState<boolean>(false);
     const [selectedItem, setSelectedItem] = useState<number | null>(null);
+    const { data, isLoading, refetch } = UseGetAllregionsQuery();
+    const deleteRegionMutation = UsedeleteregionMutation();
+    const createRegionMutation = UseCreatregionMutation();
+    const queryClient = useQueryClient();
 
     const handleModalOpen = (id: number) => {
         setSelectedItem(id);
@@ -24,8 +30,34 @@ const BasicEstateInformation = () => {
     };
 
     const handleDeleteClick = (id: number) => {
-        console.log(`Delete`);
+        deleteRegionMutation.mutate(
+            { id: String(id) },
+            {
+                onSuccess: () => {
+                    // invalidate کوئری برای گرفتن داده جدید
+                    queryClient.invalidateQueries("getAllregions");
+                }
+            }
+        );
     };
+
+    const handleCreateRegion = (regionName: string) => {
+        createRegionMutation.mutate(
+            { name: regionName },
+            {
+                onSuccess: () => {
+                    queryClient.invalidateQueries("getAllregions");
+                    handleModalClose();
+                }
+            }
+        );
+    };
+
+    // اضافه کردن لاگ برای بررسی ساختار data
+    console.log("regions data:", data);
+
+    // استخراج آرایه مناطق از data (در صورت نبود داده، آرایه خالی)
+    const regions = Array.isArray(data) ? data : [];
 
     return (
         <InitialLayout>
@@ -35,18 +67,7 @@ const BasicEstateInformation = () => {
                 </div>
                 <RouteChevron items={pageBasicEstateInformation} />
             </div>
-            <div className="flex items-center justify-between">
-                <div className={`relative ${modalOpen ? 'opacity-50' : ''}`}>
-                    <select
-                        className="appearance-none border border-gray-300 text-black font-extrabold p-2 rounded-lg lg:w-64 w-48 focus:ring-0 focus:outline-none"
-                    >
-                        <option>مدیریت منطقه</option>
-                        <option>مدیریت منطقه ۱</option>
-                    </select>
-                    <div className="absolute inset-y-0 lg:left-3 left-0 flex items-center lg:px-2 pointer-events-none">
-                        <FaCaretDown color="#d1d5db" size={24} />
-                    </div>
-                </div>
+            <div className="flex items-center justify-end">
                 <div className="flex flex-col items-center gap-3 mt-6">
                     <div
                         className={`rounded-xl p-3 bg-white transition-colors duration-300 cursor-pointer`}
@@ -67,10 +88,25 @@ const BasicEstateInformation = () => {
                     </span>
                 </div>
             </div>
-            <Search className="lg:w-1/2 w-full my-12" searchClass="w-12 h-11" />
-            <BasicEstateInformationTable handleDeleteClick={handleDeleteClick} handleModalOpen={handleModalClose} />
+            {isLoading ? (
+                <div className="text-center my-10">در حال بارگذاری...</div>
+            ) : regions.length > 0 ? (
+                <BasicEstateInformationTable
+                    data={regions.map((item) => ({
+                        ردیف: item.id,
+                        "عنوان منطقه": item.name
+                    }))}
+                    handleDeleteClick={handleDeleteClick}
+                />
+            ) : (
+                <div className="text-center my-10">داده‌ای برای نمایش وجود ندارد.</div>
+            )}
             {modalOpen && (
-                <BasicEstateInformationModal handleModalClose={handleModalClose} />
+                <BasicEstateInformationModal
+                    handleModalClose={handleModalClose}
+                    onSubmit={handleCreateRegion} 
+                    loading={createRegionMutation.isLoading}
+                />
             )}
         </InitialLayout>
     );

@@ -2,7 +2,7 @@ import InputState from "../ui/atoms/input/inputState";
 import ComboBox from "../common/Combo";
 
 interface StepOneProps {
-  type: string; setType: (v: string) => void;
+  usage: string; setUsage: (v: string) => void;
   region: string; setRegion: (v: string) => void;
   address: string; setAddress: (v: string) => void;
   Unit_in_floor?: number; setUnitInFloor: (v: number) => void;
@@ -16,7 +16,7 @@ const shouldHideFields = (type: string) =>
   type === "مغازه" || type === "زمین مسکونی" || type === "زمین کشاورزی";
 
 const StepOne = ({
-  type, setType,
+  usage, setUsage,
   region, setRegion,
   address, setAddress,
   Unit_in_floor, setUnitInFloor,
@@ -25,7 +25,7 @@ const StepOne = ({
   floor, setFloor,
   room_number, setRoomNumber,
 }: StepOneProps) => {
-  const hideFields = shouldHideFields(type);
+  const hideFields = shouldHideFields(usage);
   return (
     <div className="w-full">
       <form
@@ -33,8 +33,8 @@ const StepOne = ({
       >
         <ComboBox
           label="نوع ملک"
-          value={type}
-          onChange={setType}
+          value={usage}
+          onChange={setUsage}
           options={["آپارتمان", "ویلایی", "مغازه", "زمین مسکونی", "زمین کشاورزی", "سایر"]}
         />
         <InputState
@@ -51,7 +51,7 @@ const StepOne = ({
         />
         {!hideFields && (
           <>
-            {type !== "ویلایی" && (
+            {usage !== "ویلایی" && (
               <InputState
                 label="طبقه مورد نظر"
                 value={floor_number !== undefined && floor_number !== null ? String(floor_number) : ""}

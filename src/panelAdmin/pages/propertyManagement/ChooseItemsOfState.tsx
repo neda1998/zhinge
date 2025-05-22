@@ -36,7 +36,7 @@ const ChooseItemsOfState = () => {
                                         `}
                                     />
                                 </div>
-                                <span className={`text-center lg:text-base text-[15px] font-semibold transition-all duration-300
+                                <span className={`text-center whitespace-nowrap lg:text-base text-[15px] font-semibold transition-all duration-300
                                     ${isActive ? "text-white drop-shadow" : "text-gray-700"}
                                 `}>
                                     {item.text}

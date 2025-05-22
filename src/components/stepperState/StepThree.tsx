@@ -21,6 +21,10 @@ interface StepThreeProps {
     floor_number?: number;
     floor?: number;
     onReset?: () => void; 
+    description: string;
+    setDescription: (v: string) => void;
+    features: string;
+    setFeatures: (v: string) => void;
 }
 
 const shouldHideFields = (type?: string) =>
@@ -33,7 +37,11 @@ const StepThree = ({
     phone, setPhone,
     type, usage, region, address, location, setLocation, price,
     loan, year_of_build, room_number, land_metrage, floor_number, floor,
-    onReset
+    onReset,
+    description,
+    setDescription,
+    features,
+    setFeatures
 }: StepThreeProps) => {
     const [submitAttempted, setSubmitAttempted] = useState(false);
     const hideFields = shouldHideFields(type);
@@ -69,7 +77,7 @@ const StepThree = ({
                 await creatAnnouncementMutation.mutateAsync({
                     type, usage, region, address, location, price,
                     loan, year_of_build, room_number, land_metrage, floor_number, floor,
-                    full_name, phone
+                    full_name, phone, description,features
                 });
                 if (onReset) onReset();
             } catch {
@@ -78,7 +86,7 @@ const StepThree = ({
             creatAnnouncementMutation.mutate({
                 type, usage, region, address, location, price,
                 loan, year_of_build, room_number, land_metrage, floor_number, floor,
-                full_name, phone
+                full_name, phone, description, features
             });
         }
     };

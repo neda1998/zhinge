@@ -17,7 +17,6 @@ const useCreateAnnounceMutation = () => {
         const uid = response?.newA?.Uid || response?.data?.newA?.Uid;
         if (uid) {
           setCookie("Uid", uid, { path: "/" });
-          // اطمینان از رفرش شدن روت
           setTimeout(() => {
             route("/propertyImage", { replace: true });
           }, 0);

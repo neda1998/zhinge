@@ -11,6 +11,7 @@ interface StepOneUserProps {
   floor_number?: number; setFloorNumber: (v: number) => void;
   floor?: number; setFloor: (v: number) => void;
   room_number?: number; setRoomNumber: (v: number) => void;
+  usage: string; setUsage: (v: string) => void;
 }
 
 const shouldHideFields = (type: string) =>
@@ -24,15 +25,16 @@ const StepOneUser = ({
     floor_number, setFloorNumber,
     floor, setFloor,
     document_type, setDocumentType,
-    room_number, setRoomNumber
+    room_number, setRoomNumber,
+    usage,setUsage
 }: StepOneUserProps) => {
-   const hideFields = shouldHideFields(type);
+   const hideFields = shouldHideFields(usage);
     return (
         <div className="w-full grid lg:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-5">
             <ComboBox
                 label="نوع ملک"
-                value={type}
-                onChange={setType}
+                value={usage}
+                onChange={setUsage}
                 options={["آپارتمان", "ویلایی", "مغازه", "زمین مسکونی", "زمین کشاورزی", "سایر"]}
             />
 
@@ -51,7 +53,7 @@ const StepOneUser = ({
 
              {!hideFields && (
           <>
-            {type !== "ویلایی" && (
+            {usage !== "ویلایی" && (
               <InputState
                 label="طبقه مورد نظر"
                 value={floor_number !== undefined && floor_number !== null ? String(floor_number) : ""}

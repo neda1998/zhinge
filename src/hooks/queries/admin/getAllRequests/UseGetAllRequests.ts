@@ -5,7 +5,6 @@ const UseGetAllRequests = () => {
   return useQuery("getAllRequests", getAllRequests, {
     refetchOnWindowFocus: false,
     onError: (error: any) => {
-      console.error("Error fetching requests:", error);
     },
   });
 };

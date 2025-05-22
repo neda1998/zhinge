@@ -35,4 +35,6 @@ const UseCreatAnnouncementAdminMutation = () => {
   );
 };
 
+// No changes needed if mutation receives the correct data
+
 export default UseCreatAnnouncementAdminMutation;

@@ -1,4 +1,3 @@
-import { useCookies } from "react-cookie";
 import apiRoutes from "../../../helpers/routes/apiRoutes";
 import { getRoute } from "../../service";
 import client from "../../utils/client";

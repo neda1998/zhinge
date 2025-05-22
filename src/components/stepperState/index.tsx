@@ -9,8 +9,8 @@ import Swal from "sweetalert2";
 const StepperState = () => {
     const [currentStep, setCurrentStep] = useState(1);
     const creatAnnouncementMutation = UseCreatAnnouncementMutation();
-    const [type, setType] = useState("");
-    const [usage, setUsage] = useState("-");
+    const [type, setType] = useState("-");
+    const [usage, setUsage] = useState("");
     const [region, setRegion] = useState("");
     const [address, setAddress] = useState("");
     const [location, setLocation] = useState("");
@@ -70,7 +70,7 @@ const StepperState = () => {
 
     const resetAllStates = () => {
         setType("");
-        setUsage("-");
+        setUsage("");
         setRegion("");
         setAddress("");
         setLocation("");
@@ -90,13 +90,14 @@ const StepperState = () => {
         setUsefulMetrage(undefined);
         setIsAnnouncementSubmitted(false);
         setUploadedImages([]);
+        setDescription(""); 
         setCurrentStep(1);
     };
 
     const stepComponents = [
         <StepOne
             key="step1"
-            type={type} setType={setType}
+            usage={usage} setUsage={setUsage}
             region={region} setRegion={setRegion}
             address={address} setAddress={setAddress}
             Unit_in_floor={Unit_in_floor} setUnitInFloor={setUnitInFloor}
@@ -129,6 +130,8 @@ const StepperState = () => {
             year_of_build={year_of_build} room_number={room_number}
             land_metrage={land_metrage} floor_number={floor_number} floor={floor}
             onReset={resetAllStates}
+            description={description} setDescription={setDescription}
+            features={features} setFeatures={setFeatures}
         />,
         <StepFourUser
             key="step4"
