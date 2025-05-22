@@ -8,8 +8,6 @@ export const getAllregions = async () => {
     url,
     method: "GET",
   });
-  return {
-    users: response?.users || [],
-    number: response?.user?.number ?? response?.users?.length ?? 0
-  };
+  // فرض بر این است که response یک آرایه regions است
+  return Array.isArray(response) ? response : [];
 };
