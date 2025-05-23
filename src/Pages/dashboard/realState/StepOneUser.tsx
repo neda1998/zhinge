@@ -1,6 +1,7 @@
 import React from 'react';
 import InputState from "../../../components/ui/atoms/input/inputState";
 import ComboBox from '../../../components/common/Combo';
+import UseGetAllregionsQuery from "../../../hooks/queries/admin/getAllregions/UseGetAllregionsQuery";
 
 interface StepOneUserProps {
   type: string; setType: (v: string) => void;
@@ -26,9 +27,13 @@ const StepOneUser = ({
     floor, setFloor,
     document_type, setDocumentType,
     room_number, setRoomNumber,
-    usage,setUsage
+    usage, setUsage
 }: StepOneUserProps) => {
    const hideFields = shouldHideFields(usage);
+
+   const { data: regionsData, isLoading: regionsLoading, isError: regionsError } = UseGetAllregionsQuery();
+   const regionOptions = Array.isArray(regionsData) ? regionsData.map((item: any) => item.name) : [];
+
     return (
         <div className="w-full grid lg:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-5">
             <ComboBox
@@ -38,11 +43,11 @@ const StepOneUser = ({
                 options={["آپارتمان", "ویلایی", "مغازه", "زمین مسکونی", "زمین کشاورزی", "سایر"]}
             />
 
-            <InputState
+            <ComboBox
                 label="منطقه"
-                placeholder="مثال: مبارک آباد"
                 value={region}
-                onChange={e => setRegion(e.target.value)}
+                onChange={setRegion}
+                options={regionOptions}
             />
             <InputState
                 label="آدرس"
