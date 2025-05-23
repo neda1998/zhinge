@@ -3,9 +3,9 @@ import apiRoutes from "../../../helpers/routes/apiRoutes";
 import { getRoute } from "../../service";
 import client from "../../utils/client";
 
-export const deleteregion = async (id: string) => {
+export const deleteregion = async (id: number) => {
   const token = Cookies.get("accessToken"); 
-  const url = getRoute({ route: `${apiRoutes.admin.deleteregion}/${id}` });
+  const url = getRoute({ route: `${apiRoutes.admin.deleteregion}` });
   return await client({
     url,
     method: "DELETE",

@@ -31,7 +31,7 @@ const BasicEstateInformation = () => {
 
     const handleDeleteClick = (id: number) => {
         deleteRegionMutation.mutate(
-            { id: String(id) },
+            { id }, // id is now a number
             {
                 onSuccess: () => {
                     queryClient.invalidateQueries("getAllregions");

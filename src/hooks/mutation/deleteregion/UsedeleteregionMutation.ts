@@ -7,12 +7,12 @@ const UsedeleteregionMutation = () => {
   const queryClient = useQueryClient();
   const [cookies,setCookies] = useCookies(["accessToken"]);
   return useMutation(
-    async ({id}: {id: string}) => {
+    async ({ id }: { id: number }) => {
       // ابتدا همه داده‌ها را بگیر
       const regionsData: any = await queryClient.fetchQuery("getAllregions");
       // آیتم موردنظر را پیدا کن (در صورت نیاز می‌توان اینجا چک یا لاگ کرد)
       const itemToDelete = Array.isArray(regionsData)
-        ? regionsData.find((item) => String(item.id) === String(id))
+        ? regionsData.find((item) => item.id === id) // compare as number
         : null;
       if (!itemToDelete) {
         throw new Error("آیتم موردنظر پیدا نشد");
@@ -20,7 +20,7 @@ const UsedeleteregionMutation = () => {
       // نمایش پیلود در کنسول
       console.log("Delete region payload:", { id });
       // سپس حذف را انجام بده
-      return await deleteregion(id);
+      return await deleteregion(id); // pass id as number
     },
     {
       onSettled: async () => {
