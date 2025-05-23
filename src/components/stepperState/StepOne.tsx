@@ -1,5 +1,7 @@
 import InputState from "../ui/atoms/input/inputState";
 import ComboBox from "../common/Combo";
+// اضافه کردن ایمپورت هوک دریافت مناطق
+import UseGetAllregionsQuery from "../../hooks/queries/admin/getAllregions/UseGetAllregionsQuery";
 
 interface StepOneProps {
   usage: string; setUsage: (v: string) => void;
@@ -26,6 +28,11 @@ const StepOne = ({
   room_number, setRoomNumber,
 }: StepOneProps) => {
   const hideFields = shouldHideFields(usage);
+
+  // گرفتن مناطق از API
+  const { data: regionsData, isLoading: regionsLoading, isError: regionsError } = UseGetAllregionsQuery();
+  const regionOptions = Array.isArray(regionsData) ? regionsData.map((item: any) => item.name) : [];
+
   return (
     <div className="w-full">
       <form
@@ -37,12 +44,26 @@ const StepOne = ({
           onChange={setUsage}
           options={["آپارتمان", "ویلایی", "مغازه", "زمین مسکونی", "زمین کشاورزی", "سایر"]}
         />
+        {/* جایگزین InputState منطقه با ComboBox */}
+        <ComboBox
+          label="منطقه"
+          value={region}
+          onChange={setRegion}
+          options={regionOptions}
+          // اگر ComboBox شما پراپ‌های زیر را پشتیبانی می‌کند، اضافه کنید:
+          // loading={regionsLoading}
+          // disabled={regionsLoading || regionsError}
+          // placeholder={regionsLoading ? "در حال بارگذاری..." : (regionsError ? "خطا در دریافت مناطق" : "انتخاب منطقه")}
+        />
+        {/* حذف InputState قبلی منطقه */}
+        {/* 
         <InputState
           label="منطقه"
           value={region}
           onChange={(e) => setRegion(e.target.value)}
           placeholder="مثال: مبارک آباد"
         />
+        */}
         <InputState
           label="آدرس ملک"
           placeholder="سنندج، خیابان پاسداران، کوچه ادب 2، پلاک 3"
