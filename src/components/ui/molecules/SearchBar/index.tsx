@@ -80,36 +80,88 @@ export default function SearchBar({
       }
     }
 
-    // فقط فیلدهایی که مقدار دارند را اضافه کن
-    const searchData: any = {};
-    if (propertyCode) searchData.id = isNaN(Number(propertyCode)) ? propertyCode : Number(propertyCode);
-    if (searchInput) searchData.type = searchInput;
-    if (minPrice) searchData.minPrice = isNaN(Number(minPrice)) ? minPrice : Number(minPrice);
-    if (maxPrice) searchData.maxPrice = isNaN(Number(maxPrice)) ? maxPrice : Number(maxPrice);
-    if (roomNumber) searchData.room_number = isNaN(Number(roomNumber)) ? roomNumber : Number(roomNumber);
-    if (yearOfBuild) searchData.year_of_build = isNaN(Number(yearOfBuild)) ? yearOfBuild : Number(yearOfBuild);
-    if (loan) searchData.loan = isNaN(Number(loan)) ? loan : Number(loan);
-    if (landMetrage) searchData.land_metrage = isNaN(Number(landMetrage)) ? landMetrage : Number(landMetrage);
-    if (floorNumber) searchData.floor_number = isNaN(Number(floorNumber)) ? floorNumber : Number(floorNumber);
-    if (propertyType && propertyType !== "نوع ملک") searchData.type = propertyType;
-    if (region && region !== "انتخاب منطقه") searchData.region = region;
+    const baseSearchData: any = {};
+    if (propertyCode) baseSearchData.id = isNaN(Number(propertyCode)) ? propertyCode : Number(propertyCode);
+    if (minPrice) baseSearchData.minPrice = isNaN(Number(minPrice)) ? minPrice : Number(minPrice);
+    if (maxPrice) baseSearchData.maxPrice = isNaN(Number(maxPrice)) ? maxPrice : Number(maxPrice);
+    if (roomNumber) baseSearchData.room_number = isNaN(Number(roomNumber)) ? roomNumber : Number(roomNumber);
+    if (yearOfBuild) baseSearchData.year_of_build = isNaN(Number(yearOfBuild)) ? yearOfBuild : Number(yearOfBuild);
+    if (loan) baseSearchData.loan = isNaN(Number(loan)) ? loan : Number(loan);
+    if (landMetrage) baseSearchData.land_metrage = isNaN(Number(landMetrage)) ? landMetrage : Number(landMetrage);
+    if (floorNumber) baseSearchData.floor_number = isNaN(Number(floorNumber)) ? floorNumber : Number(floorNumber);
+    if (propertyType && propertyType !== "نوع ملک") baseSearchData.type = propertyType;
+    if (region && region !== "انتخاب منطقه") baseSearchData.region = region;
 
-    // نمایش payload در کنسول
-    console.log("payload", searchData);
+    // تابع کمکی برای جستجو
+    const doSearch = (data: any, cb: (results: any[]) => void) => {
+      searchMutation.mutate(data, {
+        onSuccess: (response: any) => {
+          const results = Array.isArray(response) ? response : [];
+          setHasSearched(true);
+          cb(results);
+        }
+      });
+    };
 
-    searchMutation.mutate(searchData, {
-      onSuccess: (response: any) => {
-        const results = Array.isArray(response) ? response : [];
-        setHasSearched(true);
-        if (!results || results.length === 0) {
-          setSearchResults([]);
-          if (onSearchResults) onSearchResults([]);
-        } else {
+    if (searchInput) {
+      // ابتدا با type
+      const dataWithType = { ...baseSearchData, type: searchInput };
+      console.log("payload (type)", dataWithType);
+      doSearch(dataWithType, (results) => {
+        if (results.length > 0) {
           setSearchResults(results);
           if (onSearchResults) onSearchResults(results);
+        } else {
+          // اگر نتیجه نداشت، با price
+          const priceValue = isNaN(Number(searchInput)) ? searchInput : Number(searchInput);
+          const dataWithPrice = { ...baseSearchData, price: priceValue };
+          console.log("payload (price)", dataWithPrice);
+          doSearch(dataWithPrice, (results2) => {
+            if (results2.length > 0) {
+              setSearchResults(results2);
+              if (onSearchResults) onSearchResults(results2);
+            } else {
+              // اگر با price هم نتیجه نداشت، با year_of_build (به صورت عدد)
+              const yearValue = isNaN(Number(searchInput)) ? searchInput : Number(searchInput);
+              const dataWithYear = { year_of_build: yearValue };
+              console.log("payload (year_of_build)", dataWithYear);
+              doSearch(dataWithYear, (results3) => {
+                if (results3.length > 0) {
+                  setSearchResults(results3);
+                  if (onSearchResults) onSearchResults(results3);
+                } else {
+                  // اگر با year_of_build هم نتیجه نداشت، با room_number (به صورت عدد)
+                  const roomNumberValue = isNaN(Number(searchInput)) ? searchInput : Number(searchInput);
+                  const dataWithRoomNumber = { room_number: roomNumberValue };
+                  console.log("payload (room_number)", dataWithRoomNumber);
+                  doSearch(dataWithRoomNumber, (resultsRoom) => {
+                    if (resultsRoom.length > 0) {
+                      setSearchResults(resultsRoom);
+                      if (onSearchResults) onSearchResults(resultsRoom);
+                    } else {
+                      // اگر با room_number هم نتیجه نداشت، با region (string)
+                      const dataWithRegion = { region: searchInput };
+                      console.log("payload (region)", dataWithRegion);
+                      doSearch(dataWithRegion, (resultsRegion) => {
+                        setSearchResults(resultsRegion);
+                        if (onSearchResults) onSearchResults(resultsRegion);
+                      });
+                    }
+                  });
+                }
+              });
+            }
+          });
         }
-      }
-    });
+      });
+    } else {
+      // اگر searchInput نبود، فقط با baseSearchData جستجو کن
+      console.log("payload", baseSearchData);
+      doSearch(baseSearchData, (results) => {
+        setSearchResults(results);
+        if (onSearchResults) onSearchResults(results);
+      });
+    }
   };
 
   return (
