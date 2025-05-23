@@ -35,6 +35,7 @@ const UnderReview = () => {
   const verifyAnnounceMutation = UseVerifyAnnounceMutation();
   const rejectAnnounceMutation = UseRejectannounceMutatiojn();
   const updateAnnounMutation = UseUpdateAnnounMutation();
+  const deletePhotosMutation = UseDeletePhotosMutation();
 
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [selectedAnnounce, setSelectedAnnounce] = useState<any>(null);
@@ -424,6 +425,47 @@ const UnderReview = () => {
                   value={editForm.description || ""}
                   onChange={e => setEditForm({ ...editForm, description: e.target.value })}
                 />
+              </div>
+              {/* نمایش تصاویر ملک با دکمه حذف */}
+              <div className="sm:col-span-2 lg:col-span-3">
+                <label className="block text-sm mb-2 font-bold">تصاویر ملک</label>
+                <div className="flex flex-wrap gap-4">
+                  {(Array.isArray(selectedAnnounce.photo) ? selectedAnnounce.photo : (selectedAnnounce.photo ? [selectedAnnounce.photo] : [])).map((img: string, idx: number) => (
+                    <div key={idx} className="relative w-32 h-24 border rounded overflow-hidden shadow">
+                      <img
+                        src={img}
+                        alt={`estate-photo-${idx}`}
+                        className="object-cover w-full h-full"
+                      />
+                      <button
+                        type="button"
+                        className="absolute top-1 right-1 bg-red-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs hover:bg-red-700"
+                        title="حذف تصویر"
+                        disabled={deletePhotosMutation.isLoading}
+                        onClick={async () => {
+                          if (!selectedAnnounce.Uid) {
+                            console.error("Uid is missing for the selected announce.");
+                            return;
+                          }
+                          try {
+                            await deletePhotosMutation.mutateAsync({ uid: selectedAnnounce.Uid });
+                            setSelectedAnnounce((prev: any) => ({
+                              ...prev,
+                              photo: (Array.isArray(prev.photo) ? prev.photo : [prev.photo]).filter((p: string) => p !== img)
+                            }));
+                          } catch (error) {
+                            console.error("Error deleting photo:", error);
+                          }
+                        }}
+                      >
+                        ×
+                      </button>
+                    </div>
+                  ))}
+                  {(!selectedAnnounce.photo || (Array.isArray(selectedAnnounce.photo) && selectedAnnounce.photo.length === 0)) && (
+                    <span className="text-gray-400">تصویری وجود ندارد</span>
+                  )}
+                </div>
               </div>
               <div>
                 <label className="block text-sm mb-1">نام مالک</label>

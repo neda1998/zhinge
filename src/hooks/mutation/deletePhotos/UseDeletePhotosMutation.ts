@@ -6,10 +6,9 @@ import { deletePhotos } from "../../../services/admin/deletePhotos";
 const UseDeletePhotosMutation = () => {
   const queryClient = useQueryClient();
   return useMutation(
-    async ({id}: {id: string}) => {
-      return await deletePhotos(id);
-    }
-      ,
+    async ({ uid }: { uid: string }) => {
+      return await deletePhotos(uid);
+    },
 
     {
       onSettled: async () => {
