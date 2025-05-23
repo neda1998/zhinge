@@ -13,8 +13,10 @@ import UseUpdateAnnounMutation from "../../../hooks/mutation/updateAnnounAdmin/U
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import UseConfirmedAnnounceQuery from "../../../hooks/queries/admin/confirmedAnnounce/UseConfirmedAnnounceQuery";
+import UseDeletePhotosMutation from "../../../hooks/mutation/deletePhotos/UseDeletePhotosMutation";
 
 const UnderReview = () => {
+  UseDeletePhotosMutation()
   const navigate = useNavigate();
   const {
     data: inprogressData,

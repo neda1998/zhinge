@@ -48,6 +48,7 @@ const apiRoutes = {
     getAbout: "/admin/getabout",
     creatregion:"/admin/creatregion",
     deleteregion:"/admin/deleteregion",
+    deletePhotos:"/admin/delete_photos",
   },
   user: {
     myAnnouncements: "/auth/getAnnouncements",
