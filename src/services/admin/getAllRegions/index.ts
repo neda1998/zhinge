@@ -3,11 +3,10 @@ import { getRoute } from "../../service";
 import client from "../../utils/client";
 
 export const getAllregions = async () => {
-  const url = getRoute({ route: `${apiRoutes.admin.getAllRegions}` });
+  const url = getRoute({ route: `${apiRoutes.AllAnnounce.getAllRegions}` });
   const response = await client({
     url,
     method: "GET",
   });
-  // فرض بر این است که response یک آرایه regions است
   return Array.isArray(response) ? response : [];
 };

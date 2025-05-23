@@ -46,8 +46,6 @@ const apiRoutes = {
     verifyAnnounce: "/admin/varifyannounce",
     deleteSlider: "/admin/deleteslider",
     getAbout: "/admin/getabout",
-    confirmedAnnounce:"/admin/confirmed_announce",
-    getAllRegions:"/admin/getAllregions",
     creatregion:"/admin/creatregion",
     deleteregion:"/admin/deleteregion",
   },
@@ -56,6 +54,8 @@ const apiRoutes = {
     updateUser: "/auth/updateuser",
   },
   AllAnnounce: {
+    confirmedAnnounce:"/announce/confirmed_announce",
+    getAllRegions:"/announce/getAllregions",
     creatAnnounce: "/announce/creatAnnounce",
     getAllAnnounce: "/announce/getallannounce",
     getByUid: "/announce/getbyUid",
