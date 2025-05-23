@@ -34,7 +34,6 @@ const BasicEstateInformation = () => {
             { id: String(id) },
             {
                 onSuccess: () => {
-                    // invalidate کوئری برای گرفتن داده جدید
                     queryClient.invalidateQueries("getAllregions");
                 }
             }
@@ -53,10 +52,6 @@ const BasicEstateInformation = () => {
         );
     };
 
-    // اضافه کردن لاگ برای بررسی ساختار data
-    console.log("regions data:", data);
-
-    // استخراج آرایه مناطق از data (در صورت نبود داده، آرایه خالی)
     const regions = Array.isArray(data) ? data : [];
 
     return (

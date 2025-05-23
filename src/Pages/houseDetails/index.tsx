@@ -53,7 +53,7 @@ const HouseDetails = () => {
                 : ImageMainPage;
 
     const fields = [
-        { name: 'id', label: 'کد ملک' },
+        { name: 'Uid', label: 'کد ملک' },
         { name: 'usage', label: 'نوع ملک' },
         { name: 'region', label: 'منطقه' },
         { name: 'address', label: 'آدرس' },

@@ -36,7 +36,7 @@ const RentHouseId = () => {
     // Define fields for dynamic rendering
     const fields = [
         { name: 'type', label: 'نوع آگهی' },
-        { name: 'id', label: 'کد ملک' },
+        { name: 'Uid', label: 'کد ملک' },
         { name: 'region', label: 'منطقه' },
         { name: 'useful_metrage', label: 'زیر بنا(مترمربع)', format: (v: string | number) => v + ' متر' },
         { name: 'room_number', label: 'تعداد اتاق' },

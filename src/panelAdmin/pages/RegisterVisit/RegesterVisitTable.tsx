@@ -196,14 +196,12 @@ const RegesterVisitTable: React.FC = () => {
 
                         <div className="mb-4">
                             <label className="block text-gray-700 mb-2">تاریخ</label>
-                            <DatePicker
-                                value={editVisitDate}
-                                onChange={setEditVisitDate}
-                                calendar={persian}
-                                locale={persian_fa}
-                                calendarPosition="bottom-right"
-                                inputClass="w-full px-3 py-2 border rounded text-right"
-                                placeholder="تاریخ را انتخاب کنید"
+                            <input
+                                type="text"
+                                className="w-full px-3 py-2 border rounded text-right"
+                                placeholder="تاریخ را وارد کنید (مثال: 1402)"
+                                value={editVisitDate || ""}
+                                onChange={e => setEditVisitDate(e.target.value)}
                             />
                         </div>
 

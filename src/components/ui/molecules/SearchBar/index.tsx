@@ -104,7 +104,6 @@ export default function SearchBar({
     };
 
     if (searchInput) {
-      // ابتدا با type
       const dataWithType = { ...baseSearchData, type: searchInput };
       console.log("payload (type)", dataWithType);
       doSearch(dataWithType, (results) => {
@@ -112,36 +111,28 @@ export default function SearchBar({
           setSearchResults(results);
           if (onSearchResults) onSearchResults(results);
         } else {
-          // اگر نتیجه نداشت، با price
           const priceValue = isNaN(Number(searchInput)) ? searchInput : Number(searchInput);
           const dataWithPrice = { ...baseSearchData, price: priceValue };
-          console.log("payload (price)", dataWithPrice);
           doSearch(dataWithPrice, (results2) => {
             if (results2.length > 0) {
               setSearchResults(results2);
               if (onSearchResults) onSearchResults(results2);
             } else {
-              // اگر با price هم نتیجه نداشت، با year_of_build (به صورت عدد)
               const yearValue = isNaN(Number(searchInput)) ? searchInput : Number(searchInput);
               const dataWithYear = { year_of_build: yearValue };
-              console.log("payload (year_of_build)", dataWithYear);
               doSearch(dataWithYear, (results3) => {
                 if (results3.length > 0) {
                   setSearchResults(results3);
                   if (onSearchResults) onSearchResults(results3);
                 } else {
-                  // اگر با year_of_build هم نتیجه نداشت، با room_number (به صورت عدد)
                   const roomNumberValue = isNaN(Number(searchInput)) ? searchInput : Number(searchInput);
                   const dataWithRoomNumber = { room_number: roomNumberValue };
-                  console.log("payload (room_number)", dataWithRoomNumber);
                   doSearch(dataWithRoomNumber, (resultsRoom) => {
                     if (resultsRoom.length > 0) {
                       setSearchResults(resultsRoom);
                       if (onSearchResults) onSearchResults(resultsRoom);
                     } else {
-                      // اگر با room_number هم نتیجه نداشت، با region (string)
                       const dataWithRegion = { region: searchInput };
-                      console.log("payload (region)", dataWithRegion);
                       doSearch(dataWithRegion, (resultsRegion) => {
                         setSearchResults(resultsRegion);
                         if (onSearchResults) onSearchResults(resultsRegion);
@@ -155,8 +146,6 @@ export default function SearchBar({
         }
       });
     } else {
-      // اگر searchInput نبود، فقط با baseSearchData جستجو کن
-      console.log("payload", baseSearchData);
       doSearch(baseSearchData, (results) => {
         setSearchResults(results);
         if (onSearchResults) onSearchResults(results);
@@ -172,17 +161,14 @@ export default function SearchBar({
             className={`w-full border border-gray-300 lg:pr-[8%] pr-[12%] bg-gray-main text-[14px] font-medium text-gray-700 outline-none transition-all focus:border-2 ${inputStyles}`}
             placeholder={placeholder}
             required
-            value={searchInput} // <-- bind value
-            onChange={(e) => setSearchInput(e.target.value)} // <-- update state on change
+            value={searchInput} 
+            onChange={(e) => setSearchInput(e.target.value)}
           />
           {showIcon && (
             <>
               <button className="absolute top-1/2 right-[2%] transform -translate-y-1/2 z-10" type="button">
                 <img src={iconSrc} alt={iconAlt} width={20} />
               </button>
-              {/* <button className="absolute top-1/2 left-16 transform -translate-y-1/2 z-10" type="button" onClick={toggleDropdown}>
-                <img src={Filter} alt="filter icon" width={25} />
-              </button> */}
               <button className="absolute top-1/2 left-0 bg-[#09A380] h-full w-14 rounded-l-[50px] transform -translate-y-1/2 z-10" type="button" onClick={handleSearch}>
                 <img src={SearchWhite} alt="search icon" width={25} className="mx-auto" />
               </button>

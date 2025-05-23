@@ -6,7 +6,7 @@ import { PuffLoader } from "react-spinners";
 import Swal from "sweetalert2";
 
 const columns = [
-    { key: "id", label: "کد ملک" },
+    { key: "Uid", label: "کد ملک" },
     { key: "full_name", label: "نام و نام خانوادگی" },
     { key: "phone", label: "شماره تماس" },
     { key: "lowest_price", label: "حداقل قیمت" },
@@ -35,7 +35,7 @@ const RequestEstateTable: React.FC = () => {
             title: "جزئیات درخواست",
             html: `
                 <div style="display:flex;flex-direction:column;gap:10px;text-align:right;direction:rtl">
-                    <div><b>کد ملک:</b> ${item.id ?? "-"}</div>
+                    <div><b>کد ملک:</b> ${item.Uid ?? "-"}</div>
                     <div><b>نام و نام خانوادگی:</b> ${item.full_name ?? "-"}</div>
                     <div><b>شماره تماس:</b> ${item.phone ?? "-"}</div>
                     <div><b>حداقل قیمت:</b> ${item.lowest_price ?? "-"}</div>

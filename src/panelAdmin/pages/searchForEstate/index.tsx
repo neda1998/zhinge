@@ -86,11 +86,31 @@ const SearchForEstate = () => {
 
   const DetailsModal = ({ open, data, onClose }: { open: boolean; data: any; onClose: () => void }) => {
     if (!open || !data) return null;
+    const detailIcons: Record<string, React.ReactNode> = {
+      "کد ملک": <span className="text-blue-500">🏷️</span>,
+      "نام مالک": <span className="text-green-600">👤</span>,
+      "شماره تماس": <span className="text-purple-500">📱</span>,
+      "نوع ملک": <span className="text-orange-500">🏠</span>,
+      "منطقه": <span className="text-pink-500">📍</span>,
+      "آدرس": <span className="text-gray-500">🗺️</span>,
+      "متراژ زمین": <span className="text-blue-400">📏</span>,
+      "متراژ مفید": <span className="text-blue-400">📐</span>,
+      "سال ساخت": <span className="text-yellow-600">📅</span>,
+      "تعداد طبقات": <span className="text-indigo-500">🏢</span>,
+      "طبقه": <span className="text-indigo-400">⬆️</span>,
+      "واحد در طبقه": <span className="text-indigo-300">🔢</span>,
+      "تعداد اتاق": <span className="text-pink-400">🛏️</span>,
+      "نوع سند": <span className="text-green-500">📄</span>,
+      "قیمت": <span className="text-red-500">💰</span>,
+      "امکانات": <span className="text-blue-600">✨</span>,
+      "موقعیت مکانی": <span className="text-blue-700">🧭</span>,
+      "وضعیت": <span className="text-gray-700">🔖</span>,
+    };
     const details: Array<{ label: string, value?: any }> = [
-      { label: "کد ملک",        value: data.id || "-" },
+      { label: "کد ملک",        value: data.Uid || "-" },
       { label: "نام مالک",      value: data.full_name || "-" },
       { label: "شماره تماس",    value: data.userID || data.phone || "-" },
-      { label: "نوع ملک",      value: data.type || "-" },
+      { label: "نوع ملک",      value: data.usage || "-" },
       { label: "منطقه",        value: data.region || "-" },
       { label: "آدرس",         value: data.address || "-" },
       { label: "متراژ زمین",    value: data.land_metrage || "-" },
@@ -113,6 +133,11 @@ const SearchForEstate = () => {
         : (typeof data.photo === "string" && data.photo)
           ? data.photo
           : "https://via.placeholder.com/400x300?text=No+Image";
+
+    // Split details into two columns for better alignment
+    const mid = Math.ceil(details.length / 2);
+    const col1 = details.slice(0, mid);
+    const col2 = details.slice(mid);
 
     return (
       <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-[2px] p-4">
@@ -137,7 +162,7 @@ const SearchForEstate = () => {
                 />
               </div>
               <div className="mt-4 text-center text-blue-700 font-extrabold text-xl drop-shadow">
-                {data.type || "نوع ملک"}
+                {data.usage || "نوع ملک"}
               </div>
             </div>
             <div className="flex-1 w-full px-2">
@@ -146,16 +171,35 @@ const SearchForEstate = () => {
                   جزئیات ملک
                 </span>
               </h2>
-              <div className="grid gap-x-8 gap-y-5 grid-cols-1 sm:grid-cols-2">
-                {details.map((item, idx) => (
-                  <div
-                    key={idx}
-                    className="flex flex-col bg-gradient-to-br from-white to-blue-50 rounded-2xl p-4 mb-1 border border-gray-100 shadow transition hover:shadow-2xl hover:scale-[1.04]"
-                  >
-                    <span className="text-gray-500 text-[14px] mb-1 font-semibold">{item.label}</span>
-                    <span className="font-extrabold text-gray-800 text-[17px]">{item.value}</span>
-                  </div>
-                ))}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-4">
+                <div className="flex flex-col gap-4">
+                  {col1.map((item, idx) => (
+                    <div
+                      key={idx}
+                      className="flex items-center bg-gradient-to-br from-white to-blue-50 rounded-2xl p-4 border border-gray-100 shadow transition hover:shadow-2xl hover:scale-[1.03]"
+                    >
+                      <span className="mr-2 text-2xl">{detailIcons[item.label] || "ℹ️"}</span>
+                      <div className="flex flex-col">
+                        <span className="text-gray-500 text-[14px] mb-1 font-semibold">{item.label}</span>
+                        <span className="font-extrabold text-gray-800 text-[17px]">{item.value}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                <div className="flex flex-col gap-4">
+                  {col2.map((item, idx) => (
+                    <div
+                      key={idx}
+                      className="flex items-center bg-gradient-to-br from-white to-blue-50 rounded-2xl p-4 border border-gray-100 shadow transition hover:shadow-2xl hover:scale-[1.03]"
+                    >
+                      <span className="mr-2 text-2xl">{detailIcons[item.label] || "ℹ️"}</span>
+                      <div className="flex flex-col">
+                        <span className="text-gray-500 text-[14px] mb-1 font-semibold">{item.label}</span>
+                        <span className="font-extrabold text-gray-800 text-[17px]">{item.value}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
@@ -202,10 +246,10 @@ const SearchForEstate = () => {
       "سایر"
     ];
     const fields: Array<{ key: string; label: string; type?: string; options?: string[] }> = [
-      { key: "id", label: "کد ملک" },
+      { key: "Uid", label: "کد ملک" },
       { key: "full_name", label: "نام مالک" },
       { key: "userID", label: "شماره تماس" },
-      { key: "type", label: "نوع ملک", options: TYPE_OPTIONS },
+      { key: "usage", label: "نوع ملک", options: TYPE_OPTIONS },
       { key: "region", label: "منطقه", options: REGION_OPTIONS },
       { key: "address", label: "آدرس" },
       { key: "land_metrage", label: "متراژ زمین", type: "number" },
@@ -336,7 +380,7 @@ const SearchForEstate = () => {
               <tr key={idx} className="text-center border-b whitespace-nowrap hover:bg-blue-50 transition">
                 <td className="p-4 font-bold text-blue-700">{idx + 1}</td>
                 <td className="p-4">{item.id || "-"}</td>
-                <td className="p-4">{item.type || "-"}</td>
+                <td className="p-4">{item.usage || "-"}</td>
                 <td className="p-4">{item.region || "-"}</td>
                 <td className="p-4">{item.full_name || "-"}</td>
                 <td className="p-4">{item.userID || "-"}</td>
@@ -385,7 +429,7 @@ const SearchForEstate = () => {
       <ChooseItemsOfState />
 
       <div className="grid lg:grid-cols-4 gap-x-5 gap-y-10 mb-9">
-        <InputState label="کد ملک" value={form.state_code || ""} onChange={e => handleChange("state_code", e.target.value)} numeric />
+        <InputState label="کد ملک" value={form.Uid || ""} onChange={e => handleChange("state_code", e.target.value)} numeric />
         <InputState label="نام مالک" value={form.full_name || ""} onChange={e => handleChange("full_name", e.target.value)} />
         <InputState label="شماره موبایل" value={form.userID || ""} onChange={e => handleChange("userID", e.target.value)} numeric />
       </div>

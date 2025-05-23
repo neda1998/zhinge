@@ -140,26 +140,17 @@ const StepTwo = ({
             />
             {!hideFields && (
                 <>
-                    <div className="flex flex-col">
-                        <label className="mb-1 text-sm font-semibold text-gray-700">سال ساخت</label>
-                        <DatePicker
-                            value={year_of_build ? year_of_build.toString() : ""}
-                            onChange={date => {
-                                if (date && typeof date.year === "number") {
-                                    setYearOfBuild(date.year);
-                                } else if (typeof date === "string" && date) {
-                                    setYearOfBuild(Number(date));
-                                }
-                            }}
-                            calendar={persian}
-                            locale={persian_fa}
-                            inputClass="appearance-none w-full py-3 px-4 rounded-full focus:outline-none focus:ring-2 focus:ring-gray-400 bg-[#f4f4f4]"
-                            format="YYYY/MM/DD"
-                            calendarPosition="bottom-right"
-                            style={{ width: "100%" }}
-                            placeholder="انتخاب سال"
-                        />
-                    </div>
+                    <InputState
+                        label="سال ساخت"
+                        placeholder="مثال: 1400"
+                        value={year_of_build !== undefined && year_of_build !== null ? formatInputNumber(String(year_of_build)) : ""}
+                        onChange={e => {
+                            const formatted = formatInputNumber(e.target.value);
+                            e.target.value = formatted;
+                            setYearOfBuild(Number(formatted.replace(/,/g, "")));
+                        }}
+                        numeric
+                    />
                 </>
             )}
             {!hideFields && (

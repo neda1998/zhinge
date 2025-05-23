@@ -6,7 +6,7 @@ export const deletePhotos = async (uid: string) => {
   const url = getRoute({ route: `${apiRoutes.admin.deletePhotos}` });
   return await client({
     url,
-    method: "PUT", // تغییر متد به PUT
+    method: "PUT", 
     data: { uid },
     headers: {
       "Content-Type": "application/json",

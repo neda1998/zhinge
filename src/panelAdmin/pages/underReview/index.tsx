@@ -99,25 +99,41 @@ const UnderReview = () => {
       .slice()
       .reverse()
       .map((item: any, idx: number) => ({
-        "ردیف": idx + 1,
-        "کد ملک": item.id,
-        "نوع ملک": item.type,
-        "منطقه": item.region,
-        "نام مالک": item.full_name,
-        "شماره تماس": item.userID,
+        "ردیف": (
+          <span className="w-8 h-8 rounded-full bg-gradient-to-tr from-yellow-400 to-yellow-200 text-yellow-900 font-bold flex items-center justify-center shadow">
+            {idx + 1}
+          </span>
+        ),
+        "کد ملک": (
+          <span className="font-mono text-blue-700 text-base">{item.Uid}</span>
+        ),
+        "نوع ملک": (
+          <span className="text-gray-700">{item.usage}</span>
+        ),
+        "محله مورد نظر": (
+          <span className="text-gray-600">{item.region}</span>
+        ),
+        "نام مالک": (
+          <span className="font-bold text-gray-800">{item.full_name}</span>
+        ),
+        "شماره تماس": (
+          <span className="text-gray-500">{item.userID}</span>
+        ),
         "وضعیت": (
-          <span className="text-yellow-600 font-bold whitespace-nowrap">در حال بررسی</span>
+          <span className="text-yellow-600 font-bold whitespace-nowrap bg-yellow-100 px-2 py-1 rounded shadow-sm border border-yellow-200">
+            در حال بررسی
+          </span>
         ),
         "بازه قیمت": (
-          <span>
-            {item.price?.toLocaleString()} تومان
+          <span className="text-green-700 font-bold">
+            {item.price?.toLocaleString()} <span className="text-xs text-gray-400">تومان</span>
           </span>
         ),
         "عملیات": (
           <div className="flex gap-2 justify-center">
             <button
               onClick={() => handleOpenEditModal(item)}
-              className="bg-green-600 hover:bg-green-700 text-white text-sm px-3 py-1 rounded"
+              className="bg-gradient-to-r from-green-400 to-green-600 hover:from-green-500 hover:to-green-700 text-white text-xs px-4 py-1 rounded-full font-bold shadow transition-all duration-150"
             >
               بررسی
             </button>
@@ -137,7 +153,7 @@ const UnderReview = () => {
                   rejectAnnounceMutation.mutate(item);
                 }
               }}
-              className="bg-red-600 hover:bg-red-700 text-white text-sm px-3 py-1 rounded"
+              className="bg-gradient-to-r from-red-500 to-red-700 hover:from-red-600 hover:to-red-800 text-white text-xs px-4 py-1 rounded-full font-bold shadow transition-all duration-150"
             >
               رد
             </button>
@@ -150,25 +166,41 @@ const UnderReview = () => {
       ?.slice()
       .reverse()
       .map((item: any, idx: number) => ({
-        "ردیف": idx + 1,
-        "کد ملک": item.id,
-        "نوع ملک": item.type,
-        "منطقه": item.region,
-        "نام مالک": item.full_name,
-        "شماره تماس": item.userID,
+        "ردیف": (
+          <span className="w-8 h-8 rounded-full bg-gradient-to-tr from-green-400 to-green-200 text-green-900 font-bold flex items-center justify-center shadow">
+            {idx + 1}
+          </span>
+        ),
+        "کد ملک": (
+          <span className="font-mono text-blue-700 text-base">{item.Uid}</span>
+        ),
+        "نوع ملک": (
+          <span className="text-gray-700">{item.usage}</span>
+        ),
+        "محله مورد نظر": (
+          <span className="text-gray-600">{item.region}</span>
+        ),
+        "نام مالک": (
+          <span className="font-bold text-gray-800">{item.full_name}</span>
+        ),
+        "شماره تماس": (
+          <span className="text-gray-500">{item.userID}</span>
+        ),
         "وضعیت": (
-          <span className="text-green-600 font-bold whitespace-nowrap">بررسی شده</span>
+          <span className="text-green-600 font-bold whitespace-nowrap bg-green-100 px-2 py-1 rounded shadow-sm border border-green-200">
+            بررسی شده
+          </span>
         ),
         "بازه قیمت": (
-          <span>
-            {item.price?.toLocaleString()} تومان
+          <span className="text-green-700 font-bold">
+            {item.price?.toLocaleString()} <span className="text-xs text-gray-400">تومان</span>
           </span>
         ),
         "عملیات": (
           <div className="flex gap-2 justify-center">
             <button
               onClick={() => handleOpenEditModal(item)}
-              className="bg-blue-600 hover:bg-blue-700 text-white text-sm px-3 py-1 rounded"
+              className="bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-800 text-white text-xs px-4 py-1 rounded-full font-bold shadow transition-all duration-150"
             >
               مشاهده/ویرایش
             </button>
@@ -215,15 +247,20 @@ const UnderReview = () => {
         تعداد کل: <span className="font-bold">{tableData.length}</span>
       </div>
       {editModalOpen && selectedAnnounce && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
-          <div className="bg-white rounded-lg shadow-lg p-4 sm:p-6 w-full max-w-full sm:max-w-2xl lg:max-w-4xl mx-2 sm:mx-8 relative z-[9999] overflow-y-auto max-h-[90vh]">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 transition-all duration-300">
+          <div className="bg-white rounded-2xl shadow-2xl border-2 border-green-200 p-4 sm:p-8 w-full max-w-full sm:max-w-2xl lg:max-w-4xl mx-2 sm:mx-8 relative z-[9999] overflow-y-auto max-h-[90vh] animate-fade-in">
             <button
-              className="absolute left-2 top-2 text-gray-500 hover:text-gray-700"
+              className="absolute left-4 top-4 text-gray-400 hover:text-red-500 text-3xl font-extrabold transition-all duration-200"
               onClick={() => setEditModalOpen(false)}
+              aria-label="بستن"
+              type="button"
             >
               ×
             </button>
-            <h2 className="font-bold mb-4 text-lg">ویرایش ملک</h2>
+            <h2 className="font-extrabold mb-6 text-2xl text-green-700 border-b-2 border-green-100 pb-2 flex items-center gap-2">
+              <svg className="w-7 h-7 text-green-400" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M15.232 5.232l3.536 3.536M9 13h3v3m-7.071-7.071a9 9 0 1112.728 0 9 9 0 01-12.728 0z" /></svg>
+              ویرایش ملک
+            </h2>
             <form
               onSubmit={e => {
                 e.preventDefault();
@@ -263,12 +300,12 @@ const UnderReview = () => {
                 });
               }}
             >
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-2 lg:gap-y-7 gap-y-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-6">
               <div>
-                <label className="block text-sm mb-1">نوع ملک</label>
+                <label className="block text-sm mb-1 font-bold text-gray-700">نوع ملک</label>
                 <select
                   className="border rounded px-2 py-1 w-full"
-                  value={editForm.type || ""}
+                  value={editForm.usage || ""}
                   onChange={e => setEditForm({ ...editForm, type: e.target.value })}
                 >
                   <option value="آپارتمان">آپارتمان</option>
@@ -281,7 +318,7 @@ const UnderReview = () => {
                 </select>
               </div>
               <div>
-                <label className="block text-sm mb-1">منطقه</label>
+                <label className="block text-sm mb-1 font-bold text-gray-700">محله مورد نظر</label>
                 <input
                   className="border rounded px-2 py-1 w-full"
                   value={editForm.region || ""}
@@ -289,7 +326,7 @@ const UnderReview = () => {
                 />
               </div>
               <div>
-                <label className="block text-sm mb-1">آدرس ملک</label>
+                <label className="block text-sm mb-1 font-bold text-gray-700">آدرس ملک</label>
                 <input
                   className="border rounded px-2 py-1 w-full"
                   value={editForm.address || ""}
@@ -297,43 +334,43 @@ const UnderReview = () => {
                 />
               </div>
               <div>
-                <label className="block text-sm mb-1">طبقه مورد نظر</label>
+                <label className="block text-sm mb-1 font-bold text-gray-700">طبقه مورد نظر</label>
                 <input
                   type="number"
                   className="border rounded px-2 py-1 w-full"
-                  value={editForm.floor_number || ""}
+                  value={editForm.floor_number !== undefined && editForm.floor_number !== null ? editForm.floor_number : ""}
                   onChange={e => setEditForm({ ...editForm, floor_number: Number(e.target.value) })}
                 />
               </div>
               <div>
-                <label className="block text-sm mb-1">تعداد طبقات</label>
+                <label className="block text-sm mb-1 font-bold text-gray-700">تعداد طبقات</label>
                 <input
                   type="number"
                   className="border rounded px-2 py-1 w-full"
-                  value={editForm.floor || ""}
+                  value={editForm.floor !== undefined && editForm.floor !== null ? editForm.floor : ""}
                   onChange={e => setEditForm({ ...editForm, floor: Number(e.target.value) })}
                 />
               </div>
               <div>
-                <label className="block text-sm mb-1">تعداد واحد در طبقه</label>
+                <label className="block text-sm mb-1 font-bold text-gray-700">تعداد واحد در طبقه</label>
                 <input
                   type="number"
                   className="border rounded px-2 py-1 w-full"
-                  value={editForm.Unit_in_floor || ""}
+                  value={editForm.Unit_in_floor !== undefined && editForm.Unit_in_floor !== null ? editForm.Unit_in_floor : ""}
                   onChange={e => setEditForm({ ...editForm, Unit_in_floor: Number(e.target.value) })}
                 />
               </div>
               <div>
-                <label className="block text-sm mb-1">تعداد اتاق‌ها</label>
+                <label className="block text-sm mb-1 font-bold text-gray-700">تعداد اتاق‌ها</label>
                 <input
                   type="number"
                   className="border rounded px-2 py-1 w-full"
-                  value={editForm.room_number || ""}
+                  value={editForm.room_number !== undefined && editForm.room_number !== null ? editForm.room_number : ""}
                   onChange={e => setEditForm({ ...editForm, room_number: Number(e.target.value) })}
                 />
               </div>
               <div>
-                <label className="block text-sm mb-1">نوع سند</label>
+                <label className="block text-sm mb-1 font-bold text-gray-700">نوع سند</label>
                 <select
                   className="border rounded px-2 py-1 w-full"
                   value={editForm.document_type || ""}
@@ -351,25 +388,25 @@ const UnderReview = () => {
                 </select>
               </div>
               <div>
-                <label className="block text-sm mb-1">متراژ کل زمین</label>
+                <label className="block text-sm mb-1 font-bold text-gray-700">متراژ کل زمین</label>
                 <input
                   type="number"
                   className="border rounded px-2 py-1 w-full"
-                  value={editForm.land_metrage || ""}
+                  value={editForm.land_metrage !== undefined && editForm.land_metrage !== null ? editForm.land_metrage : ""}
                   onChange={e => setEditForm({ ...editForm, land_metrage: Number(e.target.value) })}
                 />
               </div>
               <div>
-                <label className="block text-sm mb-1">متراژ مفید</label>
+                <label className="block text-sm mb-1 font-bold text-gray-700">متراژ مفید</label>
                 <input
                   type="number"
                   className="border rounded px-2 py-1 w-full"
-                  value={editForm.useful_metrage || ""}
+                  value={editForm.useful_metrage !== undefined && editForm.useful_metrage !== null ? editForm.useful_metrage : ""}
                   onChange={e => setEditForm({ ...editForm, useful_metrage: Number(e.target.value) })}
                 />
               </div>
               <div>
-                <label className="block text-sm mb-1">موقعیت ملک</label>
+                <label className="block text-sm mb-1 font-bold text-gray-700">موقعیت ملک</label>
                 <select
                   className="border rounded px-2 py-1 w-full"
                   value={editForm.location || ""}
@@ -384,16 +421,16 @@ const UnderReview = () => {
                 </select>
               </div>
               <div>
-                <label className="block text-sm mb-1">سال ساخت</label>
+                <label className="block text-sm mb-1 font-bold text-gray-700">سال ساخت</label>
                 <input
                   type="number"
                   className="border rounded px-2 py-1 w-full"
-                  value={editForm.year_of_build || ""}
+                  value={editForm.year_of_build !== undefined && editForm.year_of_build !== null ? editForm.year_of_build : ""}
                   onChange={e => setEditForm({ ...editForm, year_of_build: Number(e.target.value) })}
                 />
               </div>
               <div>
-                <label className="block text-sm mb-1">وام</label>
+                <label className="block text-sm mb-1 font-bold text-gray-700">وام</label>
                 <input
                   type="number"
                   className="border rounded px-2 py-1 w-full"
@@ -402,16 +439,16 @@ const UnderReview = () => {
                 />
               </div>
               <div>
-                <label className="block text-sm mb-1">قیمت</label>
+                <label className="block text-sm mb-1 font-bold text-gray-700">قیمت</label>
                 <input
                   type="number"
                   className="border rounded px-2 py-1 w-full"
-                  value={editForm.price || ""}
+                  value={editForm.price !== undefined && editForm.price !== null ? editForm.price : ""}
                   onChange={e => setEditForm({ ...editForm, price: Number(e.target.value) })}
                 />
               </div>
               <div className="sm:col-span-2 lg:col-span-3">
-                <label className="block text-sm mb-1">امکانات</label>
+                <label className="block text-sm mb-1 font-bold text-gray-700">امکانات</label>
                 <textarea
                   className="border rounded px-2 py-1 w-full"
                   value={editForm.features || ""}
@@ -419,16 +456,15 @@ const UnderReview = () => {
                 />
               </div>
               <div className="sm:col-span-2 lg:col-span-3">
-                <label className="block text-sm mb-1">توضیحات</label>
+                <label className="block text-sm mb-1 font-bold text-gray-700">توضیحات</label>
                 <textarea
                   className="border rounded px-2 py-1 w-full"
                   value={editForm.description || ""}
                   onChange={e => setEditForm({ ...editForm, description: e.target.value })}
                 />
               </div>
-              {/* نمایش تصاویر ملک با دکمه حذف */}
               <div className="sm:col-span-2 lg:col-span-3">
-                <label className="block text-sm mb-2 font-bold">تصاویر ملک</label>
+                <label className="block text-sm mb-2 font-bold text-gray-700">تصاویر ملک</label>
                 <div className="flex flex-wrap gap-4">
                   {(Array.isArray(selectedAnnounce.photo) ? selectedAnnounce.photo : (selectedAnnounce.photo ? [selectedAnnounce.photo] : [])).map((img: string, idx: number) => (
                     <div key={idx} className="relative w-32 h-24 border rounded overflow-hidden shadow">
@@ -468,7 +504,7 @@ const UnderReview = () => {
                 </div>
               </div>
               <div>
-                <label className="block text-sm mb-1">نام مالک</label>
+                <label className="block text-sm mb-1 font-bold text-gray-700">نام مالک</label>
                 <input
                   className="border rounded px-2 py-1 w-full"
                   value={editForm.full_name || ""}
@@ -476,7 +512,7 @@ const UnderReview = () => {
                 />
               </div>
               <div>
-                <label className="block text-sm mb-1">شماره تماس</label>
+                <label className="block text-sm mb-1 font-bold text-gray-700">شماره تماس</label>
                 <input
                   className="border rounded px-2 py-1 w-full"
                   value={editForm.userID || ""}
@@ -485,10 +521,15 @@ const UnderReview = () => {
               </div>
               <button
                 type="submit"
-                className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded w-full mt-4 sm:col-span-2 lg:col-span-3"
+                className="bg-gradient-to-r from-green-500 to-green-700 hover:from-green-600 hover:to-green-800 text-white px-6 py-3 rounded-xl w-full mt-4 sm:col-span-2 lg:col-span-3 font-extrabold text-lg shadow-lg transition-all duration-200"
                 disabled={updateAnnounMutation.isLoading}
               >
-                {updateAnnounMutation.isLoading ? "در حال ذخیره..." : "ذخیره تغییرات"}
+                {updateAnnounMutation.isLoading ? (
+                  <span className="flex items-center justify-center gap-2">
+                    <svg className="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path></svg>
+                    در حال ذخیره...
+                  </span>
+                ) : "ذخیره تغییرات"}
               </button>
             </div>
             </form>

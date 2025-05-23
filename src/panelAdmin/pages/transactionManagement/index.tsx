@@ -5,9 +5,6 @@ import { pageTransactionManagement } from "../../../utils/data"
 import InitialLayout from "../../dashboard/initialLayoutAdmin"
 import { creatDeal } from "../../../services/admin/creatDeal";
 import Swal from "sweetalert2";
-import DatePicker from "react-multi-date-picker";
-import persian from "react-date-object/calendars/persian";
-import persian_fa from "react-date-object/locales/persian_fa";
 import UseGetAllDealsQuery from "../../../hooks/queries/admin/getAllDeals/UseGetAllDealsQuery";
 
 const TransactionManagement = () => {
@@ -121,20 +118,13 @@ const TransactionManagement = () => {
                     value={commission} 
                     onChange={(e) => setCommission(e.target.value)}
                 />
-                {/* دیتاپیکر شمسی */}
-                <div className="flex flex-col w-full">
-                    <label className="mb-2 text-xs mr-5">تاریخ معامله</label>
-                    <DatePicker
-                        value={date}
-                        onChange={setDate}
-                        calendar={persian}
-                        locale={persian_fa}
-                        inputClass="appearance-none w-full py-3 px-4 rounded-full focus:outline-none focus:ring-2 focus:ring-gray-400 bg-[#f4f4f4]"
-                        format="YYYY/MM/DD"
-                        calendarPosition="bottom-right"
-                        style={{ width: "100%" }}
-                    />
-                </div>
+                {/* تاریخ معامله به صورت اینپوت ساده */}
+                <InputState
+                    label="تاریخ معامله"
+                    placeholder="مثال: 1402"
+                    value={date || ""}
+                    onChange={e => setDate(e.target.value)}
+                />
             </div>
             <textarea 
                 placeholder="توضیحات را وارد کنید..." 

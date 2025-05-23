@@ -44,7 +44,7 @@ const StepOneUser = ({
             />
 
             <ComboBox
-                label="منطقه"
+                label="محله مورد نظر"
                 value={region}
                 onChange={setRegion}
                 options={regionOptions}

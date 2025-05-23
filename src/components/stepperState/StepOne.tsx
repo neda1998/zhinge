@@ -29,7 +29,6 @@ const StepOne = ({
 }: StepOneProps) => {
   const hideFields = shouldHideFields(usage);
 
-  // گرفتن مناطق از API
   const { data: regionsData, isLoading: regionsLoading, isError: regionsError } = UseGetAllregionsQuery();
   const regionOptions = Array.isArray(regionsData) ? regionsData.map((item: any) => item.name) : [];
 
@@ -44,26 +43,12 @@ const StepOne = ({
           onChange={setUsage}
           options={["آپارتمان", "ویلایی", "مغازه", "زمین مسکونی", "زمین کشاورزی", "سایر"]}
         />
-        {/* جایگزین InputState منطقه با ComboBox */}
         <ComboBox
-          label="منطقه"
+          label="محله مورد نظر"
           value={region}
           onChange={setRegion}
           options={regionOptions}
-          // اگر ComboBox شما پراپ‌های زیر را پشتیبانی می‌کند، اضافه کنید:
-          // loading={regionsLoading}
-          // disabled={regionsLoading || regionsError}
-          // placeholder={regionsLoading ? "در حال بارگذاری..." : (regionsError ? "خطا در دریافت مناطق" : "انتخاب منطقه")}
         />
-        {/* حذف InputState قبلی منطقه */}
-        {/* 
-        <InputState
-          label="منطقه"
-          value={region}
-          onChange={(e) => setRegion(e.target.value)}
-          placeholder="مثال: مبارک آباد"
-        />
-        */}
         <InputState
           label="آدرس ملک"
           placeholder="سنندج، خیابان پاسداران، کوچه ادب 2، پلاک 3"
