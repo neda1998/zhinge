@@ -1,9 +1,6 @@
 import { useState, useRef } from "react";
 import defaultSearchIcon from "../../../../assets/images/Login.svg";
-import Filter from "../../../../assets/images/iconInput/Filter.svg";
 import SearchWhite from "../../../../assets/images/iconInput/searchwhite.svg";
-import ComboBox from "../../../common/Combo";
-import InputState from "../../atoms/input/inputState";
 import useSearchMutation from "../../../../hooks/mutation/announce/useSearchMutation";
 import Swal from "sweetalert2";
 
@@ -45,7 +42,7 @@ export default function SearchBar({
   const [landMetrage, setLandMetrage] = useState("");
   const [searchResults, setSearchResults] = useState<any[]>([]);
   const [hasSearched, setHasSearched] = useState(false);
-  const [searchInput, setSearchInput] = useState(""); // <-- add this line
+  const [searchInput, setSearchInput] = useState(""); 
 
   const searchMutation = useSearchMutation();
 
@@ -55,9 +52,6 @@ export default function SearchBar({
     }
   };
 
-  const toggleDropdown = () => setIsOpen((prev) => !prev);
-
-  // تابع ساده برای خواندن مقدار کوکی
   function getCookie(name: string) {
     const value = `; ${document.cookie}`;
     const parts = value.split(`; ${name}=`);
@@ -92,7 +86,6 @@ export default function SearchBar({
     if (propertyType && propertyType !== "نوع ملک") baseSearchData.type = propertyType;
     if (region && region !== "انتخاب منطقه") baseSearchData.region = region;
 
-    // تابع کمکی برای جستجو
     const doSearch = (data: any, cb: (results: any[]) => void) => {
       searchMutation.mutate(data, {
         onSuccess: (response: any) => {
@@ -104,47 +97,37 @@ export default function SearchBar({
     };
 
     if (searchInput) {
-      const dataWithType = { ...baseSearchData, type: searchInput };
-      console.log("payload (type)", dataWithType);
-      doSearch(dataWithType, (results) => {
-        if (results.length > 0) {
-          setSearchResults(results);
-          if (onSearchResults) onSearchResults(results);
-        } else {
-          const priceValue = isNaN(Number(searchInput)) ? searchInput : Number(searchInput);
-          const dataWithPrice = { ...baseSearchData, price: priceValue };
-          doSearch(dataWithPrice, (results2) => {
-            if (results2.length > 0) {
-              setSearchResults(results2);
-              if (onSearchResults) onSearchResults(results2);
-            } else {
-              const yearValue = isNaN(Number(searchInput)) ? searchInput : Number(searchInput);
-              const dataWithYear = { year_of_build: yearValue };
-              doSearch(dataWithYear, (results3) => {
-                if (results3.length > 0) {
-                  setSearchResults(results3);
-                  if (onSearchResults) onSearchResults(results3);
-                } else {
-                  const roomNumberValue = isNaN(Number(searchInput)) ? searchInput : Number(searchInput);
-                  const dataWithRoomNumber = { room_number: roomNumberValue };
-                  doSearch(dataWithRoomNumber, (resultsRoom) => {
-                    if (resultsRoom.length > 0) {
-                      setSearchResults(resultsRoom);
-                      if (onSearchResults) onSearchResults(resultsRoom);
-                    } else {
-                      const dataWithRegion = { region: searchInput };
-                      doSearch(dataWithRegion, (resultsRegion) => {
-                        setSearchResults(resultsRegion);
-                        if (onSearchResults) onSearchResults(resultsRegion);
-                      });
-                    }
-                  });
-                }
-              });
-            }
-          });
+      const trySearchChain = [
+        { key: "usage", value: searchInput },
+        { key: "Uid", value: isNaN(Number(searchInput)) ? searchInput : Number(searchInput) },
+        { key: "region", value: searchInput }, 
+        { key: "land_metrage", value: isNaN(Number(searchInput)) ? searchInput : Number(searchInput) }, 
+        { key: "features", value: searchInput }, 
+        { key: "address", value: searchInput }, 
+        { key: "price", value: isNaN(Number(searchInput)) ? searchInput : Number(searchInput) },
+        { key: "year_of_build", value: isNaN(Number(searchInput)) ? searchInput : Number(searchInput) },
+        { key: "room_number", value: isNaN(Number(searchInput)) ? searchInput : Number(searchInput) }
+      ];
+
+      const searchRecursive = (index: number) => {
+        if (index >= trySearchChain.length) {
+          setSearchResults([]);
+          if (onSearchResults) onSearchResults([]);
+          return;
         }
-      });
+        const { key, value } = trySearchChain[index];
+        const data = { ...baseSearchData, [key]: value };
+        doSearch(data, (results) => {
+          if (results.length > 0) {
+            setSearchResults(results);
+            if (onSearchResults) onSearchResults(results);
+          } else {
+            searchRecursive(index + 1);
+          }
+        });
+      };
+
+      searchRecursive(0);
     } else {
       doSearch(baseSearchData, (results) => {
         setSearchResults(results);
@@ -158,7 +141,7 @@ export default function SearchBar({
       <div className={`relative flex flex-col items-center w-full lg:w-[50%] p-4 rounded-[20px] ${divStyles}`}>
         <div className={`flex h-[45px] w-full relative ${customStyles}`}>
           <input
-            className={`w-full border border-gray-300 lg:pr-[8%] pr-[12%] bg-gray-main text-[14px] font-medium text-gray-700 outline-none transition-all focus:border-2 ${inputStyles}`}
+            className={`w-full border border-gray-300 lg:pr-[8%] pr-[12%] bg-gray-main text-[14px] font-medium outline-none transition-all focus:border-2 ${inputStyles}`}
             placeholder={placeholder}
             required
             value={searchInput} 
@@ -175,21 +158,6 @@ export default function SearchBar({
             </>
           )}
         </div>
-
-        {isOpen && (
-          <div id="dropdown" className="absolute top-full left-7 border border-gray-300 bg-white rounded-lg shadow z-10 p-3">
-            <ComboBox options={["نوع ملک", "اجاره", "فروش", "other"]} value={propertyType} onChange={setPropertyType} />
-            <ComboBox options={["انتخاب منطقه", "تهران", "ارومیه"]} value={region} onChange={setRegion} />
-            <InputState placeholder="حداقل قیمت" margin="mb-4" onChange={(e) => setMinPrice(e.target.value)} />
-            <InputState placeholder="حداکثر قیمت" margin="mb-4" onChange={(e) => setMaxPrice(e.target.value)} />
-            <InputState placeholder="کد ملک" onChange={(e) => setPropertyCode(e.target.value)} />
-            <InputState placeholder="سال ساخت" onChange={(e) => setYearOfBuild(e.target.value)} />
-            <InputState placeholder="تعداد اتاق" onChange={(e) => setRoomNumber(e.target.value)} />
-            <button className="bg-main-color rounded-full py-2 flex justify-center items-center w-full mt-4 text-white" onClick={handleSearch}>
-              اعمال فیلتر
-            </button>
-          </div>
-        )}
       </div>
     </div>
   );

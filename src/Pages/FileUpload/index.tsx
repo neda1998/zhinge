@@ -136,12 +136,13 @@ const FileUpload: React.FC<FileUploadProps> = ({ uid, uploadedImages, setUploade
             <span className="text-xs text-gray-500 mt-2">در حال بارگذاری تصویر...</span>
           </div>
         )}
+        <span className="text-xs text-gray-500">{uploadedImages.length + pendingFiles.length}/10</span>
       </div>
 
       {pendingFiles.length > 0 && (
         <div className="grid lg:grid-cols-5 sm:grid-cols-2 grid-cols-1 gap-4 mt-6">
           {pendingFiles.map((item, idx) => (
-            <div key={idx} className="relative w-[8rem] h-[8rem] rounded-[20px] bg-yellow-50 overflow-hidden border-2 border-yellow-400">
+            <div key={idx} className="relative w-full rounded-[20px] bg-yellow-50 overflow-hidden border-2 border-yellow-400">
               <img src={item.preview} alt="pending" className="w-full h-full object-cover" />
               <button
                 onClick={() => handleRemovePending(idx)}
@@ -155,9 +156,9 @@ const FileUpload: React.FC<FileUploadProps> = ({ uid, uploadedImages, setUploade
       )}
 
       {uploadedImages.length > 0 && (
-        <div className="grid lg:grid-cols-4 sm:grid-cols-3 grid-cols-1 gap-4 mt-6">
+        <div className="grid lg:grid-cols-5 sm:grid-cols-3 grid-cols-1 gap-4 mt-6 w-full">
           {uploadedImages.map((img) => (
-            <div key={img.id} className="relative w-[8rem] h-[8rem] rounded-[20px] bg-[#f9f9f9] overflow-hidden">
+            <div key={img.id} className="relative w-full h-[8rem] rounded-[20px] bg-[#f9f9f9] overflow-hidden">
               <img src={img.preview} alt={img.name} className="w-full h-full object-cover" />
               <button
                 onClick={() => handleRemoveImage(img.id)}
@@ -172,7 +173,7 @@ const FileUpload: React.FC<FileUploadProps> = ({ uid, uploadedImages, setUploade
 
       <button
         onClick={handleUploadAll}
-        disabled={pendingFiles.length === 0 || isLoading}
+        disabled={pendingFiles.length === 0 || isLoading || (uploadedImages.length + pendingFiles.length) > 10}
         className="fixed left-6 bottom-6 z-50 bg-primary text-white px-6 py-3 rounded-[16px] shadow-lg disabled:opacity-50 bg-[#09A380] hover:bg-[#07a06c] transition-colors duration-300 flex items-center justify-center"
       >
         {isLoading ? (

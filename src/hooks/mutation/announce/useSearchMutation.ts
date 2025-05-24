@@ -11,7 +11,6 @@ const useSearchMutation = () => {
     },
     {
       onSuccess: async (response) => {
-        console.log("✅ جستجو موفقیت‌آمیز بود", response);
         if (Array.isArray(response) && response.length > 0) {
           Swal.fire({
             title: "موفقیت",
@@ -19,12 +18,19 @@ const useSearchMutation = () => {
             icon: "success",
             confirmButtonText: "باشه",
           });
+        } else {
+          Swal.fire({
+            title: "نتیجه‌ای یافت نشد",
+            text: "هیچ نتیجه‌ای برای جستجوی شما پیدا نشد.",
+            icon: "warning",
+            confirmButtonText: "باشه",
+          });
         }
       },
       onError: async (error: any) => {
         Swal.fire({
           title: "!خطا",
-          text: error.response?.data?.message || "خطایی رخ داده است",
+          text: "هیچ نتیجه‌ای برای جستجوی شما پیدا نشد.",
           icon: "error",
           confirmButtonText: "باشه",
         });

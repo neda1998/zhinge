@@ -1,9 +1,6 @@
 import React, { useState } from 'react';
 import InputState from "../../../components/ui/atoms/input/inputState";
 import ComboBox from '../../../components/common/Combo';
-import DatePicker from "react-multi-date-picker";
-import persian from "react-date-object/calendars/persian";
-import persian_fa from "react-date-object/locales/persian_fa";
 
 
     function numberToPersianWords(num: number | undefined): string {
@@ -80,6 +77,18 @@ interface StepTwoUserProps {
 const shouldHideFields = (type: string) =>
     type === "مغازه" || type === "زمین مسکونی" || type === "زمین کشاورزی";
 
+const shouldHideFeatures = (type: string) =>
+    type === "زمین مسکونی" || type === "زمین کشاورزی";
+
+const shouldHideYearOfBuild = (type: string) =>
+    type === "زمین مسکونی" || type === "زمین کشاورزی";
+
+const shouldHideUsefulMetrage = (type: string) =>
+    type === "زمین مسکونی" || type === "زمین کشاورزی";
+
+const shouldHideLoan = (type: string) =>
+    type === "زمین مسکونی" || type === "زمین کشاورزی";
+
 const StepTwoUser = ({
     loan, setLoan,
     features, setFeatures,
@@ -94,6 +103,10 @@ const StepTwoUser = ({
     const [showFeaturePanel, setShowFeaturePanel] = useState(false);
     const selectedFeatures: string[] = features ? features.split(",").map(f => f.trim()).filter(f => f) : [];
     const hideFields = shouldHideFields(type);
+    const hideFeatures = shouldHideFeatures(type);
+    const hideYearOfBuild = shouldHideYearOfBuild(type);
+    const hideUsefulMetrage = shouldHideUsefulMetrage(type);
+    const hideLoan = shouldHideLoan(type);
 
     const handleFeatureSelect = (feature: string) => {
         if (!setFeatures) return;
@@ -119,43 +132,41 @@ const StepTwoUser = ({
                 }}
                 numeric
             />
-            {!hideFields && (
-                           <>
-                               <InputState
-                                   label="متراژ مفید"
-                                   value={useful_metrage !== undefined && useful_metrage !== null ? formatInputNumber(String(useful_metrage)) : ""}
-                                   onChange={e => {
-                                       const formatted = formatInputNumber(e.target.value);
-                                       e.target.value = formatted;
-                                       setUsefulMetrage(Number(e.target.value.replace(/,/g, "")))}
-                                   }
-                                   placeholder="مثال: 100"
-                                   numeric
-                               />
-                           </>
-                       )}
+            {!hideFields && !hideUsefulMetrage && (
+                <>
+                    <InputState
+                        label="متراژ مفید"
+                        value={useful_metrage !== undefined && useful_metrage !== null ? formatInputNumber(String(useful_metrage)) : ""}
+                        onChange={e => {
+                            const formatted = formatInputNumber(e.target.value);
+                            e.target.value = formatted;
+                            setUsefulMetrage(Number(e.target.value.replace(/,/g, "")))}
+                        }
+                        placeholder="مثال: 100"
+                        numeric
+                    />
+                </>
+            )}
             <ComboBox
                 label="موقعیت ملک"
                 options={LOCATION_OPTIONS}
                 value={location}
                 onChange={setLocation}
             />
-             {!hideFields && (
+             {!hideFields && !hideYearOfBuild && (
                 <>
                     <InputState
                         label="سال ساخت"
                         placeholder="مثال: 1400"
-                        value={year_of_build !== undefined && year_of_build !== null ? formatInputNumber(String(year_of_build)) : ""}
+                        value={year_of_build !== undefined && year_of_build !== null ? String(year_of_build) : ""}
                         onChange={e => {
-                            const formatted = formatInputNumber(e.target.value);
-                            e.target.value = formatted;
-                            setYearOfBuild(Number(formatted.replace(/,/g, "")));
+                            setYearOfBuild(Number(e.target.value));
                         }}
                         numeric
                     />
                 </>
             )}
-             {!hideFields && (
+             {!hideFields && !hideLoan && (
                 <div className="flex flex-col items-start">
                     <InputState
                         label="وام"
@@ -191,7 +202,7 @@ const StepTwoUser = ({
                                 </span>
                             ) : null}
                         </div>
-             {!hideFields && (
+             {!hideFields && !hideFeatures && (
                 <div className="flex flex-col col-span-1 relative">
                     <label className="mb-1 text-sm font-semibold text-gray-700">امکانات</label>
                     <button

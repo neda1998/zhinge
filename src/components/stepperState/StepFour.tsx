@@ -99,11 +99,11 @@ const StepFour: React.FC<FileUploadProps> = ({ uid, uploadedImages, setUploadedI
   const handleRemovePending = (idx: number | string) => setPendingFiles(prev => prev.filter((_, i) => i !== idx));
 
   const renderImageGrid = (images: { preview: string; id?: string; name?: string }[], onRemove: (index: number | string) => void, isPending: boolean) => (
-    <div className="grid lg:grid-cols-4 sm:grid-cols-3 grid-cols-1 gap-4 mt-6">
+    <div className="grid lg:grid-cols-5 sm:grid-cols-3 grid-cols-1 gap-4 mt-6 w-full">
       {images.map((item, idx) => (
         <div
           key={item.id || idx}
-          className={`relative w-[8rem] h-[8rem] rounded-[20px] ${isPending ? "bg-yellow-50 border-2 border-yellow-400" : "bg-[#f9f9f9]"} overflow-hidden`}
+          className={`relative w-[8rem] h-[8rem] rounded-[20px] w-full ${isPending ? "bg-yellow-50 border-2 border-yellow-400" : "bg-[#f9f9f9]"} overflow-hidden`}
         >
           <img src={item.preview} alt={item.name || "pending"} className="w-full h-full object-cover" />
           <button

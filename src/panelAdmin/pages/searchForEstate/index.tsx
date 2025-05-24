@@ -134,7 +134,6 @@ const SearchForEstate = () => {
           ? data.photo
           : "https://via.placeholder.com/400x300?text=No+Image";
 
-    // Split details into two columns for better alignment
     const mid = Math.ceil(details.length / 2);
     const col1 = details.slice(0, mid);
     const col2 = details.slice(mid);
@@ -379,7 +378,7 @@ const SearchForEstate = () => {
             {results.map((item, idx) => (
               <tr key={idx} className="text-center border-b whitespace-nowrap hover:bg-blue-50 transition">
                 <td className="p-4 font-bold text-blue-700">{idx + 1}</td>
-                <td className="p-4">{item.id || "-"}</td>
+                <td className="p-4">{item.Uid || "-"}</td>
                 <td className="p-4">{item.usage || "-"}</td>
                 <td className="p-4">{item.region || "-"}</td>
                 <td className="p-4">{item.full_name || "-"}</td>
@@ -429,7 +428,7 @@ const SearchForEstate = () => {
       <ChooseItemsOfState />
 
       <div className="grid lg:grid-cols-4 gap-x-5 gap-y-10 mb-9">
-        <InputState label="کد ملک" value={form.Uid || ""} onChange={e => handleChange("state_code", e.target.value)} numeric />
+        <InputState label="کد ملک" value={form.Uid || ""} onChange={e => handleChange("Uid", e.target.value)} numeric />
         <InputState label="نام مالک" value={form.full_name || ""} onChange={e => handleChange("full_name", e.target.value)} />
         <InputState label="شماره موبایل" value={form.userID || ""} onChange={e => handleChange("userID", e.target.value)} numeric />
       </div>

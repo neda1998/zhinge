@@ -14,6 +14,8 @@ import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import UseConfirmedAnnounceQuery from "../../../hooks/queries/admin/confirmedAnnounce/UseConfirmedAnnounceQuery";
 import UseDeletePhotosMutation from "../../../hooks/mutation/deletePhotos/UseDeletePhotosMutation";
+import UseUploadFileMutation from "../../../hooks/mutation/announce/UseUploadFileMutation";
+import axios from "axios";
 
 const UnderReview = () => {
   UseDeletePhotosMutation()
@@ -36,11 +38,15 @@ const UnderReview = () => {
   const rejectAnnounceMutation = UseRejectannounceMutatiojn();
   const updateAnnounMutation = UseUpdateAnnounMutation();
   const deletePhotosMutation = UseDeletePhotosMutation();
+  const uploadFileMutation = UseUploadFileMutation();
 
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [selectedAnnounce, setSelectedAnnounce] = useState<any>(null);
   const [editForm, setEditForm] = useState<any>({});
   const [activeTab, setActiveTab] = useState<"inprogress" | "confirmed">("inprogress");
+
+  const [modalPhotos, setModalPhotos] = useState<string[]>([]);
+  const [uploadingPhoto, setUploadingPhoto] = useState(false);
 
   const {
     data: confirmedData,
@@ -49,7 +55,17 @@ const UnderReview = () => {
     refetch: refetchConfirmed,
   } = UseConfirmedAnnounceQuery();
 
-  const handleOpenEditModal = (item: any) => {
+  // عکس‌های آگهی را از سرور بگیر
+  const fetchAnnouncePhotos = async (uid: string) => {
+    try {
+      const res = await axios.get(`http://185.231.115.236:3000/api/V1/announce/getPhotos?Uid=${uid}`);
+      return Array.isArray(res.data.photos) ? res.data.photos : [];
+    } catch {
+      return [];
+    }
+  };
+
+  const handleOpenEditModal = async (item: any) => {
     setSelectedAnnounce(item);
     setEditForm({
       ...item,
@@ -57,6 +73,11 @@ const UnderReview = () => {
       loan: item.loan ?? "",
       metrage: item.land_metrage ?? "",
     });
+    let photos: string[] = [];
+    if (item.Uid) {
+      photos = await fetchAnnouncePhotos(item.Uid);
+    }
+    setModalPhotos(photos.length > 0 ? photos : (Array.isArray(item.photo) ? item.photo : (item.photo ? [item.photo] : [])));
     setEditModalOpen(true);
   };
 
@@ -297,6 +318,7 @@ const UnderReview = () => {
                   region: editForm.region,
                   lowest_price: editForm.lowest_price,
                   highest_price: editForm.highest_price,
+                  photo: modalPhotos,
                 });
               }}
             >
@@ -466,41 +488,115 @@ const UnderReview = () => {
               <div className="sm:col-span-2 lg:col-span-3">
                 <label className="block text-sm mb-2 font-bold text-gray-700">تصاویر ملک</label>
                 <div className="flex flex-wrap gap-4">
-                  {(Array.isArray(selectedAnnounce.photo) ? selectedAnnounce.photo : (selectedAnnounce.photo ? [selectedAnnounce.photo] : [])).map((img: string, idx: number) => (
-                    <div key={idx} className="relative w-32 h-24 border rounded overflow-hidden shadow">
-                      <img
-                        src={img}
-                        alt={`estate-photo-${idx}`}
-                        className="object-cover w-full h-full"
-                      />
-                      <button
-                        type="button"
-                        className="absolute top-1 right-1 bg-red-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs hover:bg-red-700"
-                        title="حذف تصویر"
-                        disabled={deletePhotosMutation.isLoading}
-                        onClick={async () => {
-                          if (!selectedAnnounce.Uid) {
-                            console.error("Uid is missing for the selected announce.");
-                            return;
-                          }
-                          try {
-                            await deletePhotosMutation.mutateAsync({ uid: selectedAnnounce.Uid });
-                            setSelectedAnnounce((prev: any) => ({
-                              ...prev,
-                              photo: (Array.isArray(prev.photo) ? prev.photo : [prev.photo]).filter((p: string) => p !== img)
-                            }));
-                          } catch (error) {
-                            console.error("Error deleting photo:", error);
-                          }
-                        }}
-                      >
-                        ×
-                      </button>
-                    </div>
-                  ))}
-                  {(!selectedAnnounce.photo || (Array.isArray(selectedAnnounce.photo) && selectedAnnounce.photo.length === 0)) && (
+                  {modalPhotos.length > 0 ? (
+                    modalPhotos.map((img: string, idx: number) => (
+                      <div key={idx} className="relative w-32 h-24 border rounded overflow-hidden shadow">
+                        <img
+                          src={img}
+                          alt={`estate-photo-${idx}`}
+                          className="object-cover w-full h-full"
+                        />
+                        <button
+                          type="button"
+                          className="absolute top-1 right-1 bg-red-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs hover:bg-red-700"
+                          title="حذف تصویر"
+                          disabled={deletePhotosMutation.isLoading}
+                          onClick={async () => {
+                            if (!selectedAnnounce.Uid) {
+                              console.error("Uid is missing for the selected announce.");
+                              return;
+                            }
+                            try {
+                              await deletePhotosMutation.mutateAsync({ uid: selectedAnnounce.Uid, image: img });
+                              // بعد از حذف، عکس‌های جدید را از سرور بگیر
+                              const photos = await fetchAnnouncePhotos(selectedAnnounce.Uid);
+                              setModalPhotos(photos);
+                            } catch (error) {
+                              console.error("Error deleting photo:", error);
+                            }
+                          }}
+                        >
+                          ×
+                        </button>
+                      </div>
+                    ))
+                  ) : (
                     <span className="text-gray-400">تصویری وجود ندارد</span>
                   )}
+                </div>
+                {/* آپلود عکس جدید */}
+                <div className="mt-4 flex items-center gap-2">
+                  <input
+                    type="file"
+                    accept="image/*"
+                    id="modal-photo-upload"
+                    style={{ display: "none" }}
+                    disabled={
+                      uploadingPhoto ||
+                      !selectedAnnounce?.Uid ||
+                      modalPhotos.length >= 10
+                    }
+                    onChange={async (e) => {
+                      const file = e.target.files?.[0];
+                      if (!file || !selectedAnnounce?.Uid) return;
+                      if (modalPhotos.length >= 10) {
+                        Swal.fire({
+                          title: "خطا",
+                          text: "حداکثر 10 تصویر قابل آپلود است.",
+                          icon: "error",
+                          confirmButtonText: "باشه",
+                        });
+                        e.target.value = "";
+                        return;
+                      }
+                      setUploadingPhoto(true);
+                      try {
+                        await uploadFileMutation.mutateAsync({ file, uid: selectedAnnounce.Uid });
+                        // بعد از آپلود، عکس‌های جدید را از سرور بگیر
+                        const photos = await fetchAnnouncePhotos(selectedAnnounce.Uid);
+                        setModalPhotos(photos);
+                        Swal.fire({
+                          title: "موفق!",
+                          text: "عکس با موفقیت آپلود شد.",
+                          icon: "success",
+                          confirmButtonText: "باشه",
+                        });
+                      } catch (err) {
+                        Swal.fire({
+                          title: "خطا",
+                          text: "خطایی هنگام آپلود عکس رخ داد.",
+                          icon: "error",
+                          confirmButtonText: "باشه",
+                        });
+                      }
+                      setUploadingPhoto(false);
+                      e.target.value = "";
+                    }}
+                  />
+                  <button
+                    type="button"
+                    className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded shadow disabled:opacity-50"
+                    disabled={
+                      uploadingPhoto ||
+                      !selectedAnnounce?.Uid ||
+                      modalPhotos.length >= 10
+                    }
+                    onClick={() => {
+                      if (modalPhotos.length >= 10) {
+                        Swal.fire({
+                          title: "خطا",
+                          text: "حداکثر 10 تصویر قابل آپلود است.",
+                          icon: "error",
+                          confirmButtonText: "باشه",
+                        });
+                        return;
+                      }
+                      document.getElementById("modal-photo-upload")?.click();
+                    }}
+                  >
+                    {uploadingPhoto ? "در حال آپلود..." : "افزودن عکس جدید"}
+                  </button>
+                  <span className="text-xs text-gray-500">{modalPhotos.length}/10</span>
                 </div>
               </div>
               <div>
