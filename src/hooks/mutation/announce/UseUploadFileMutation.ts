@@ -4,10 +4,7 @@ import { uploadFile } from "../../../services/uploadFile";
 
 const UseUploadFileMutation = () => {
   return useMutation(
-    async (data: { file: File; uid: string }) => {
-      console.log(data, "data");
-      return await uploadFile(data.file, data.uid);
-    },
+    async (data: { file: File; uid: string }) => await uploadFile(data.file, data.uid),
     {
       onError: async (error: any) => {
         Swal.fire({

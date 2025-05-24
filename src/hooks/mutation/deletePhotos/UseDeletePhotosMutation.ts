@@ -1,19 +1,14 @@
 import { useMutation, useQueryClient } from "react-query";
 import Swal from "sweetalert2";
-import client from "../../../services/utils/client";
 
-const deletePhoto = async ({ uid, image }: { uid: string; image: string }) => {
-  return await client({
-    url: "http://185.231.115.236:3000/api/V1/announce/deletePhoto",
-    method: "POST",
-    data: { Uid: uid, image },
-  });
-};
+import { deletePhotos } from "../../../services/admin/deletePhotos";
 
 const UseDeletePhotosMutation = () => {
   const queryClient = useQueryClient();
   return useMutation(
-    deletePhoto,
+    async ({ uid }: { uid: string }) => {
+      return await deletePhotos(uid);
+    },
 
     {
       onSettled: async () => {

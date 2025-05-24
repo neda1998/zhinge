@@ -55,7 +55,6 @@ const UnderReview = () => {
     refetch: refetchConfirmed,
   } = UseConfirmedAnnounceQuery();
 
-  // عکس‌های آگهی را از سرور بگیر
   const fetchAnnouncePhotos = async (uid: string) => {
     try {
       const res = await axios.get(`http://185.231.115.236:3000/api/V1/announce/getPhotos?Uid=${uid}`);
@@ -318,7 +317,7 @@ const UnderReview = () => {
                   region: editForm.region,
                   lowest_price: editForm.lowest_price,
                   highest_price: editForm.highest_price,
-                  photo: modalPhotos,
+                  photo: modalPhotos, // اضافه کردن عکس‌های جدید به آگهی
                 });
               }}
             >
@@ -507,10 +506,8 @@ const UnderReview = () => {
                               return;
                             }
                             try {
-                              await deletePhotosMutation.mutateAsync({ uid: selectedAnnounce.Uid, image: img });
-                              // بعد از حذف، عکس‌های جدید را از سرور بگیر
-                              const photos = await fetchAnnouncePhotos(selectedAnnounce.Uid);
-                              setModalPhotos(photos);
+                              await deletePhotosMutation.mutateAsync({ uid: selectedAnnounce.Uid });
+                              setModalPhotos(prev => prev.filter((p: string) => p !== img));
                             } catch (error) {
                               console.error("Error deleting photo:", error);
                             }
@@ -534,7 +531,7 @@ const UnderReview = () => {
                     disabled={
                       uploadingPhoto ||
                       !selectedAnnounce?.Uid ||
-                      modalPhotos.length >= 10
+                      modalPhotos.length >= 10 // فقط اگر کمتر از ۱۰ تا عکس باشد اجازه آپلود بده
                     }
                     onChange={async (e) => {
                       const file = e.target.files?.[0];
@@ -552,9 +549,7 @@ const UnderReview = () => {
                       setUploadingPhoto(true);
                       try {
                         await uploadFileMutation.mutateAsync({ file, uid: selectedAnnounce.Uid });
-                        // بعد از آپلود، عکس‌های جدید را از سرور بگیر
-                        const photos = await fetchAnnouncePhotos(selectedAnnounce.Uid);
-                        setModalPhotos(photos);
+                        setModalPhotos(prev => [...prev, URL.createObjectURL(file)]);
                         Swal.fire({
                           title: "موفق!",
                           text: "عکس با موفقیت آپلود شد.",
@@ -579,7 +574,7 @@ const UnderReview = () => {
                     disabled={
                       uploadingPhoto ||
                       !selectedAnnounce?.Uid ||
-                      modalPhotos.length >= 10
+                      modalPhotos.length >= 10 // فقط اگر کمتر از ۱۰ تا عکس باشد اجازه آپلود بده
                     }
                     onClick={() => {
                       if (modalPhotos.length >= 10) {
