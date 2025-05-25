@@ -3,22 +3,20 @@ import Button from "../../ui/atoms/Button";
 import InputState from "../../ui/atoms/input/inputState";
 
 export default function PageOne() {
-  const [price, setPrice] = useState('');  
+  const [price, setPrice] = useState('');
   const [commission, setCommission] = useState<number | null>(null);
 
   const calculateCommission = () => {
-    const salePrice = Number(price.replace(/,/g, "")); 
-    if (isNaN(salePrice) || salePrice <= 0) {
+    const a = Number(price.replace(/,/g, ""));
+    if (isNaN(a) || a <= 0) {
       setCommission(null);
       return;
     }
-    let y;
-    if (salePrice <= 100000000) {
-      y = 1000000 * 1.1;
-    } else {
-      y = (((salePrice - 100000000) * 0.5) + 1000000) * 1.1;
-    }
-    setCommission(y);
+
+    const y = ((a - 1000000000) * 0.005) + 1000000;
+    const result = (y * 1.1) / 2;
+
+    setCommission(result * 2);
   };
 
   return (
@@ -53,14 +51,14 @@ export default function PageOne() {
               سهم پرداختی خریدار
             </span>
             <span className="border-dashed border-b-2 border-[#1E1E1E66] text-[16px] w-full h-3"></span>
-            <p className="text-[15px] text-nowrap">{((commission ?? 0) / 2).toLocaleString()} تومان</p>
+            <p className="text-[15px] text-nowrap">{(commission / 2).toLocaleString()} تومان</p>
           </div>
           <div className="w-full flex items-center gap-2 flex-nowrap">
             <span className="text-[15px] text-nowrap">
               سهم پرداختی فروشنده
             </span>
             <span className="border-dashed border-b-2 border-[#1E1E1E66] text-[16px] w-full h-3"></span>
-            <p className="text-[15px] text-nowrap">{((commission ?? 0) / 2).toLocaleString()} تومان</p>
+            <p className="text-[15px] text-nowrap">{(commission / 2).toLocaleString()} تومان</p>
           </div>
         </div>
       )}

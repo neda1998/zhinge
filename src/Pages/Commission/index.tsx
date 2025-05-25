@@ -33,7 +33,6 @@ export default function Commission() {
   return (
     <React.Fragment>
       <Header />
-
       <div className="flex flex-col w-full lg:mt-16 mt-24 px-12 gap-4 mobile:px-3">
         <div className="w-full flex items-center h-[fit-content] gap-2 mobile:justify-center">
           <div className="w-10 h-2 rounded-3xl bg-[#09A380] mobile:hidden"></div>
