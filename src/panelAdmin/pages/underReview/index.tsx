@@ -71,6 +71,7 @@ const UnderReview = () => {
       price: item.price ?? "",
       loan: item.loan ?? "",
       metrage: item.land_metrage ?? "",
+      phone: item.phone ?? "", 
     });
     let photos: string[] = [];
     if (item.Uid) {
@@ -137,7 +138,7 @@ const UnderReview = () => {
           <span className="font-bold text-gray-800">{item.full_name}</span>
         ),
         "شماره تماس": (
-          <span className="text-gray-500">{item.userID}</span>
+          <span className="text-gray-500">{item.phone}</span>
         ),
         "وضعیت": (
           <span className="text-yellow-600 font-bold whitespace-nowrap bg-yellow-100 px-2 py-1 rounded shadow-sm border border-yellow-200">
@@ -204,7 +205,7 @@ const UnderReview = () => {
           <span className="font-bold text-gray-800">{item.full_name}</span>
         ),
         "شماره تماس": (
-          <span className="text-gray-500">{item.userID}</span>
+          <span className="text-gray-500">{item.phone}</span>
         ),
         "وضعیت": (
           <span className="text-green-600 font-bold whitespace-nowrap bg-green-100 px-2 py-1 rounded shadow-sm border border-green-200">
@@ -309,7 +310,7 @@ const UnderReview = () => {
                   price: editForm.price,
                   room_number: editForm.room_number,
                   features: editForm.features,
-                  phone: editForm.userID,
+                  phone: editForm.phone, // use phone from editForm
                   description: editForm.description,
                   tour3dlink: editForm.tour3dlink,
                   tour3dRequest: editForm.tour3dRequest,
@@ -606,8 +607,8 @@ const UnderReview = () => {
                 <label className="block text-sm mb-1 font-bold text-gray-700">شماره تماس</label>
                 <input
                   className="border rounded px-2 py-1 w-full"
-                  value={editForm.userID || ""}
-                  onChange={e => setEditForm({ ...editForm, userID: e.target.value })}
+                  value={editForm.phone || ""} // bind to phone
+                  onChange={e => setEditForm({ ...editForm, phone: e.target.value })}
                 />
               </div>
               <button
