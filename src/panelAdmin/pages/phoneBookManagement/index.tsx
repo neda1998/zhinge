@@ -43,7 +43,7 @@ const PhoneBookManagement = () => {
                     </span>
                 </div>
             </div>
-            <Search className="lg:w-1/2 w-full my-12" searchClass="w-12 h-11" />
+            {/* <Search className="lg:w-1/2 w-full my-12" searchClass="w-12 h-11" /> */}
             <PhoneBookManagementTable dataRegister={phoneBookTable} />
             {isModalOpen && (
                 <div className="fixed inset-0 flex items-center justify-center bg-gray-600 bg-opacity-75 z-[9999]">

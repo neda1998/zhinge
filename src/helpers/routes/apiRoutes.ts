@@ -61,7 +61,8 @@ const apiRoutes = {
     getAllAnnounce: "/announce/getallannounce",
     getByUid: "/announce/getbyUid",
     uploadFile: "/announce/uploadPhotos",
-    search: "/announce/search"
+    search: "/announce/search",
+    search_region:"/announce/search_region"
   },
   request:{
     createRequest:"/request/creatrequest",
