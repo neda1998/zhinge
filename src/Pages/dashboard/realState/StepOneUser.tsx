@@ -58,7 +58,6 @@ const StepOneUser = ({
 
              {!hideFields && (
           <>
-            {usage !== "ویلایی" && (
               <InputState
                 label="طبقه مورد نظر"
                 value={floor_number !== undefined && floor_number !== null ? String(floor_number) : ""}
@@ -66,7 +65,6 @@ const StepOneUser = ({
                 placeholder="مثال: 2"
                 numeric
               />
-            )}
             <InputState
               label="تعداد طبقات"
               value={floor !== undefined && floor !== null ? String(floor) : ""}
