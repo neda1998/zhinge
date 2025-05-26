@@ -19,7 +19,7 @@ const StepperState = () => {
     const [year_of_build, setYearOfBuild] = useState<number | undefined>();
     const [room_number, setRoomNumber] = useState<number | undefined>();
     const [land_metrage, setLandMetrage] = useState<number | undefined>();
-    const [floor_number, setFloorNumber] = useState<number | undefined>();
+    const [floor_number, setFloorNumber] = useState<string>(""); // تغییر به رشته
     const [floor, setFloor] = useState<number | undefined>();
     const [Unit_in_floor, setUnitInFloor] = useState<number | undefined>();
     const [document_type, setDocumentType] = useState<string>("");
@@ -79,7 +79,7 @@ const StepperState = () => {
         setYearOfBuild(undefined);
         setRoomNumber(undefined);
         setLandMetrage(undefined);
-        setFloorNumber(undefined);
+        setFloorNumber(""); // مقدار اولیه رشته
         setFloor(undefined);
         setUnitInFloor(undefined);
         setDocumentType("");

@@ -22,7 +22,7 @@ export default function Realstate() {
   const [document_type, setDocumentType] = useState<string>("");
    const [land_metrage, setLandMetrage] = useState<number | undefined>();
   const [useful_metrage, setUsefulMetrage] = useState<number | undefined>(0);
-  const [floor_number, setFloorNumber] = useState<number | undefined>(0);
+  const [floor_number, setFloorNumber] = useState<string>(""); // تغییر به رشته
   const [floor, setFloor] = useState<number | undefined>(0);
   const [Unit_in_floor, setUnitInFloor] = useState<number | undefined>(0);
   const [year_of_build, setYearOfBuild] = useState<number | undefined>(0);
@@ -80,7 +80,7 @@ export default function Realstate() {
 
   const handleSubmit = () => {
     const toNumberOrUndefined = (val: any) => {
-      if (val === undefined || val === null) return undefined;
+      if (val === undefined || val === null || val === "") return undefined;
       const num = Number(val.toString().replace(/,/g, ""));
       return isNaN(num) ? undefined : num;
     };
@@ -91,7 +91,7 @@ export default function Realstate() {
       document_type: document_type || "",
       features: features || "",
       floor: toNumberOrUndefined(floor),
-      floor_number: toNumberOrUndefined(floor_number),
+      floor_number: toNumberOrUndefined(floor_number), // تبدیل رشته به عدد
       full_name: full_name || "",
       land_metrage: toNumberOrUndefined(land_metrage),
       loan: toNumberOrUndefined(loan),
@@ -122,7 +122,7 @@ export default function Realstate() {
         setYearOfBuild(undefined);
         setRoomNumber(undefined);
         setLandMetrage(undefined);
-        setFloorNumber(undefined);
+        setFloorNumber(""); // مقدار اولیه رشته، قبلا اشتباها undefined بود
         setFloor(undefined);
         setUnitInFloor(undefined);
         setDocumentType("");

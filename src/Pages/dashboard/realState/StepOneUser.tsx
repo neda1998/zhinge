@@ -9,7 +9,7 @@ interface StepOneUserProps {
   address: string; setAddress: (v: string) => void;
   Unit_in_floor?: number; setUnitInFloor: (v: number) => void;
   document_type: string; setDocumentType: (v: string) => void;
-  floor_number?: number; setFloorNumber: (v: number) => void;
+  floor_number?: string; setFloorNumber: (v: string) => void; // تغییر به رشته
   floor?: number; setFloor: (v: number) => void;
   room_number?: number; setRoomNumber: (v: number) => void;
   usage: string; setUsage: (v: string) => void;
@@ -60,10 +60,9 @@ const StepOneUser = ({
           <>
               <InputState
                 label="طبقه مورد نظر"
-                value={floor_number !== undefined && floor_number !== null ? String(floor_number) : ""}
-                onChange={e => setFloorNumber(Number(e.target.value.replace(/,/g, "")))}
+                value={floor_number ?? ""}
+                onChange={e => setFloorNumber(e.target.value)}
                 placeholder="مثال: 2"
-                numeric
               />
             <InputState
               label="تعداد طبقات"
