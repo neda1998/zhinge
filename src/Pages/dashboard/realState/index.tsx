@@ -22,8 +22,8 @@ export default function Realstate() {
   const [document_type, setDocumentType] = useState<string>("");
    const [land_metrage, setLandMetrage] = useState<number | undefined>();
   const [useful_metrage, setUsefulMetrage] = useState<number | undefined>(0);
-  const [floor_number, setFloorNumber] = useState<string>(""); // تغییر به رشته
-  const [floor, setFloor] = useState<number | undefined>(0);
+  const [floor_number, setFloorNumber] = useState<string>(""); 
+  const [floor, setFloor] = useState<string>("");
   const [Unit_in_floor, setUnitInFloor] = useState<number | undefined>(0);
   const [year_of_build, setYearOfBuild] = useState<number | undefined>(0);
   const [full_name, setFullName] = useState<string>("");
@@ -91,7 +91,7 @@ export default function Realstate() {
       document_type: document_type || "",
       features: features || "",
       floor: toNumberOrUndefined(floor),
-      floor_number: toNumberOrUndefined(floor_number), // تبدیل رشته به عدد
+      floor_number: toNumberOrUndefined(floor_number), 
       full_name: full_name || "",
       land_metrage: toNumberOrUndefined(land_metrage),
       loan: toNumberOrUndefined(loan),
@@ -122,8 +122,8 @@ export default function Realstate() {
         setYearOfBuild(undefined);
         setRoomNumber(undefined);
         setLandMetrage(undefined);
-        setFloorNumber(""); // مقدار اولیه رشته، قبلا اشتباها undefined بود
-        setFloor(undefined);
+        setFloorNumber(""); 
+        setFloor("");
         setUnitInFloor(undefined);
         setDocumentType("");
         setFeatures("");

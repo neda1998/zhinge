@@ -9,8 +9,8 @@ interface StepOneUserProps {
   address: string; setAddress: (v: string) => void;
   Unit_in_floor?: number; setUnitInFloor: (v: number) => void;
   document_type: string; setDocumentType: (v: string) => void;
-  floor_number?: string; setFloorNumber: (v: string) => void; // تغییر به رشته
-  floor?: number; setFloor: (v: number) => void;
+  floor_number?: string; setFloorNumber: (v: string) => void; 
+  floor?: string; setFloor: (v: string) => void;
   room_number?: number; setRoomNumber: (v: number) => void;
   usage: string; setUsage: (v: string) => void;
 }
@@ -58,19 +58,19 @@ const StepOneUser = ({
 
              {!hideFields && (
           <>
+                <InputState
+                  label="طبقه مورد نظر"
+                  value={floor !== undefined && floor !== null ? String(floor) : ""}
+                  onChange={e => setFloor(e.target.value)}
+                  placeholder="مثال: 5"
+                  numeric
+                />
               <InputState
-                label="طبقه مورد نظر"
+                label="تعداد طبقات"
                 value={floor_number ?? ""}
                 onChange={e => setFloorNumber(e.target.value)}
                 placeholder="مثال: 2"
               />
-            <InputState
-              label="تعداد طبقات"
-              value={floor !== undefined && floor !== null ? String(floor) : ""}
-              onChange={e => setFloor(Number(e.target.value.replace(/,/g, "")))}
-              placeholder="مثال: 5"
-              numeric
-            />
             <InputState
               label="تعداد واحد در طبقه"
               value={Unit_in_floor !== undefined && Unit_in_floor !== null ? String(Unit_in_floor) : ""}
