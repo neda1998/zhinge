@@ -24,12 +24,7 @@ const BasicEstateInformation = () => {
     const queryClient = useQueryClient();
     const searchRegionMutation = UseSearchRegionMutation({
         onSuccess: (response: any) => {
-            const regions = Array.isArray(response?.data)
-                ? response.data
-                : Array.isArray(response)
-                ? response
-                : [];
-            setFilteredRegions(regions);
+            setFilteredRegions(Array.isArray(response) ? response : []);
         }
     });
 
@@ -69,7 +64,7 @@ const BasicEstateInformation = () => {
     const handleSearch = (value: string) => {
         setSearchValue(value);
         if (value.trim().length > 0) {
-            searchRegionMutation.mutate({ search: value });
+            searchRegionMutation.mutate({ name: value });
         } else {
             setFilteredRegions([]);
         }

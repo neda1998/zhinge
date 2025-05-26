@@ -1,15 +1,12 @@
-import { useCookies } from "react-cookie";
 import { useMutation } from "react-query";
 import Swal from "sweetalert2";
 import { searchRegion } from "../../../services/admin/search_region";
 
 const UseSearchRegionMutation = (options?: { onSuccess?: (response?: any) => void, onError?: (error?: any) => void }) => {
-  const [cookies] = useCookies(["accessToken"]);
-  const token = cookies.accessToken;
 
   return useMutation(
     async (data: Record<string, any>) => {
-      return await searchRegion(data, token);
+      return await searchRegion(data);
     },
     {
       onSuccess: async (response) => {
