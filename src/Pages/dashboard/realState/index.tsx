@@ -23,7 +23,7 @@ export default function Realstate() {
    const [land_metrage, setLandMetrage] = useState<number | undefined>();
   const [useful_metrage, setUsefulMetrage] = useState<number | undefined>(0);
   const [floor_number, setFloorNumber] = useState<number | undefined>(0);
-  const [floor, setFloor] = useState<string>("");
+  const [floor, setFloor] = useState<number | undefined>(0);
   const [Unit_in_floor, setUnitInFloor] = useState<number | undefined>(0);
   const [year_of_build, setYearOfBuild] = useState<number | undefined>(0);
   const [full_name, setFullName] = useState<string>("");
@@ -90,7 +90,7 @@ export default function Realstate() {
       address: address || "",
       document_type: document_type || "",
       features: features || "",
-      floor: floor, // مقدار رشته ارسال شود
+      floor: toNumberOrUndefined(floor),
       floor_number: toNumberOrUndefined(floor_number),
       full_name: full_name || "",
       land_metrage: toNumberOrUndefined(land_metrage),
@@ -123,7 +123,7 @@ export default function Realstate() {
         setRoomNumber(undefined);
         setLandMetrage(undefined);
         setFloorNumber(undefined);
-        setFloor(""); // تغییر به رشته
+        setFloor(undefined);
         setUnitInFloor(undefined);
         setDocumentType("");
         setFeatures("");

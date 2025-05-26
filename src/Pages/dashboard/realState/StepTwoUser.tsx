@@ -73,7 +73,6 @@ interface StepTwoUserProps {
     land_metrage?: number; setLandMetrage: (v: number) => void; 
     description?: string; setDescription: (v: string) => void;
     type: string; 
-    floor?: string; setFloor: (v: string) => void;
 }
 const shouldHideFields = (type: string) =>
     type === "مغازه" || type === "زمین مسکونی" || type === "زمین کشاورزی";
