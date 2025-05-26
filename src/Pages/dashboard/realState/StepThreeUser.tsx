@@ -18,7 +18,7 @@ interface StepThreeUserProps {
     room_number?: number;
     land_metrage?: number;
     floor_number?: number;
-    floor?: number;
+    floor?: string;
     onSibmit?: () => void;
     onReset?: () => void; 
 }

@@ -303,7 +303,7 @@ const UnderReview = () => {
                   land_metrage: editForm.metrage,
                   useful_metrage: editForm.useful_metrage,
                   floor_number: editForm.floor_number,
-                  floor: editForm.floor,
+                  floor: editForm.floor, // مقدار رشته
                   Unit_in_floor: editForm.Unit_in_floor,
                   year_of_build: editForm.year_of_build,
                   full_name: editForm.full_name,
@@ -370,7 +370,7 @@ const UnderReview = () => {
                   type="number"
                   className="border rounded px-2 py-1 w-full"
                   value={editForm.floor !== undefined && editForm.floor !== null ? editForm.floor : ""}
-                  onChange={e => setEditForm({ ...editForm, floor: Number(e.target.value) })}
+                  onChange={e => setEditForm({ ...editForm, floor: e.target.value })}
                 />
               </div>
               <div>

@@ -10,7 +10,7 @@ interface StepOneProps {
   Unit_in_floor?: number; setUnitInFloor: (v: number) => void;
   document_type: string; setDocumentType: (v: string) => void;
   floor_number?: number; setFloorNumber: (v: number) => void;
-  floor?: number; setFloor: (v: number) => void;
+  floor?: string; setFloor: (v: string) => void;
   room_number?: number; setRoomNumber: (v: number) => void;
 }
 
@@ -67,7 +67,7 @@ const StepOne = ({
             <InputState
               label="تعداد طبقات"
               value={floor !== undefined && floor !== null ? String(floor) : ""}
-              onChange={e => setFloor(Number(e.target.value.replace(/,/g, "")))}
+              onChange={e => setFloor(e.target.value)}
               placeholder="مثال: 5"
               numeric
             />

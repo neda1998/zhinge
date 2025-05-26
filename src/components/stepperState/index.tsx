@@ -20,7 +20,7 @@ const StepperState = () => {
     const [room_number, setRoomNumber] = useState<number | undefined>();
     const [land_metrage, setLandMetrage] = useState<number | undefined>();
     const [floor_number, setFloorNumber] = useState<number | undefined>();
-    const [floor, setFloor] = useState<number | undefined>();
+    const [floor, setFloor] = useState<string>("");
     const [Unit_in_floor, setUnitInFloor] = useState<number | undefined>();
     const [document_type, setDocumentType] = useState<string>("");
     const [features, setFeatures] = useState<string>("");
@@ -80,7 +80,7 @@ const StepperState = () => {
         setRoomNumber(undefined);
         setLandMetrage(undefined);
         setFloorNumber(undefined);
-        setFloor(undefined);
+        setFloor("");
         setUnitInFloor(undefined);
         setDocumentType("");
         setFeatures("");
