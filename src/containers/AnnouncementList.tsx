@@ -35,7 +35,7 @@ const AnnouncementList: React.FC<AnnouncementListProps> = ({
     <div className="flex flex-col items-center">
       <Header />
       <div className="w-full flex flex-col h-screen mobile:mt-20">
-        <div className="w-full flex justify-center mobile:p-0 p-2">
+        <div className="w-full flex justify-center">
           <SearchBar
             inputStyles="rounded-[50px]"
             customStyles="w-[70%] h-[50px] mobile:w-[80%]"
@@ -51,7 +51,7 @@ const AnnouncementList: React.FC<AnnouncementListProps> = ({
           </div>
         ) : searchResults !== null ? (
           searchResults.length > 0 ? (
-            <div className="w-full grid lg:grid-cols-4 sm:grid-cols-2 mobile:mt-5 mobile:gap-0 gap-4 place-items-center grid-cols-1 p-4 pb-16">
+            <div className="w-full grid lg:grid-cols-4 sm:grid-cols-2 gap-4 place-items-center grid-cols-1 px-4 pb-16">
               {searchResults.map((property) => (
                 <div key={property.id} className="flex flex-col justify-start items-center border rounded-xl shadow p-2 bg-white w-full max-w-xs">
                   {(Array.isArray(property.photo) && property.photo.length > 0) ? (
@@ -86,7 +86,7 @@ const AnnouncementList: React.FC<AnnouncementListProps> = ({
           )
         ) : (
           data.length === 0 ? null : (
-            <div className="w-full grid lg:grid-cols-4 sm:grid-cols-2 mobile:mt-5 mobile:gap-0 gap-4 place-items-center grid-cols-1 p-4 pb-16">
+            <div className="w-full grid lg:grid-cols-4 sm:grid-cols-2 gap-4 place-items-center grid-cols-1 px-4 pb-16">
               {data.map((property) => (
                 <div key={property.id} className="flex flex-col justify-start items-center border rounded-xl shadow p-2 bg-white w-full max-w-xs">
                   {(Array.isArray(property.photo) && property.photo.length > 0) ? (

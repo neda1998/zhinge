@@ -5,6 +5,8 @@ import { useFormik } from "formik";
 import UseByUidAnnounceMutation from '../../hooks/mutation/announce/UseByUidAnnounceMutation';
 import { useParams } from "react-router-dom";
 import { PuffLoader } from 'react-spinners';
+import Cookies from 'js-cookie';
+import { useCookies } from 'react-cookie';
 
 const HouseDetails = () => {
     const { mutate, data, isLoading, error } = UseByUidAnnounceMutation();
@@ -53,7 +55,7 @@ const HouseDetails = () => {
                 : ImageMainPage;
 
     const fields = [
-        { name: 'Uid', label: 'کد ملک' },
+        { name: 'id', label: 'کد ملک' },
         { name: 'usage', label: 'نوع ملک' },
         { name: 'region', label: 'منطقه' },
         { name: 'address', label: 'آدرس' },
@@ -71,6 +73,10 @@ const HouseDetails = () => {
         { name: 'features', label: 'امکانات' },
     ];
 
+    const [cookies, setCookies] = useCookies(["role"]);
+
+    const isAdmin = cookies.role === "true" || cookies.role === true;
+
     return (
         <div className='flex flex-col items-center'>
             {isLoading && (
@@ -82,16 +88,16 @@ const HouseDetails = () => {
             {!isLoading && !error && (
                 <>
                     <Header variant={'main'} />
-                    <div className="w-full h-fit mobile:h-fit grid grid-cols-2 gap-8 p-7 mt-36">
+                    <div className="w-full h-fit mobile:h-fit grid md:grid-cols-2 grid-cols-1 gap-8 p-7 md:mt-36 mt-16">
                         <div className="col-span-1 flex flex-col justify-around items-center">
                             <div className="w-full h-fit flex flex-col gap-10">
-                                <div className="flex w-full justify-center items-center gap-4 mb-2">
-                                    <span className="text-[42px] mobile:text-[28px] font-extrabold text-transparent bg-clip-text bg-gradient-to-l from-green-400 to-blue-500 drop-shadow-lg">
+                                <div className="flex w-full flex-wrap justify-center items-center gap-4 mb-2">
+                                    <span className="md:text-[42px] text-[28px] whitespace-nowrap font-extrabold text-transparent bg-clip-text bg-gradient-to-l from-green-400 to-blue-500 drop-shadow-lg">
                                         {selectedProperty?.usage
                                             ? `ملک ${selectedProperty.usage}`
                                             : "جزئیات ملک"}
                                     </span>
-                                    {(selectedProperty?.full_name || (selectedProperty?.userID && selectedProperty.userID !== "0")) && (
+                                    {isAdmin && (selectedProperty?.full_name || (selectedProperty?.userID && selectedProperty.userID !== "0")) && (
                                         <span className="flex items-center gap-2 px-4 py-1 rounded-full bg-white border border-blue-200 shadow text-blue-700 text-[18px] mobile:text-[13px] font-bold">
                                             <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 mobile:w-4 mobile:h-4 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H5a2 2 0 01-2-2V5zm0 12a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H5a2 2 0 01-2-2v-2zm12-12a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zm0 12a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
@@ -147,7 +153,7 @@ const HouseDetails = () => {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="flex w-full flex-col gap-5 justify-start bg-white/90 border border-gray-100 shadow-2xl rounded-3xl p-8">
+                                <div className="flex w-full flex-col gap-5 justify-start bg-white/90 border border-gray-100 shadow-2xl rounded-3xl p-4 md:p-8">
                                     <div className="w-full flex justify-center h-14 mb-2">
                                         <div className="w-[90%] bg-gradient-to-l from-green-400 to-blue-400 flex items-center justify-center rounded-full text-white font-extrabold text-xl shadow-lg tracking-wide py-2">
                                             توضیحات بیشتر ملک
