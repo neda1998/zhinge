@@ -359,6 +359,8 @@ const UnderReview = () => {
                 <label className="block text-sm mb-1 font-bold text-gray-700">طبقه مورد نظر</label>
                 <input
                   type="number"
+                  inputMode="numeric"
+                  pattern="[0-9]*"
                   className="border rounded px-2 py-1 w-full"
                   value={editForm.floor_number !== undefined && editForm.floor_number !== null ? editForm.floor_number : ""}
                   onChange={e => setEditForm({ ...editForm, floor_number: Number(e.target.value) })}
@@ -368,6 +370,8 @@ const UnderReview = () => {
                 <label className="block text-sm mb-1 font-bold text-gray-700">تعداد طبقات</label>
                 <input
                   type="number"
+                  inputMode="numeric"
+                  pattern="[0-9]*"
                   className="border rounded px-2 py-1 w-full"
                   value={editForm.floor !== undefined && editForm.floor !== null ? editForm.floor : ""}
                   onChange={e => setEditForm({ ...editForm, floor: Number(e.target.value) })}
@@ -377,6 +381,8 @@ const UnderReview = () => {
                 <label className="block text-sm mb-1 font-bold text-gray-700">تعداد واحد در طبقه</label>
                 <input
                   type="number"
+                  inputMode="numeric"
+                  pattern="[0-9]*"
                   className="border rounded px-2 py-1 w-full"
                   value={editForm.Unit_in_floor !== undefined && editForm.Unit_in_floor !== null ? editForm.Unit_in_floor : ""}
                   onChange={e => setEditForm({ ...editForm, Unit_in_floor: Number(e.target.value) })}
@@ -386,6 +392,8 @@ const UnderReview = () => {
                 <label className="block text-sm mb-1 font-bold text-gray-700">تعداد اتاق‌ها</label>
                 <input
                   type="number"
+                  inputMode="numeric"
+                  pattern="[0-9]*"
                   className="border rounded px-2 py-1 w-full"
                   value={editForm.room_number !== undefined && editForm.room_number !== null ? editForm.room_number : ""}
                   onChange={e => setEditForm({ ...editForm, room_number: Number(e.target.value) })}
@@ -413,6 +421,8 @@ const UnderReview = () => {
                 <label className="block text-sm mb-1 font-bold text-gray-700">متراژ کل زمین</label>
                 <input
                   type="number"
+                  inputMode="numeric"
+                  pattern="[0-9]*"
                   className="border rounded px-2 py-1 w-full"
                   value={editForm.land_metrage !== undefined && editForm.land_metrage !== null ? editForm.land_metrage : ""}
                   onChange={e => setEditForm({ ...editForm, land_metrage: Number(e.target.value) })}
@@ -422,6 +432,8 @@ const UnderReview = () => {
                 <label className="block text-sm mb-1 font-bold text-gray-700">متراژ مفید</label>
                 <input
                   type="number"
+                  inputMode="numeric"
+                  pattern="[0-9]*"
                   className="border rounded px-2 py-1 w-full"
                   value={editForm.useful_metrage !== undefined && editForm.useful_metrage !== null ? editForm.useful_metrage : ""}
                   onChange={e => setEditForm({ ...editForm, useful_metrage: Number(e.target.value) })}
@@ -446,6 +458,8 @@ const UnderReview = () => {
                 <label className="block text-sm mb-1 font-bold text-gray-700">سال ساخت</label>
                 <input
                   type="number"
+                  inputMode="numeric"
+                  pattern="[0-9]*"
                   className="border rounded px-2 py-1 w-full"
                   value={editForm.year_of_build !== undefined && editForm.year_of_build !== null ? editForm.year_of_build : ""}
                   onChange={e => setEditForm({ ...editForm, year_of_build: Number(e.target.value) })}
@@ -455,6 +469,8 @@ const UnderReview = () => {
                 <label className="block text-sm mb-1 font-bold text-gray-700">وام</label>
                 <input
                   type="number"
+                  inputMode="numeric"
+                  pattern="[0-9]*"
                   className="border rounded px-2 py-1 w-full"
                   value={editForm.loan !== undefined && editForm.loan !== null ? editForm.loan : ""}
                   onChange={e => setEditForm({ ...editForm, loan: Number(e.target.value) })}
@@ -464,6 +480,8 @@ const UnderReview = () => {
                 <label className="block text-sm mb-1 font-bold text-gray-700">قیمت</label>
                 <input
                   type="number"
+                  inputMode="numeric"
+                  pattern="[0-9]*"
                   className="border rounded px-2 py-1 w-full"
                   value={editForm.price !== undefined && editForm.price !== null ? editForm.price : ""}
                   onChange={e => setEditForm({ ...editForm, price: Number(e.target.value) })}
