@@ -107,7 +107,7 @@ const SearchForEstate = () => {
       "وضعیت": <span className="text-gray-700">🔖</span>,
     };
     const details: Array<{ label: string, value?: any }> = [
-      { label: "کد ملک",        value: data.Uid || "-" },
+      { label: "کد ملک",        value: data.id || "-" },
       { label: "نام مالک",      value: data.full_name || "-" },
       { label: "شماره تماس",    value: data.userID || data.phone || "-" },
       { label: "نوع ملک",      value: data.usage || "-" },
@@ -225,9 +225,6 @@ const SearchForEstate = () => {
       "زمین کشاورزی",
       "سایر"
     ];
-    const REGION_OPTIONS = [
-      "منطقه 1", "منطقه 2", "منطقه 3", "منطقه 4"
-    ];
     const LOCATION_OPTIONS = [
       "شمالی",
       "جنوبی",
@@ -245,11 +242,11 @@ const SearchForEstate = () => {
       "سایر"
     ];
     const fields: Array<{ key: string; label: string; type?: string; options?: string[] }> = [
-      { key: "Uid", label: "کد ملک" },
+      { key: "id", label: "کد ملک" },
       { key: "full_name", label: "نام مالک" },
       { key: "userID", label: "شماره تماس" },
       { key: "usage", label: "نوع ملک", options: TYPE_OPTIONS },
-      { key: "region", label: "منطقه", options: REGION_OPTIONS },
+      { key: "region", label: "منطقه", options: regionOptions },
       { key: "address", label: "آدرس" },
       { key: "land_metrage", label: "متراژ زمین", type: "number" },
       { key: "useful_metrage", label: "متراژ مفید", type: "number" },
@@ -342,6 +339,15 @@ const SearchForEstate = () => {
     );
   };
 
+  // استخراج لیست یکتای مناطق از نتایج جستجو
+  const regionOptions = Array.from(
+    new Set(
+      results
+        .map((item) => item.region)
+        .filter((region) => region && typeof region === "string" && region.trim() !== "")
+    )
+  );
+
   const renderTable = () => {
     if (isSearching) {
       return (
@@ -378,7 +384,7 @@ const SearchForEstate = () => {
             {results.map((item, idx) => (
               <tr key={idx} className="text-center border-b whitespace-nowrap hover:bg-blue-50 transition">
                 <td className="p-4 font-bold text-blue-700">{idx + 1}</td>
-                <td className="p-4">{item.Uid || "-"}</td>
+                <td className="p-4">{item.id || "-"}</td>
                 <td className="p-4">{item.usage || "-"}</td>
                 <td className="p-4">{item.region || "-"}</td>
                 <td className="p-4">{item.full_name || "-"}</td>
@@ -424,15 +430,12 @@ const SearchForEstate = () => {
         </div>
         <RouteChevron items={pageSearchForEstate} />
       </div>
-
       <ChooseItemsOfState />
-
       <div className="grid lg:grid-cols-4 gap-x-5 gap-y-10 mb-9">
-        <InputState label="کد ملک" value={form.Uid || ""} onChange={e => handleChange("Uid", e.target.value)} numeric />
+        <InputState label="کد ملک" value={form.id || ""} onChange={e => handleChange("id", e.target.value)} numeric />
         <InputState label="نام مالک" value={form.full_name || ""} onChange={e => handleChange("full_name", e.target.value)} />
         <InputState label="شماره موبایل" value={form.userID || ""} onChange={e => handleChange("userID", e.target.value)} numeric />
       </div>
-
       <div className="flex items-center justify-between md:w-1/2 w-full gap-5">
         <InputState label="آدرس ملک" value={form.address || ""} placeholder="آدرس را وارد کنید" onChange={e => handleChange("address", e.target.value)} />
       </div>

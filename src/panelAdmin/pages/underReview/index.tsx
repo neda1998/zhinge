@@ -126,7 +126,7 @@ const UnderReview = () => {
           </span>
         ),
         "کد ملک": (
-          <span className="font-mono text-blue-700 text-base">{item.Uid}</span>
+          <span className="font-mono text-blue-700 text-base">{item.id}</span>
         ),
         "نوع ملک": (
           <span className="text-gray-700">{item.usage}</span>
@@ -193,7 +193,7 @@ const UnderReview = () => {
           </span>
         ),
         "کد ملک": (
-          <span className="font-mono text-blue-700 text-base">{item.Uid}</span>
+          <span className="font-mono text-blue-700 text-base">{item.id}</span>
         ),
         "نوع ملک": (
           <span className="text-gray-700">{item.usage}</span>

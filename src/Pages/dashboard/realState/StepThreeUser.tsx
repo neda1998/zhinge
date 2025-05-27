@@ -17,10 +17,11 @@ interface StepThreeUserProps {
     year_of_build?: number;
     room_number?: number;
     land_metrage?: number;
-    floor_number?: string; // تغییر به رشته
+    floor_number?: number; 
     floor?: number;
     onSibmit?: () => void;
     onReset?: () => void; 
+    phone: string; setPhone: (v: string) => void;
 }
 
 const StepThreeUser = ({
@@ -31,6 +32,8 @@ const StepThreeUser = ({
   loan, year_of_build, room_number, land_metrage, floor_number, floor,
   onReset,
   onSibmit,
+  phone,
+  setPhone 
 }: StepThreeUserProps) => {
   const [submitAttempted, setSubmitAttempted] = useState(false);
 
@@ -74,6 +77,13 @@ const StepThreeUser = ({
         value={full_name}
         onChange={e => setFullName(e.target.value)}
       />
+       <InputState
+                label="شماره تماس"
+                value={phone}
+                onChange={e => setPhone(e.target.value)}
+                placeholder="09183456789"
+                numeric
+            />
       {showSubmitButton && (
         <div className="flex justify-end col-span-4">
           <button

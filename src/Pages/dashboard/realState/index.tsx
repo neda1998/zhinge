@@ -20,9 +20,9 @@ export default function Realstate() {
   const [address, setAddress] = useState("");
   const [location, setLocation] = useState("");
   const [document_type, setDocumentType] = useState<string>("");
-   const [land_metrage, setLandMetrage] = useState<number | undefined>();
+   const [land_metrage, setLandMetrage] = useState<number | undefined>(0);
   const [useful_metrage, setUsefulMetrage] = useState<number | undefined>(0);
-  const [floor_number, setFloorNumber] = useState<string>(""); 
+  const [floor_number, setFloorNumber] = useState<number | undefined>(0); 
   const [floor, setFloor] = useState<string>("");
   const [Unit_in_floor, setUnitInFloor] = useState<number | undefined>(0);
   const [year_of_build, setYearOfBuild] = useState<number | undefined>(0);
@@ -36,6 +36,7 @@ export default function Realstate() {
   const [description, setDescription] = useState<string>("");
   const [state_code, setStateCode] = useState<string>("-");
   const [usage, setUsage] = useState<string>("");
+  const [phone, setPhone] = useState<string>("");
 
   const handleNextStep = () => {
     if (currentStep === 3 && !isAnnouncementSubmitted) {
@@ -104,6 +105,7 @@ export default function Realstate() {
       year_of_build: toNumberOrUndefined(year_of_build),
       usage:usage || "-",
       description: description || "",
+      phone: phone || "", 
     };
     mutate(rawData as any, {
       onSuccess: () => {
@@ -122,7 +124,7 @@ export default function Realstate() {
         setYearOfBuild(undefined);
         setRoomNumber(undefined);
         setLandMetrage(undefined);
-        setFloorNumber(""); 
+        setFloorNumber(undefined); 
         setFloor("");
         setUnitInFloor(undefined);
         setDocumentType("");
@@ -135,6 +137,7 @@ export default function Realstate() {
         setCurrentStep(1);
         setUsage("");
         setDescription("");
+        setPhone("");
     };
 
 
@@ -172,6 +175,7 @@ export default function Realstate() {
       onReset={resetAllStates}
       type={type}
       setLocation={setLocation}
+      phone={phone} setPhone={setPhone}
     />,
     <StepFourUser
       key="step4"

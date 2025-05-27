@@ -18,8 +18,8 @@ interface StepThreeProps {
     year_of_build?: number;
     room_number?: number;
     land_metrage?: number;
-    floor_number?: string; // تغییر به رشته
-    floor?: string; // تغییر به رشته
+    floor_number?: number; 
+    floor?: string; 
     onReset?: () => void; 
     description: string;
     setDescription: (v: string) => void;
