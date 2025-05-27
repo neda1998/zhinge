@@ -1,9 +1,6 @@
 import ComboBox from "../common/Combo";
 import InputState from "../ui/atoms/input/inputState"
 import React, { useState } from "react";
-import DatePicker from "react-multi-date-picker";
-import persian from "react-date-object/calendars/persian";
-import persian_fa from "react-date-object/locales/persian_fa";
 
 interface StepTwoProps {
     loan?: number; setLoan: (v: number) => void;
@@ -121,7 +118,7 @@ const StepTwo = ({
     }
 
     return (
-        <div className="grid lg:grid-cols-4 grid-cols-1 w-full gap-5">
+        <div className="w-full grid lg:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-5">
             <InputState
                 label="متراژ کل زمین"
                 placeholder="مثال: 200"

@@ -522,7 +522,6 @@ const UnderReview = () => {
                     <span className="text-gray-400">تصویری وجود ندارد</span>
                   )}
                 </div>
-                {/* آپلود عکس جدید */}
                 <div className="mt-4 flex items-center gap-2">
                   <input
                     type="file"
@@ -532,7 +531,7 @@ const UnderReview = () => {
                     disabled={
                       uploadingPhoto ||
                       !selectedAnnounce?.Uid ||
-                      modalPhotos.length >= 10 // فقط اگر کمتر از ۱۰ تا عکس باشد اجازه آپلود بده
+                      modalPhotos.length >= 10 
                     }
                     onChange={async (e) => {
                       const file = e.target.files?.[0];
@@ -575,7 +574,7 @@ const UnderReview = () => {
                     disabled={
                       uploadingPhoto ||
                       !selectedAnnounce?.Uid ||
-                      modalPhotos.length >= 10 // فقط اگر کمتر از ۱۰ تا عکس باشد اجازه آپلود بده
+                      modalPhotos.length >= 10
                     }
                     onClick={() => {
                       if (modalPhotos.length >= 10) {
@@ -607,7 +606,7 @@ const UnderReview = () => {
                 <label className="block text-sm mb-1 font-bold text-gray-700">شماره تماس</label>
                 <input
                   className="border rounded px-2 py-1 w-full"
-                  value={editForm.phone || ""} // bind to phone
+                  value={editForm.phone || ""} 
                   onChange={e => setEditForm({ ...editForm, phone: e.target.value })}
                 />
               </div>

@@ -109,7 +109,7 @@ const SearchForEstate = () => {
     const details: Array<{ label: string, value?: any }> = [
       { label: "کد ملک",        value: data.id || "-" },
       { label: "نام مالک",      value: data.full_name || "-" },
-      { label: "شماره تماس",    value: data.userID || data.phone || "-" },
+      { label: "شماره تماس",    value: data.phone || "-" },
       { label: "نوع ملک",      value: data.usage || "-" },
       { label: "منطقه",        value: data.region || "-" },
       { label: "آدرس",         value: data.address || "-" },
@@ -244,7 +244,7 @@ const SearchForEstate = () => {
     const fields: Array<{ key: string; label: string; type?: string; options?: string[] }> = [
       { key: "id", label: "کد ملک" },
       { key: "full_name", label: "نام مالک" },
-      { key: "userID", label: "شماره تماس" },
+      { key: "phone", label: "شماره تماس" },
       { key: "usage", label: "نوع ملک", options: TYPE_OPTIONS },
       { key: "region", label: "منطقه", options: regionOptions },
       { key: "address", label: "آدرس" },
@@ -339,7 +339,6 @@ const SearchForEstate = () => {
     );
   };
 
-  // استخراج لیست یکتای مناطق از نتایج جستجو
   const regionOptions = Array.from(
     new Set(
       results
@@ -388,7 +387,7 @@ const SearchForEstate = () => {
                 <td className="p-4">{item.usage || "-"}</td>
                 <td className="p-4">{item.region || "-"}</td>
                 <td className="p-4">{item.full_name || "-"}</td>
-                <td className="p-4">{item.userID || "-"}</td>
+                <td className="p-4">{item.phone || "-"}</td>
                 <td className="p-4">
                   <span className={
                     item.check ? "text-green-600 font-bold" :
@@ -434,7 +433,7 @@ const SearchForEstate = () => {
       <div className="grid lg:grid-cols-4 gap-x-5 gap-y-10 mb-9">
         <InputState label="کد ملک" value={form.id || ""} onChange={e => handleChange("id", e.target.value)} numeric />
         <InputState label="نام مالک" value={form.full_name || ""} onChange={e => handleChange("full_name", e.target.value)} />
-        <InputState label="شماره موبایل" value={form.userID || ""} onChange={e => handleChange("userID", e.target.value)} numeric />
+        <InputState label="شماره موبایل" value={form.phone || ""} onChange={e => handleChange("phone", e.target.value)} numeric />
       </div>
       <div className="flex items-center justify-between md:w-1/2 w-full gap-5">
         <InputState label="آدرس ملک" value={form.address || ""} placeholder="آدرس را وارد کنید" onChange={e => handleChange("address", e.target.value)} />

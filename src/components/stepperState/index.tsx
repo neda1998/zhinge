@@ -143,12 +143,9 @@ const StepperState = () => {
     return (
         <div className="w-full min-h-screen flex flex-col items-center py-10 px-2">
             <div className="w-full max-w-5xl bg-white rounded-3xl shadow-2xl p-6 md:p-10 flex flex-col items-center border border-gray-100">
-                <h1 className="text-2xl md:text-3xl font-extrabold text-main-color mb-2 tracking-tight text-center">
+                <h1 className="text-2xl md:text-3xl font-extrabold text-main-color mb-2 tracking-tight text-center pb-6">
                     ثبت آگهی ملک جدید
                 </h1>
-                <p className="text-gray-500 mb-8 text-center text-base md:text-lg">
-                    لطفا اطلاعات ملک را مرحله به مرحله وارد کنید. پس از ثبت، کارشناسان ما در اسرع وقت با شما تماس خواهند گرفت.
-                </p>
                 <div className="flex items-center justify-between w-full max-w-xl mb-12">
                     {[1, 2, 3, 4].map((step, idx) => (
                         <div className="flex items-center min-w-[25%]" key={idx}>

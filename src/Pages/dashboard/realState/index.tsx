@@ -86,12 +86,31 @@ export default function Realstate() {
       return isNaN(num) ? undefined : num;
     };
 
+    // اعتبارسنجی فیلدهای ضروری
+    if (!usage || usage === "-") {
+      Swal.fire({ icon: "warning", title: "خطا", text: "فیلد نوع ملک خالی است.", confirmButtonText: "باشه" });
+      return;
+    }
+    if (!region) {
+      Swal.fire({ icon: "warning", title: "خطا", text: "فیلد محله مورد نظر خالی است.", confirmButtonText: "باشه" });
+      return;
+    }
+    if (!address) {
+      Swal.fire({ icon: "warning", title: "خطا", text: "فیلد آدرس خالی است.", confirmButtonText: "باشه" });
+      return;
+    }
+    if (!document_type) {
+      Swal.fire({ icon: "warning", title: "خطا", text: "فیلد نوع سند خالی است.", confirmButtonText: "باشه" });
+      return;
+    }
+    // ...در صورت نیاز فیلدهای دیگر را هم اضافه کنید...
+
     const rawData = {
       Unit_in_floor: toNumberOrUndefined(Unit_in_floor),
       address: address || "",
       document_type: document_type || "",
       features: features || "",
-      floor: toNumberOrUndefined(floor),
+      floor: floor || "",
       floor_number: toNumberOrUndefined(floor_number), 
       full_name: full_name || "",
       land_metrage: toNumberOrUndefined(land_metrage),

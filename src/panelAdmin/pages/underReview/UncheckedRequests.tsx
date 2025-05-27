@@ -12,7 +12,7 @@ const UncheckedRequests = () => {
   const handleCheck = async (id: number) => {
     try {
       await checkRequest(id);
-      refetch(); // بعد از تأیید، جدول رو بروزرسانی کن
+      refetch(); 
     } catch (err) {
       console.error("خطا در بررسی درخواست", err);
     }

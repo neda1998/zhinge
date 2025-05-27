@@ -92,7 +92,7 @@ const StepThree = ({
     };
 
     return (
-        <form onSubmit={handleSubmit} className="w-full grid lg:grid-cols-4 sm:grid-cols-2 grid-cols-1 lg:gap-x-5 lg:gap-y-10 gap-y-4">
+        <form onSubmit={handleSubmit} className="w-full grid lg:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-5">
             <InputState
                 label="نام مالک"
                 value={full_name}

@@ -9,7 +9,6 @@ const UseCheckRequestMutation = () => {
     async (data: { status: string }) => await check(data),
     {
       onSuccess: async (_: any, variables: { status: string }) => {
-        // بلافاصله بعد از موفقیت، دیتاها رو ریفچ کن
         queryClient.invalidateQueries("getunchecked");
         queryClient.invalidateQueries("inprogress");
         queryClient.invalidateQueries("getchecked");
