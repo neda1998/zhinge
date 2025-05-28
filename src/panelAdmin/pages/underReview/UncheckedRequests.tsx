@@ -21,8 +21,8 @@ const UncheckedRequests = () => {
   const tableData = data?.map((item: any, idx: number) => ({
     "ردیف": idx + 1,
     "کد": item.id,
-    "نوع ملک": item.type,
-    "منطقه": item.region,
+    "نوع ملک": item.usage,
+    "محله مورد نظر": item.region,
     "نام مالک": item.full_name,
     "شماره تماس": item.phone,
     "بازه قیمت": `${item.lowest_price} - ${item.highest_price}`,

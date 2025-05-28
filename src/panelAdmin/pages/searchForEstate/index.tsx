@@ -31,7 +31,7 @@ const SearchForEstate = () => {
     setForm(updatedForm);
     triggerSearch(updatedForm);
   };
-  
+
   const searchMutation = UseSearchStateMutation({
     onSuccess: (response: any) => {
       let resultArr: any[] = [];
@@ -74,10 +74,15 @@ const SearchForEstate = () => {
   };
 
   const handleEditSave = () => {
-    updateMutation.mutate(editForm, {
-      onSuccess: () => { 
+    // مقدار check را به true تنظیم کن
+    const payload = {
+      ...editForm,
+      check: true, // مقدار check را به true تنظیم کن
+    };
+    updateMutation.mutate(payload, {
+      onSuccess: () => {
         setResults((prev) =>
-          prev.map((item) => (item.Uid === editForm.Uid ? { ...item, ...editForm } : item))
+          prev.map((item) => (item.Uid === editForm.Uid ? { ...item, ...payload } : item))
         );
         setEditModal({ open: false, data: null });
       },
@@ -91,13 +96,13 @@ const SearchForEstate = () => {
       "نام مالک": <span className="text-green-600">👤</span>,
       "شماره تماس": <span className="text-purple-500">📱</span>,
       "نوع ملک": <span className="text-orange-500">🏠</span>,
-      "منطقه": <span className="text-pink-500">📍</span>,
+      "محله مورد نظر": <span className="text-pink-500">📍</span>,
       "آدرس": <span className="text-gray-500">🗺️</span>,
       "متراژ زمین": <span className="text-blue-400">📏</span>,
       "متراژ مفید": <span className="text-blue-400">📐</span>,
       "سال ساخت": <span className="text-yellow-600">📅</span>,
       "تعداد طبقات": <span className="text-indigo-500">🏢</span>,
-      "طبقه": <span className="text-indigo-400">⬆️</span>,
+      "طبقه مورد نظر": <span className="text-indigo-400">⬆️</span>,
       "واحد در طبقه": <span className="text-indigo-300">🔢</span>,
       "تعداد اتاق": <span className="text-pink-400">🛏️</span>,
       "نوع سند": <span className="text-green-500">📄</span>,
@@ -107,24 +112,24 @@ const SearchForEstate = () => {
       "وضعیت": <span className="text-gray-700">🔖</span>,
     };
     const details: Array<{ label: string, value?: any }> = [
-      { label: "کد ملک",        value: data.id || "-" },
-      { label: "نام مالک",      value: data.full_name || "-" },
-      { label: "شماره تماس",    value: data.phone || "-" },
-      { label: "نوع ملک",      value: data.usage || "-" },
-      { label: "منطقه",        value: data.region || "-" },
-      { label: "آدرس",         value: data.address || "-" },
-      { label: "متراژ زمین",    value: data.land_metrage || "-" },
-      { label: "متراژ مفید",    value: data.useful_metrage || "-" },
-      { label: "سال ساخت",      value: data.year_of_build || "-" },
-      { label: "تعداد طبقات",   value: data.floor_number || "-" },
-      { label: "طبقه",          value: data.floor || "-" },
-      { label: "واحد در طبقه",  value: data.Unit_in_floor || "-" },
-      { label: "تعداد اتاق",    value: data.room_number || "-" },
-      { label: "نوع سند",       value: data.document_type || "-" },
-      { label: "قیمت",          value: data.price ? data.price.toLocaleString() + " تومان" : "-" },
-      { label: "امکانات",      value: data.features || "-" },
+      { label: "کد ملک", value: data.id || "-" },
+      { label: "نام مالک", value: data.full_name || "-" },
+      { label: "شماره تماس", value: data.phone || "-" },
+      { label: "نوع ملک", value: data.usage || "-" },
+      { label: "محله مورد نظر", value: data.region || "-" },
+      { label: "آدرس", value: data.address || "-" },
+      { label: "متراژ زمین", value: data.land_metrage || "-" },
+      { label: "متراژ مفید", value: data.useful_metrage || "-" },
+      { label: "سال ساخت", value: data.year_of_build || "-" },
+      { label: "تعداد طبقات", value: data.floor_number || "-" },
+      { label: "طبقه مورد نظر", value: data.floor || "-" },
+      { label: "واحد در طبقه", value: data.Unit_in_floor || "-" },
+      { label: "تعداد اتاق", value: data.room_number || "-" },
+      { label: "نوع سند", value: data.document_type || "-" },
+      { label: "قیمت", value: data.price ? data.price.toLocaleString() + " تومان" : "-" },
+      { label: "امکانات", value: data.features || "-" },
       { label: "موقعیت مکانی", value: data.location || "-" },
-      { label: "وضعیت",        value: data.check ? "تایید شده" : data.reject ? "رد شده" : "در حال بررسی" },
+      { label: "وضعیت", value: data.check ? "تایید شده" : data.reject ? "رد شده" : "در حال بررسی" },
     ];
 
     const mainPhoto =
@@ -241,20 +246,25 @@ const SearchForEstate = () => {
       "اوقافی",
       "سایر"
     ];
-    const fields: Array<{ key: string; label: string; type?: string; options?: string[] }> = [
+    const shouldHideFields = (type: string) =>
+      type === "مغازه" || type === "زمین مسکونی" || type === "زمین کشاورزی";
+    const hideFields = shouldHideFields(editForm.usage);
+
+    const fields: Array<{ key: string; label: string; type?: string; options?: string[]; hide?: boolean }> = [
       { key: "id", label: "کد ملک" },
       { key: "full_name", label: "نام مالک" },
       { key: "phone", label: "شماره تماس" },
       { key: "usage", label: "نوع ملک", options: TYPE_OPTIONS },
-      { key: "region", label: "منطقه", options: regionOptions },
+      { key: "region", label: "محله مورد نظر", options: regionOptions },
       { key: "address", label: "آدرس" },
       { key: "land_metrage", label: "متراژ زمین", type: "number" },
       { key: "useful_metrage", label: "متراژ مفید", type: "number" },
       { key: "year_of_build", label: "سال ساخت", type: "number" },
-      { key: "floor_number", label: "تعداد طبقات", type: "number" },
-      { key: "floor", label: "طبقه", type: "number" },
-      { key: "Unit_in_floor", label: "واحد در طبقه", type: "number" },
-      { key: "room_number", label: "تعداد اتاق", type: "number" },
+      // فقط اگر hideFields=false این فیلدها را نمایش بده
+      { key: "floor_number", label: "تعداد طبقات", type: "number", hide: hideFields },
+      { key: "floor", label: "طبقه مورد نظر", type: "string", hide: hideFields },
+      { key: "Unit_in_floor", label: "واحد در طبقه", type: "number", hide: hideFields },
+      { key: "room_number", label: "تعداد اتاق", type: "number", hide: hideFields },
       { key: "document_type", label: "نوع سند", options: DOCUMENT_TYPE_OPTIONS },
       { key: "price", label: "قیمت", type: "number" },
       { key: "features", label: "امکانات" },
@@ -285,7 +295,7 @@ const SearchForEstate = () => {
           </div>
           <div className="px-8 py-6 w-full">
             <div className="grid gap-x-8 gap-y-5 grid-cols-1 sm:grid-cols-2">
-              {fields.map((item, idx) => (
+              {fields.filter(f => !f.hide).map((item, idx) => (
                 <div key={idx} className="flex flex-col mb-1">
                   <label className="text-gray-500 text-[13px] mb-1">{item.label}</label>
                   {item.options ? (
@@ -307,12 +317,21 @@ const SearchForEstate = () => {
                         ))}
                     </select>
                   ) : (
-                    <input
-                      className="font-bold text-gray-800 text-[16px] rounded-lg border border-gray-200 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-300 transition"
-                      type={item.type || "text"}
-                      value={editForm[item.key] ?? ""}
-                      onChange={e => handleEditFormChange(item.key, item.type === "number" ? Number(e.target.value) : e.target.value)}
-                    />
+                    item.key === "features" ? (
+                      <textarea
+                        className="font-bold text-gray-800 text-[16px] rounded-lg border border-gray-200 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-300 transition"
+                        style={{ minHeight: 80, maxHeight: 160 }}
+                        value={editForm[item.key] ?? ""}
+                        onChange={e => handleEditFormChange(item.key, e.target.value)}
+                      />
+                    ) : (
+                      <input
+                        className="font-bold text-gray-800 text-[16px] rounded-lg border border-gray-200 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-300 transition"
+                        type={item.type || "text"}
+                        value={editForm[item.key] ?? ""}
+                        onChange={e => handleEditFormChange(item.key, item.type === "number" ? Number(e.target.value) : e.target.value)}
+                      />
+                    )
                   )}
                 </div>
               ))}
@@ -372,7 +391,7 @@ const SearchForEstate = () => {
               <th className="px-2 py-4 text-center text-[16px] font-bold text-blue-700">ردیف</th>
               <th className="px-2 py-4 text-center text-[16px] font-bold text-blue-700">کد ملک</th>
               <th className="px-2 py-4 text-center text-[16px] font-bold text-blue-700">نوع ملک</th>
-              <th className="px-2 py-4 text-center text-[16px] font-bold text-blue-700">منطقه</th>
+              <th className="px-2 py-4 text-center text-[16px] font-bold text-blue-700">محله مورد نظر</th>
               <th className="px-2 py-4 text-center text-[16px] font-bold text-blue-700">نام مالک</th>
               <th className="px-2 py-4 text-center text-[16px] font-bold text-blue-700">شماره تماس</th>
               <th className="px-2 py-4 text-center text-[16px] font-bold text-blue-700">وضعیت</th>
@@ -391,8 +410,8 @@ const SearchForEstate = () => {
                 <td className="p-4">
                   <span className={
                     item.check ? "text-green-600 font-bold" :
-                    item.reject ? "text-red-500 font-bold" :
-                    "text-yellow-500 font-bold"
+                      item.reject ? "text-red-500 font-bold" :
+                        "text-yellow-500 font-bold"
                   }>
                     {item.check ? "تایید شده" : item.reject ? "رد شده" : "در حال بررسی"}
                   </span>

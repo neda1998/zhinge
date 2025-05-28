@@ -71,7 +71,8 @@ const UnderReview = () => {
       price: item.price ?? "",
       loan: item.loan ?? "",
       metrage: item.land_metrage ?? "",
-      phone: item.phone ?? "", 
+      phone: item.phone ?? "",
+      usage: item.usage ?? "", 
     });
     let photos: string[] = [];
     if (item.Uid) {
@@ -132,7 +133,7 @@ const UnderReview = () => {
           <span className="text-gray-700">{item.usage}</span>
         ),
         "محله مورد نظر": (
-          <span className="text-gray-600">{item.region}</span>
+          <span className="text-gray-600">{item.region ?? <span className="text-red-400">ندارد</span>}</span>
         ),
         "نام مالک": (
           <span className="font-bold text-gray-800">{item.full_name}</span>
@@ -235,6 +236,10 @@ const UnderReview = () => {
   const isError =
     (activeTab === "inprogress" ? (isErrorProgress || isErrorChecked) : isErrorConfirmed);
 
+  // اضافه کردن تابع شرطی
+  const shouldHideFields = (type: string) =>
+    type === "مغازه" || type === "زمین مسکونی" || type === "زمین کشاورزی";
+
   return (
     <InitialLayout>
       <div className="flex items-center justify-between border-b border-b-gray-200 mb-10 py-4 flex-wrap">
@@ -293,32 +298,20 @@ const UnderReview = () => {
                   });
                   return;
                 }
-                updateAnnounMutation.mutate({
+                // تغییر مقدار check به true و ذخیره تغییرات
+                const updatePayload = {
+                  ...editForm,
                   Uid: selectedAnnounce.Uid,
-                  type: editForm.type,
-                  address: editForm.address,
-                  location: editForm.location,
-                  usage: editForm.usage,
-                  document_type: editForm.document_type,
-                  land_metrage: editForm.metrage,
-                  useful_metrage: editForm.useful_metrage,
-                  floor_number: editForm.floor_number,
-                  floor: editForm.floor,
-                  Unit_in_floor: editForm.Unit_in_floor,
-                  year_of_build: editForm.year_of_build,
-                  full_name: editForm.full_name,
-                  price: editForm.price,
-                  room_number: editForm.room_number,
-                  features: editForm.features,
-                  phone: editForm.phone, // use phone from editForm
-                  description: editForm.description,
-                  tour3dlink: editForm.tour3dlink,
-                  tour3dRequest: editForm.tour3dRequest,
-                  loan: editForm.loan,
-                  region: editForm.region,
-                  lowest_price: editForm.lowest_price,
-                  highest_price: editForm.highest_price,
-                  photo: modalPhotos, // اضافه کردن عکس‌های جدید به آگهی
+                  photo: modalPhotos,
+                  check: true, // مقدار check را به true تنظیم کن
+                };
+                updateAnnounMutation.mutate(updatePayload, {
+                  onSuccess: () => {
+                    refetchInprogress();
+                    refetchChecked();
+                    setEditModalOpen(false);
+                    setSelectedAnnounce(null);
+                  },
                 });
               }}
             >
@@ -327,8 +320,8 @@ const UnderReview = () => {
                 <label className="block text-sm mb-1 font-bold text-gray-700">نوع ملک</label>
                 <select
                   className="border rounded px-2 py-1 w-full"
-                  value={editForm.usage || ""}
-                  onChange={e => setEditForm({ ...editForm, type: e.target.value })}
+                  value={editForm.usage || ""} 
+                  onChange={e => setEditForm({ ...editForm, usage: e.target.value })}
                 >
                   <option value="آپارتمان">آپارتمان</option>
                   <option value="ویلایی">ویلایی</option>
@@ -355,50 +348,54 @@ const UnderReview = () => {
                   onChange={e => setEditForm({ ...editForm, address: e.target.value })}
                 />
               </div>
-              <div>
-                <label className="block text-sm mb-1 font-bold text-gray-700">طبقه مورد نظر</label>
-                <input
-                  type="number"
-                  inputMode="numeric"
-                  pattern="[0-9]*"
-                  className="border rounded px-2 py-1 w-full"
-                  value={editForm.floor_number !== undefined && editForm.floor_number !== null ? editForm.floor_number : ""}
-                  onChange={e => setEditForm({ ...editForm, floor_number: Number(e.target.value) })}
-                />
-              </div>
-              <div>
-                <label className="block text-sm mb-1 font-bold text-gray-700">تعداد طبقات</label>
-                <input
-                  type="number"
-                  inputMode="numeric"
-                  pattern="[0-9]*"
-                  className="border rounded px-2 py-1 w-full"
-                  value={editForm.floor !== undefined && editForm.floor !== null ? editForm.floor : ""}
-                  onChange={e => setEditForm({ ...editForm, floor: Number(e.target.value) })}
-                />
-              </div>
-              <div>
-                <label className="block text-sm mb-1 font-bold text-gray-700">تعداد واحد در طبقه</label>
-                <input
-                  type="number"
-                  inputMode="numeric"
-                  pattern="[0-9]*"
-                  className="border rounded px-2 py-1 w-full"
-                  value={editForm.Unit_in_floor !== undefined && editForm.Unit_in_floor !== null ? editForm.Unit_in_floor : ""}
-                  onChange={e => setEditForm({ ...editForm, Unit_in_floor: Number(e.target.value) })}
-                />
-              </div>
-              <div>
-                <label className="block text-sm mb-1 font-bold text-gray-700">تعداد اتاق‌ها</label>
-                <input
-                  type="number"
-                  inputMode="numeric"
-                  pattern="[0-9]*"
-                  className="border rounded px-2 py-1 w-full"
-                  value={editForm.room_number !== undefined && editForm.room_number !== null ? editForm.room_number : ""}
-                  onChange={e => setEditForm({ ...editForm, room_number: Number(e.target.value) })}
-                />
-              </div>
+              {/* فقط اگر نباید مخفی شود این فیلدها را نمایش بده */}
+              {!shouldHideFields(editForm.usage) && (
+                <>
+                  <div>
+                    <label className="block text-sm mb-1 font-bold text-gray-700">طبقه مورد نظر</label>
+                    <input
+                      type="text"
+                      inputMode="numeric"
+                      className="border rounded px-2 py-1 w-full"
+                      value={editForm.floor !== undefined && editForm.floor !== null ? editForm.floor : ""}
+                      onChange={e => setEditForm({ ...editForm, floor: e.target.value })}
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm mb-1 font-bold text-gray-700">تعداد طبقات</label>
+                    <input
+                      type="number"
+                      inputMode="numeric"
+                      pattern="[0-9]*"
+                      className="border rounded px-2 py-1 w-full"
+                      value={editForm.floor_number !== undefined && editForm.floor_number !== null ? editForm.floor_number : ""}
+                      onChange={e => setEditForm({ ...editForm, floor_number: Number(e.target.value) })}
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm mb-1 font-bold text-gray-700">تعداد واحد در طبقه</label>
+                    <input
+                      type="number"
+                      inputMode="numeric"
+                      pattern="[0-9]*"
+                      className="border rounded px-2 py-1 w-full"
+                      value={editForm.Unit_in_floor !== undefined && editForm.Unit_in_floor !== null ? editForm.Unit_in_floor : ""}
+                      onChange={e => setEditForm({ ...editForm, Unit_in_floor: Number(e.target.value) })}
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm mb-1 font-bold text-gray-700">تعداد اتاق‌ها</label>
+                    <input
+                      type="number"
+                      inputMode="numeric"
+                      pattern="[0-9]*"
+                      className="border rounded px-2 py-1 w-full"
+                      value={editForm.room_number !== undefined && editForm.room_number !== null ? editForm.room_number : ""}
+                      onChange={e => setEditForm({ ...editForm, room_number: Number(e.target.value) })}
+                    />
+                  </div>
+                </>
+              )}
               <div>
                 <label className="block text-sm mb-1 font-bold text-gray-700">نوع سند</label>
                 <select
@@ -491,6 +488,7 @@ const UnderReview = () => {
                 <label className="block text-sm mb-1 font-bold text-gray-700">امکانات</label>
                 <textarea
                   className="border rounded px-2 py-1 w-full"
+                  style={{ minHeight: 80, maxHeight: 160 }}
                   value={editForm.features || ""}
                   onChange={e => setEditForm({ ...editForm, features: e.target.value })}
                 />

@@ -6,7 +6,7 @@ interface TableProps {
         ردیف: number;
         "کد ملک": number;
         "نوع ملک": string;
-        "منطقه": string;
+        "محله مورد نظر": string;
         "نام مالک": string;
         "شماره تماس"?: string | number;
         "وضعیت": string;
@@ -57,7 +57,7 @@ const Table: React.FC<TableProps> = ({ data }) => {
                         <th className="px-2 py-4 text-center text-[16px]">ردیف</th>
                         <th className="px-2 py-4 text-center text-[16px]">کد ملک</th>
                         <th className="px-2 py-4 text-center text-[16px]">نوع ملک</th>
-                        <th className="px-2 py-4 text-center text-[16px]">منطقه</th>
+                        <th className="px-2 py-4 text-center text-[16px]">محله مورد نظر</th>
                         <th className="px-2 py-4 text-center text-[16px]">نام مالک</th>
                         <th className="px-2 py-4 text-center text-[16px]">شماره تماس</th>
                         <th className="px-2 py-4 text-center text-[16px]">وضعیت</th>
@@ -77,7 +77,7 @@ const Table: React.FC<TableProps> = ({ data }) => {
                                 <td className="p-4">{paginatedData[index]?.["ردیف"]}</td>
                                 <td className="p-4">{item["کد ملک"]}</td>
                                 <td className="p-4">{item["نوع ملک"]}</td>
-                                <td className="p-4">{item["منطقه"]}</td>
+                                <td className="p-4">{item["محله مورد نظر"]}</td>
                                 <td className="p-4">{item["نام مالک"]}</td>
                                 <td className="p-4">{item["شماره تماس"]}</td>
                                 <td className="p-4">{item["وضعیت"]}</td>
@@ -88,7 +88,6 @@ const Table: React.FC<TableProps> = ({ data }) => {
                 </tbody>
             </table>
 
-            {/* Pagination */}
             <div className="flex justify-center items-center gap-2 mt-6 bg-white py-3 rounded-full shadow-md w-fit px-6 mx-auto">
                 <button
                     onClick={() => handlePageChange(currentPage - 1)}

@@ -87,7 +87,9 @@ const StepOneUser = ({
             <ComboBox
                 label="نوع ملک"
                 value={usage}
-                onChange={setUsage}
+                onChange={(value) => {
+                    setUsage(value); 
+                }}
                 options={["آپارتمان", "ویلایی", "مغازه", "زمین مسکونی", "زمین کشاورزی", "سایر"]}
             />
             <div className="relative" ref={regionInputRef}>

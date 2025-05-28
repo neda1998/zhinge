@@ -11,7 +11,7 @@ interface StepTwoProps {
     location?: string; setLocation: (v: string) => void;
     land_metrage?: number; setLandMetrage: (v: number) => void; 
     description?: string; setDescription: (v: string) => void;
-    type: string; 
+    usage: string; 
 }
 
 function formatInputNumber(val: string) {
@@ -36,20 +36,20 @@ const LOCATION_OPTIONS = [
     "سه نبش"
 ];
 
-const shouldHideFields = (type: string) =>
-    type === "مغازه" || type === "زمین مسکونی" || type === "زمین کشاورزی";
+const shouldHideFields = (usage: string) =>
+    usage === "مغازه" || usage === "زمین مسکونی" || usage === "زمین کشاورزی";
 
-const shouldHideFeatures = (type: string) =>
-    type === "زمین مسکونی" || type === "زمین کشاورزی";
+const shouldHideYearOfBuild = (usage: string) =>
+    usage === "زمین مسکونی" || usage === "زمین کشاورزی" || usage === "مغازه";
 
-const shouldHideYearOfBuild = (type: string) =>
-    type === "زمین مسکونی" || type === "زمین کشاورزی";
+const shouldHideUsefulMetrage = (usage: string) =>
+    usage === "زمین مسکونی" || usage === "زمین کشاورزی" || usage === "مغازه";
 
-const shouldHideUsefulMetrage = (type: string) =>
-    type === "زمین مسکونی" || type === "زمین کشاورزی";
+const shouldHideFeatures = (usage: string) =>
+    usage === "زمین مسکونی" || usage === "زمین کشاورزی";
 
-const shouldHideLoan = (type: string) =>
-    type === "زمین مسکونی" || type === "زمین کشاورزی";
+const shouldHideLocation = (usage: string) =>
+    usage === "زمین کشاورزی" || usage === "مغازه";
 
 const StepTwo = ({
     loan, setLoan,
@@ -60,15 +60,16 @@ const StepTwo = ({
     location, setLocation,
     land_metrage, setLandMetrage,
     description, setDescription,
-    type
+    usage
 }: StepTwoProps) => {
     const [showFeaturePanel, setShowFeaturePanel] = useState(false);
     const selectedFeatures: string[] = features ? features.split(",").map(f => f.trim()).filter(f => f) : [];
-    const hideFields = shouldHideFields(type);
-    const hideFeatures = shouldHideFeatures(type);
-    const hideYearOfBuild = shouldHideYearOfBuild(type);
-    const hideUsefulMetrage = shouldHideUsefulMetrage(type);
-    const hideLoan = shouldHideLoan(type);
+    const hideFields = shouldHideFields(usage);
+    const hideFeatures = shouldHideFeatures(usage);
+    const hideYearOfBuild = shouldHideYearOfBuild(usage);
+    const hideUsefulMetrage = shouldHideUsefulMetrage(usage);
+    const hideLocation = shouldHideLocation(usage);
+    const hideLoan = usage === "زمین مسکونی" || usage === "زمین کشاورزی";
 
     const handleFeatureSelect = (feature: string) => {
         if (selectedFeatures.includes(feature)) {
@@ -118,7 +119,7 @@ const StepTwo = ({
     }
 
     return (
-        <div className="w-full grid lg:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-5">
+        <div className="w-full grid lg:grid-cols-4 sm:grid-cols-2 grid-cols-1 gap-5">
             <InputState
                 label="متراژ کل زمین"
                 placeholder="مثال: 200"
@@ -130,6 +131,19 @@ const StepTwo = ({
                 }}
                 numeric
             />
+            {!hideFields && !hideYearOfBuild && (
+                <>
+                    <InputState
+                        label="سال ساخت"
+                        placeholder="مثال: 1400"
+                        value={year_of_build !== undefined && year_of_build !== null ? String(year_of_build) : ""}
+                        onChange={e => {
+                            setYearOfBuild(Number(e.target.value));
+                        }}
+                        numeric
+                    />
+                </>
+            )}
             {!hideFields && !hideUsefulMetrage && (
                 <>
                     <InputState
@@ -145,12 +159,14 @@ const StepTwo = ({
                     />
                 </>
             )}
-            <ComboBox
-                label="موقعیت ملک"
-                options={LOCATION_OPTIONS}
-                value={location}
-                onChange={setLocation}
-            />
+            {!hideFields && !hideLocation && (
+                <ComboBox
+                    label="موقعیت ملک"
+                    options={LOCATION_OPTIONS}
+                    value={location}
+                    onChange={setLocation}
+                />
+            )}
             {!hideFields && !hideYearOfBuild && (
                 <>
                     <InputState

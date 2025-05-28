@@ -66,6 +66,9 @@ const StepThreeUser = ({
     }
   };
 
+  const shouldHideFields = (type?: string) =>
+    type === "زمین مسکونی";
+
   return (
     <form
       className="w-full grid lg:grid-cols-4 sm:grid-cols-2 grid-cols-1 gap-5"

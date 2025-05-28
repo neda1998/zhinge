@@ -86,7 +86,6 @@ export default function Realstate() {
       return isNaN(num) ? undefined : num;
     };
 
-    // اعتبارسنجی فیلدهای ضروری
     if (!usage || usage === "-") {
       Swal.fire({ icon: "warning", title: "خطا", text: "فیلد نوع ملک خالی است.", confirmButtonText: "باشه" });
       return;
@@ -103,7 +102,6 @@ export default function Realstate() {
       Swal.fire({ icon: "warning", title: "خطا", text: "فیلد نوع سند خالی است.", confirmButtonText: "باشه" });
       return;
     }
-    // ...در صورت نیاز فیلدهای دیگر را هم اضافه کنید...
 
     const rawData = {
       Unit_in_floor: toNumberOrUndefined(Unit_in_floor),
@@ -164,6 +162,7 @@ export default function Realstate() {
     <StepOneUser
       key="step1"
       type={type} setType={setType}
+      usage={usage} setUsage={setUsage} // Pass usage correctly
       region={region} setRegion={setRegion}
       address={address} setAddress={setAddress}
       Unit_in_floor={Unit_in_floor} setUnitInFloor={setUnitInFloor}
@@ -171,10 +170,11 @@ export default function Realstate() {
       floor_number={floor_number} setFloorNumber={setFloorNumber}
       floor={floor} setFloor={setFloor}
       room_number={room_number} setRoomNumber={setRoomNumber}
-      usage={usage} setUsage={setUsage}
     />,
     <StepTwoUser
       key="step2"
+      type={type}
+      usage={usage} // اضافه شد
       loan={loan} setLoan={setLoan}
       year_of_build={year_of_build} setYearOfBuild={setYearOfBuild}
       useful_metrage={useful_metrage} setUsefulMetrage={setUsefulMetrage}
@@ -182,9 +182,7 @@ export default function Realstate() {
       land_metrage={land_metrage} setLandMetrage={setLandMetrage}
       features={features} setFeatures={setFeatures}
       price={price} setPrice={setPrice}
-      description={description}
-      setDescription={setDescription}
-      type={type} 
+      description={description} setDescription={setDescription}
     />,
     <StepThreeUser
       key="step3"

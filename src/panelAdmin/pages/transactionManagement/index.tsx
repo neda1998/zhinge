@@ -42,7 +42,7 @@ const TransactionManagement = () => {
         const data = {
             seller: seller,
             region: region,
-            type: dealType,
+            usage: dealType,
             number: dealNumber,
             client: client,
             price: Number(price),
@@ -89,7 +89,7 @@ const TransactionManagement = () => {
                     onChange={(e) => setDealNumber(e.target.value)}
                 />
                 <InputState 
-                    label="منطقه" 
+                    label="محله مورد نظر" 
                     value={region}
                     onChange={(e) => setRegion(e.target.value)}
                 />
@@ -118,7 +118,6 @@ const TransactionManagement = () => {
                     value={commission} 
                     onChange={(e) => setCommission(e.target.value)}
                 />
-                {/* تاریخ معامله به صورت اینپوت ساده */}
                 <InputState
                     label="تاریخ معامله"
                     placeholder="مثال: 1402"

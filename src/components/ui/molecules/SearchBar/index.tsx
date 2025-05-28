@@ -83,8 +83,8 @@ export default function SearchBar({
     if (loan) baseSearchData.loan = isNaN(Number(loan)) ? loan : Number(loan);
     if (landMetrage) baseSearchData.land_metrage = isNaN(Number(landMetrage)) ? landMetrage : Number(landMetrage);
     if (floorNumber) baseSearchData.floor_number = isNaN(Number(floorNumber)) ? floorNumber : Number(floorNumber);
-    if (propertyType && propertyType !== "نوع ملک") baseSearchData.type = propertyType;
-    if (region && region !== "انتخاب منطقه") baseSearchData.region = region;
+    if (propertyType && propertyType !== "نوع ملک") baseSearchData.usage = propertyType;
+    if (region && region !== "انتخاب محله مورد نظر") baseSearchData.region = region;
 
     const doSearch = (data: any, cb: (results: any[]) => void) => {
       searchMutation.mutate(data, {

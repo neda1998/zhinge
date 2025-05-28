@@ -72,22 +72,23 @@ interface StepTwoUserProps {
     location?: string; setLocation: (v: string) => void;
     land_metrage?: number; setLandMetrage: (v: number) => void; 
     description?: string; setDescription: (v: string) => void;
-    type: string; 
+    type: string;
+    usage?: string; // اضافه شد
 }
-const shouldHideFields = (type: string) =>
-    type === "مغازه" || type === "زمین مسکونی" || type === "زمین کشاورزی";
+const shouldHideFields = (usage: string) =>
+    usage === "مغازه" || usage === "زمین مسکونی" || usage === "زمین کشاورزی";
 
-const shouldHideFeatures = (type: string) =>
-    type === "زمین مسکونی" || type === "زمین کشاورزی";
+const shouldHideYearOfBuild = (usage: string) =>
+    usage === "زمین مسکونی" || usage === "زمین کشاورزی" || usage === "مغازه";
 
-const shouldHideYearOfBuild = (type: string) =>
-    type === "زمین مسکونی" || type === "زمین کشاورزی";
+const shouldHideUsefulMetrage = (usage: string) =>
+    usage === "زمین مسکونی" || usage === "زمین کشاورزی" || usage === "مغازه";
 
-const shouldHideUsefulMetrage = (type: string) =>
-    type === "زمین مسکونی" || type === "زمین کشاورزی";
+const shouldHideFeatures = (usage: string) =>
+    usage === "زمین مسکونی" || usage === "زمین کشاورزی";
 
-const shouldHideLoan = (type: string) =>
-    type === "زمین مسکونی" || type === "زمین کشاورزی";
+const shouldHideLocation = (usage: string) =>
+    usage === "زمین کشاورزی" || usage === "مغازه";
 
 const StepTwoUser = ({
     loan, setLoan,
@@ -98,15 +99,16 @@ const StepTwoUser = ({
     year_of_build, setYearOfBuild,
     price, setPrice,
     description, setDescription,
-    type 
+    type,
+    usage // اضافه شد
 }: StepTwoUserProps) => {
     const [showFeaturePanel, setShowFeaturePanel] = useState(false);
     const selectedFeatures: string[] = features ? features.split(",").map(f => f.trim()).filter(f => f) : [];
-    const hideFields = shouldHideFields(type);
-    const hideFeatures = shouldHideFeatures(type);
-    const hideYearOfBuild = shouldHideYearOfBuild(type);
-    const hideUsefulMetrage = shouldHideUsefulMetrage(type);
-    const hideLoan = shouldHideLoan(type);
+    const hideFields = shouldHideFields(usage || type);
+    const hideYearOfBuild = shouldHideYearOfBuild(usage || type);
+    const hideUsefulMetrage = shouldHideUsefulMetrage(usage || type);
+    const hideFeatures = shouldHideFeatures(usage || type);
+    const hideLocation = shouldHideLocation(usage || type);
 
     const handleFeatureSelect = (feature: string) => {
         if (!setFeatures) return;
@@ -114,7 +116,7 @@ const StepTwoUser = ({
             const newFeatures = selectedFeatures.filter(f => f !== feature);
             setFeatures(newFeatures.join(","));
         } else {
-            const newFeatures = [...selectedFeatures, feature];
+            const newFeatures = [...selectedFeatures, feature]; 
             setFeatures(newFeatures.join(","));
         }
     };
@@ -132,28 +134,7 @@ const StepTwoUser = ({
                 }}
                 numeric
             />
-            {!hideFields && !hideUsefulMetrage && (
-                <>
-                    <InputState
-                        label="متراژ مفید"
-                        value={useful_metrage !== undefined && useful_metrage !== null ? formatInputNumber(String(useful_metrage)) : ""}
-                        onChange={e => {
-                            const formatted = formatInputNumber(e.target.value);
-                            e.target.value = formatted;
-                            setUsefulMetrage(Number(e.target.value.replace(/,/g, "")))}
-                        }
-                        placeholder="مثال: 100"
-                        numeric
-                    />
-                </>
-            )}
-            <ComboBox
-                label="موقعیت ملک"
-                options={LOCATION_OPTIONS}
-                value={location}
-                onChange={setLocation}
-            />
-             {!hideFields && !hideYearOfBuild && (
+            {!hideFields && !hideYearOfBuild && (
                 <>
                     <InputState
                         label="سال ساخت"
@@ -166,7 +147,30 @@ const StepTwoUser = ({
                     />
                 </>
             )}
-             {!hideFields && !hideLoan && (
+            {!hideFields && !hideUsefulMetrage && (
+                <>
+                    <InputState
+                        label="متراژ مفید"
+                        value={useful_metrage !== undefined && useful_metrage !== null ? formatInputNumber(String(useful_metrage)) : ""}
+                        onChange={e => {
+                            const formatted = formatInputNumber(e.target.value);
+                            e.target.value = formatted;
+                            setUsefulMetrage(Number(e.target.value.replace(/,/g, "")));
+                        }}
+                        placeholder="مثال: 100"
+                        numeric
+                    />
+                </>
+            )}
+            {!hideFields && !hideLocation && (
+                <ComboBox
+                    label="موقعیت ملک"
+                    options={LOCATION_OPTIONS}
+                    value={location}
+                    onChange={setLocation}
+                />
+            )}
+             {!hideFields && (
                 <div className="flex flex-col items-start">
                     <InputState
                         label="وام"
@@ -244,8 +248,7 @@ const StepTwoUser = ({
                                                 className={`px-4 py-2 rounded-full border transition-all duration-150 text-base font-medium shadow-sm
                                                     ${isSelected
                                                         ? "bg-gradient-to-l from-green-400 to-blue-400 text-white border-main-color scale-105"
-                                                        : "bg-gray-100 text-gray-700 border-gray-300 hover:bg-main-color hover:text-white hover:border-main-color"}
-                                                `}
+                                                        : "bg-gray-100 text-gray-700 border-gray-300 hover:bg-main-color hover:text-white hover:border-main-color"}`}
                                                 onClick={() => handleFeatureSelect(feature)}
                                             >
                                                 {feature}

@@ -16,7 +16,7 @@ interface StepOneProps {
 }
 
 const shouldHideFields = (type: string) =>
-  type === "مغازه" || type === "زمین مسکونی" || type === "زمین کشاورزی";
+    type === "مغازه" || type === "زمین مسکونی" || type === "زمین کشاورزی";
 
 const StepOne = ({
   usage, setUsage,
@@ -90,7 +90,6 @@ const StepOne = ({
           onChange={setUsage}
           options={["آپارتمان", "ویلایی", "مغازه", "زمین مسکونی", "زمین کشاورزی", "سایر"]}
         />
-        {/* Autocomplete Region Search */}
         <div className="relative" ref={regionInputRef}>
           <InputState
             label="محله مورد نظر"
