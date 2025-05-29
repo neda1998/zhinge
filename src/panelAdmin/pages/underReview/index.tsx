@@ -55,15 +55,6 @@ const UnderReview = () => {
     refetch: refetchConfirmed,
   } = UseConfirmedAnnounceQuery();
 
-  const fetchAnnouncePhotos = async (uid: string) => {
-    try {
-      const res = await axios.get(`http://185.231.115.236:3000/api/V1/announce/getPhotos?Uid=${uid}`);
-      return Array.isArray(res.data.photos) ? res.data.photos : [];
-    } catch {
-      return [];
-    }
-  };
-
   const handleOpenEditModal = async (item: any) => {
     setSelectedAnnounce(item);
     setEditForm({
@@ -72,12 +63,12 @@ const UnderReview = () => {
       loan: item.loan ?? "",
       metrage: item.land_metrage ?? "",
       phone: item.phone ?? "",
-      usage: item.usage ?? "", 
+      usage: item.usage ?? "",
+      description: item.description ?? "", 
+      region: item.region ?? "",
+
     });
     let photos: string[] = [];
-    if (item.Uid) {
-      photos = await fetchAnnouncePhotos(item.Uid);
-    }
     setModalPhotos(photos.length > 0 ? photos : (Array.isArray(item.photo) ? item.photo : (item.photo ? [item.photo] : [])));
     setEditModalOpen(true);
   };
@@ -154,9 +145,10 @@ const UnderReview = () => {
     try {
       const updatePayload = {
         ...editForm,
+        description: editForm.description ?? "",
         Uid: item.Uid,
         photo: modalPhotos,
-        check: true, // تغییر وضعیت به بررسی شده
+        check: true,
       };
       await updateAnnounMutation.mutateAsync(updatePayload);
       await verifyAnnounceMutation.mutateAsync();
@@ -390,34 +382,34 @@ const UnderReview = () => {
                   <div>
                     <label className="block text-sm mb-1 font-bold text-gray-700">تعداد طبقات</label>
                     <input
-                      type="number"
+                      type="text"
                       inputMode="numeric"
                       pattern="[0-9]*"
                       className="border rounded px-2 py-1 w-full"
                       value={editForm.floor_number !== undefined && editForm.floor_number !== null ? editForm.floor_number : ""}
-                      onChange={e => setEditForm({ ...editForm, floor_number: Number(e.target.value) })}
+                      onChange={e => setEditForm({ ...editForm, floor_number: e.target.value })}
                     />
                   </div>
                   <div>
                     <label className="block text-sm mb-1 font-bold text-gray-700">تعداد واحد در طبقه</label>
                     <input
-                      type="number"
+                      type="text"
                       inputMode="numeric"
                       pattern="[0-9]*"
                       className="border rounded px-2 py-1 w-full"
                       value={editForm.Unit_in_floor !== undefined && editForm.Unit_in_floor !== null ? editForm.Unit_in_floor : ""}
-                      onChange={e => setEditForm({ ...editForm, Unit_in_floor: Number(e.target.value) })}
+                      onChange={e => setEditForm({ ...editForm, Unit_in_floor: e.target.value })}
                     />
                   </div>
                   <div>
                     <label className="block text-sm mb-1 font-bold text-gray-700">تعداد اتاق‌ها</label>
                     <input
-                      type="number"
+                      type="text"
                       inputMode="numeric"
                       pattern="[0-9]*"
                       className="border rounded px-2 py-1 w-full"
                       value={editForm.room_number !== undefined && editForm.room_number !== null ? editForm.room_number : ""}
-                      onChange={e => setEditForm({ ...editForm, room_number: Number(e.target.value) })}
+                      onChange={e => setEditForm({ ...editForm, room_number: e.target.value })}
                     />
                   </div>
                 </>
@@ -523,8 +515,8 @@ const UnderReview = () => {
                 <label className="block text-sm mb-1 font-bold text-gray-700">توضیحات</label>
                 <textarea
                   className="border rounded px-2 py-1 w-full"
-                  value={editForm.description || ""} // مقدار پیش‌فرض خالی در صورت نبود مقدار
-                  onChange={e => setEditForm({ ...editForm, description: e.target.value })} // به‌روزرسانی مقدار description
+                  value={editForm.description ?? ""} // اگر undefined بود خالی بدهد
+                  onChange={e => setEditForm({ ...editForm, description: e.target.value ?? "" })} // حتما مقدار را خالی یا string قرار بده
                 />
               </div>
               <div className="sm:col-span-2 lg:col-span-3">

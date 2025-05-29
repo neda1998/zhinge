@@ -28,6 +28,7 @@ export const updateAnnoun = async (data: any) => {
     features: data.features,
     phone: data.phone, 
     state_code: data.state_code,
+    description: data.description,
   };
 
   const body: any = {};
