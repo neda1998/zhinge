@@ -1,11 +1,14 @@
 import { useMutation } from "react-query";
 import Swal from "sweetalert2";
 import { verifyAnnounce } from "../../../services/admin/verifyAnnounce";
+import { useCookies } from "react-cookie";
 
 const UseVerifyAnnounceMutation = () => {
+  const [cookies] = useCookies(["accessToken"]);
+    const token = cookies.accessToken;
   return useMutation(
     async (data) => {
-      return await verifyAnnounce(data);
+      return await verifyAnnounce(data, token);
     },
     {
       onSuccess: async (response) => {

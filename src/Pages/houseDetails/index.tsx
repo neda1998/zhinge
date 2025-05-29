@@ -5,23 +5,30 @@ import { useFormik } from "formik";
 import UseByUidAnnounceMutation from '../../hooks/mutation/announce/UseByUidAnnounceMutation';
 import { useParams } from "react-router-dom";
 import { PuffLoader } from 'react-spinners';
-import Cookies from 'js-cookie';
 import { useCookies } from 'react-cookie';
+import UsePromotToAdminMutation from '../../hooks/mutation/promotToAdmin/UsePromotToAdminMutation';
 
 const HouseDetails = () => {
     const { mutate, data, isLoading, error } = UseByUidAnnounceMutation();
     const { id: Uid } = useParams<{ id: string }>();
+    const { mutate: fetchAdminDetails, data: adminData } = UsePromotToAdminMutation();
 
     useEffect(() => {
         if (!Uid) {
             return;
         }
-        mutate({ Uid }); 
+        mutate({ Uid });
     }, [mutate, Uid]);
 
-    const selectedProperty = Array.isArray(data) 
-        ? data.find((property: any) => property.Uid?.toString() === Uid) 
+    const selectedProperty = Array.isArray(data)
+        ? data.find((property: any) => property.Uid?.toString() === Uid)
         : data;
+
+    useEffect(() => {
+        if (selectedProperty?.userID && selectedProperty.userID !== "0") {
+            fetchAdminDetails({ phone: selectedProperty.userID });
+        }
+    }, [selectedProperty?.userID, fetchAdminDetails]);
 
     const formik = useFormik<Record<string, any>>({
         enableReinitialize: true,
@@ -61,7 +68,6 @@ const HouseDetails = () => {
         { name: 'address', label: 'آدرس' },
         { name: 'location', label: 'موقعیت مکانی' },
         { name: 'document_type', label: 'نوع سند' },
-        { name: 'land_metrage', label: 'متراژ زمین', format: (v: string | number) => v + ' متر' },
         { name: 'useful_metrage', label: 'متراژ مفید', format: (v: string | number) => v + ' متر' },
         { name: 'floor_number', label: 'تعداد طبقات' },
         { name: 'floor', label: 'طبقه' },
@@ -103,13 +109,13 @@ const HouseDetails = () => {
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H5a2 2 0 01-2-2V5zm0 12a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H5a2 2 0 01-2-2v-2zm12-12a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zm0 12a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
                                             </svg>
                                             <span>
-                                                {selectedProperty?.full_name && (
-                                                    <span className="ml-2">{selectedProperty.full_name}</span>
+                                                {adminData?.full_name && (
+                                                    <span className="ml-2">{adminData.full_name}</span>
                                                 )}
-                                                {selectedProperty?.userID && selectedProperty.userID !== "0" && (
+                                                {adminData?.phone && (
                                                     <span className="ltr:ml-2 rtl:mr-2">
                                                         <span className="text-gray-400">|</span>
-                                                        <span className="mx-1 text-blue-700">{selectedProperty.userID}</span>
+                                                        <span className="mx-1 text-blue-700">{adminData.phone}</span>
                                                     </span>
                                                 )}
                                             </span>
@@ -128,8 +134,8 @@ const HouseDetails = () => {
                                                 .filter(field => field.name !== 'userID' && field.name !== 'full_name')
                                                 .map((field) => {
                                                     const value = selectedProperty?.[field.name];
+                                                    // نمایش مقدار حتی اگر صفر باشد
                                                     if (
-                                                        (typeof value === "number" && value === 0) ||
                                                         value === "" ||
                                                         value === undefined ||
                                                         value === null
@@ -174,7 +180,7 @@ const HouseDetails = () => {
                                         ? selectedProperty.photo[0]
                                         : (typeof selectedProperty?.photo === "string" && selectedProperty.photo)
                                             ? selectedProperty.photo
-                                            : ImageMainPage 
+                                            : ImageMainPage
                                 }
                                 alt="عکس ملک"
                                 className="rounded-2xl w-full h-[500px] object-cover border shadow"

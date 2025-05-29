@@ -2,14 +2,15 @@ import apiRoutes from "../../../helpers/routes/apiRoutes";
 import { getRoute } from "../../service";
 import client from "../../utils/client";
 
-export const verifyAnnounce = async (data: any, token?: string) => {
-  const url = getRoute({ route: `${apiRoutes.admin.verifyAnnounce}` });
+
+export const promotToAdmin = async (data: any) => {
+  const url = getRoute({ route: `${apiRoutes.admin.promotToAdmin}` });
   return await client({
     url,
-    method: "POST",
+    method: "PUT",
     data,
     headers: {
-      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json"
     }
   });
 };

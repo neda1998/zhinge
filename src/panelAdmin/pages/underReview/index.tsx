@@ -115,9 +115,63 @@ const UnderReview = () => {
     selectedAnnounce
   ]);
 
+  const handleRejectAnnounce = async (item: any) => {
+    const result = await Swal.fire({
+      title: "آیا مطمئن هستید؟",
+      text: "آیا از رد کردن این مورد مطمئن هستید؟",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "بله، رد کن",
+      cancelButtonText: "انصراف",
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+    });
+    if (result.isConfirmed) {
+      rejectAnnounceMutation.mutate(item, {
+        onSuccess: () => {
+          Swal.fire({
+            title: "موفق",
+            text: "ملک با موفقیت رد شد",
+            icon: "success",
+            confirmButtonText: "باشه",
+          });
+          refetchInprogress();
+          refetchChecked();
+        },
+        onError: () => {
+          Swal.fire({
+            title: "خطا",
+            text: "خطایی هنگام رد کردن ملک رخ داد",
+            icon: "error",
+            confirmButtonText: "باشه",
+          });
+        },
+      });
+    }
+  };
+
+  const handleEditAndVerify = async (item: any) => {
+    try {
+      const updatePayload = {
+        ...editForm,
+        Uid: item.Uid,
+        photo: modalPhotos,
+        check: true, // تغییر وضعیت به بررسی شده
+      };
+      await updateAnnounMutation.mutateAsync(updatePayload);
+      await verifyAnnounceMutation.mutateAsync();
+      refetchInprogress();
+      refetchChecked();
+      setEditModalOpen(false);
+      setSelectedAnnounce(null);
+    } catch (error) {
+      console.error("Error during edit and verify:", error);
+    }
+  };
+
   const inprogressTableData =
     inprogressData?.inprogress
-      ?.filter((item: any) => !item.reject)
+      ?.filter((item: any) => !item.reject) // Remove items with "رد شده" status
       .slice()
       .reverse()
       .map((item: any, idx: number) => ({
@@ -160,21 +214,7 @@ const UnderReview = () => {
               بررسی
             </button>
             <button
-              onClick={async () => {
-                const result = await Swal.fire({
-                  title: "آیا مطمئن هستید؟",
-                  text: "آیا از رد کردن این مورد مطمئن هستید؟",
-                  icon: "warning",
-                  showCancelButton: true,
-                  confirmButtonText: "بله، رد کن",
-                  cancelButtonText: "انصراف",
-                  confirmButtonColor: "#d33",
-                  cancelButtonColor: "#3085d6",
-                });
-                if (result.isConfirmed) {
-                  rejectAnnounceMutation.mutate(item);
-                }
-              }}
+              onClick={() => handleRejectAnnounce(item)}
               className="bg-gradient-to-r from-red-500 to-red-700 hover:from-red-600 hover:to-red-800 text-white text-xs px-4 py-1 rounded-full font-bold shadow transition-all duration-150"
             >
               رد
@@ -298,21 +338,7 @@ const UnderReview = () => {
                   });
                   return;
                 }
-                // تغییر مقدار check به true و ذخیره تغییرات
-                const updatePayload = {
-                  ...editForm,
-                  Uid: selectedAnnounce.Uid,
-                  photo: modalPhotos,
-                  check: true, // مقدار check را به true تنظیم کن
-                };
-                updateAnnounMutation.mutate(updatePayload, {
-                  onSuccess: () => {
-                    refetchInprogress();
-                    refetchChecked();
-                    setEditModalOpen(false);
-                    setSelectedAnnounce(null);
-                  },
-                });
+                handleEditAndVerify(selectedAnnounce);
               }}
             >
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-6">
@@ -497,8 +523,8 @@ const UnderReview = () => {
                 <label className="block text-sm mb-1 font-bold text-gray-700">توضیحات</label>
                 <textarea
                   className="border rounded px-2 py-1 w-full"
-                  value={editForm.description || ""}
-                  onChange={e => setEditForm({ ...editForm, description: e.target.value })}
+                  value={editForm.description || ""} // مقدار پیش‌فرض خالی در صورت نبود مقدار
+                  onChange={e => setEditForm({ ...editForm, description: e.target.value })} // به‌روزرسانی مقدار description
                 />
               </div>
               <div className="sm:col-span-2 lg:col-span-3">
@@ -629,14 +655,14 @@ const UnderReview = () => {
               <button
                 type="submit"
                 className="bg-gradient-to-r from-green-500 to-green-700 hover:from-green-600 hover:to-green-800 text-white px-6 py-3 rounded-xl w-full mt-4 sm:col-span-2 lg:col-span-3 font-extrabold text-lg shadow-lg transition-all duration-200"
-                disabled={updateAnnounMutation.isLoading}
+                disabled={updateAnnounMutation.isLoading || verifyAnnounceMutation.isLoading}
               >
-                {updateAnnounMutation.isLoading ? (
+                {updateAnnounMutation.isLoading || verifyAnnounceMutation.isLoading ? (
                   <span className="flex items-center justify-center gap-2">
                     <svg className="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path></svg>
                     در حال ذخیره...
                   </span>
-                ) : "ذخیره تغییرات"}
+                ) : "ذخیره تغییرات و تایید"}
               </button>
             </div>
             </form>

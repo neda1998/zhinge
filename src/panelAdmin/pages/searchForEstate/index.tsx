@@ -5,7 +5,9 @@ import InitialLayout from "../../dashboard/initialLayoutAdmin"
 import ChooseItemsOfState from "../propertyManagement/ChooseItemsOfState"
 import UseSearchStateMutation from "../../../hooks/mutation/searchState/UseSearchStateMutation"
 import UseUpdateAnnounMutation from "../../../hooks/mutation/updateAnnounAdmin/UseUpdateAnnounMutation"
+import UseRejectannounceMutatiojn from "../../../hooks/mutation/rejectannounce/UseRejectannounceMutatiojn";
 import { useState, useRef } from "react"
+import Swal from "sweetalert2";
 
 const SearchForEstate = () => {
   const [form, setForm] = useState<any>({});
@@ -27,7 +29,7 @@ const SearchForEstate = () => {
   };
 
   const handleChange = (label: string, value: any) => {
-    const updatedForm = { ...form, [label]: value };
+    const updatedForm = { ...form, [label]: label === "id" ? Number(value) : value };
     setForm(updatedForm);
     triggerSearch(updatedForm);
   };
@@ -60,7 +62,10 @@ const SearchForEstate = () => {
       const cleaned = cleanForm(payload);
       if (Object.keys(cleaned).length === 0) return;
       setIsSearching(true);
-      searchMutation.mutate(cleaned);
+      searchMutation.mutate({
+        ...cleaned,
+        id: cleaned.id ? Number(cleaned.id) : undefined, // تبدیل id به عدد
+      });
     }, 400);
   };
 
@@ -112,23 +117,23 @@ const SearchForEstate = () => {
       "وضعیت": <span className="text-gray-700">🔖</span>,
     };
     const details: Array<{ label: string, value?: any }> = [
-      { label: "کد ملک", value: data.id || "-" },
-      { label: "نام مالک", value: data.full_name || "-" },
-      { label: "شماره تماس", value: data.phone || "-" },
-      { label: "نوع ملک", value: data.usage || "-" },
-      { label: "محله مورد نظر", value: data.region || "-" },
-      { label: "آدرس", value: data.address || "-" },
-      { label: "متراژ زمین", value: data.land_metrage || "-" },
-      { label: "متراژ مفید", value: data.useful_metrage || "-" },
-      { label: "سال ساخت", value: data.year_of_build || "-" },
-      { label: "تعداد طبقات", value: data.floor_number || "-" },
-      { label: "طبقه مورد نظر", value: data.floor || "-" },
-      { label: "واحد در طبقه", value: data.Unit_in_floor || "-" },
-      { label: "تعداد اتاق", value: data.room_number || "-" },
-      { label: "نوع سند", value: data.document_type || "-" },
-      { label: "قیمت", value: data.price ? data.price.toLocaleString() + " تومان" : "-" },
-      { label: "امکانات", value: data.features || "-" },
-      { label: "موقعیت مکانی", value: data.location || "-" },
+      { label: "کد ملک", value: data.id !== null && data.id !== undefined ? data.id : "-" },
+      { label: "نام مالک", value: data.full_name !== null && data.full_name !== undefined ? data.full_name : "-" },
+      { label: "شماره تماس", value: data.phone !== null && data.phone !== undefined ? data.phone : "-" },
+      { label: "نوع ملک", value: data.usage !== null && data.usage !== undefined ? data.usage : "-" },
+      { label: "محله مورد نظر", value: data.region !== null && data.region !== undefined ? data.region : "-" },
+      { label: "آدرس", value: data.address !== null && data.address !== undefined ? data.address : "-" },
+      { label: "متراژ زمین", value: data.land_metrage !== null && data.land_metrage !== undefined ? data.land_metrage : "-" },
+      { label: "متراژ مفید", value: data.useful_metrage !== null && data.useful_metrage !== undefined ? data.useful_metrage : "-" },
+      { label: "سال ساخت", value: data.year_of_build !== null && data.year_of_build !== undefined ? data.year_of_build : "-" },
+      { label: "تعداد طبقات", value: data.floor_number !== null && data.floor_number !== undefined ? data.floor_number : "-" },
+      { label: "طبقه مورد نظر", value: data.floor !== null && data.floor !== undefined ? data.floor : "-" },
+      { label: "واحد در طبقه", value: data.Unit_in_floor !== null && data.Unit_in_floor !== undefined ? data.Unit_in_floor : "-" },
+      { label: "تعداد اتاق", value: data.room_number !== null && data.room_number !== undefined ? data.room_number : "-" },
+      { label: "نوع سند", value: data.document_type !== null && data.document_type !== undefined ? data.document_type : "-" },
+      { label: "قیمت", value: data.price !== null && data.price !== undefined ? data.price.toLocaleString() + " تومان" : "-" },
+      { label: "امکانات", value: data.features !== null && data.features !== undefined ? data.features : "-" },
+      { label: "موقعیت مکانی", value: data.location !== null && data.location !== undefined ? data.location : "-" },
       { label: "وضعیت", value: data.check ? "تایید شده" : data.reject ? "رد شده" : "در حال بررسی" },
     ];
 
@@ -270,6 +275,63 @@ const SearchForEstate = () => {
       { key: "features", label: "امکانات" },
       { key: "location", label: "موقعیت مکانی", options: LOCATION_OPTIONS },
     ];
+    const rejectAnnounceMutation = UseRejectannounceMutatiojn();
+
+    const handleDeleteRecord = async () => {
+      const result = await Swal.fire({
+        title: "آیا مطمئن هستید؟",
+        text: "آیا از حذف این ملک مطمئن هستید؟",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "بله، حذف کن",
+        cancelButtonText: "انصراف",
+        confirmButtonColor: "#d33",
+        cancelButtonColor: "#3085d6",
+      });
+      if (result.isConfirmed) {
+        rejectAnnounceMutation.mutate(data, {
+          onSuccess: () => {
+            Swal.fire({
+              title: "موفق",
+              text: "ملک با موفقیت از دیتابیس حذف شد",
+              icon: "success",
+              confirmButtonText: "باشه",
+            });
+            setResults((prev) => prev.filter((item) => item.id !== data.id)); // Remove the deleted estate from the list
+            onClose();
+          },
+          onError: () => {
+            Swal.fire({
+              title: "خطا",
+              text: "خطایی هنگام حذف ملک رخ داد",
+              icon: "error",
+              confirmButtonText: "باشه",
+            });
+          },
+        });
+      }
+    };
+
+    const searchMutation = UseSearchStateMutation({
+      onSuccess: (response: any) => {
+        let resultArr: any[] = [];
+        if (Array.isArray(response)) {
+          resultArr = response.filter((item) => !item.reject); // Exclude deleted items
+        } else if (response?.data && Array.isArray(response.data)) {
+            resultArr = (response.data as any[]).filter((item: any) => !item.reject); // Exclude deleted items
+        } else if (response?.data && typeof response.data === "object" && !response.data.reject) {
+          resultArr = [response.data];
+        } else if (typeof response === "object" && !response.reject) {
+          resultArr = [response];
+        }
+        setResults(resultArr);
+        setIsSearching(false);
+      },
+      onError: () => {
+        setIsSearching(false);
+      },
+    });
+
     return (
       <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-[3px] p-4">
         <div className="bg-white/95 rounded-3xl shadow-2xl max-w-2xl w-full relative overflow-y-auto max-h-[95vh] border border-gray-200 flex flex-col animate-fadeIn">
@@ -351,6 +413,13 @@ const SearchForEstate = () => {
               disabled={updateMutation.isLoading}
             >
               لغو
+            </button>
+            <button
+              onClick={handleDeleteRecord}
+              className="mt-4 px-8 py-2 rounded-full bg-gradient-to-l from-red-500 to-red-700 text-white font-bold shadow hover:scale-105 transition"
+              disabled={rejectAnnounceMutation.isLoading}
+            >
+              {rejectAnnounceMutation.isLoading ? "در حال حذف..." : "حذف ملک"}
             </button>
           </div>
         </div>
@@ -449,12 +518,12 @@ const SearchForEstate = () => {
         <RouteChevron items={pageSearchForEstate} />
       </div>
       <ChooseItemsOfState />
-      <div className="grid lg:grid-cols-4 gap-x-5 gap-y-10 mb-9">
+      <div className="grid lg:grid-cols-3 grid-cols-1 gap-x-5 gap-y-10 mb-9">
         <InputState label="کد ملک" value={form.id || ""} onChange={e => handleChange("id", e.target.value)} numeric />
         <InputState label="نام مالک" value={form.full_name || ""} onChange={e => handleChange("full_name", e.target.value)} />
         <InputState label="شماره موبایل" value={form.phone || ""} onChange={e => handleChange("phone", e.target.value)} numeric />
       </div>
-      <div className="flex items-center justify-between md:w-1/2 w-full gap-5">
+      <div className="flex items-center justify-between w-full gap-5">
         <InputState label="آدرس ملک" value={form.address || ""} placeholder="آدرس را وارد کنید" onChange={e => handleChange("address", e.target.value)} />
       </div>
       {renderTable()}

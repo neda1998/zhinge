@@ -4,14 +4,14 @@ import { rejectannounce } from "../../../services/admin/rejectannounce";
 
 const UseRejectannounceMutatiojn = () => {
   return useMutation(
-    async (data) => {
-      return await rejectannounce(data);
+    async (data: Record<string, any>) => {
+      return await rejectannounce({ ...data, permanentDelete: true }); // Ensure permanent deletion
     },
     {
       onSuccess: async (response) => {
         Swal.fire({
           title: "موفق",
-          text: "ملک مورد نظر رد شد",
+          text: "ملک مورد نظر به طور دائمی حذف شد",
           icon: "success",
           confirmButtonText: "باشه",
         });

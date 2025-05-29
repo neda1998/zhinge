@@ -46,6 +46,3 @@ export const creatAnnouncement = async (data: CreatAnnouncementBody, token: stri
     }
   });
 };
-
-// Confirm that description is present in CreatAnnouncementBody and sent in data
-
