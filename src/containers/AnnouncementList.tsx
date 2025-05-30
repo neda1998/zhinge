@@ -65,24 +65,20 @@ const AnnouncementList: React.FC<AnnouncementListProps> = ({
     "سایر"
   ];
 
-  // گزینه‌های فیلدها
   const usageOptions = Array.from(
     new Set([...TYPE_OPTIONS, ...data.map((item) => item.type).filter(Boolean)])
   );
   const documentTypeOptions = Array.from(
     new Set([...DOCUMENT_TYPE_OPTIONS, ...data.map((item) => item.document_type).filter(Boolean)])
   );
-  // لیست محله‌ها از داده‌های props (data) گرفته می‌شود:
   const regionOptions = Array.from(new Set(data.map((item) => item.region).filter(Boolean)));
 
-  // تابع تغییر فیلدها
   const handleChange = (key: string, value: string) => {
     const updatedForm = { ...form, [key]: value };
     setForm(updatedForm);
     triggerSearch(updatedForm);
   };
 
-  // تابع سرچ با debounce و درخواست به سرور (نمایش نتایج همه محله‌ها کنار هم)
   const triggerSearch = (payload: typeof form) => {
     if (debounceRef.current) clearTimeout(debounceRef.current);
     debounceRef.current = setTimeout(() => {
@@ -92,7 +88,6 @@ const AnnouncementList: React.FC<AnnouncementListProps> = ({
         return;
       }
 
-      // اگر چند محله وارد شده باشد، برای هرکدام جدا سرچ کن و نتایج را تجمیع کن
       let finalPayload = { ...cleaned };
       let regions: string[] = [];
       if (finalPayload.region) {
@@ -106,7 +101,6 @@ const AnnouncementList: React.FC<AnnouncementListProps> = ({
         }
       }
 
-      // اگر چند محله، برای هرکدام سرچ کن و نتایج را کنار هم بگذار
       if (regions.length > 1) {
         let allResults: any[] = [];
         let done = 0;
@@ -132,7 +126,6 @@ const AnnouncementList: React.FC<AnnouncementListProps> = ({
                 allResults = [...allResults, ...resultArr];
                 done++;
                 if (done === regions.length) {
-                  // حذف رکوردهای تکراری بر اساس id
                   const uniqueResults = Array.from(
                     new Map(allResults.map(item => [item.id, item])).values()
                   );
@@ -149,7 +142,6 @@ const AnnouncementList: React.FC<AnnouncementListProps> = ({
           );
         });
       } else {
-        // سرچ معمولی برای یک محله یا بدون محله
         searchMutation.mutate(
           {
             ...finalPayload,
@@ -179,18 +171,15 @@ const AnnouncementList: React.FC<AnnouncementListProps> = ({
     }, 400);
   };
 
-  // هندل تغییر ورودی محله (فقط سرچ سروری و پشتیبانی چند محله)
   const handleRegionInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setRegionSearch(value);
 
-    // جدا کردن محله‌ها با , یا ویرگول فارسی
     const regionList = value
       .split(/,|،/)
       .map((r) => r.trim())
       .filter(Boolean);
 
-    // فقط اگر حداقل یک محله وارد شده باشد، سرچ سروری انجام بده
     if (regionList.length > 0) {
       searchRegionMutation.mutate({ region: regionList.length === 1 ? regionList[0] : regionList });
       setShowRegionDropdown(true);
@@ -202,7 +191,6 @@ const AnnouncementList: React.FC<AnnouncementListProps> = ({
     handleChange("region", value);
   };
 
-  // انتخاب محله از لیست پیشنهادی (برای چند محله)
   const handleRegionSelect = (selectedRegion: string) => {
     const regionList = regionSearch
       .split(/,|،/)
@@ -219,7 +207,6 @@ const AnnouncementList: React.FC<AnnouncementListProps> = ({
     <div className="flex flex-col items-center">
       <Header />
       <div className="w-full flex flex-col h-screen mobile:mt-20">
-        {/* فیلدهای سرچ با استایل جذاب */}
         <div className="w-full flex flex-col items-center gap-6 my-8">
           <div className="bg-gradient-to-l from-green-50 to-blue-50 rounded-2xl shadow-lg p-6 w-[95%] max-w-5xl">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-6">

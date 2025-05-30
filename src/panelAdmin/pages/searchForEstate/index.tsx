@@ -62,7 +62,6 @@ const SearchForEstate = () => {
 
   const updateMutation = UseUpdateAnnounMutation();
 
-  // تابع سرچ با پشتیبانی چندمحله‌ای
   const triggerSearch = (payload: any) => {
     if (debounceRef.current) clearTimeout(debounceRef.current);
     debounceRef.current = setTimeout(() => {
@@ -108,7 +107,6 @@ const SearchForEstate = () => {
                 allResults = [...allResults, ...resultArr];
                 done++;
                 if (done === regions.length) {
-                  // حذف رکوردهای تکراری بر اساس id
                   const uniqueResults = Array.from(
                     new Map(allResults.map(item => [item.id, item])).values()
                   );
@@ -332,7 +330,6 @@ const SearchForEstate = () => {
       { key: "land_metrage", label: "متراژ زمین", type: "number" },
       { key: "useful_metrage", label: "متراژ مفید", type: "number" },
       { key: "year_of_build", label: "سال ساخت", type: "number" },
-      // فقط اگر hideFields=false این فیلدها را نمایش بده
       { key: "floor_number", label: "تعداد طبقات", type: "number", hide: hideFields },
       { key: "floor", label: "طبقه مورد نظر", type: "string", hide: hideFields },
       { key: "Unit_in_floor", label: "واحد در طبقه", type: "number", hide: hideFields },
@@ -364,7 +361,7 @@ const SearchForEstate = () => {
               icon: "success",
               confirmButtonText: "باشه",
             });
-            setResults((prev) => prev.filter((item) => item.id !== data.id)); // Remove the deleted estate from the list
+            setResults((prev) => prev.filter((item) => item.id !== data.id)); 
             onClose();
           },
           onError: () => {
@@ -493,8 +490,6 @@ const SearchForEstate = () => {
       </div>
     );
   };
-
-  // استخراج لیست محله‌ها از نتایج یا داده‌های دیگر (در صورت نیاز می‌توانید منبع را تغییر دهید)
   React.useEffect(() => {
     if (Array.isArray(searchRegionMutation.data)) {
       if (typeof searchRegionMutation.data[0] === "object") {
