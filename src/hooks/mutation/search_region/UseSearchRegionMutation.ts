@@ -13,13 +13,6 @@ const UseSearchRegionMutation = (options?: { onSuccess?: (response?: any) => voi
         if (options?.onSuccess) {
           options.onSuccess(response);
         } else {
-          console.log("✅ جستجو موفقیت‌آمیز بود", response);
-          Swal.fire({
-            title: "موفقیت",
-            text: "✅ جستجو انجام شد",
-            icon: "success",
-            confirmButtonText: "باشه",
-          });
         }
       },
       onError: async (error: any) => {

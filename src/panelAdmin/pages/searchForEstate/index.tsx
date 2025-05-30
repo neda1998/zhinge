@@ -64,7 +64,7 @@ const SearchForEstate = () => {
       setIsSearching(true);
       searchMutation.mutate({
         ...cleaned,
-        id: cleaned.id ? Number(cleaned.id) : undefined, // تبدیل id به عدد
+        id: cleaned.id ? Number(cleaned.id) : undefined, 
       });
     }, 400);
   };
@@ -79,10 +79,9 @@ const SearchForEstate = () => {
   };
 
   const handleEditSave = () => {
-    // مقدار check را به true تنظیم کن
     const payload = {
       ...editForm,
-      check: true, // مقدار check را به true تنظیم کن
+      check: true, 
     };
     updateMutation.mutate(payload, {
       onSuccess: () => {
