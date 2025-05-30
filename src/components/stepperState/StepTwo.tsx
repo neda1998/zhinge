@@ -131,19 +131,6 @@ const StepTwo = ({
                 }}
                 numeric
             />
-            {!hideFields && !hideYearOfBuild && (
-                <>
-                    <InputState
-                        label="سال ساخت"
-                        placeholder="مثال: 1400"
-                        value={year_of_build !== undefined && year_of_build !== null ? String(year_of_build) : ""}
-                        onChange={e => {
-                            setYearOfBuild(Number(e.target.value));
-                        }}
-                        numeric
-                    />
-                </>
-            )}
             {!hideFields && !hideUsefulMetrage && (
                 <>
                     <InputState
@@ -159,14 +146,6 @@ const StepTwo = ({
                     />
                 </>
             )}
-            {!hideFields && !hideLocation && (
-                <ComboBox
-                    label="موقعیت ملک"
-                    options={LOCATION_OPTIONS}
-                    value={location}
-                    onChange={setLocation}
-                />
-            )}
             {!hideFields && !hideYearOfBuild && (
                 <>
                     <InputState
@@ -179,6 +158,14 @@ const StepTwo = ({
                         numeric
                     />
                 </>
+            )}
+            {!hideFields && !hideLocation && (
+                <ComboBox
+                    label="موقعیت ملک"
+                    options={LOCATION_OPTIONS}
+                    value={location}
+                    onChange={setLocation}
+                />
             )}
             {!hideFields && !hideLoan && (
                 <div className="flex flex-col items-start">

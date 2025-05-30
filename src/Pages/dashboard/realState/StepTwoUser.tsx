@@ -134,19 +134,6 @@ const StepTwoUser = ({
                 }}
                 numeric
             />
-            {!hideFields && !hideYearOfBuild && (
-                <>
-                    <InputState
-                        label="سال ساخت"
-                        placeholder="مثال: 1400"
-                        value={year_of_build !== undefined && year_of_build !== null ? String(year_of_build) : ""}
-                        onChange={e => {
-                            setYearOfBuild(Number(e.target.value));
-                        }}
-                        numeric
-                    />
-                </>
-            )}
             {!hideFields && !hideUsefulMetrage && (
                 <>
                     <InputState
@@ -158,6 +145,19 @@ const StepTwoUser = ({
                             setUsefulMetrage(Number(e.target.value.replace(/,/g, "")));
                         }}
                         placeholder="مثال: 100"
+                        numeric
+                    />
+                </>
+            )}
+            {!hideFields && !hideYearOfBuild && (
+                <>
+                    <InputState
+                        label="سال ساخت"
+                        placeholder="مثال: 1400"
+                        value={year_of_build !== undefined && year_of_build !== null ? String(year_of_build) : ""}
+                        onChange={e => {
+                            setYearOfBuild(Number(e.target.value));
+                        }}
                         numeric
                     />
                 </>

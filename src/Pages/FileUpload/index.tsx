@@ -30,10 +30,11 @@ const FileUpload: React.FC<FileUploadProps> = ({ uid, uploadedImages, setUploade
       setIsUploading(true); 
       const file = e.target.files[0];
 
-      if (uploadedImages.length + pendingFiles.length >= 10) {
+      // Only allow one image
+      if (uploadedImages.length + pendingFiles.length >= 1) {
         Swal.fire({
           title: "خطا",
-          text: "حداکثر 10 تصویر قابل آپلود است.",
+          text: "فقط یک تصویر قابل آپلود است.",
           icon: "error",
           confirmButtonText: "باشه",
         });
@@ -107,10 +108,11 @@ const FileUpload: React.FC<FileUploadProps> = ({ uid, uploadedImages, setUploade
       <div
         className="flex flex-col gap-4 items-center justify-center w-[20rem] h-[15rem] rounded-[20px] bg-[#f9f9f9] mobile:w-[15rem] mobile:h-[10rem] cursor-pointer"
         onClick={() => {
-          if (uploadedImages.length + pendingFiles.length >= 10) {
+          // Only allow one image
+          if (uploadedImages.length + pendingFiles.length >= 1) {
             Swal.fire({
               title: "خطا",
-              text: "حداکثر 10 تصویر قابل آپلود است.",
+              text: "فقط یک تصویر قابل آپلود است.",
               icon: "error",
               confirmButtonText: "باشه",
             });
@@ -128,7 +130,7 @@ const FileUpload: React.FC<FileUploadProps> = ({ uid, uploadedImages, setUploade
         />
         <img src={camera} alt="Camera Icon" className="mobile:w-[80px] object-contain" />
         <p className="text-[15px] text-[#1E1E1E80] mobile:text-[13px]">
-          آپلود تصویر ملک (حداکثر 10 قطعه عکس)
+          آپلود تصویر ملک (فقط یک عکس مجاز است)
         </p>
         {isUploading && (
           <div className="flex flex-col items-center justify-center mt-2">
@@ -136,11 +138,11 @@ const FileUpload: React.FC<FileUploadProps> = ({ uid, uploadedImages, setUploade
             <span className="text-xs text-gray-500 mt-2">در حال بارگذاری تصویر...</span>
           </div>
         )}
-        <span className="text-xs text-gray-500">{uploadedImages.length + pendingFiles.length}/10</span>
+        {/* Remove the counter */}
       </div>
 
       {pendingFiles.length > 0 && (
-        <div className="grid lg:grid-cols-5 sm:grid-cols-2 grid-cols-1 gap-4 mt-6">
+        <div className="grid grid-cols-1 gap-4 mt-6">
           {pendingFiles.map((item, idx) => (
             <div key={idx} className="relative w-full rounded-[20px] bg-yellow-50 overflow-hidden border-2 border-yellow-400">
               <img src={item.preview} alt="pending" className="w-full h-full object-cover" />
@@ -173,7 +175,7 @@ const FileUpload: React.FC<FileUploadProps> = ({ uid, uploadedImages, setUploade
 
       <button
         onClick={handleUploadAll}
-        disabled={pendingFiles.length === 0 || isLoading || (uploadedImages.length + pendingFiles.length) > 10}
+        disabled={pendingFiles.length === 0 || isLoading || (uploadedImages.length + pendingFiles.length) > 1}
         className="fixed left-6 bottom-6 z-50 bg-primary text-white px-6 py-3 rounded-[16px] shadow-lg disabled:opacity-50 bg-[#09A380] hover:bg-[#07a06c] transition-colors duration-300 flex items-center justify-center"
       >
         {isLoading ? (

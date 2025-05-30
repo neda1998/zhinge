@@ -28,10 +28,11 @@ const StepFour: React.FC<FileUploadProps> = ({ uid, uploadedImages, setUploadedI
     if (e.target.files && e.target.files.length > 0) {
       const file = e.target.files[0];
 
-      if (uploadedImages.length + pendingFiles.length >= 10) {
+      // Only allow one image
+      if (uploadedImages.length + pendingFiles.length >= 1) {
         Swal.fire({
           title: "خطا",
-          text: "حداکثر 10 تصویر قابل آپلود است.",
+          text: "فقط یک تصویر قابل آپلود است.",
           icon: "error",
           confirmButtonText: "باشه",
         });
@@ -99,13 +100,13 @@ const StepFour: React.FC<FileUploadProps> = ({ uid, uploadedImages, setUploadedI
   const handleRemovePending = (idx: number | string) => setPendingFiles(prev => prev.filter((_, i) => i !== idx));
 
   const renderImageGrid = (images: { preview: string; id?: string; name?: string }[], onRemove: (index: number | string) => void, isPending: boolean) => (
-    <div className="grid lg:grid-cols-5 sm:grid-cols-3 grid-cols-1 gap-4 mt-6 w-full">
+    <div className="grid grid-cols-1 gap-4 mt-6 w-full">
       {images.map((item, idx) => (
         <div
           key={item.id || idx}
-          className={`relative w-[8rem] h-[8rem] rounded-[20px] w-full ${isPending ? "bg-yellow-50 border-2 border-yellow-400" : "bg-[#f9f9f9]"} overflow-hidden`}
+          className={`relative rounded-[20px] w-full ${isPending ? "bg-yellow-50 border-2 mb-10 border-yellow-400" : "bg-[#f9f9f9]"} overflow-hidden`}
         >
-          <img src={item.preview} alt={item.name || "pending"} className="w-full h-full object-cover" />
+          <img src={item.preview} alt={item.name || "pending"} className="w-full h-full sm:h-[300px] object-cover" />
           <button
             onClick={() => onRemove(isPending ? idx : item.id!)}
             className="absolute top-1 right-1 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs"
@@ -128,10 +129,10 @@ const StepFour: React.FC<FileUploadProps> = ({ uid, uploadedImages, setUploadedI
       <div
         className="flex flex-col gap-4 items-center justify-center w-[20rem] h-[15rem] rounded-[20px] bg-[#f9f9f9] mobile:w-[15rem] mobile:h-[10rem] cursor-pointer"
         onClick={() => {
-          if (uploadedImages.length + pendingFiles.length >= 10) {
+          if (uploadedImages.length + pendingFiles.length >= 1) {
             Swal.fire({
               title: "خطا",
-              text: "حداکثر 10 تصویر قابل آپلود است.",
+              text: "فقط یک تصویر قابل آپلود است.",
               icon: "error",
               confirmButtonText: "باشه",
             });
@@ -149,7 +150,7 @@ const StepFour: React.FC<FileUploadProps> = ({ uid, uploadedImages, setUploadedI
         />
         <img src={camera} alt="Camera Icon" className="mobile:w-[80px] object-contain" />
         <p className="text-[15px] text-[#1E1E1E80] mobile:text-[13px]">
-          آپلود تصویر ملک (حداکثر 10 قطعه عکس)
+          آپلود تصویر ملک (فقط یک عکس مجاز است)
         </p>
       </div>
 
@@ -160,7 +161,7 @@ const StepFour: React.FC<FileUploadProps> = ({ uid, uploadedImages, setUploadedI
       <button
         onClick={handleUploadAll}
         disabled={pendingFiles.length === 0}
-        className="absolute left-40 -bottom-20 z-50 bg-primary text-white px-6 py-3 rounded-[16px] shadow-lg disabled:opacity-50 bg-[#09A380] hover:bg-[#07a06c] transition-colors duration-300 flex items-center justify-center"
+        className="absolute left-40 -bottom-20 z-50 bg-primary text-white px-6 py-3 rounded-[16px] shadow-lg disabled:opacity-50 bg-[#09A380] hover:bg-[#07a06c] transition-colors duration-300 flex items-center justify-center mb-10"
       >
         ثبت
       </button>
