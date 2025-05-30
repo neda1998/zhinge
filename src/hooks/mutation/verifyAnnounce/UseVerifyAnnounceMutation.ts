@@ -5,10 +5,11 @@ import { useCookies } from "react-cookie";
 
 const UseVerifyAnnounceMutation = () => {
   const [cookies] = useCookies(["accessToken"]);
-    const token = cookies.accessToken;
+  const token = cookies.accessToken;
   return useMutation(
-    async (data) => {
-      return await verifyAnnounce(data, token);
+    async (data: any) => {
+      // فقط Uid را ارسال کن
+      return await verifyAnnounce({ Uid: data.Uid }, token);
     },
     {
       onSuccess: async (response) => {
