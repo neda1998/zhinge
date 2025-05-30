@@ -162,7 +162,7 @@ const UnderReview = () => {
 
   const inprogressTableData =
     inprogressData?.inprogress
-      ?.filter((item: any) => !item.reject) // Remove items with "رد شده" status
+      ?.filter((item: any) => !item.reject) 
       .slice()
       .reverse()
       .map((item: any, idx: number) => ({
