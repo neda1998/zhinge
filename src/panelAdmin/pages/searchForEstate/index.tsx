@@ -6,7 +6,8 @@ import ChooseItemsOfState from "../propertyManagement/ChooseItemsOfState"
 import UseSearchStateMutation from "../../../hooks/mutation/searchState/UseSearchStateMutation"
 import UseUpdateAnnounMutation from "../../../hooks/mutation/updateAnnounAdmin/UseUpdateAnnounMutation"
 import UseRejectannounceMutatiojn from "../../../hooks/mutation/rejectannounce/UseRejectannounceMutatiojn";
-import { useState, useRef } from "react"
+import UseSearchRegionMutation from "../../../hooks/mutation/search_region/UseSearchRegionMutation";
+import React, { useState, useRef } from "react"
 import Swal from "sweetalert2";
 
 const SearchForEstate = () => {
@@ -16,7 +17,12 @@ const SearchForEstate = () => {
   const [detailsModal, setDetailsModal] = useState<{ open: boolean; data: any | null }>({ open: false, data: null });
   const [editModal, setEditModal] = useState<{ open: boolean; data: any | null }>({ open: false, data: null });
   const [editForm, setEditForm] = useState<any>({});
+  const [regionSearch, setRegionSearch] = useState("");
+  const [showRegionDropdown, setShowRegionDropdown] = useState(false);
+  const [regionOptions, setRegionOptions] = useState<string[]>([]);
   const debounceRef = useRef<NodeJS.Timeout | null>(null);
+  const searchRegionMutation = UseSearchRegionMutation();
+
   const cleanForm = (formData: any) => {
     const cleaned: any = {};
     Object.keys(formData).forEach((key) => {
@@ -56,16 +62,78 @@ const SearchForEstate = () => {
 
   const updateMutation = UseUpdateAnnounMutation();
 
+  // تابع سرچ با پشتیبانی چندمحله‌ای
   const triggerSearch = (payload: any) => {
     if (debounceRef.current) clearTimeout(debounceRef.current);
     debounceRef.current = setTimeout(() => {
       const cleaned = cleanForm(payload);
-      if (Object.keys(cleaned).length === 0) return;
-      setIsSearching(true);
-      searchMutation.mutate({
-        ...cleaned,
-        id: cleaned.id ? Number(cleaned.id) : undefined, 
-      });
+      if (Object.keys(cleaned).length === 0) {
+        setResults([]);
+        return;
+      }
+      let regions: string[] = [];
+      if (cleaned.region) {
+        if (typeof cleaned.region === "string") {
+          regions = cleaned.region
+            .split(/,|،/)
+            .map((r: string) => r.trim())
+            .filter(Boolean);
+        } else if (Array.isArray(cleaned.region)) {
+          regions = cleaned.region;
+        }
+      }
+      if (regions.length > 1) {
+        let allResults: any[] = [];
+        let done = 0;
+        setIsSearching(true);
+        regions.forEach(region => {
+          searchMutation.mutate(
+            {
+              ...cleaned,
+              region,
+              id: cleaned.id ? Number(cleaned.id) : undefined,
+            },
+            {
+              onSuccess: (response: any) => {
+                let resultArr: any[] = [];
+                if (Array.isArray(response)) {
+                  resultArr = response;
+                } else if (response?.data && Array.isArray(response.data)) {
+                  resultArr = response.data;
+                } else if (response?.data && typeof response.data === "object") {
+                  resultArr = [response.data];
+                } else if (typeof response === "object") {
+                  resultArr = [response];
+                }
+                allResults = [...allResults, ...resultArr];
+                done++;
+                if (done === regions.length) {
+                  // حذف رکوردهای تکراری بر اساس id
+                  const uniqueResults = Array.from(
+                    new Map(allResults.map(item => [item.id, item])).values()
+                  );
+                  setResults(uniqueResults);
+                  setIsSearching(false);
+                }
+              },
+              onError: () => {
+                done++;
+                if (done === regions.length) {
+                  setResults(allResults.length > 0 ? allResults : []);
+                  setIsSearching(false);
+                }
+              }
+            }
+          );
+        });
+      } else {
+        setIsSearching(true);
+        searchMutation.mutate({
+          ...cleaned,
+          region: regions[0],
+          id: cleaned.id ? Number(cleaned.id) : undefined,
+        });
+      }
     }, 400);
   };
 
@@ -426,13 +494,51 @@ const SearchForEstate = () => {
     );
   };
 
-  const regionOptions = Array.from(
-    new Set(
-      results
-        .map((item) => item.region)
-        .filter((region) => region && typeof region === "string" && region.trim() !== "")
-    )
-  );
+  // استخراج لیست محله‌ها از نتایج یا داده‌های دیگر (در صورت نیاز می‌توانید منبع را تغییر دهید)
+  React.useEffect(() => {
+    if (Array.isArray(searchRegionMutation.data)) {
+      if (typeof searchRegionMutation.data[0] === "object") {
+        setRegionOptions(searchRegionMutation.data.map((item: any) => item.name));
+      } else {
+        setRegionOptions(searchRegionMutation.data as string[]);
+      }
+    }
+  }, [searchRegionMutation.data]);
+
+  // هندل تغییر ورودی محله (پشتیبانی چندمحله‌ای و سرچ سروری)
+  const handleRegionInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setRegionSearch(value);
+
+    // جدا کردن محله‌ها با , یا ویرگول فارسی
+    const regionList = value
+      .split(/,|،/)
+      .map((r) => r.trim())
+      .filter(Boolean);
+
+    // اگر حداقل یک محله وارد شده باشد، سرچ سروری انجام بده
+    if (regionList.length > 0) {
+      searchRegionMutation.mutate({ region: regionList.length === 1 ? regionList[0] : regionList });
+      setShowRegionDropdown(true);
+    } else {
+      setShowRegionDropdown(false);
+    }
+
+    handleChange("region", value);
+  };
+
+  // انتخاب محله از لیست پیشنهادی (برای چند محله)
+  const handleRegionSelect = (selectedRegion: string) => {
+    const regionList = regionSearch
+      .split(/,|،/)
+      .map((r) => r.trim());
+
+    regionList[regionList.length - 1] = selectedRegion;
+    const newRegionValue = regionList.filter(Boolean).join(", ");
+    setRegionSearch(newRegionValue);
+    setShowRegionDropdown(false);
+    handleChange("region", newRegionValue);
+  };
 
   const renderTable = () => {
     if (isSearching) {
@@ -517,10 +623,65 @@ const SearchForEstate = () => {
         <RouteChevron items={pageSearchForEstate} />
       </div>
       <ChooseItemsOfState />
+      {/* اضافه کردن سرچ محله مشابه AnnouncementList */}
       <div className="grid lg:grid-cols-3 grid-cols-1 gap-x-5 gap-y-10 mb-9">
         <InputState label="کد ملک" value={form.id || ""} onChange={e => handleChange("id", e.target.value)} numeric />
         <InputState label="نام مالک" value={form.full_name || ""} onChange={e => handleChange("full_name", e.target.value)} />
         <InputState label="شماره موبایل" value={form.phone || ""} onChange={e => handleChange("phone", e.target.value)} numeric />
+        <div className="flex flex-col relative">
+          <InputState
+            label="محله مورد نظر"
+            value={regionSearch}
+            onChange={handleRegionInput}
+            placeholder="مثال: مبارک آباد"
+            onFocus={() => {
+              const regionList = regionSearch.split(/,|،/).map(r => r.trim());
+              const lastRegion = regionList[regionList.length - 1] || "";
+              if (
+                lastRegion.length > 0 &&
+                (regionOptions.length > 0 || searchRegionMutation.isLoading)
+              )
+                setShowRegionDropdown(true);
+            }}
+            autoComplete="off"
+            style={{ position: "relative", zIndex: 30 }}
+          />
+          {showRegionDropdown && (
+            <div
+              className="absolute z-20 w-full bg-white border border-gray-200 rounded shadow mt-1 max-h-48 overflow-auto"
+              style={{ top: "100%", left: 0, right: 0, zIndex: 20 }}
+            >
+              {searchRegionMutation.isLoading ? (
+                <div className="px-4 py-2 text-gray-400 text-right select-none">
+                  در حال جستجو...
+                </div>
+              ) : regionOptions.length > 0 ? (
+                regionOptions
+                  .filter((name) => {
+                    const regionList = regionSearch.split(/,|،/).map(r => r.trim());
+                    const lastRegion = regionList[regionList.length - 1] || "";
+                    return name && name.includes(lastRegion);
+                  })
+                  .map((name, idx) => (
+                    <div
+                      key={idx}
+                      className="px-4 py-2 cursor-pointer hover:bg-gray-100 text-right"
+                      onMouseDown={e => e.preventDefault()}
+                      onClick={() => handleRegionSelect(name)}
+                    >
+                      {name}
+                    </div>
+                  ))
+              ) : (
+                (regionSearch.split(/,|،/).map(r => r.trim()).pop() || "").length > 0 && (
+                  <div className="px-4 py-2 text-gray-400 text-right select-none">
+                    نتیجه‌ای یافت نشد
+                  </div>
+                )
+              )}
+            </div>
+          )}
+        </div>
       </div>
       <div className="flex items-center justify-between w-full gap-5">
         <InputState label="آدرس ملک" value={form.address || ""} placeholder="آدرس را وارد کنید" onChange={e => handleChange("address", e.target.value)} />

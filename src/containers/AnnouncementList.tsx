@@ -24,7 +24,7 @@ const AnnouncementList: React.FC<AnnouncementListProps> = ({
   onAnnouncementClick,
 }) => {
   const [searchResults, setSearchResults] = useState<any[] | null>(null);
-  const [form, setForm] = useState<{ id?: string; usage?: string; document_type?: string; region?: string }>({});
+  const [form, setForm] = useState<{ id?: string; usage?: string; document_type?: string; region?: string | string[] }>({});
   const [results, setResults] = useState<any[] | null>(null);
   const [regionSearch, setRegionSearch] = useState("");
   const [filteredRegions, setFilteredRegions] = useState<string[]>([]);
@@ -82,7 +82,7 @@ const AnnouncementList: React.FC<AnnouncementListProps> = ({
     triggerSearch(updatedForm);
   };
 
-  // تابع سرچ با debounce و درخواست به سرور
+  // تابع سرچ با debounce و درخواست به سرور (نمایش نتایج همه محله‌ها کنار هم)
   const triggerSearch = (payload: typeof form) => {
     if (debounceRef.current) clearTimeout(debounceRef.current);
     debounceRef.current = setTimeout(() => {
@@ -91,31 +91,91 @@ const AnnouncementList: React.FC<AnnouncementListProps> = ({
         setResults(null);
         return;
       }
-      // درخواست به سرور
-      searchMutation.mutate(
-        {
-          ...cleaned,
-          id: cleaned.id ? Number(cleaned.id) : undefined,
-        },
-        {
-          onSuccess: (response: any) => {
-            let resultArr: any[] = [];
-            if (Array.isArray(response)) {
-              resultArr = response;
-            } else if (response?.data && Array.isArray(response.data)) {
-              resultArr = response.data;
-            } else if (response?.data && typeof response.data === "object") {
-              resultArr = [response.data];
-            } else if (typeof response === "object") {
-              resultArr = [response];
-            }
-            setResults(resultArr);
-          },
-          onError: () => {
-            setResults([]);
-          }
+
+      // اگر چند محله وارد شده باشد، برای هرکدام جدا سرچ کن و نتایج را تجمیع کن
+      let finalPayload = { ...cleaned };
+      let regions: string[] = [];
+      if (finalPayload.region) {
+        if (typeof finalPayload.region === "string") {
+          regions = finalPayload.region
+            .split(/,|،/)
+            .map((r: string) => r.trim())
+            .filter(Boolean);
+        } else if (Array.isArray(finalPayload.region)) {
+          regions = finalPayload.region;
         }
-      );
+      }
+
+      // اگر چند محله، برای هرکدام سرچ کن و نتایج را کنار هم بگذار
+      if (regions.length > 1) {
+        let allResults: any[] = [];
+        let done = 0;
+        regions.forEach(region => {
+          searchMutation.mutate(
+            {
+              ...finalPayload,
+              region,
+              id: finalPayload.id ? Number(finalPayload.id) : undefined,
+            },
+            {
+              onSuccess: (response: any) => {
+                let resultArr: any[] = [];
+                if (Array.isArray(response)) {
+                  resultArr = response;
+                } else if (response?.data && Array.isArray(response.data)) {
+                  resultArr = response.data;
+                } else if (response?.data && typeof response.data === "object") {
+                  resultArr = [response.data];
+                } else if (typeof response === "object") {
+                  resultArr = [response];
+                }
+                allResults = [...allResults, ...resultArr];
+                done++;
+                if (done === regions.length) {
+                  // حذف رکوردهای تکراری بر اساس id
+                  const uniqueResults = Array.from(
+                    new Map(allResults.map(item => [item.id, item])).values()
+                  );
+                  setResults(uniqueResults);
+                }
+              },
+              onError: () => {
+                done++;
+                if (done === regions.length) {
+                  setResults(allResults.length > 0 ? allResults : []);
+                }
+              }
+            }
+          );
+        });
+      } else {
+        // سرچ معمولی برای یک محله یا بدون محله
+        searchMutation.mutate(
+          {
+            ...finalPayload,
+            region: regions[0],
+            id: finalPayload.id ? Number(finalPayload.id) : undefined,
+          },
+          {
+            onSuccess: (response: any) => {
+              let resultArr: any[] = [];
+              if (Array.isArray(response)) {
+                resultArr = response;
+              } else if (response?.data && Array.isArray(response.data)) {
+                resultArr = response.data;
+              } else if (response?.data && typeof response.data === "object") {
+                resultArr = [response.data];
+              } else if (typeof response === "object") {
+                resultArr = [response];
+              }
+              setResults(resultArr);
+            },
+            onError: () => {
+              setResults([]);
+            }
+          }
+        );
+      }
     }, 400);
   };
 
@@ -132,7 +192,6 @@ const AnnouncementList: React.FC<AnnouncementListProps> = ({
 
     // فقط اگر حداقل یک محله وارد شده باشد، سرچ سروری انجام بده
     if (regionList.length > 0) {
-      // همیشه name را به صورت رشته (اگر یکی بود) یا آرایه (اگر بیشتر بود) بفرست
       searchRegionMutation.mutate({ region: regionList.length === 1 ? regionList[0] : regionList });
       setShowRegionDropdown(true);
     } else {
@@ -205,7 +264,7 @@ const AnnouncementList: React.FC<AnnouncementListProps> = ({
                   label="محله مورد نظر"
                   value={regionSearch}
                   onChange={handleRegionInput}
-                  placeholder="مثال: پاسداران، نیاوران"
+                  placeholder="مثال: مبارک آباد"
                   onFocus={() => {
                     const regionList = regionSearch.split(/,|،/).map(r => r.trim());
                     const lastRegion = regionList[regionList.length - 1] || "";
