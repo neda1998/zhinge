@@ -109,6 +109,7 @@ const StepTwoUser = ({
     const hideUsefulMetrage = shouldHideUsefulMetrage(usage || type);
     const hideFeatures = shouldHideFeatures(usage || type);
     const hideLocation = shouldHideLocation(usage || type);
+    const shouldDisableLocation = ["زمین کشاورزی", "زمین مسکونی", "مغازه"].includes(type);
 
     const handleFeatureSelect = (feature: string) => {
         if (!setFeatures) return;
@@ -163,12 +164,23 @@ const StepTwoUser = ({
                 </>
             )}
             {!hideFields && !hideLocation && (
-                <ComboBox
-                    label="موقعیت ملک"
-                    options={LOCATION_OPTIONS}
-                    value={location}
-                    onChange={setLocation}
-                />
+                <div>
+                    <label className="mb-2 text-xs mr-5 font-bold text-main-color tracking-tight">موقعیت ملک</label>
+                    <select
+                    className="appearance-none w-full py-3 px-4 rounded-full focus:outline-none focus:ring-2 focus:ring-main-color bg-[#f4f4f4] text-[14px] font-medium shadow-sm transition-all duration-200 border border-gray-200 placeholder-gray-400"
+                        value={shouldDisableLocation ? "" : (location || "")}
+                        onChange={e => setLocation(e.target.value)}
+                        disabled={shouldDisableLocation}
+                    >
+                        <option value="">انتخاب کنید</option>
+                        <option value="شمالی">شمالی</option>
+                        <option value="جنوبی">جنوبی</option>
+                        <option value="دوکله">دوکله</option>
+                        <option value="شمالی دو نبش">شمالی دو نبش</option>
+                        <option value="جنوبی دو نبش">جنوبی دو نبش</option>
+                        <option value="سه نبش">سه نبش</option>
+                    </select>
+                </div>
             )}
              {!hideFields && (
                 <div className="flex flex-col items-start">

@@ -7,13 +7,16 @@ import apiRoutes from "../../../helpers/routes/apiRoutes";
 import { getRoute } from "../../../services/service";
 import client from "../../../services/utils/client";
 import { PuffLoader } from "react-spinners";
+import UsePromotToAdminMutation from '../../../hooks/mutation/promotToAdmin/UsePromotToAdminMutation';
 
 const UserManagementTable: React.FC = () => {
 	const [currentPage, setCurrentPage] = useState(1);
 	const [isModalOpen, setIsModalOpen] = useState<number | null>(null);
 	const [editUser, setEditUser] = useState<any>(null);
+	const [prevRole, setPrevRole] = useState<"admin" | "user">("user");
 
 	const { data, isLoading, error, refetch } = UseallUsersQuery();
+	const promotToAdminMutation = UsePromotToAdminMutation();
 	const users = data?.users ?? [];
 
 	if (isLoading) return (
@@ -41,6 +44,7 @@ const UserManagementTable: React.FC = () => {
 			Blocked: user.Blocked ?? false,
 			phoneVarify: user.phoneVarify ?? true,
 		});
+		setPrevRole(user.admin ? "admin" : "user");
 		setIsModalOpen(id);
 	};
 
@@ -61,6 +65,10 @@ const UserManagementTable: React.FC = () => {
 
 	const handleUpdateUser = async () => {
 		try {
+			// اگر نقش قبلی کاربر بود و الان ادمین شده
+			if (prevRole === "user" && editUser.admin) {
+				await promotToAdminMutation.mutateAsync({ id: editUser.id });
+			}
 			const url = getRoute({ route: apiRoutes.admin.updateUser });
 			const body = {
 				id: editUser.id,
@@ -208,21 +216,6 @@ const UserManagementTable: React.FC = () => {
 								>
 									<option value="false">کاربر</option>
 									<option value="true">ادمین</option>
-								</select>
-							</label>
-							<label className="flex flex-col gap-2">
-								<span className="text-black">مسدود</span>
-								<select
-									name="Blocked"
-									value={editUser.Blocked ? "true" : "false"}
-									onChange={e => setEditUser((prev: any) => ({
-										...prev,
-										Blocked: e.target.value === "true"
-									}))}
-									className="border border-gray-300 rounded-xl p-2"
-								>
-									<option value="false">فعال</option>
-									<option value="true">مسدود</option>
 								</select>
 							</label>
 						</div>

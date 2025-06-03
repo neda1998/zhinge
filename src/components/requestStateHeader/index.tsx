@@ -106,11 +106,11 @@ const RequestStateHeader = ({ onSuccess }: { onSuccess?: () => void }) => {
         <form onSubmit={handleSubmit}>
           <div className="grid lg:grid-cols-4 grid-cols-1 lg:gap-x-5 lg:gap-y-10 gap-y-4 w-full">
             <InputState label="نام مالک" value={full_name} onChange={(e) => set_full_name(e.target.value)} />
-            <InputState label="شماره همراه" value={phone} onChange={(e) => set_phone(e.target.value)} />
+            <InputState label="شماره همراه" value={phone} onChange={(e) => set_phone(e.target.value)} numeric />
             <InputState label="نوع درخواست" value={type} onChange={(e) => set_type(e.target.value)} />
             <InputState label="موقعیت مکانی" value={location} onChange={(e) => set_location(e.target.value)} />
-            <InputState label="حداکثر قیمت (اختیاری)" value={hieghest_price?.toString() || ''} onChange={(e) => set_hieghest_price(Number(e.target.value))} />
-            <InputState label="حداقل قیمت (اختیاری)" value={lowest_price?.toString() || ''} onChange={(e) => set_lowest_price(Number(e.target.value))} />
+            <InputState label="حداکثر قیمت (اختیاری)" value={hieghest_price?.toString() || ''} onChange={(e) => set_hieghest_price(Number(e.target.value))} numeric />
+            <InputState label="حداقل قیمت (اختیاری)" value={lowest_price?.toString() || ''} onChange={(e) => set_lowest_price(Number(e.target.value))} numeric />
             <InputState label="منطقه" value={region} onChange={(e) => set_region(e.target.value)} />
             <InputState label="پیام (اختیاری)" value={message} onChange={(e) => set_message(e.target.value)} />
           </div>

@@ -123,7 +123,7 @@ const StepFourUser: React.FC<FileUploadProps> = ({ uid, uploadedImages, setUploa
                 </div>
             </div>
       <div
-        className="flex flex-col gap-4 items-center justify-center w-[20rem] h-[15rem] rounded-[20px] bg-[#f9f9f9] mobile:w-[15rem] mobile:h-[10rem] cursor-pointer"
+        className="flex flex-col gap-4 items-center justify-center w-[20rem] h-[15rem] rounded-[20px] bg-[#f9f9f9] mobile:w-[14rem] mobile:h-[10rem] cursor-pointer"
         onClick={() => {
           if (uploadedImages.length + pendingFiles.length >= 1) {
             Swal.fire({
@@ -145,7 +145,7 @@ const StepFourUser: React.FC<FileUploadProps> = ({ uid, uploadedImages, setUploa
           onChange={handleFileSelect}
         />
         <img src={camera} alt="Camera Icon" className="mobile:w-[80px] object-contain" />
-        <p className="text-[15px] text-[#1E1E1E80] mobile:text-[13px]">
+        <p className="text-[15px] text-[#1E1E1E80] mobile:text-[13px] text-center">
           آپلود تصویر ملک (فقط یک عکس مجاز است)
         </p>
       </div>

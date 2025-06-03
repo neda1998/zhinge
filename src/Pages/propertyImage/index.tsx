@@ -16,7 +16,7 @@ export default function PropertyImage() {
           <span className="h-[2px] w-[70%] bg-[#09A380]"></span>
         </div>
       </div>
-      <div className="w-[90%] mx-auto flex flex-col gap-10 mobile:gap-4 mobile:h-full">
+      <div className="w-[90%] mx-auto flex flex-col gap-10 mobile:gap-4">
         <FileUpload uid={uid} uploadedImages={uploadedImages} setUploadedImages={setUploadedImages} />
       </div>
     </LayoutProfile>

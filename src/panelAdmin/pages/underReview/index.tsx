@@ -15,6 +15,7 @@ import { useNavigate } from "react-router-dom";
 import UseConfirmedAnnounceQuery from "../../../hooks/queries/admin/confirmedAnnounce/UseConfirmedAnnounceQuery";
 import UseDeletePhotosMutation from "../../../hooks/mutation/deletePhotos/UseDeletePhotosMutation";
 import UseUploadFileMutation from "../../../hooks/mutation/announce/UseUploadFileMutation";
+import InputState from "../../../components/ui/atoms/input/inputState";
 
 const UnderReview = () => {
   UseDeletePhotosMutation()
@@ -351,16 +352,14 @@ const UnderReview = () => {
               </div>
               <div>
                 <label className="block text-sm mb-1 font-bold text-gray-700">محله مورد نظر</label>
-                <input
-                  className="border rounded px-2 py-1 w-full"
+                <InputState
                   value={editForm.region || ""}
                   onChange={e => setEditForm({ ...editForm, region: e.target.value })}
                 />
               </div>
               <div>
                 <label className="block text-sm mb-1 font-bold text-gray-700">آدرس ملک</label>
-                <input
-                  className="border rounded px-2 py-1 w-full"
+                <InputState
                   value={editForm.address || ""}
                   onChange={e => setEditForm({ ...editForm, address: e.target.value })}
                 />
@@ -370,45 +369,36 @@ const UnderReview = () => {
                 <>
                   <div>
                     <label className="block text-sm mb-1 font-bold text-gray-700">طبقه مورد نظر</label>
-                    <input
-                      type="text"
-                      inputMode="numeric"
-                      className="border rounded px-2 py-1 w-full"
+                    <InputState
                       value={editForm.floor !== undefined && editForm.floor !== null ? editForm.floor : ""}
                       onChange={e => setEditForm({ ...editForm, floor: e.target.value })}
+                    numeric
                     />
                   </div>
                   <div>
                     <label className="block text-sm mb-1 font-bold text-gray-700">تعداد طبقات</label>
-                    <input
-                      type="text"
-                      inputMode="numeric"
-                      pattern="[0-9]*"
-                      className="border rounded px-2 py-1 w-full"
+                    <InputState
                       value={editForm.floor_number !== undefined && editForm.floor_number !== null ? editForm.floor_number : ""}
                       onChange={e => setEditForm({ ...editForm, floor_number: e.target.value })}
+                    numeric
                     />
                   </div>
                   <div>
                     <label className="block text-sm mb-1 font-bold text-gray-700">تعداد واحد در طبقه</label>
-                    <input
-                      type="text"
-                      inputMode="numeric"
-                      pattern="[0-9]*"
-                      className="border rounded px-2 py-1 w-full"
+                    <InputState
                       value={editForm.Unit_in_floor !== undefined && editForm.Unit_in_floor !== null ? editForm.Unit_in_floor : ""}
                       onChange={e => setEditForm({ ...editForm, Unit_in_floor: e.target.value })}
+  
+                    numeric
                     />
                   </div>
                   <div>
                     <label className="block text-sm mb-1 font-bold text-gray-700">تعداد اتاق‌ها</label>
-                    <input
-                      type="text"
-                      inputMode="numeric"
-                      pattern="[0-9]*"
-                      className="border rounded px-2 py-1 w-full"
+                    <InputState
                       value={editForm.room_number !== undefined && editForm.room_number !== null ? editForm.room_number : ""}
                       onChange={e => setEditForm({ ...editForm, room_number: e.target.value })}
+  
+                    numeric
                     />
                   </div>
                 </>
@@ -416,7 +406,7 @@ const UnderReview = () => {
               <div>
                 <label className="block text-sm mb-1 font-bold text-gray-700">نوع سند</label>
                 <select
-                  className="border rounded px-2 py-1 w-full"
+                className="border rounded px-2 py-1 w-full"
                   value={editForm.document_type || ""}
                   onChange={e => setEditForm({ ...editForm, document_type: e.target.value })}
                 >
@@ -424,7 +414,6 @@ const UnderReview = () => {
                   <option value="قولنامه‌ای">قولنامه‌ای</option>
                   <option value="مشاع">مشاع</option>
                   <option value="سند تک برگ">سند تک برگ</option>
-                  options={["سند تک برگ", "سند واگذاری", "مبایعه نامه (قولنامه‌ای)", "نسق", "اوقافی", "سایر"]}
                   <option value="مبایعه نامه">مبایعه نامه</option>
                   <option value="نسق">نسق</option>
                   <option value="اوقافی">اوقافی</option>
@@ -433,24 +422,18 @@ const UnderReview = () => {
               </div>
               <div>
                 <label className="block text-sm mb-1 font-bold text-gray-700">متراژ کل زمین</label>
-                <input
-                  type="number"
-                  inputMode="numeric"
-                  pattern="[0-9]*"
-                  className="border rounded px-2 py-1 w-full"
+                <InputState
                   value={editForm.land_metrage !== undefined && editForm.land_metrage !== null ? editForm.land_metrage : ""}
-                  onChange={e => setEditForm({ ...editForm, land_metrage: Number(e.target.value) })}
+                  onChange={e => setEditForm({ ...editForm, land_metrage: e.target.value })}
+                numeric
                 />
               </div>
               <div>
                 <label className="block text-sm mb-1 font-bold text-gray-700">متراژ مفید</label>
-                <input
-                  type="number"
-                  inputMode="numeric"
-                  pattern="[0-9]*"
-                  className="border rounded px-2 py-1 w-full"
+                <InputState
                   value={editForm.useful_metrage !== undefined && editForm.useful_metrage !== null ? editForm.useful_metrage : ""}
-                  onChange={e => setEditForm({ ...editForm, useful_metrage: Number(e.target.value) })}
+                  onChange={e => setEditForm({ ...editForm, useful_metrage: e.target.value })}
+                numeric
                 />
               </div>
               <div>
@@ -470,42 +453,31 @@ const UnderReview = () => {
               </div>
               <div>
                 <label className="block text-sm mb-1 font-bold text-gray-700">سال ساخت</label>
-                <input
-                  type="number"
-                  inputMode="numeric"
-                  pattern="[0-9]*"
-                  className="border rounded px-2 py-1 w-full"
+                <InputState
                   value={editForm.year_of_build !== undefined && editForm.year_of_build !== null ? editForm.year_of_build : ""}
-                  onChange={e => setEditForm({ ...editForm, year_of_build: Number(e.target.value) })}
+                  onChange={e => setEditForm({ ...editForm, year_of_build: e.target.value })}
+                numeric
                 />
               </div>
               <div>
                 <label className="block text-sm mb-1 font-bold text-gray-700">وام</label>
-                <input
-                  type="number"
-                  inputMode="numeric"
-                  pattern="[0-9]*"
-                  className="border rounded px-2 py-1 w-full"
+                <InputState
                   value={editForm.loan !== undefined && editForm.loan !== null ? editForm.loan : ""}
-                  onChange={e => setEditForm({ ...editForm, loan: Number(e.target.value) })}
+                  onChange={e => setEditForm({ ...editForm, loan: e.target.value })}
+                numeric
                 />
               </div>
               <div>
                 <label className="block text-sm mb-1 font-bold text-gray-700">قیمت</label>
-                <input
-                  type="number"
-                  inputMode="numeric"
-                  pattern="[0-9]*"
-                  className="border rounded px-2 py-1 w-full"
+                <InputState
                   value={editForm.price !== undefined && editForm.price !== null ? editForm.price : ""}
-                  onChange={e => setEditForm({ ...editForm, price: Number(e.target.value) })}
+                  onChange={e => setEditForm({ ...editForm, price: e.target.value })}
+                numeric
                 />
               </div>
               <div className="sm:col-span-2 lg:col-span-3">
                 <label className="block text-sm mb-1 font-bold text-gray-700">امکانات</label>
-                <textarea
-                  className="border rounded px-2 py-1 w-full"
-                  style={{ minHeight: 80, maxHeight: 160 }}
+                <InputState
                   value={editForm.features || ""}
                   onChange={e => setEditForm({ ...editForm, features: e.target.value })}
                 />
@@ -629,18 +601,17 @@ const UnderReview = () => {
               </div>
               <div>
                 <label className="block text-sm mb-1 font-bold text-gray-700">نام مالک</label>
-                <input
-                  className="border rounded px-2 py-1 w-full"
+                <InputState
                   value={editForm.full_name || ""}
                   onChange={e => setEditForm({ ...editForm, full_name: e.target.value })}
                 />
               </div>
               <div>
                 <label className="block text-sm mb-1 font-bold text-gray-700">شماره تماس</label>
-                <input
-                  className="border rounded px-2 py-1 w-full"
-                  value={editForm.phone || ""} 
+                <InputState
+                  value={editForm.phone || ""}
                   onChange={e => setEditForm({ ...editForm, phone: e.target.value })}
+                numeric
                 />
               </div>
               <button

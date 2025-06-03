@@ -82,7 +82,7 @@ const FileUpload: React.FC<FileUploadProps> = ({ uid, uploadedImages, setUploade
 
       Swal.fire({
         title: "موفق!",
-        text: "تصاویر با موفقیت آپلود شدند.",
+        text: "تصویر با موفقیت آپلود شد.",
         icon: "success",
         confirmButtonText: "باشه",
       });
@@ -106,9 +106,8 @@ const FileUpload: React.FC<FileUploadProps> = ({ uid, uploadedImages, setUploade
   return (
     <div className="flex flex-col items-center justify-center relative w-full">
       <div
-        className="flex flex-col gap-4 items-center justify-center w-[20rem] h-[15rem] rounded-[20px] bg-[#f9f9f9] mobile:w-[15rem] mobile:h-[10rem] cursor-pointer"
+        className="flex flex-col gap-4 items-center justify-center w-[20rem] h-[15rem] rounded-[20px] bg-[#f9f9f9] mobile:w-[14rem] mobile:h-[10rem] cursor-pointer"
         onClick={() => {
-          // Only allow one image
           if (uploadedImages.length + pendingFiles.length >= 1) {
             Swal.fire({
               title: "خطا",
@@ -129,7 +128,7 @@ const FileUpload: React.FC<FileUploadProps> = ({ uid, uploadedImages, setUploade
           onChange={handleFileSelect}
         />
         <img src={camera} alt="Camera Icon" className="mobile:w-[80px] object-contain" />
-        <p className="text-[15px] text-[#1E1E1E80] mobile:text-[13px]">
+        <p className="text-[15px] text-[#1E1E1E80] mobile:text-[13px] text-center">
           آپلود تصویر ملک (فقط یک عکس مجاز است)
         </p>
         {isUploading && (
@@ -138,7 +137,6 @@ const FileUpload: React.FC<FileUploadProps> = ({ uid, uploadedImages, setUploade
             <span className="text-xs text-gray-500 mt-2">در حال بارگذاری تصویر...</span>
           </div>
         )}
-        {/* Remove the counter */}
       </div>
 
       {pendingFiles.length > 0 && (

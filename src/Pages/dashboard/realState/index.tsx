@@ -18,12 +18,12 @@ export default function Realstate() {
   const [type, setType] = useState("-");
   const [region, setRegion] = useState("");
   const [address, setAddress] = useState("");
-  const [location, setLocation] = useState("");
+  const [location, setLocation] = useState(""); // مقدار اولیه خالی
   const [document_type, setDocumentType] = useState<string>("");
    const [land_metrage, setLandMetrage] = useState<number | undefined>(0);
   const [useful_metrage, setUsefulMetrage] = useState<number | undefined>(0);
   const [floor_number, setFloorNumber] = useState<number | undefined>(0); 
-  const [floor, setFloor] = useState<string>("");
+  const [floor, setFloor] = useState<string>("-");
   const [Unit_in_floor, setUnitInFloor] = useState<number | undefined>(0);
   const [year_of_build, setYearOfBuild] = useState<number | undefined>(0);
   const [full_name, setFullName] = useState<string>("");
@@ -113,7 +113,7 @@ export default function Realstate() {
       full_name: full_name || "",
       land_metrage: toNumberOrUndefined(land_metrage),
       loan: toNumberOrUndefined(loan),
-      location: location || "",
+      location: ["زمین کشاورزی", "زمین مسکونی", "مغازه"].includes(type) ? "" : (location || ""),
       price: toNumberOrUndefined(price),
       region: region || "",
       room_number: toNumberOrUndefined(room_number),
@@ -162,7 +162,7 @@ export default function Realstate() {
     <StepOneUser
       key="step1"
       type={type} setType={setType}
-      usage={usage} setUsage={setUsage} // Pass usage correctly
+      usage={usage} setUsage={setUsage} 
       region={region} setRegion={setRegion}
       address={address} setAddress={setAddress}
       Unit_in_floor={Unit_in_floor} setUnitInFloor={setUnitInFloor}

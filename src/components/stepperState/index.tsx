@@ -9,21 +9,21 @@ import Swal from "sweetalert2";
 const StepperState = () => {
     const [currentStep, setCurrentStep] = useState(1);
     const creatAnnouncementMutation = UseCreatAnnouncementMutation();
-    const [type, setType] = useState("-");
+    const [type, setType] = useState("-"); // مقدار پیش‌فرض "-"
     const [usage, setUsage] = useState("");
     const [region, setRegion] = useState("");
     const [address, setAddress] = useState("");
-    const [location, setLocation] = useState("");
+    const [location, setLocation] = useState(""); // مقدار اولیه خالی
     const [price, setPrice] = useState<number | undefined>();
     const [loan, setLoan] = useState<number>();
     const [year_of_build, setYearOfBuild] = useState<number | undefined>();
     const [room_number, setRoomNumber] = useState<number | undefined>();
     const [land_metrage, setLandMetrage] = useState<number | undefined>();
     const [floor_number, setFloorNumber] = useState<number | undefined>(); 
-    const [floor, setFloor] = useState<string>(""); // تغییر به رشته
+    const [floor, setFloor] = useState<string>("-"); // مقدار پیش‌فرض "-"
     const [Unit_in_floor, setUnitInFloor] = useState<number | undefined>();
     const [document_type, setDocumentType] = useState<string>("");
-    const [features, setFeatures] = useState<string>("");
+    const [features, setFeatures] = useState<string>("-"); // مقدار پیش‌فرض "-"
     const [full_name, setFullName] = useState<string>("");
     const [phone, setPhone] = useState<string>("");
     const [state_code, setStateCode] = useState<string>("-");
@@ -69,21 +69,21 @@ const StepperState = () => {
     const [uploadedImages, setUploadedImages] = useState<any[]>([]);
 
     const resetAllStates = () => {
-        setType("");
+        setType("-"); // مقدار پیش‌فرض "-"
         setUsage("");
         setRegion("");
         setAddress("");
-        setLocation("");
+        setLocation("-"); // مقدار پیش‌فرض "-"
         setPrice(undefined);
         setLoan(undefined);
         setYearOfBuild(undefined);
         setRoomNumber(undefined);
         setLandMetrage(undefined);
         setFloorNumber(undefined); 
-        setFloor(""); 
+        setFloor("-"); // مقدار پیش‌فرض "-"
         setUnitInFloor(undefined);
         setDocumentType("");
-        setFeatures("");
+        setFeatures("-"); // مقدار پیش‌فرض "-"
         setFullName("");
         setPhone("");
         setStateCode("");
@@ -105,6 +105,7 @@ const StepperState = () => {
             floor_number={floor_number} setFloorNumber={setFloorNumber}
             floor={floor} setFloor={setFloor}
             room_number={room_number} setRoomNumber={setRoomNumber}
+            type={type} setType={setType} // اطمینان از ارسال prop type و setType به StepOne
         />,
         <StepTwo
             key="step2"
@@ -118,6 +119,7 @@ const StepperState = () => {
             land_metrage={land_metrage} setLandMetrage={setLandMetrage}
             description={description} setDescription={setDescription}
             usage={usage}
+            type={type} // اضافه شد برای StepTwo
         />,
         <StepThree
             key="step3"
@@ -126,12 +128,17 @@ const StepperState = () => {
             full_name={full_name} setFullName={setFullName}
             phone={phone} setPhone={setPhone}
             type={type} usage={usage} region={region} address={address}
-            location={location} setLocation={setLocation} price={price}
+            // اگر نوع ملک خاص بود location خالی بفرست
+            location={
+                ["زمین کشاورزی", "زمین مسکونی", "مغازه"].includes(type) ? "" : (location || "")
+            }
+            setLocation={setLocation}
+            price={price}
             year_of_build={year_of_build} room_number={room_number}
-            land_metrage={land_metrage} floor_number={floor_number} floor={floor}
+            land_metrage={land_metrage} floor_number={floor_number} floor={floor || "-"}
             onReset={resetAllStates}
             description={description} setDescription={setDescription}
-            features={features} setFeatures={setFeatures}
+            features={features || "-"} setFeatures={setFeatures}
         />,
         <StepFourUser
             key="step4"

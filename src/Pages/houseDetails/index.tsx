@@ -6,12 +6,10 @@ import UseByUidAnnounceMutation from '../../hooks/mutation/announce/UseByUidAnno
 import { useParams } from "react-router-dom";
 import { PuffLoader } from 'react-spinners';
 import { useCookies } from 'react-cookie';
-import UsePromotToAdminMutation from '../../hooks/mutation/promotToAdmin/UsePromotToAdminMutation';
 
 const HouseDetails = () => {
     const { mutate, data, isLoading, error } = UseByUidAnnounceMutation();
     const { id: Uid } = useParams<{ id: string }>();
-    const { mutate: fetchAdminDetails, data: adminData } = UsePromotToAdminMutation();
 
     useEffect(() => {
         if (!Uid) {
@@ -23,12 +21,6 @@ const HouseDetails = () => {
     const selectedProperty = Array.isArray(data)
         ? data.find((property: any) => property.Uid?.toString() === Uid)
         : data;
-
-    useEffect(() => {
-        if (selectedProperty?.userID && selectedProperty.userID !== "0") {
-            fetchAdminDetails({ phone: selectedProperty.userID });
-        }
-    }, [selectedProperty?.userID, fetchAdminDetails]);
 
     const formik = useFormik<Record<string, any>>({
         enableReinitialize: true,
@@ -83,6 +75,12 @@ const HouseDetails = () => {
 
     const isAdmin = cookies.role === "true" || cookies.role === true;
 
+    // اطلاعات استاتیک برای کاربر معمولی
+    const staticUser = {
+        full_name: "محمد طاهر زاهدی",
+        phone: "09183710608"
+    };
+
     return (
         <div className='flex flex-col items-center'>
             {isLoading && (
@@ -95,31 +93,93 @@ const HouseDetails = () => {
                 <>
                     <Header variant={'main'} />
                     <div className="w-full h-fit mobile:h-fit grid md:grid-cols-2 grid-cols-1 gap-8 p-7 md:mt-36 mt-16">
-                        <div className="col-span-1 flex flex-col justify-around items-center">
+                        {/* موبایل: عنوان و اطلاعات کاربر/ادمین بالای عکس */}
+                        <div className="md:hidden flex flex-col w-full items-center mb-2">
+                            <span className="md:text-[42px] text-[28px] whitespace-nowrap font-extrabold text-transparent bg-clip-text bg-gradient-to-l from-green-400 to-blue-500 drop-shadow-lg">
+                                {selectedProperty?.usage
+                                    ? `ملک ${selectedProperty.usage}`
+                                    : "جزئیات ملک"}
+                            </span>
+                            {isAdmin && (selectedProperty?.full_name || (selectedProperty?.userID && selectedProperty.userID !== "0")) && (
+                                <div className="flex items-center gap-2 px-4 py-1 rounded-full bg-white border border-blue-200 shadow text-blue-700 text-[18px] mobile:text-[13px] font-bold mt-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 mobile:w-4 mobile:h-4 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H5a2 2 0 01-2-2V5zm0 12a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H5a2 2 0 01-2-2v-2zm12-12a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zm0 12a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+                                    </svg>
+                                    <span>
+                                        <span className="ml-2 whitespace-nowrap">{selectedProperty?.full_name}</span>
+                                        <span className="ltr:ml-2 rtl:mr-2">
+                                            <span className="text-gray-400">|</span>
+                                            <span className="mx-1 text-blue-700">{selectedProperty?.phone}</span>
+                                        </span>
+                                    </span>
+                                </div>
+                            )}
+                            {!isAdmin && (
+                                <div className="flex items-center gap-2 px-4 py-1 rounded-full bg-white border border-blue-200 shadow text-blue-700 text-[18px] mobile:text-[13px] font-bold mt-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 mobile:w-4 mobile:h-4 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H5a2 2 0 01-2-2V5zm0 12a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H5a2 2 0 01-2-2v-2zm12-12a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zm0 12a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+                                    </svg>
+                                    <span>
+                                        <span className="ml-2 whitespace-nowrap">{staticUser.full_name}</span>
+                                        <span className="ltr:ml-2 rtl:mr-2">
+                                            <span className="text-gray-400">|</span>
+                                            <span className="mx-1 text-blue-700">{staticUser.phone}</span>
+                                        </span>
+                                    </span>
+                                </div>
+                            )}
+                        </div>
+                        {/* ...existing code for image and desktop layout... */}
+                        <div className="col-span-1 flex flex-col items-center justify-start order-1 md:order-2">
+                            <img
+                                src={
+                                    (Array.isArray(selectedProperty?.photo) && selectedProperty.photo.length > 0 && selectedProperty.photo[0])
+                                        ? selectedProperty.photo[0]
+                                        : (typeof selectedProperty?.photo === "string" && selectedProperty.photo)
+                                            ? selectedProperty.photo
+                                            : ImageMainPage
+                                }
+                                alt="عکس ملک"
+                                className="rounded-2xl w-full h-[500px] object-cover border shadow"
+                                style={{ minHeight: 350, maxHeight: 600 }}
+                            />
+                        </div>
+                        <div className="col-span-1 flex flex-col justify-around items-center order-2 md:order-1">
                             <div className="w-full h-fit flex flex-col gap-10">
-                                <div className="flex w-full flex-wrap justify-center items-center gap-4 mb-2">
+                                {/* دسکتاپ: عنوان و اطلاعات کاربر/ادمین کنار هم */}
+                                <div className="hidden md:flex w-full flex-wrap justify-center items-center gap-4 mb-2">
                                     <span className="md:text-[42px] text-[28px] whitespace-nowrap font-extrabold text-transparent bg-clip-text bg-gradient-to-l from-green-400 to-blue-500 drop-shadow-lg">
                                         {selectedProperty?.usage
                                             ? `ملک ${selectedProperty.usage}`
                                             : "جزئیات ملک"}
                                     </span>
                                     {isAdmin && (selectedProperty?.full_name || (selectedProperty?.userID && selectedProperty.userID !== "0")) && (
-                                        <span className="flex items-center gap-2 px-4 py-1 rounded-full bg-white border border-blue-200 shadow text-blue-700 text-[18px] mobile:text-[13px] font-bold">
+                                        <div className="flex items-center gap-2 px-4 py-1 rounded-full bg-white border border-blue-200 shadow text-blue-700 text-[18px] mobile:text-[13px] font-bold">
                                             <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 mobile:w-4 mobile:h-4 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H5a2 2 0 01-2-2V5zm0 12a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H5a2 2 0 01-2-2v-2zm12-12a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zm0 12a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
                                             </svg>
                                             <span>
-                                                {adminData?.full_name && (
-                                                    <span className="ml-2">{adminData.full_name}</span>
-                                                )}
-                                                {adminData?.phone && (
-                                                    <span className="ltr:ml-2 rtl:mr-2">
-                                                        <span className="text-gray-400">|</span>
-                                                        <span className="mx-1 text-blue-700">{adminData.phone}</span>
-                                                    </span>
-                                                )}
+                                                <span className="ml-2 whitespace-nowrap">{selectedProperty?.full_name}</span>
+                                                <span className="ltr:ml-2 rtl:mr-2">
+                                                    <span className="text-gray-400">|</span>
+                                                    <span className="mx-1 text-blue-700">{selectedProperty?.phone}</span>
+                                                </span>
                                             </span>
-                                        </span>
+                                        </div>
+                                    )}
+                                    {!isAdmin && (
+                                        <div className="flex items-center gap-2 px-4 py-1 rounded-full bg-white border border-blue-200 shadow text-blue-700 text-[18px] mobile:text-[13px] font-bold">
+                                            <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 mobile:w-4 mobile:h-4 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H5a2 2 0 01-2-2V5zm0 12a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H5a2 2 0 01-2-2v-2zm12-12a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zm0 12a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+                                            </svg>
+                                            <span>
+                                                <span className="ml-2 whitespace-nowrap">{staticUser.full_name}</span>
+                                                <span className="ltr:ml-2 rtl:mr-2">
+                                                    <span className="text-gray-400">|</span>
+                                                    <span className="mx-1 text-blue-700">{staticUser.phone}</span>
+                                                </span>
+                                            </span>
+                                        </div>
                                     )}
                                 </div>
                                 <div className="flex flex-col w-full bg-white/90 border border-gray-100 shadow-2xl rounded-3xl p-4">
@@ -172,20 +232,6 @@ const HouseDetails = () => {
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div className="col-span-1 flex flex-col items-center justify-start">
-                            <img
-                                src={
-                                    (Array.isArray(selectedProperty?.photo) && selectedProperty.photo.length > 0 && selectedProperty.photo[0])
-                                        ? selectedProperty.photo[0]
-                                        : (typeof selectedProperty?.photo === "string" && selectedProperty.photo)
-                                            ? selectedProperty.photo
-                                            : ImageMainPage
-                                }
-                                alt="عکس ملک"
-                                className="rounded-2xl w-full h-[500px] object-cover border shadow"
-                                style={{ minHeight: 350, maxHeight: 600 }}
-                            />
                         </div>
                     </div>
                 </>

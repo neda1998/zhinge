@@ -4,7 +4,7 @@ interface Props extends InputHTMLAttributes<HTMLInputElement> {
   label?: string;
   margin?: string;
   type?: string;
-  numeric?: boolean; // new prop
+  numeric?: boolean;
 }
 
 const convertPersianNumbersToEnglish = (value: string) => {

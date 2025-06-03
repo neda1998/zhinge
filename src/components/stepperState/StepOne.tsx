@@ -13,6 +13,8 @@ interface StepOneProps {
   floor_number?: number; setFloorNumber: (v: number) => void;
   floor?: string; setFloor: (v: string) => void;
   room_number?: number; setRoomNumber: (v: number) => void;
+  type?: string; // Optional, if needed for further logic
+  setType?: (v: string) => void; // Optional, if needed for further logic
 }
 
 const shouldHideFields = (type: string) =>
@@ -27,6 +29,8 @@ const StepOne = ({
   floor_number, setFloorNumber,
   floor, setFloor,
   room_number, setRoomNumber,
+  type,
+  setType
 }: StepOneProps) => {
   const hideFields = shouldHideFields(usage);
 

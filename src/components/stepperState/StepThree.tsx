@@ -63,6 +63,16 @@ const StepThree = ({
             return;
         }
 
+        if (phone.trim().length !== 11) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'خطا',
+                text: 'شماره همراه باید دقیقا ۱۱ رقم باشد.',
+                confirmButtonText: 'باشه'
+            });
+            return;
+        }
+
         if (!showSubmitButton) {
             Swal.fire({
                 icon: "warning",
@@ -75,18 +85,44 @@ const StepThree = ({
         if (creatAnnouncementMutation?.mutateAsync) {
             try {
                 await creatAnnouncementMutation.mutateAsync({
-                    type, usage, region, address, location, price,
-                    loan, year_of_build, room_number, land_metrage, floor_number, floor,
-                    full_name, phone, description,features
+                    type: type || "-",
+                    usage,
+                    region,
+                    address,
+                    location: location || "-",
+                    price,
+                    loan,
+                    year_of_build,
+                    room_number,
+                    land_metrage,
+                    floor_number,
+                    floor: floor || "-",
+                    full_name,
+                    phone,
+                    description,
+                    features: features || "-"
                 });
                 if (onReset) onReset();
             } catch {
             }
         } else if (creatAnnouncementMutation?.mutate) {
             creatAnnouncementMutation.mutate({
-                type, usage, region, address, location, price,
-                loan, year_of_build, room_number, land_metrage, floor_number, floor,
-                full_name, phone, description, features
+                type: type || "-",
+                usage,
+                region,
+                address,
+                location: location || "-",
+                price,
+                loan,
+                year_of_build,
+                room_number,
+                land_metrage,
+                floor_number,
+                floor: floor || "-",
+                full_name,
+                phone,
+                description,
+                features: features || "-"
             });
         }
     };

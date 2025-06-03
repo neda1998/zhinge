@@ -10,8 +10,7 @@ import { useCookies } from "react-cookie";
 
 const menuItems = [
     { name: 'خانه', href: '/', iconWhite: UserWhite, iconBlack: User },
-    { name: 'آگهی فروش', href: '/Announcement-list/sell', iconWhite: UserWhite, iconBlack: User },
-    { name: 'آگهی اجاره', href: '/Announcement-list/rent', iconWhite: UserWhite, iconBlack: User },
+    { name: 'آگهی ها', href: '/Announcement-list', iconWhite: UserWhite, iconBlack: User },
     { name: 'خدمات', href: '/services', iconWhite: UserWhite, iconBlack: User },
     { name: 'درخواست ملک', href: '/request-state', iconWhite: UserWhite, iconBlack: User },
 ];

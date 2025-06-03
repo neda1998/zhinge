@@ -24,7 +24,7 @@ const AnnouncementList: React.FC<AnnouncementListProps> = ({
   onAnnouncementClick,
 }) => {
   const [searchResults, setSearchResults] = useState<any[] | null>(null);
-  const [form, setForm] = useState<{ id?: string; usage?: string; document_type?: string; region?: string | string[] }>({});
+  const [form, setForm] = useState<{ id?: string; usage?: string; document_type?: string; region?: string | string[]; price?: string | number }>({});
   const [results, setResults] = useState<any[] | null>(null);
   const [regionSearch, setRegionSearch] = useState("");
   const [filteredRegions, setFilteredRegions] = useState<string[]>([]);
@@ -74,7 +74,12 @@ const AnnouncementList: React.FC<AnnouncementListProps> = ({
   const regionOptions = Array.from(new Set(data.map((item) => item.region).filter(Boolean)));
 
   const handleChange = (key: string, value: string) => {
-    const updatedForm = { ...form, [key]: value };
+    // اگر price بود، اعداد فارسی را به انگلیسی تبدیل کن
+    let newValue = value;
+    if (key === "price") {
+      newValue = persianToEnglishDigits(value.replace(/[^\d]/g, ""));
+    }
+    const updatedForm = { ...form, [key]: newValue };
     setForm(updatedForm);
     triggerSearch(updatedForm);
   };
@@ -98,6 +103,16 @@ const AnnouncementList: React.FC<AnnouncementListProps> = ({
             .filter(Boolean);
         } else if (Array.isArray(finalPayload.region)) {
           regions = finalPayload.region;
+        }
+      }
+
+      // تبدیل price به عدد صحیح و حذف اگر نامعتبر بود
+      if (finalPayload.price) {
+        const priceNum = Number(persianToEnglishDigits(finalPayload.price.toString().replace(/[^\d]/g, "")));
+        if (!isNaN(priceNum) && priceNum > 0) {
+          finalPayload.price = priceNum;
+        } else {
+          delete finalPayload.price;
         }
       }
 
@@ -203,21 +218,39 @@ const AnnouncementList: React.FC<AnnouncementListProps> = ({
     handleChange("region", newRegionValue);
   };
 
+  const persianToEnglishDigits = (str: string) =>
+    str.replace(/[۰-۹]/g, d => String("۰۱۲۳۴۵۶۷۸۹".indexOf(d)));
+
   return (
     <div className="flex flex-col items-center">
       <Header />
       <div className="w-full flex flex-col h-screen mobile:mt-20">
-        <div className="w-full flex flex-col items-center gap-6 my-8">
-          <div className="bg-gradient-to-l from-green-50 to-blue-50 rounded-2xl shadow-lg p-6 w-[95%] max-w-5xl">
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+        <div className="w-full flex flex-col items-center gap-6 mb-8 md:mt-24 lg:mt-8">
+          <div
+            className="
+              bg-gradient-to-br from-green-100 via-blue-50 to-blue-100
+              rounded-3xl
+              shadow-2xl
+              border border-blue-100
+              p-8
+              w-[97%]
+              max-w-6xl
+              transition-all
+              duration-300
+              hover:shadow-blue-200
+              hover:scale-[1.01]
+              flex flex-col gap-4
+            "
+          >
+            <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
               <div className="flex flex-col">
                 <label className="mb-2 text-gray-600 font-bold text-sm">کد ملک</label>
-                <input
-                  className="rounded-xl border border-gray-200 px-3 py-2 font-bold text-gray-800 focus:ring-2 focus:ring-blue-300 focus:border-blue-400 transition outline-none shadow-sm hover:shadow-md"
+                <InputState
                   placeholder="کد ملک"
                   value={form.id || ""}
                   onChange={e => handleChange("id", e.target.value)}
                   type="text"
+                  numeric
                 />
               </div>
               <div className="flex flex-col">
@@ -247,8 +280,8 @@ const AnnouncementList: React.FC<AnnouncementListProps> = ({
                 </select>
               </div>
               <div className="flex flex-col relative">
+                <label className="mb-2 text-gray-600 font-bold text-sm">محله مورد نظر</label>
                 <InputState
-                  label="محله مورد نظر"
                   value={regionSearch}
                   onChange={handleRegionInput}
                   placeholder="مثال: مبارک آباد"
@@ -306,6 +339,16 @@ const AnnouncementList: React.FC<AnnouncementListProps> = ({
                   </div>
                 )}
               </div>
+              <div className="flex flex-col">
+                <label className="mb-2 text-gray-600 font-bold text-sm">قیمت</label>
+                <InputState
+                  placeholder="قیمت (تومان)"
+                  value={form.price || ""}
+                  onChange={e => handleChange("price", e.target.value)}
+                  type="text"
+                  numeric
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -317,7 +360,7 @@ const AnnouncementList: React.FC<AnnouncementListProps> = ({
           results.length > 0 ? (
             <div className="w-full grid lg:grid-cols-4 sm:grid-cols-2 gap-4 place-items-center grid-cols-1 px-4 pb-16">
               {results.map((property) => (
-                <div key={property.id} className="flex flex-col justify-start items-center border rounded-xl shadow p-2 bg-white w-full max-w-xs">
+                <div key={property.id} className="flex flex-col justify-start items-center border rounded-xl shadow p-2 bg-white w-full">
                   {(Array.isArray(property.photo) && property.photo.length > 0) ? (
                     <img src={property.photo[0]} alt="عکس ملک" className="rounded-xl w-full h-48 object-cover" />
                   ) : (typeof property.photo === "string" && property.photo) ? (
@@ -327,7 +370,7 @@ const AnnouncementList: React.FC<AnnouncementListProps> = ({
                   )}
                   <div className="w-full flex flex-col gap-2 mt-2">
                     <div className="flex justify-between items-center">
-                      <span className="text-[17px] mobile:text-[15px] font-bold">{property.type || "-"}</span>
+                      <span className="text-[17px] mobile:text-[15px] font-bold">{property.usage || "-"}</span>
                       <span className="text-[15px] font-bold text-main-color">{property.price?.toLocaleString() || "-"}</span>
                     </div>
                     <div className="flex justify-between items-center">
@@ -352,7 +395,7 @@ const AnnouncementList: React.FC<AnnouncementListProps> = ({
           data.length === 0 ? null : (
             <div className="w-full grid lg:grid-cols-4 sm:grid-cols-2 gap-4 place-items-center grid-cols-1 px-4 pb-16">
               {data.map((property) => (
-                <div key={property.id} className="flex flex-col justify-start items-center border rounded-xl shadow p-2 bg-white w-full max-w-xs">
+                <div key={property.id} className="flex flex-col justify-start items-center border rounded-xl shadow p-2 bg-white w-full">
                   {(Array.isArray(property.photo) && property.photo.length > 0) ? (
                     <img src={property.photo[0]} alt="عکس ملک" className="rounded-xl w-full h-48 object-cover" />
                   ) : (typeof property.photo === "string" && property.photo) ? (
@@ -362,7 +405,7 @@ const AnnouncementList: React.FC<AnnouncementListProps> = ({
                   )}
                   <div className="w-full flex flex-col gap-2 mt-2">
                     <div className="flex justify-between items-center">
-                      <span className="text-[17px] mobile:text-[15px] font-bold">{property.type || "-"}</span>
+                      <span className="text-[17px] mobile:text-[15px] font-bold">{property.usage || "-"}</span>
                       <span className="text-[15px] font-bold text-main-color">{property.price?.toLocaleString() || "-"}</span>
                     </div>
                     <div className="flex justify-between items-center">

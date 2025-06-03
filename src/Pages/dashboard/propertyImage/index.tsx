@@ -64,7 +64,7 @@ export default function PropertyImageDashboard() {
                     alt="icons"
                     className="mobile:w-[80px] object-contain"
                   />
-                  <p className="text-[15px] text-[#1E1E1E80] mobile:text-[13px]">
+                  <p className="text-[15px] text-[#1E1E1E80] mobile:text-[13px] text-center">
                     آپلود تصویر ملک (حداکثر 8 قطعه عکس)
                   </p>
                 </div>

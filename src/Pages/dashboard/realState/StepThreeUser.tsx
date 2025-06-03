@@ -51,6 +51,16 @@ const StepThreeUser = ({
       return;
     }
 
+    if (phone.trim().length !== 11) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'خطا',
+        text: 'شماره همراه باید دقیقا ۱۱ رقم باشد.',
+        confirmButtonText: 'باشه'
+      });
+      return;
+    }
+
     if (!showSubmitButton) {
       Swal.fire({
         icon: "warning",

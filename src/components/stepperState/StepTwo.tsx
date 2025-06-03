@@ -12,6 +12,7 @@ interface StepTwoProps {
     land_metrage?: number; setLandMetrage: (v: number) => void; 
     description?: string; setDescription: (v: string) => void;
     usage: string; 
+    type: string;
 }
 
 function formatInputNumber(val: string) {
@@ -60,7 +61,8 @@ const StepTwo = ({
     location, setLocation,
     land_metrage, setLandMetrage,
     description, setDescription,
-    usage
+    usage,
+    type,
 }: StepTwoProps) => {
     const [showFeaturePanel, setShowFeaturePanel] = useState(false);
     const selectedFeatures: string[] = features ? features.split(",").map(f => f.trim()).filter(f => f) : [];
@@ -70,6 +72,7 @@ const StepTwo = ({
     const hideUsefulMetrage = shouldHideUsefulMetrage(usage);
     const hideLocation = shouldHideLocation(usage);
     const hideLoan = usage === "زمین مسکونی" || usage === "زمین کشاورزی";
+    const shouldDisableLocation = ["زمین کشاورزی", "زمین مسکونی", "مغازه"].includes(type);
 
     const handleFeatureSelect = (feature: string) => {
         if (selectedFeatures.includes(feature)) {
@@ -160,12 +163,23 @@ const StepTwo = ({
                 </>
             )}
             {!hideFields && !hideLocation && (
-                <ComboBox
-                    label="موقعیت ملک"
-                    options={LOCATION_OPTIONS}
-                    value={location}
-                    onChange={setLocation}
-                />
+                <div>
+                    <label className="mb-2 text-xs mr-5 font-bold text-main-color tracking-tight">موقعیت ملک</label>
+                    <select
+                        className="appearance-none w-full py-3 px-4 rounded-full focus:outline-none focus:ring-2 focus:ring-main-color bg-[#f4f4f4] text-[14px] font-medium shadow-sm transition-all duration-200 border border-gray-200 placeholder-gray-400"
+                        value={shouldDisableLocation ? "" : (location || "")}
+                        onChange={e => setLocation(e.target.value)}
+                        disabled={shouldDisableLocation}
+                    >
+                        <option value="">انتخاب کنید</option>
+                        <option value="شمالی">شمالی</option>
+                        <option value="جنوبی">جنوبی</option>
+                        <option value="دوکله">دوکله</option>
+                        <option value="شمالی دو نبش">شمالی دو نبش</option>
+                        <option value="جنوبی دو نبش">جنوبی دو نبش</option>
+                        <option value="سه نبش">سه نبش</option>
+                    </select>
+                </div>
             )}
             {!hideFields && !hideLoan && (
                 <div className="flex flex-col items-start">
