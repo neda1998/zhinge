@@ -242,7 +242,7 @@ const AnnouncementList: React.FC<AnnouncementListProps> = ({
               flex flex-col gap-4
             "
           >
-            <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
               <div className="flex flex-col">
                 <label className="mb-2 text-gray-600 font-bold text-sm">کد ملک</label>
                 <InputState
@@ -266,7 +266,7 @@ const AnnouncementList: React.FC<AnnouncementListProps> = ({
                   ))}
                 </select>
               </div>
-              <div className="flex flex-col">
+              {/* <div className="flex flex-col">
                 <label className="mb-2 text-gray-600 font-bold text-sm">نوع سند</label>
                 <select
                   className="rounded-xl border border-gray-200 px-3 py-2 font-bold text-gray-800 focus:ring-2 focus:ring-blue-300 focus:border-blue-400 transition outline-none shadow-sm hover:shadow-md"
@@ -278,7 +278,7 @@ const AnnouncementList: React.FC<AnnouncementListProps> = ({
                     <option key={opt} value={opt}>{opt}</option>
                   ))}
                 </select>
-              </div>
+              </div> */}
               <div className="flex flex-col relative">
                 <label className="mb-2 text-gray-600 font-bold text-sm">محله مورد نظر</label>
                 <InputState

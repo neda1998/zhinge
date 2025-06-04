@@ -75,10 +75,9 @@ const HouseDetails = () => {
 
     const isAdmin = cookies.role === "true" || cookies.role === true;
 
-    // اطلاعات استاتیک برای کاربر معمولی
     const staticUser = {
         full_name: "محمد طاهر زاهدی",
-        phone: "09183710608"
+        phone: "09184710608"
     };
 
     return (
