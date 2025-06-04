@@ -39,23 +39,12 @@ const StepThreeUser = ({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitAttempted(true);
-
-    if (!full_name.trim()) {
-      Swal.fire({
-        icon: "warning",
-        title: "اخطار",
-        text: "لطفا همه فیلدهای ضروری را پر کنید!",
-        confirmButtonText: "باشه"
-      });
-      return;
-    }
 
     if (phone.trim().length !== 11) {
       Swal.fire({
         icon: 'warning',
         title: 'خطا',
-        text: 'شماره همراه باید دقیقا ۱۱ رقم باشد.',
+        text: "شماره تلفن باید ۱۱ رقم باشد.",
         confirmButtonText: 'باشه'
       });
       return;
@@ -90,13 +79,13 @@ const StepThreeUser = ({
         value={full_name}
         onChange={e => setFullName(e.target.value)}
       />
-       <InputState
-                label="شماره تماس"
-                value={phone}
-                onChange={e => setPhone(e.target.value)}
-                placeholder="09183456789"
-                numeric
-            />
+      <InputState
+        label="شماره تماس"
+        value={phone}
+        onChange={e => setPhone(e.target.value)}
+        placeholder="09183456789"
+        numeric
+      />
       {showSubmitButton && (
         <div className="flex justify-end col-span-4">
           <button

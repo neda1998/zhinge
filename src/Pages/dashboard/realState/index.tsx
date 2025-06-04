@@ -14,21 +14,21 @@ export default function Realstate() {
    const [cookies] = useCookies(["accessToken"]);
     const navigate = useNavigate();
 
-  const [loan, setLoan] = useState<number>(0);
+  const [loan, setLoan] = useState<number | undefined>(undefined);
   const [type, setType] = useState("-");
   const [region, setRegion] = useState("");
   const [address, setAddress] = useState("");
-  const [location, setLocation] = useState(""); // مقدار اولیه خالی
+  const [location, setLocation] = useState("");
   const [document_type, setDocumentType] = useState<string>("");
-   const [land_metrage, setLandMetrage] = useState<number | undefined>(0);
-  const [useful_metrage, setUsefulMetrage] = useState<number | undefined>(0);
-  const [floor_number, setFloorNumber] = useState<number | undefined>(0); 
+   const [land_metrage, setLandMetrage] = useState<number | undefined>(undefined);
+  const [useful_metrage, setUsefulMetrage] = useState<number | undefined>(undefined);
+  const [floor_number, setFloorNumber] = useState<number | undefined>(undefined); 
   const [floor, setFloor] = useState<string>("-");
-  const [Unit_in_floor, setUnitInFloor] = useState<number | undefined>(0);
-  const [year_of_build, setYearOfBuild] = useState<number | undefined>(0);
+  const [Unit_in_floor, setUnitInFloor] = useState<number | undefined>(undefined);
+  const [year_of_build, setYearOfBuild] = useState<number | undefined>(undefined);
   const [full_name, setFullName] = useState<string>("");
   const [price, setPrice] = useState<number | undefined>();
-  const [room_number, setRoomNumber] = useState<number | undefined>(0);
+  const [room_number, setRoomNumber] = useState<number | undefined>(undefined);
   const [features, setFeatures] = useState<string>("-");
   const [uploadedImages, setUploadedImages] = useState<any[]>([]);
   const [currentStep, setCurrentStep] = useState(1);
@@ -113,7 +113,7 @@ export default function Realstate() {
       full_name: full_name || "",
       land_metrage: toNumberOrUndefined(land_metrage),
       loan: toNumberOrUndefined(loan),
-      location: ["زمین کشاورزی", "زمین مسکونی", "مغازه"].includes(type) ? "" : (location || ""),
+      location: ["زمین کشاورزی", "زمین مسکونی", "مغازه"].includes(usage) ? "-" : (location || "-"),
       price: toNumberOrUndefined(price),
       region: region || "",
       room_number: toNumberOrUndefined(room_number),
@@ -135,9 +135,9 @@ export default function Realstate() {
         setType("");
         setRegion("");
         setAddress("");
-        setLocation("");
+        setLocation("-");
         setPrice(undefined);
-        setLoan(0);
+        setLoan(undefined);
         setYearOfBuild(undefined);
         setRoomNumber(undefined);
         setLandMetrage(undefined);

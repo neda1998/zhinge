@@ -5,12 +5,12 @@ import { updateAnnoun } from "../../../services/admin/updateAnnounAdmin";
 const UseUpdateAnnounMutation = () => {
   return useMutation(updateAnnoun, {
     onSuccess: () => {
-      Swal.fire({
-        title: "موفق",
-        text: "ملک با موفقیت ویرایش شد.",
-        icon: "success",
-        confirmButtonText: "باشه",
-      });
+      // Swal.fire({
+      //   title: "موفق",
+      //   text: "ملک با موفقیت ویرایش شد.",
+      //   icon: "success",
+      //   confirmButtonText: "باشه",
+      // });
     },
     onError: (error: any) => {
       if (error.response?.status === 409) {

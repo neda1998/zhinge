@@ -155,12 +155,30 @@ const SearchForEstate = () => {
           prev.map((item) => (item.Uid === editForm.Uid ? { ...item, ...payload } : item))
         );
         setEditModal({ open: false, data: null });
+        Swal.fire({
+          icon: "success",
+          title: "ویرایش با موفقیت انجام شد",
+          confirmButtonText: "باشه",
+        });
       },
     });
   };
 
   const DetailsModal = ({ open, data, onClose }: { open: boolean; data: any; onClose: () => void }) => {
     if (!open || !data) return null;
+    const shouldHideFields = (type: string) =>
+      type === "مغازه" || type === "زمین مسکونی" || type === "زمین کشاورزی";
+    const hiddenLabels = [
+      "سال ساخت",
+      "امکانات",
+      "متراژ مفید",
+      "وام",
+      "تعداد اتاق",
+      "تعداد طبقات",
+      "واحد در طبقه",
+      "طبقه مورد نظر",
+      "موقعیت مکانی"
+    ];
     const detailIcons: Record<string, React.ReactNode> = {
       "کد ملک": <span className="text-blue-500">🏷️</span>,
       "نام مالک": <span className="text-green-600">👤</span>,
@@ -202,6 +220,10 @@ const SearchForEstate = () => {
       { label: "وضعیت", value: data.check ? "تایید شده" : data.reject ? "رد شده" : "در حال بررسی" },
     ];
 
+    const filteredDetails = shouldHideFields(data.usage)
+      ? details.filter(d => !hiddenLabels.includes(d.label))
+      : details;
+
     const mainPhoto =
       Array.isArray(data.photo) && data.photo.length > 0
         ? data.photo[0]
@@ -209,13 +231,13 @@ const SearchForEstate = () => {
           ? data.photo
           : "https://via.placeholder.com/400x300?text=No+Image";
 
-    const mid = Math.ceil(details.length / 2);
-    const col1 = details.slice(0, mid);
-    const col2 = details.slice(mid);
+    const mid = Math.ceil(filteredDetails.length / 2);
+    const col1 = filteredDetails.slice(0, mid);
+    const col2 = filteredDetails.slice(mid);
 
     return (
       <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-[2px] p-4">
-        <div className="bg-gradient-to-br from-white via-blue-50 to-green-50 rounded-3xl shadow-2xl max-w-3xl w-full relative overflow-y-auto max-h-[95vh] border border-gray-200 flex flex-col animate-fadeIn">
+        <div className="bg-gradient-to-br from-white via-blue-50 to-green-50 rounded-3xl shadow-2xl w-full relative max-w-7xl overflow-y-auto max-h-[95vh] border border-gray-200 flex flex-col animate-fadeIn">
           <button
             className="absolute top-4 left-4 text-gray-400 hover:text-red-500 transition text-3xl"
             onClick={onClose}
@@ -255,7 +277,17 @@ const SearchForEstate = () => {
                       <span className="mr-2 text-2xl">{detailIcons[item.label] || "ℹ️"}</span>
                       <div className="flex flex-col">
                         <span className="text-gray-500 text-[14px] mb-1 font-semibold">{item.label}</span>
-                        <span className="font-extrabold text-gray-800 text-[17px]">{item.value}</span>
+                        {item.label === "امکانات" ? (
+                          <span
+                            className="font-extrabold text-gray-800 text-[17px] max-w-xs break-words overflow-hidden text-ellipsis whitespace-pre-line"
+                            style={{ maxHeight: 80, overflowY: "auto", direction: "rtl" }}
+                            title={item.value}
+                          >
+                            {item.value}
+                          </span>
+                        ) : (
+                          <span className="font-extrabold text-gray-800 text-[17px]">{item.value}</span>
+                        )}
                       </div>
                     </div>
                   ))}
@@ -269,7 +301,17 @@ const SearchForEstate = () => {
                       <span className="mr-2 text-2xl">{detailIcons[item.label] || "ℹ️"}</span>
                       <div className="flex flex-col">
                         <span className="text-gray-500 text-[14px] mb-1 font-semibold">{item.label}</span>
-                        <span className="font-extrabold text-gray-800 text-[17px]">{item.value}</span>
+                        {item.label === "امکانات" ? (
+                          <span
+                            className="font-extrabold text-gray-800 text-[17px] max-w-xs break-words overflow-hidden text-ellipsis whitespace-pre-line"
+                            style={{ maxHeight: 80, overflowY: "auto", direction: "rtl" }}
+                            title={item.value}
+                          >
+                            {item.value}
+                          </span>
+                        ) : (
+                          <span className="font-extrabold text-gray-800 text-[17px]">{item.value}</span>
+                        )}
                       </div>
                     </div>
                   ))}
@@ -320,6 +362,19 @@ const SearchForEstate = () => {
       type === "مغازه" || type === "زمین مسکونی" || type === "زمین کشاورزی";
     const hideFields = shouldHideFields(editForm.usage);
 
+    // لیست کلیدهای فیلدهایی که باید مخفی شوند
+    const hiddenKeys = [
+      "year_of_build",
+      "features",
+      "useful_metrage",
+      "loan",
+      "room_number",
+      "floor_number",
+      "Unit_in_floor",
+      "floor",
+      "location" 
+    ];
+
     const fields: Array<{ key: string; label: string; type?: string; options?: string[]; hide?: boolean }> = [
       { key: "id", label: "کد ملک" },
       { key: "full_name", label: "نام مالک" },
@@ -330,15 +385,21 @@ const SearchForEstate = () => {
       { key: "land_metrage", label: "متراژ زمین", type: "number" },
       { key: "useful_metrage", label: "متراژ مفید", type: "number" },
       { key: "year_of_build", label: "سال ساخت", type: "number" },
-      { key: "floor_number", label: "تعداد طبقات", type: "number", hide: hideFields },
-      { key: "floor", label: "طبقه مورد نظر", type: "string", hide: hideFields },
-      { key: "Unit_in_floor", label: "واحد در طبقه", type: "number", hide: hideFields },
-      { key: "room_number", label: "تعداد اتاق", type: "number", hide: hideFields },
+      { key: "floor_number", label: "تعداد طبقات", type: "number" },
+      { key: "floor", label: "طبقه مورد نظر", type: "string" },
+      { key: "Unit_in_floor", label: "واحد در طبقه", type: "number" },
+      { key: "room_number", label: "تعداد اتاق", type: "number" },
       { key: "document_type", label: "نوع سند", options: DOCUMENT_TYPE_OPTIONS },
       { key: "price", label: "قیمت", type: "number" },
       { key: "features", label: "امکانات" },
       { key: "location", label: "موقعیت مکانی", options: LOCATION_OPTIONS },
+      { key: "loan", label: "وام", type: "number" }
     ];
+    // فقط اگر باید مخفی شوند، hide را true کن
+    const filteredFields = hideFields
+      ? fields.map(f => hiddenKeys.includes(f.key) ? { ...f, hide: true } : f)
+      : fields;
+
     const rejectAnnounceMutation = UseRejectannounceMutatiojn();
 
     const handleDeleteRecord = async () => {
@@ -421,7 +482,7 @@ const SearchForEstate = () => {
           </div>
           <div className="px-8 py-6 w-full">
             <div className="grid gap-x-8 gap-y-5 grid-cols-1 sm:grid-cols-2">
-              {fields.filter(f => !f.hide).map((item, idx) => (
+              {filteredFields.filter(f => !f.hide).map((item, idx) => (
                 <div key={idx} className="flex flex-col mb-1">
                   <label className="text-gray-500 text-[13px] mb-1">{item.label}</label>
                   {item.options ? (
@@ -443,21 +504,28 @@ const SearchForEstate = () => {
                         ))}
                     </select>
                   ) : (
-                    item.key === "features" ? (
-                      <textarea
-                        className="font-bold text-gray-800 text-[16px] rounded-lg border border-gray-200 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-300 transition"
-                        style={{ minHeight: 80, maxHeight: 160 }}
-                        value={editForm[item.key] ?? ""}
-                        onChange={e => handleEditFormChange(item.key, e.target.value)}
-                      />
-                    ) : (
-                      <input
-                        className="font-bold text-gray-800 text-[16px] rounded-lg border border-gray-200 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-300 transition"
-                        type={item.type || "text"}
-                        value={editForm[item.key] ?? ""}
-                        onChange={e => handleEditFormChange(item.key, item.type === "number" ? Number(e.target.value) : e.target.value)}
-                      />
-                    )
+                    // تبدیل به InputState
+                    <InputState
+                      type={item.type === "number" ? "text" : item.type || "text"}
+                      value={
+                        item.key === "price"
+                          ? formatPriceInput(editForm[item.key] ?? "")
+                          : editForm[item.key] ?? ""
+                      }
+                      onChange={e => {
+                        if (item.key === "price") {
+                          const raw = (e.target.value + '').replace(/\D/g, "");
+                          handleEditFormChange(item.key, raw ? Number(raw) : "");
+                        } else {
+                          handleEditFormChange(item.key, e.target.value);
+                        }
+                      }}
+                      numeric={item.type === "number"}
+                      placeholder={item.label}
+                      {...(item.key === "features"
+                        ? { as: "textarea", style: { minHeight: 80, maxHeight: 160 } }
+                        : {})}
+                    />
                   )}
                 </div>
               ))}
@@ -500,18 +568,15 @@ const SearchForEstate = () => {
     }
   }, [searchRegionMutation.data]);
 
-  // هندل تغییر ورودی محله (پشتیبانی چندمحله‌ای و سرچ سروری)
   const handleRegionInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setRegionSearch(value);
 
-    // جدا کردن محله‌ها با , یا ویرگول فارسی
     const regionList = value
       .split(/,|،/)
       .map((r) => r.trim())
       .filter(Boolean);
 
-    // اگر حداقل یک محله وارد شده باشد، سرچ سروری انجام بده
     if (regionList.length > 0) {
       searchRegionMutation.mutate({ region: regionList.length === 1 ? regionList[0] : regionList });
       setShowRegionDropdown(true);
@@ -522,7 +587,6 @@ const SearchForEstate = () => {
     handleChange("region", value);
   };
 
-  // انتخاب محله از لیست پیشنهادی (برای چند محله)
   const handleRegionSelect = (selectedRegion: string) => {
     const regionList = regionSearch
       .split(/,|،/)
@@ -609,6 +673,12 @@ const SearchForEstate = () => {
     );
   };
 
+  function formatPriceInput(value: string | number): string {
+    const num = typeof value === "number" ? value : Number((value + '').replace(/\D/g, ""));
+    if (!num) return "";
+    return num.toLocaleString("en-US");
+  }
+
   return (
     <InitialLayout>
       <div className="flex items-center justify-between border-b border-b-gray-200 mb-10 lg:py-7 py-4 overflow-x-auto w-full lg:overflow-x-visible gap-7 flex-wrap  ">
@@ -623,6 +693,16 @@ const SearchForEstate = () => {
         <InputState label="کد ملک" value={form.id || ""} onChange={e => handleChange("id", e.target.value)} numeric />
         <InputState label="نام مالک" value={form.full_name || ""} onChange={e => handleChange("full_name", e.target.value)} />
         <InputState label="شماره موبایل" value={form.phone || ""} onChange={e => handleChange("phone", e.target.value)} numeric />
+        <InputState
+          label="قیمت"
+          value={formatPriceInput(form.price || "")}
+          onChange={e => {
+            // فقط ارقام را ذخیره کن
+            const raw = (e.target.value + '').replace(/\D/g, "");
+            handleChange("price", raw ? Number(raw) : "");
+          }}
+          numeric
+        />
         <div className="flex flex-col relative">
           <InputState
             label="محله مورد نظر"

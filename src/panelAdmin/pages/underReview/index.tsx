@@ -59,14 +59,20 @@ const UnderReview = () => {
     setSelectedAnnounce(item);
     setEditForm({
       ...item,
-      price: item.price ?? "",
-      loan: item.loan ?? "",
-      metrage: item.land_metrage ?? "",
-      phone: item.phone ?? "",
+      price: item.price !== undefined && item.price !== null ? item.price.toString() : "",
+      loan: item.loan !== undefined && item.loan !== null ? item.loan.toString() : "",
+      metrage: item.land_metrage !== undefined && item.land_metrage !== null ? item.land_metrage.toString() : "",
+      phone: item.phone !== undefined && item.phone !== null ? item.phone.toString() : "",
       usage: item.usage ?? "",
       description: item.description ?? "", 
       region: item.region ?? "",
-
+      floor_number: item.floor_number !== undefined && item.floor_number !== null ? item.floor_number.toString() : "",
+      Unit_in_floor: item.Unit_in_floor !== undefined && item.Unit_in_floor !== null ? item.Unit_in_floor.toString() : "",
+      room_number: item.room_number !== undefined && item.room_number !== null ? item.room_number.toString() : "",
+      useful_metrage: item.useful_metrage !== undefined && item.useful_metrage !== null ? item.useful_metrage.toString() : "",
+      land_metrage: item.land_metrage !== undefined && item.land_metrage !== null ? item.land_metrage.toString() : "",
+      year_of_build: item.year_of_build !== undefined && item.year_of_build !== null ? item.year_of_build.toString() : "",
+      floor: item.floor !== undefined && item.floor !== null ? String(item.floor) : "",
     });
     let photos: string[] = [];
     setModalPhotos(photos.length > 0 ? photos : (Array.isArray(item.photo) ? item.photo : (item.photo ? [item.photo] : [])));
@@ -217,12 +223,12 @@ const UnderReview = () => {
 
   const confirmedTableData =
     confirmedData?.confirmed
-      ?.slice()
+      .slice() 
       .reverse()
-      .map((item: any, idx: number) => ({
+      .map((item: any, idx: number, arr: any[]) => ({
         "ردیف": (
           <span className="w-8 h-8 rounded-full bg-gradient-to-tr from-green-400 to-green-200 text-green-900 font-bold flex items-center justify-center shadow">
-            {idx + 1}
+            {arr.length - idx}
           </span>
         ),
         "کد ملک": (
@@ -247,7 +253,7 @@ const UnderReview = () => {
         ),
         "بازه قیمت": (
           <span className="text-green-700 font-bold">
-            {item.price?.toLocaleString()} <span className="text-xs text-gray-400">تومان</span>
+            {item.price !== undefined && item.price !== null ? item.price.toLocaleString() : "-"} <span className="text-xs text-gray-400">تومان</span>
           </span>
         ),
         "عملیات": (
@@ -260,7 +266,8 @@ const UnderReview = () => {
             </button>
           </div>
         ),
-      })) || [];
+      }))
+      .reverse() || [];
 
   let tableData: any[] = activeTab === "inprogress" ? inprogressTableData : confirmedTableData;
   const isLoading =
@@ -370,35 +377,33 @@ const UnderReview = () => {
                   <div>
                     <label className="block text-sm mb-1 font-bold text-gray-700">طبقه مورد نظر</label>
                     <InputState
-                      value={editForm.floor !== undefined && editForm.floor !== null ? editForm.floor : ""}
+                      value={editForm.floor !== undefined && editForm.floor !== null ? String(editForm.floor) : ""}
                       onChange={e => setEditForm({ ...editForm, floor: e.target.value })}
-                    numeric
+                      placeholder="مثال: 5"
                     />
                   </div>
                   <div>
                     <label className="block text-sm mb-1 font-bold text-gray-700">تعداد طبقات</label>
                     <InputState
-                      value={editForm.floor_number !== undefined && editForm.floor_number !== null ? editForm.floor_number : ""}
+                      value={editForm.floor_number}
                       onChange={e => setEditForm({ ...editForm, floor_number: e.target.value })}
-                    numeric
+                      numeric
                     />
                   </div>
                   <div>
                     <label className="block text-sm mb-1 font-bold text-gray-700">تعداد واحد در طبقه</label>
                     <InputState
-                      value={editForm.Unit_in_floor !== undefined && editForm.Unit_in_floor !== null ? editForm.Unit_in_floor : ""}
+                      value={editForm.Unit_in_floor}
                       onChange={e => setEditForm({ ...editForm, Unit_in_floor: e.target.value })}
-  
-                    numeric
+                      numeric
                     />
                   </div>
                   <div>
                     <label className="block text-sm mb-1 font-bold text-gray-700">تعداد اتاق‌ها</label>
                     <InputState
-                      value={editForm.room_number !== undefined && editForm.room_number !== null ? editForm.room_number : ""}
+                      value={editForm.room_number}
                       onChange={e => setEditForm({ ...editForm, room_number: e.target.value })}
-  
-                    numeric
+                      numeric
                     />
                   </div>
                 </>
@@ -423,58 +428,49 @@ const UnderReview = () => {
               <div>
                 <label className="block text-sm mb-1 font-bold text-gray-700">متراژ کل زمین</label>
                 <InputState
-                  value={editForm.land_metrage !== undefined && editForm.land_metrage !== null ? editForm.land_metrage : ""}
+                  value={editForm.land_metrage}
                   onChange={e => setEditForm({ ...editForm, land_metrage: e.target.value })}
                 numeric
                 />
               </div>
-              <div>
-                <label className="block text-sm mb-1 font-bold text-gray-700">متراژ مفید</label>
-                <InputState
-                  value={editForm.useful_metrage !== undefined && editForm.useful_metrage !== null ? editForm.useful_metrage : ""}
-                  onChange={e => setEditForm({ ...editForm, useful_metrage: e.target.value })}
-                numeric
-                />
-              </div>
-              <div>
-                <label className="block text-sm mb-1 font-bold text-gray-700">موقعیت ملک</label>
-                <select
-                  className="border rounded px-2 py-1 w-full"
-                  value={editForm.location || ""}
-                  onChange={e => setEditForm({ ...editForm, location: e.target.value })}
-                >
-                  <option value="شمالی">شمالی</option>
-                  <option value="جنوبی">جنوبی</option>
-                  <option value="دوکله">دوکله</option>
-                  <option value="شمالی دو نبش">شمالی دو نبش</option>
-                  <option value="جنوبی دو نبش">جنوبی دو نبش</option>
-                  <option value="سه نبش">سه نبش</option>
-                </select>
-              </div>
-              <div>
-                <label className="block text-sm mb-1 font-bold text-gray-700">سال ساخت</label>
-                <InputState
-                  value={editForm.year_of_build !== undefined && editForm.year_of_build !== null ? editForm.year_of_build : ""}
-                  onChange={e => setEditForm({ ...editForm, year_of_build: e.target.value })}
-                numeric
-                />
-              </div>
-              <div>
-                <label className="block text-sm mb-1 font-bold text-gray-700">وام</label>
-                <InputState
-                  value={editForm.loan !== undefined && editForm.loan !== null ? editForm.loan : ""}
-                  onChange={e => setEditForm({ ...editForm, loan: e.target.value })}
-                numeric
-                />
-              </div>
+              {/* فقط اگر نباید مخفی شود این فیلدها را نمایش بده */}
+              {!shouldHideFields(editForm.usage) && (
+                <>
+                  <div>
+                    <label className="block text-sm mb-1 font-bold text-gray-700">متراژ مفید</label>
+                    <InputState
+                      value={editForm.useful_metrage}
+                      onChange={e => setEditForm({ ...editForm, useful_metrage: e.target.value })}
+                    numeric
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm mb-1 font-bold text-gray-700">سال ساخت</label>
+                    <InputState
+                      value={editForm.year_of_build}
+                      onChange={e => setEditForm({ ...editForm, year_of_build: e.target.value })}
+                    numeric
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm mb-1 font-bold text-gray-700">وام</label>
+                    <InputState
+                      value={editForm.loan}
+                      onChange={e => setEditForm({ ...editForm, loan: e.target.value })}
+                    numeric
+                    />
+                  </div>
+                </>
+              )}
               <div>
                 <label className="block text-sm mb-1 font-bold text-gray-700">قیمت</label>
                 <InputState
-                  value={editForm.price !== undefined && editForm.price !== null ? editForm.price : ""}
+                  value={editForm.price}
                   onChange={e => setEditForm({ ...editForm, price: e.target.value })}
                 numeric
                 />
               </div>
+              {!shouldHideFields(editForm.usage) && (
               <div className="sm:col-span-2 lg:col-span-3">
                 <label className="block text-sm mb-1 font-bold text-gray-700">امکانات</label>
                 <InputState
@@ -482,6 +478,7 @@ const UnderReview = () => {
                   onChange={e => setEditForm({ ...editForm, features: e.target.value })}
                 />
               </div>
+              )}
               <div className="sm:col-span-2 lg:col-span-3">
                 <label className="block text-sm mb-1 font-bold text-gray-700">توضیحات</label>
                 <textarea
@@ -513,7 +510,7 @@ const UnderReview = () => {
                             }
                             try {
                               await deletePhotosMutation.mutateAsync({ uid: selectedAnnounce.Uid });
-                              setModalPhotos(prev => prev.filter((p: string) => p !== img));
+                              setModalPhotos([]);
                             } catch (error) {
                               console.error("Error deleting photo:", error);
                             }
@@ -536,15 +533,15 @@ const UnderReview = () => {
                     disabled={
                       uploadingPhoto ||
                       !selectedAnnounce?.Uid ||
-                      modalPhotos.length >= 10 
+                      modalPhotos.length >= 1
                     }
                     onChange={async (e) => {
                       const file = e.target.files?.[0];
                       if (!file || !selectedAnnounce?.Uid) return;
-                      if (modalPhotos.length >= 10) {
+                      if (modalPhotos.length >= 1) {
                         Swal.fire({
                           title: "خطا",
-                          text: "حداکثر 10 تصویر قابل آپلود است.",
+                          text: "فقط یک تصویر قابل آپلود است.",
                           icon: "error",
                           confirmButtonText: "باشه",
                         });
@@ -554,7 +551,7 @@ const UnderReview = () => {
                       setUploadingPhoto(true);
                       try {
                         await uploadFileMutation.mutateAsync({ file, uid: selectedAnnounce.Uid });
-                        setModalPhotos(prev => [...prev, URL.createObjectURL(file)]);
+                        setModalPhotos([URL.createObjectURL(file)]);
                         Swal.fire({
                           title: "موفق!",
                           text: "عکس با موفقیت آپلود شد.",
@@ -579,13 +576,13 @@ const UnderReview = () => {
                     disabled={
                       uploadingPhoto ||
                       !selectedAnnounce?.Uid ||
-                      modalPhotos.length >= 10
+                      modalPhotos.length >= 1
                     }
                     onClick={() => {
-                      if (modalPhotos.length >= 10) {
+                      if (modalPhotos.length >= 1) {
                         Swal.fire({
                           title: "خطا",
-                          text: "حداکثر 10 تصویر قابل آپلود است.",
+                          text: "فقط یک تصویر قابل آپلود است.",
                           icon: "error",
                           confirmButtonText: "باشه",
                         });
@@ -596,7 +593,7 @@ const UnderReview = () => {
                   >
                     {uploadingPhoto ? "در حال آپلود..." : "افزودن عکس جدید"}
                   </button>
-                  <span className="text-xs text-gray-500">{modalPhotos.length}/10</span>
+                  <span className="text-xs text-gray-500">{modalPhotos.length}/1</span>
                 </div>
               </div>
               <div>

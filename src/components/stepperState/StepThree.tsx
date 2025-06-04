@@ -25,6 +25,10 @@ interface StepThreeProps {
     setDescription: (v: string) => void;
     features: string;
     setFeatures: (v: string) => void;
+    Unit_in_floor?: number;
+    useful_metrage?: number;
+    document_type?: string;
+    setDocumentType?: (v: string) => void;
 }
 
 const shouldHideFields = (type?: string) =>
@@ -41,7 +45,11 @@ const StepThree = ({
     description,
     setDescription,
     features,
-    setFeatures
+    setFeatures,
+    Unit_in_floor,
+    useful_metrage,
+    document_type,
+    setDocumentType
 }: StepThreeProps) => {
     const [submitAttempted, setSubmitAttempted] = useState(false);
     const hideFields = shouldHideFields(type);
@@ -91,7 +99,7 @@ const StepThree = ({
                     address,
                     location: location || "-",
                     price,
-                    loan,
+                    loan: loan !== undefined && loan !== null ? loan : 0,
                     year_of_build,
                     room_number,
                     land_metrage,
@@ -100,7 +108,10 @@ const StepThree = ({
                     full_name,
                     phone,
                     description,
-                    features: features || "-"
+                    features: features || "-",
+                    Unit_in_floor: Unit_in_floor !== undefined && Unit_in_floor !== null ? Unit_in_floor : 0,
+                    useful_metrage: useful_metrage !== undefined && useful_metrage !== null ? useful_metrage : 0,
+                    document_type: document_type || "-"
                 });
                 if (onReset) onReset();
             } catch {
@@ -113,7 +124,7 @@ const StepThree = ({
                 address,
                 location: location || "-",
                 price,
-                loan,
+                loan: loan !== undefined && loan !== null ? loan : 0,
                 year_of_build,
                 room_number,
                 land_metrage,
@@ -122,7 +133,10 @@ const StepThree = ({
                 full_name,
                 phone,
                 description,
-                features: features || "-"
+                features: features || "-",
+                Unit_in_floor: Unit_in_floor !== undefined && Unit_in_floor !== null ? Unit_in_floor : 0,
+                useful_metrage: useful_metrage !== undefined && useful_metrage !== null ? useful_metrage : 0,
+                document_type: document_type || "-"
             });
         }
     };

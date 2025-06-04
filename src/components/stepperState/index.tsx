@@ -15,7 +15,7 @@ const StepperState = () => {
     const [address, setAddress] = useState("");
     const [location, setLocation] = useState(""); // مقدار اولیه خالی
     const [price, setPrice] = useState<number | undefined>();
-    const [loan, setLoan] = useState<number>();
+    const [loan, setLoan] = useState<number | undefined>();
     const [year_of_build, setYearOfBuild] = useState<number | undefined>();
     const [room_number, setRoomNumber] = useState<number | undefined>();
     const [land_metrage, setLandMetrage] = useState<number | undefined>();
@@ -139,6 +139,11 @@ const StepperState = () => {
             onReset={resetAllStates}
             description={description} setDescription={setDescription}
             features={features || "-"} setFeatures={setFeatures}
+            loan={loan}
+            Unit_in_floor={Unit_in_floor}
+            useful_metrage={useful_metrage}
+            document_type={document_type}
+            setDocumentType={setDocumentType}
         />,
         <StepFourUser
             key="step4"
