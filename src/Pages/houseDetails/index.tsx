@@ -42,7 +42,6 @@ const HouseDetails = () => {
             loan: selectedProperty?.loan || 'ندارد',
         },
         onSubmit: (values) => {
-            console.log("Submitted values:", values);
         }
     });
 
@@ -56,7 +55,7 @@ const HouseDetails = () => {
     const fields = [
         { name: 'id', label: 'کد ملک' },
         { name: 'usage', label: 'نوع ملک' },
-        { name: 'region', label: 'منطقه' },
+        { name: 'region', label: 'محله مورد نظر' },
         { name: 'address', label: 'آدرس' },
         { name: 'location', label: 'موقعیت مکانی' },
         { name: 'document_type', label: 'نوع سند' },
@@ -71,6 +70,23 @@ const HouseDetails = () => {
         { name: 'features', label: 'امکانات' },
     ];
 
+    const shouldHideFields = (usage: string) =>
+        usage === "مغازه" || usage === "زمین مسکونی" || usage === "زمین کشاورزی";
+
+    const shouldHideYearOfBuild = (usage: string) =>
+        usage === "زمین مسکونی" || usage === "زمین کشاورزی" || usage === "مغازه";
+
+    const shouldHideUsefulMetrage = (usage: string) =>
+        usage === "زمین مسکونی" || usage === "زمین کشاورزی" || usage === "مغازه";
+
+    const shouldHideFeatures = (usage: string) =>
+        usage === "زمین مسکونی" || usage === "زمین کشاورزی" || "مغازه";
+
+    const shouldHideLocation = (usage: string) =>
+        usage === "زمین کشاورزی" || usage === "مغازه";
+    const shouldHideLoan = (usage:string) => 
+        usage === "زمین مسکونی" || usage === "زمین کشاورزی" || usage === "مغازه";
+
     const [cookies, setCookies] = useCookies(["role"]);
 
     const isAdmin = cookies.role === "true" || cookies.role === true;
@@ -79,6 +95,15 @@ const HouseDetails = () => {
         full_name: "محمد طاهر زاهدی",
         phone: "09184710608"
     };
+
+    // تعیین فیلدهایی که باید مخفی شوند
+    const usageValue = selectedProperty?.usage || '';
+    const hideFields = shouldHideFields(usageValue);
+    const hideYearOfBuild = shouldHideYearOfBuild(usageValue);
+    const hideUsefulMetrage = shouldHideUsefulMetrage(usageValue);
+    const hideFeatures = shouldHideFeatures(usageValue);
+    const hideLocation = shouldHideLocation(usageValue);
+    const hideLoan = shouldHideLoan(usageValue);
 
     return (
         <div className='flex flex-col items-center'>
@@ -92,7 +117,6 @@ const HouseDetails = () => {
                 <>
                     <Header variant={'main'} />
                     <div className="w-full h-fit mobile:h-fit grid md:grid-cols-2 grid-cols-1 gap-8 p-7 md:mt-36 mt-16">
-                        {/* موبایل: عنوان و اطلاعات کاربر/ادمین بالای عکس */}
                         <div className="md:hidden flex flex-col w-full items-center mb-2">
                             <span className="md:text-[42px] text-[28px] whitespace-nowrap font-extrabold text-transparent bg-clip-text bg-gradient-to-l from-green-400 to-blue-500 drop-shadow-lg">
                                 {selectedProperty?.usage
@@ -128,7 +152,6 @@ const HouseDetails = () => {
                                 </div>
                             )}
                         </div>
-                        {/* ...existing code for image and desktop layout... */}
                         <div className="col-span-1 flex flex-col items-center justify-start order-1 md:order-2">
                             <img
                                 src={
@@ -145,7 +168,6 @@ const HouseDetails = () => {
                         </div>
                         <div className="col-span-1 flex flex-col justify-around items-center order-2 md:order-1">
                             <div className="w-full h-fit flex flex-col gap-10">
-                                {/* دسکتاپ: عنوان و اطلاعات کاربر/ادمین کنار هم */}
                                 <div className="hidden md:flex w-full flex-wrap justify-center items-center gap-4 mb-2">
                                     <span className="md:text-[42px] text-[28px] whitespace-nowrap font-extrabold text-transparent bg-clip-text bg-gradient-to-l from-green-400 to-blue-500 drop-shadow-lg">
                                         {selectedProperty?.usage
@@ -191,9 +213,31 @@ const HouseDetails = () => {
                                         <div className="divide-y divide-gray-100">
                                             {fields
                                                 .filter(field => field.name !== 'userID' && field.name !== 'full_name')
+                                                .filter(field => {
+                                                    if (hideFields) {
+                                                        if (
+                                                            ['useful_metrage', 'floor_number', 'floor', 'Unit_in_floor', 'room_number', 'year_of_build', 'features', 'location', 'loan'].includes(field.name)
+                                                        ) {
+                                                            if (field.name === 'useful_metrage' && hideUsefulMetrage) return false;
+                                                            if (field.name === 'year_of_build' && hideYearOfBuild) return false;
+                                                            if (field.name === 'features' && hideFeatures) return false;
+                                                            if (field.name === 'location' && hideLocation) return false;
+                                                            if (field.name === 'loan' && hideLoan) return false;
+                                                            if (
+                                                                ['useful_metrage', 'floor_number', 'floor', 'Unit_in_floor', 'room_number','loan'].includes(field.name)
+                                                            ) return false;
+                                                        }
+                                                    } else {
+                                                        if (field.name === 'useful_metrage' && hideUsefulMetrage) return false;
+                                                        if (field.name === 'year_of_build' && hideYearOfBuild) return false;
+                                                        if (field.name === 'features' && hideFeatures) return false;
+                                                        if (field.name === 'location' && hideLocation) return false;
+                                                        if (field.name === 'loan' && hideLoan) return false;
+                                                    }
+                                                    return true;
+                                                })
                                                 .map((field) => {
                                                     const value = selectedProperty?.[field.name];
-                                                    // نمایش مقدار حتی اگر صفر باشد
                                                     if (
                                                         value === "" ||
                                                         value === undefined ||

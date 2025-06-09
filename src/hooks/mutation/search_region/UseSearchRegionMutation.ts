@@ -19,12 +19,12 @@ const UseSearchRegionMutation = (options?: { onSuccess?: (response?: any) => voi
         if (options?.onError) {
           options.onError(error);
         } else {
-          Swal.fire({
-            title: "!خطا",
-            text: error?.response?.data?.message || "خطایی رخ داده است",
-            icon: "error",
-            confirmButtonText: "باشه",
-          });
+          // Swal.fire({
+          //   title: "!خطا",
+          //   text: error?.response?.data?.message || "خطایی رخ داده است",
+          //   icon: "error",
+          //   confirmButtonText: "باشه",
+          // });
         }
       },
     }
