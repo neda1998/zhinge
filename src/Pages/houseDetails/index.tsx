@@ -19,8 +19,8 @@ const HouseDetails = () => {
     }, [mutate, Uid]);
 
     const selectedProperty = Array.isArray(data)
-        ? data.find((property: any) => property.Uid?.toString() === Uid)
-        : data;
+        ? data.find((property: any) => property.Uid?.toString() === Uid && property.check && !property.reject) // Exclude properties with "check": false or "reject": true
+        : (data?.check && !data?.reject ? data : null); // Ensure the selected property meets the criteria
 
     const formik = useFormik<Record<string, any>>({
         enableReinitialize: true,
@@ -88,7 +88,7 @@ const HouseDetails = () => {
                 </div>
             )}
             {error && <div>خطا در بارگذاری اطلاعات</div>}
-            {!isLoading && !error && (
+            {!isLoading && !error && selectedProperty && ( // Ensure selectedProperty is valid
                 <>
                     <Header variant={'main'} />
                     <div className="w-full h-fit mobile:h-fit grid md:grid-cols-2 grid-cols-1 gap-8 p-7 md:mt-36 mt-16">
@@ -234,6 +234,9 @@ const HouseDetails = () => {
                         </div>
                     </div>
                 </>
+            )}
+            {!selectedProperty && !isLoading && !error && (
+                <div className="text-center text-gray-500 mt-10">ملک مورد نظر یافت نشد یا تایید نشده است.</div>
             )}
         </div>
     );

@@ -23,6 +23,7 @@ const AnnouncementList: React.FC<AnnouncementListProps> = ({
   announcementType,
   onAnnouncementClick,
 }) => {
+  const filteredData = data.filter(property => property.check && !property.reject);
   const [searchResults, setSearchResults] = useState<any[] | null>(null);
   const [form, setForm] = useState<{ id?: string; usage?: string; document_type?: string; region?: string | string[]; price?: string | number }>({});
   const [results, setResults] = useState<any[] | null>(null);
@@ -31,7 +32,6 @@ const AnnouncementList: React.FC<AnnouncementListProps> = ({
   const [showRegionDropdown, setShowRegionDropdown] = useState(false);
   const debounceRef = useRef<NodeJS.Timeout | null>(null);
 
-  // استفاده از هوک سرچ
   const searchMutation = useSearchMutation();
   const searchRegionMutation = UseSearchRegionMutation();
 
@@ -66,15 +66,14 @@ const AnnouncementList: React.FC<AnnouncementListProps> = ({
   ];
 
   const usageOptions = Array.from(
-    new Set([...TYPE_OPTIONS, ...data.map((item) => item.type).filter(Boolean)])
+    new Set([...TYPE_OPTIONS, ...filteredData.map((item) => item.type).filter(Boolean)])
   );
   const documentTypeOptions = Array.from(
-    new Set([...DOCUMENT_TYPE_OPTIONS, ...data.map((item) => item.document_type).filter(Boolean)])
+    new Set([...DOCUMENT_TYPE_OPTIONS, ...filteredData.map((item) => item.document_type).filter(Boolean)])
   );
-  const regionOptions = Array.from(new Set(data.map((item) => item.region).filter(Boolean)));
+  const regionOptions = Array.from(new Set(filteredData.map((item) => item.region).filter(Boolean)));
 
   const handleChange = (key: string, value: string) => {
-    // اگر price بود، اعداد فارسی را به انگلیسی تبدیل کن
     let newValue = value;
     if (key === "price") {
       newValue = persianToEnglishDigits(value.replace(/[^\d]/g, ""));
@@ -82,6 +81,14 @@ const AnnouncementList: React.FC<AnnouncementListProps> = ({
     const updatedForm = { ...form, [key]: newValue };
     setForm(updatedForm);
     triggerSearch(updatedForm);
+  };
+
+  const setFilteredResults = (arr: any[] | null) => {
+    if (!arr) {
+      setResults(null);
+      return;
+    }
+    setResults(arr.filter(item => item.check && !item.reject));
   };
 
   const triggerSearch = (payload: typeof form) => {
@@ -143,14 +150,14 @@ const AnnouncementList: React.FC<AnnouncementListProps> = ({
                 if (done === regions.length) {
                   const uniqueResults = Array.from(
                     new Map(allResults.map(item => [item.id, item])).values()
-                  );
+                  ).filter(item => item.check && !item.reject);
                   setResults(uniqueResults);
                 }
               },
               onError: () => {
                 done++;
                 if (done === regions.length) {
-                  setResults(allResults.length > 0 ? allResults : []);
+                  setResults([]);
                 }
               }
             }
@@ -175,7 +182,7 @@ const AnnouncementList: React.FC<AnnouncementListProps> = ({
               } else if (typeof response === "object") {
                 resultArr = [response];
               }
-              setResults(resultArr);
+              setFilteredResults(resultArr);
             },
             onError: () => {
               setResults([]);
@@ -392,9 +399,9 @@ const AnnouncementList: React.FC<AnnouncementListProps> = ({
             </div>
           )
         ) : (
-          data.length === 0 ? null : (
+          filteredData.length === 0 ? null : (
             <div className="w-full grid lg:grid-cols-4 sm:grid-cols-2 gap-4 place-items-center grid-cols-1 px-4 pb-16">
-              {data.map((property) => (
+              {filteredData.map((property) => (
                 <div key={property.id} className="flex flex-col justify-start items-center border rounded-xl shadow p-2 bg-white w-full">
                   {(Array.isArray(property.photo) && property.photo.length > 0) ? (
                     <img src={property.photo[0]} alt="عکس ملک" className="rounded-xl w-full h-48 object-cover" />

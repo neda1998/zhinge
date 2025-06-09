@@ -169,7 +169,7 @@ const UnderReview = () => {
 
   const inprogressTableData =
     inprogressData?.inprogress
-      ?.filter((item: any) => !item.reject) 
+      ?.filter((item: any) => !item.reject && !item.check) 
       .slice()
       .reverse()
       .map((item: any, idx: number) => ({
