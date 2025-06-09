@@ -66,8 +66,14 @@ const HouseDetails = () => {
         { name: 'room_number', label: 'تعداد اتاق' },
         { name: 'year_of_build', label: 'سال ساخت' },
         { name: 'price', label: 'قیمت', format: (v: string | number) => `${v?.toLocaleString?.() || v} تومان` },
-        { name: 'loan', label: 'مبلغ وام' },
+        { name: 'loan', label: 'مبلغ وام', format: (v: string | number) => v ? `${v.toLocaleString()} تومان` : 'ندارد' },
         { name: 'features', label: 'امکانات' },
+        {
+            name: 'land_metrage',
+            label: 'متراژ کل زمین',
+            format: (v: string | number) => v + ' متر',
+            condition: (usage: string) => usage === "زمین کشاورزی" || usage === "زمین مسکونی" || usage === "مغازه"
+        },
     ];
 
     const shouldHideFields = (usage: string) =>
@@ -84,7 +90,7 @@ const HouseDetails = () => {
 
     const shouldHideLocation = (usage: string) =>
         usage === "زمین کشاورزی" || usage === "مغازه";
-    const shouldHideLoan = (usage:string) => 
+    const shouldHideLoan = (usage: string) =>
         usage === "زمین مسکونی" || usage === "زمین کشاورزی" || usage === "مغازه";
 
     const [cookies, setCookies] = useCookies(["role"]);
@@ -96,7 +102,6 @@ const HouseDetails = () => {
         phone: "09184710608"
     };
 
-    // تعیین فیلدهایی که باید مخفی شوند
     const usageValue = selectedProperty?.usage || '';
     const hideFields = shouldHideFields(usageValue);
     const hideYearOfBuild = shouldHideYearOfBuild(usageValue);
@@ -113,7 +118,7 @@ const HouseDetails = () => {
                 </div>
             )}
             {error && <div>خطا در بارگذاری اطلاعات</div>}
-            {!isLoading && !error && selectedProperty && ( // Ensure selectedProperty is valid
+            {!isLoading && !error && selectedProperty && (
                 <>
                     <Header variant={'main'} />
                     <div className="w-full h-fit mobile:h-fit grid md:grid-cols-2 grid-cols-1 gap-8 p-7 md:mt-36 mt-16">
@@ -224,7 +229,7 @@ const HouseDetails = () => {
                                                             if (field.name === 'location' && hideLocation) return false;
                                                             if (field.name === 'loan' && hideLoan) return false;
                                                             if (
-                                                                ['useful_metrage', 'floor_number', 'floor', 'Unit_in_floor', 'room_number','loan'].includes(field.name)
+                                                                ['useful_metrage', 'floor_number', 'floor', 'Unit_in_floor', 'room_number', 'loan'].includes(field.name)
                                                             ) return false;
                                                         }
                                                     } else {
@@ -233,6 +238,7 @@ const HouseDetails = () => {
                                                         if (field.name === 'features' && hideFeatures) return false;
                                                         if (field.name === 'location' && hideLocation) return false;
                                                         if (field.name === 'loan' && hideLoan) return false;
+                                                        if (field.name === 'land_metrage' && field.condition && !field.condition(usageValue)) return false;
                                                     }
                                                     return true;
                                                 })

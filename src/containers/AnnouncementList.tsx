@@ -113,7 +113,6 @@ const AnnouncementList: React.FC<AnnouncementListProps> = ({
         }
       }
 
-      // تبدیل price به عدد صحیح و حذف اگر نامعتبر بود
       if (finalPayload.price) {
         const priceNum = Number(persianToEnglishDigits(finalPayload.price.toString().replace(/[^\d]/g, "")));
         if (!isNaN(priceNum) && priceNum > 0) {
@@ -376,9 +375,9 @@ const AnnouncementList: React.FC<AnnouncementListProps> = ({
                     <img src={House} alt="icons" width={350} className="rounded-xl w-full h-64 object-cover" />
                   )}
                   <div className="w-full flex flex-col gap-2 mt-2">
-                    <div className="flex justify-between items-center">
-                      <span className="text-[17px] mobile:text-[15px] font-bold">{property.usage || "-"}</span>
-                      <span className="text-[15px] font-bold text-main-color">{property.price?.toLocaleString() || "-"}</span>
+                    <div className="flex justify-between items-center flex-wrap">
+                      <span className="text-[17px] whitespace-nowrap mobile:text-[15px] font-bold">{property.usage || "نوع ملک مشخص نشده"}</span>
+                      <span className="whitespace-nowrap text-[15px] font-bold text-main-color">{property.price ? `${property.price.toLocaleString()} تومان` : "قیمت مشخص نشده"}</span>
                     </div>
                     <div className="flex justify-between items-center">
                       <div className="flex text-[14px] gap-1 items-center text-center">
@@ -411,9 +410,9 @@ const AnnouncementList: React.FC<AnnouncementListProps> = ({
                     <img src={House} alt="icons" width={350} className="rounded-xl w-full h-64 object-cover" />
                   )}
                   <div className="w-full flex flex-col gap-2 mt-2">
-                    <div className="flex justify-between items-center">
-                      <span className="text-[17px] mobile:text-[15px] font-bold">{property.usage || "-"}</span>
-                      <span className="text-[15px] font-bold text-main-color">{property.price?.toLocaleString() || "-"}</span>
+                    <div className="flex justify-between items-center flex-wrap">
+                      <span className="text-[17px] whitespace-nowrap mobile:text-[15px] font-bold">{property.usage || "نوع ملک مشخص نشده"}</span>
+                      <span className="whitespace-nowrap text-[15px] font-bold text-main-color">{property.price ? `${property.price.toLocaleString()} تومان` : "قیمت مشخص نشده"}</span>
                     </div>
                     <div className="flex justify-between items-center">
                       <div className="flex text-[14px] gap-1 items-center text-center">
