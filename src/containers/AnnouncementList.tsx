@@ -196,7 +196,7 @@ const AnnouncementList: React.FC<AnnouncementListProps> = ({
       .filter(Boolean);
 
     if (regionList.length > 0) {
-      searchRegionMutation.mutate({ region: regionList.length === 1 ? regionList[0] : regionList });
+      searchRegionMutation.mutate({ name: regionList.length === 1 ? regionList[0] : regionList });
       setShowRegionDropdown(true);
     } else {
       setFilteredRegions([]);
@@ -360,13 +360,13 @@ const AnnouncementList: React.FC<AnnouncementListProps> = ({
           results.length > 0 ? (
             <div className="w-full grid lg:grid-cols-4 sm:grid-cols-2 gap-4 place-items-center grid-cols-1 px-4 pb-16">
               {results.map((property) => (
-                <div key={property.id} className="flex flex-col justify-start items-center border rounded-xl shadow p-2 bg-white w-full">
+                <div key={property.id} className="flex flex-col justify-start items-center border rounded-xl shadow p-3 bg-white w-full">
                   {(Array.isArray(property.photo) && property.photo.length > 0) ? (
-                    <img src={property.photo[0]} alt="عکس ملک" className="rounded-xl w-full h-48 object-cover" />
+                    <img src={property.photo[0]} alt="عکس ملک" className="rounded-xl w-full h-64 object-cover" />
                   ) : (typeof property.photo === "string" && property.photo) ? (
-                    <img src={property.photo} alt="عکس ملک" className="rounded-xl w-full h-48 object-cover" />
+                    <img src={property.photo} alt="عکس ملک" className="rounded-xl w-full h-64 object-cover" />
                   ) : (
-                    <img src={House} alt="icons" width={350} className="rounded-xl w-full h-48 object-cover" />
+                    <img src={House} alt="icons" width={350} className="rounded-xl w-full h-64 object-cover" />
                   )}
                   <div className="w-full flex flex-col gap-2 mt-2">
                     <div className="flex justify-between items-center">
@@ -374,10 +374,10 @@ const AnnouncementList: React.FC<AnnouncementListProps> = ({
                       <span className="text-[15px] font-bold text-main-color">{property.price?.toLocaleString() || "-"}</span>
                     </div>
                     <div className="flex justify-between items-center">
-                      <span className="flex text-[14px] gap-1 items-center">
-                        <img src={MapPoint} alt="" width={20} />
-                        {property.region || "-"}، {property.address || "-"}
-                      </span>
+                      <div className="flex text-[14px] gap-1 items-center text-center">
+                        <img src={MapPoint} alt="" width={20} className="bg-green-100 rounded-full p-0.5"/>
+                        <span className="whitespace-nowrap font-bold text-sm">{property.region || "-"}، {property.address || "-"}</span>
+                      </div>
                       <Link to={`/house-details/${property.Uid}`} onClick={() => onAnnouncementClick?.(property)}>
                         <img src={MenuDots} alt="" width={30} />
                       </Link>
@@ -395,13 +395,13 @@ const AnnouncementList: React.FC<AnnouncementListProps> = ({
           data.length === 0 ? null : (
             <div className="w-full grid lg:grid-cols-4 sm:grid-cols-2 gap-4 place-items-center grid-cols-1 px-4 pb-16">
               {data.map((property) => (
-                <div key={property.id} className="flex flex-col justify-start items-center border rounded-xl shadow p-2 bg-white w-full">
+                <div key={property.id} className="flex flex-col justify-start items-center border rounded-xl shadow p-3 bg-white w-full">
                   {(Array.isArray(property.photo) && property.photo.length > 0) ? (
-                    <img src={property.photo[0]} alt="عکس ملک" className="rounded-xl w-full h-48 object-cover" />
+                    <img src={property.photo[0]} alt="عکس ملک" className="rounded-xl w-full h-64 object-cover" />
                   ) : (typeof property.photo === "string" && property.photo) ? (
-                    <img src={property.photo} alt="عکس ملک" className="rounded-xl w-full h-48 object-cover" />
+                    <img src={property.photo} alt="عکس ملک" className="rounded-xl w-full h-64 object-cover" />
                   ) : (
-                    <img src={House} alt="icons" width={350} className="rounded-xl w-full h-48 object-cover" />
+                    <img src={House} alt="icons" width={350} className="rounded-xl w-full h-64 object-cover" />
                   )}
                   <div className="w-full flex flex-col gap-2 mt-2">
                     <div className="flex justify-between items-center">
@@ -409,10 +409,10 @@ const AnnouncementList: React.FC<AnnouncementListProps> = ({
                       <span className="text-[15px] font-bold text-main-color">{property.price?.toLocaleString() || "-"}</span>
                     </div>
                     <div className="flex justify-between items-center">
-                      <span className="flex text-[14px] gap-1 items-center">
-                        <img src={MapPoint} alt="" width={20} />
-                        {property.region || "-"}، {property.address || "-"}
-                      </span>
+                      <div className="flex text-[14px] gap-1 items-center text-center">
+                        <img src={MapPoint} alt="" width={20} className="bg-green-100 rounded-full p-0.5"/>
+                        <span className="whitespace-nowrap font-bold text-sm">{property.region || "-"}، {property.address || "-"}</span>
+                      </div>
                       <Link to={`/house-details/${property.Uid}`} onClick={() => onAnnouncementClick?.(property)}>
                         <img src={MenuDots} alt="" width={30} />
                       </Link>
