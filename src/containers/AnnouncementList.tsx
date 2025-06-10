@@ -13,7 +13,7 @@ interface AnnouncementListProps {
   data: any[];
   isLoading: boolean;
   error: any;
-  announcementType?: "rent" | "sell"; 
+  announcementType?: "rent" | "sell";
   onAnnouncementClick?: (property: any) => void;
 }
 
@@ -301,7 +301,7 @@ const AnnouncementList: React.FC<AnnouncementListProps> = ({
                       setShowRegionDropdown(true);
                   }}
                   autoComplete="off"
-                  style={{ position: "relative", zIndex: 30 }}
+                  style={{ position: "relative", zIndex: 3 }}
                 />
                 {showRegionDropdown && (
                   <div
@@ -315,25 +315,25 @@ const AnnouncementList: React.FC<AnnouncementListProps> = ({
                     ) : Array.isArray(searchRegionMutation.data) && searchRegionMutation.data.length > 0 ? (
                       (typeof searchRegionMutation.data[0] === "object"
                         ? searchRegionMutation.data.map((item: any, idx: number) => (
-                            <div
-                              key={idx}
-                              className="px-4 py-2 cursor-pointer hover:bg-gray-100 text-right"
-                              onMouseDown={e => e.preventDefault()}
-                              onClick={() => handleRegionSelect(item.name)}
-                            >
-                              {item.name}
-                            </div>
-                          ))
+                          <div
+                            key={idx}
+                            className="px-4 py-2 cursor-pointer hover:bg-gray-100 text-right"
+                            onMouseDown={e => e.preventDefault()}
+                            onClick={() => handleRegionSelect(item.name)}
+                          >
+                            {item.name}
+                          </div>
+                        ))
                         : searchRegionMutation.data.map((name: string, idx: number) => (
-                            <div
-                              key={idx}
-                              className="px-4 py-2 cursor-pointer hover:bg-gray-100 text-right"
-                              onMouseDown={e => e.preventDefault()}
-                              onClick={() => handleRegionSelect(name)}
-                            >
-                              {name}
-                            </div>
-                          ))
+                          <div
+                            key={idx}
+                            className="px-4 py-2 cursor-pointer hover:bg-gray-100 text-right"
+                            onMouseDown={e => e.preventDefault()}
+                            onClick={() => handleRegionSelect(name)}
+                          >
+                            {name}
+                          </div>
+                        ))
                       )
                     ) : (
                       (regionSearch.split(/,|،/).map(r => r.trim()).pop() || "").length > 0 && (
@@ -380,9 +380,12 @@ const AnnouncementList: React.FC<AnnouncementListProps> = ({
                       <span className="whitespace-nowrap text-[15px] font-bold text-main-color">{property.price ? `${property.price.toLocaleString()} تومان` : "قیمت مشخص نشده"}</span>
                     </div>
                     <div className="flex justify-between items-center">
-                      <div className="flex text-[14px] gap-1 items-center text-center">
-                        <img src={MapPoint} alt="" width={20} className="bg-green-100 rounded-full p-0.5"/>
-                        <span className="whitespace-nowrap font-bold text-sm">{property.region || "-"}، {property.address || "-"}</span>
+                      <div
+                        className="flex text-[14px] gap-1 items-center text-center"
+                        style={{ maxWidth: "calc(100% - 100px)" }}
+                      >
+                        <img src={MapPoint} alt="" width={20} className="bg-green-100 rounded-full p-0.5" />
+                        <span className="truncate font-bold text-sm">{property.region || "-"}، {property.address || "-"}</span>
                       </div>
                       <Link to={`/house-details/${property.Uid}`} onClick={() => onAnnouncementClick?.(property)}>
                         <img src={MenuDots} alt="" width={30} />
@@ -415,9 +418,12 @@ const AnnouncementList: React.FC<AnnouncementListProps> = ({
                       <span className="whitespace-nowrap text-[15px] font-bold text-main-color">{property.price ? `${property.price.toLocaleString()} تومان` : "قیمت مشخص نشده"}</span>
                     </div>
                     <div className="flex justify-between items-center">
-                      <div className="flex text-[14px] gap-1 items-center text-center">
-                        <img src={MapPoint} alt="" width={20} className="bg-green-100 rounded-full p-0.5"/>
-                        <span className="whitespace-nowrap font-bold text-sm">{property.region || "-"}، {property.address || "-"}</span>
+                      <div
+                        className="flex text-[14px] gap-1 items-center text-center"
+                        style={{ maxWidth: "calc(100% - 100px)" }}
+                      >
+                        <img src={MapPoint} alt="" width={20} className="bg-green-100 rounded-full p-0.5" />
+                        <span className="truncate font-bold text-sm">{property.region || "-"}، {property.address || "-"}</span>
                       </div>
                       <Link to={`/house-details/${property.Uid}`} onClick={() => onAnnouncementClick?.(property)}>
                         <img src={MenuDots} alt="" width={30} />

@@ -57,23 +57,18 @@ const HouseDetails = () => {
         { name: 'usage', label: 'نوع ملک' },
         { name: 'region', label: 'محله مورد نظر' },
         { name: 'address', label: 'آدرس' },
-        { name: 'location', label: 'موقعیت مکانی' },
-        { name: 'document_type', label: 'نوع سند' },
-        { name: 'useful_metrage', label: 'متراژ مفید', format: (v: string | number) => v + ' متر' },
+        { name: 'floor', label: 'طبقه مورد نظر' },
         { name: 'floor_number', label: 'تعداد طبقات' },
-        { name: 'floor', label: 'طبقه' },
         { name: 'Unit_in_floor', label: 'واحد در طبقه' },
         { name: 'room_number', label: 'تعداد اتاق' },
+        { name: 'document_type', label: 'نوع سند' },
+        {name: 'land_metrage', label: 'متراژ کل زمین', format: (v: string | number) => v + ' متر'},
+        { name: 'useful_metrage', label: 'متراژ مفید', format: (v: string | number) => v + ' متر' },
         { name: 'year_of_build', label: 'سال ساخت' },
-        { name: 'price', label: 'قیمت', format: (v: string | number) => `${v?.toLocaleString?.() || v} تومان` },
+        { name: 'location', label: 'موقعیت مکانی' },
         { name: 'loan', label: 'مبلغ وام', format: (v: string | number) => v ? `${v.toLocaleString()} تومان` : 'ندارد' },
+        { name: 'price', label: 'قیمت', format: (v: string | number) => `${v?.toLocaleString?.() || v} تومان` },
         { name: 'features', label: 'امکانات' },
-        {
-            name: 'land_metrage',
-            label: 'متراژ کل زمین',
-            format: (v: string | number) => v + ' متر',
-            condition: (usage: string) => usage === "زمین کشاورزی" || usage === "زمین مسکونی" || usage === "مغازه"
-        },
     ];
 
     const shouldHideFields = (usage: string) =>
@@ -86,7 +81,7 @@ const HouseDetails = () => {
         usage === "زمین مسکونی" || usage === "زمین کشاورزی" || usage === "مغازه";
 
     const shouldHideFeatures = (usage: string) =>
-        usage === "زمین مسکونی" || usage === "زمین کشاورزی" || "مغازه";
+        usage === "زمین مسکونی" || usage === "زمین کشاورزی" || usage === "مغازه";
 
     const shouldHideLocation = (usage: string) =>
         usage === "زمین کشاورزی" || usage === "مغازه";
@@ -225,6 +220,7 @@ const HouseDetails = () => {
                                                         ) {
                                                             if (field.name === 'useful_metrage' && hideUsefulMetrage) return false;
                                                             if (field.name === 'year_of_build' && hideYearOfBuild) return false;
+                                                            // امکانات فقط برای زمین مسکونی، زمین کشاورزی و مغازه نمایش داده نشود
                                                             if (field.name === 'features' && hideFeatures) return false;
                                                             if (field.name === 'location' && hideLocation) return false;
                                                             if (field.name === 'loan' && hideLoan) return false;
@@ -238,12 +234,20 @@ const HouseDetails = () => {
                                                         if (field.name === 'features' && hideFeatures) return false;
                                                         if (field.name === 'location' && hideLocation) return false;
                                                         if (field.name === 'loan' && hideLoan) return false;
-                                                        if (field.name === 'land_metrage' && field.condition && !field.condition(usageValue)) return false;
                                                     }
                                                     return true;
                                                 })
                                                 .map((field) => {
-                                                    const value = selectedProperty?.[field.name];
+                                                    let value = selectedProperty?.[field.name];
+                                                    if (field.name === 'features' && typeof value === 'string') {
+                                                        value = value
+                                                            .split(',')
+                                                            .map(f => f.trim())
+                                                            .filter(f => f && f !== "-")
+                                                            .join('، ');
+                                                        if (!value) return null;
+                                                    }
+                                                    if (value === "-") return null;
                                                     if (
                                                         value === "" ||
                                                         value === undefined ||
@@ -257,7 +261,7 @@ const HouseDetails = () => {
                                                             className="flex flex-row items-center justify-between py-4 px-2 hover:bg-gray-50 transition rounded-xl"
                                                         >
                                                             <label className="mb-0 text-gray-500 text-[15px] font-semibold">{field.label}</label>
-                                                            <p className="font-extrabold text-gray-800 text-[17px] text-left">
+                                                            <p className="font-extrabold text-gray-800 sm:text-[17px] text-[14px] text-left">
                                                                 {field.format
                                                                     ? field.format(value)
                                                                     : value}
