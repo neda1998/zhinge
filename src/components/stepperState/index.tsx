@@ -69,24 +69,24 @@ const StepperState = () => {
     const [uploadedImages, setUploadedImages] = useState<any[]>([]);
 
     const resetAllStates = () => {
-        setType("-"); // مقدار پیش‌فرض "-"
+        setType("-"); 
         setUsage("");
         setRegion("");
         setAddress("");
-        setLocation("-"); // مقدار پیش‌فرض "-"
+        setLocation("-");
         setPrice(undefined);
         setLoan(undefined);
         setYearOfBuild(undefined);
         setRoomNumber(undefined);
         setLandMetrage(undefined);
         setFloorNumber(undefined); 
-        setFloor("-"); // مقدار پیش‌فرض "-"
+        setFloor("-"); 
         setUnitInFloor(undefined);
         setDocumentType("");
-        setFeatures("-"); // مقدار پیش‌فرض "-"
+        setFeatures("-"); 
         setFullName("");
         setPhone("");
-        setStateCode("");
+        setStateCode("-");
         setUsefulMetrage(undefined);
         setIsAnnouncementSubmitted(false);
         setUploadedImages([]);
@@ -105,7 +105,7 @@ const StepperState = () => {
             floor_number={floor_number} setFloorNumber={setFloorNumber}
             floor={floor} setFloor={setFloor}
             room_number={room_number} setRoomNumber={setRoomNumber}
-            type={type} setType={setType} // اطمینان از ارسال prop type و setType به StepOne
+            type={type} setType={setType} 
         />,
         <StepTwo
             key="step2"
@@ -119,7 +119,8 @@ const StepperState = () => {
             land_metrage={land_metrage} setLandMetrage={setLandMetrage}
             description={description} setDescription={setDescription}
             usage={usage}
-            type={type} // اضافه شد برای StepTwo
+            type={type} 
+            state_code={["زمین کشاورزی", "زمین مسکونی", "مغازه"].includes(type) ? "" : (state_code)} setStateCode={setStateCode}
         />,
         <StepThree
             key="step3"
@@ -128,7 +129,6 @@ const StepperState = () => {
             full_name={full_name} setFullName={setFullName}
             phone={phone} setPhone={setPhone}
             type={type} usage={usage} region={region} address={address}
-            // اگر نوع ملک خاص بود location خالی بفرست
             location={
                 ["زمین کشاورزی", "زمین مسکونی", "مغازه"].includes(type) ? "" : (location || "")
             }
@@ -144,6 +144,7 @@ const StepperState = () => {
             useful_metrage={useful_metrage}
             document_type={document_type}
             setDocumentType={setDocumentType}
+            state_code={state_code} setStateCode={setStateCode}
         />,
         <StepFourUser
             key="step4"

@@ -1,4 +1,4 @@
-import ComboBox from "../common/Combo";
+import { useCookies } from "react-cookie";
 import InputState from "../ui/atoms/input/inputState"
 import React, { useState } from "react";
 
@@ -9,10 +9,11 @@ interface StepTwoProps {
     features: string; setFeatures: (v: string) => void;
     useful_metrage?: number; setUsefulMetrage: (v: number) => void;
     location?: string; setLocation: (v: string) => void;
-    land_metrage?: number; setLandMetrage: (v: number) => void; 
+    land_metrage?: number; setLandMetrage: (v: number) => void;
     description?: string; setDescription: (v: string) => void;
-    usage: string; 
+    usage: string;
     type: string;
+    state_code?: string; setStateCode?: (v: string) => void;
 }
 
 function formatInputNumber(val: string) {
@@ -26,7 +27,7 @@ const formatNumber = (value: number | string | undefined) =>
         : "";
 
 const FEATURES_OPTIONS = [
-    "آسانسور", "پارکینگ", "انباری", "تراس", "حیاط", "سرویس بهداشتی", "سرویس حمام", "کمد دیواری", "کابینت", "کولر", "پکیج", "شومینه", "دوربین مداربسته", "سونا", "جکوزی", "استخر", "لابی", "سیستم امنیتی", "سیستم گرمایش از کف", "سیستم سرمایش از سقف","سقف کناف","درب ضد سرقت","کف سرامیک","کف پارکت"];
+    "آسانسور", "پارکینگ", "انباری", "تراس", "حیاط", "سرویس بهداشتی", "سرویس حمام", "کمد دیواری", "کابینت", "کولر", "پکیج", "شومینه", "دوربین مداربسته", "سونا", "جکوزی", "استخر", "لابی", "سیستم امنیتی", "سیستم گرمایش از کف", "سیستم سرمایش از سقف", "سقف کناف", "درب ضد سرقت", "کف سرامیک", "کف پارکت"];
 
 const LOCATION_OPTIONS = [
     "شمالی",
@@ -63,6 +64,7 @@ const StepTwo = ({
     description, setDescription,
     usage,
     type,
+    state_code, setStateCode
 }: StepTwoProps) => {
     const [showFeaturePanel, setShowFeaturePanel] = useState(false);
     const selectedFeatures: string[] = features ? features.split(",").map(f => f.trim()).filter(f => f) : [];
@@ -73,6 +75,8 @@ const StepTwo = ({
     const hideLocation = shouldHideLocation(usage);
     const hideLoan = usage === "زمین مسکونی" || usage === "زمین کشاورزی";
     const shouldDisableLocation = ["زمین کشاورزی", "زمین مسکونی", "مغازه"].includes(type);
+    const [cookies, setCookies] = useCookies(["role"]);
+    const isAdmin = cookies.role === "true" || cookies.role === true;
 
     const handleFeatureSelect = (feature: string) => {
         if (selectedFeatures.includes(feature)) {
@@ -142,7 +146,8 @@ const StepTwo = ({
                         onChange={e => {
                             const formatted = formatInputNumber(e.target.value);
                             e.target.value = formatted;
-                            setUsefulMetrage(Number(e.target.value.replace(/,/g, "")))}
+                            setUsefulMetrage(Number(e.target.value.replace(/,/g, "")))
+                        }
                         }
                         placeholder="مثال: 100"
                         numeric
@@ -292,6 +297,20 @@ const StepTwo = ({
                     maxLength={500}
                 />
             </div>
+            {
+                isAdmin && state_code !== undefined && setStateCode &&
+                <div className="col-span-1 lg:col-span-4 flex flex-col">
+                    <label className="mb-1 text-sm font-medium">توضیحات ادمین
+                    </label>
+                    <textarea
+                        value={state_code}
+                        onChange={e => setStateCode && setStateCode(e.target.value)}
+                        placeholder="توضیحات ملک را وارد کنید"
+                        className="border rounded px-2 py-1 w-full min-h-48 resize-none focus:outline-none focus:ring-2 focus:ring-main-color transition duration-200"
+                        maxLength={500}
+                    />
+                </div>
+            }
         </div>
     )
 }

@@ -174,7 +174,7 @@ export default function Realstate() {
     <StepTwoUser
       key="step2"
       type={type}
-      usage={usage} // اضافه شد
+      usage={usage} 
       loan={loan} setLoan={setLoan}
       year_of_build={year_of_build} setYearOfBuild={setYearOfBuild}
       useful_metrage={useful_metrage} setUsefulMetrage={setUsefulMetrage}

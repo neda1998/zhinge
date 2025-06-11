@@ -10,6 +10,8 @@ import { useCookies } from 'react-cookie';
 const HouseDetails = () => {
     const { mutate, data, isLoading, error } = UseByUidAnnounceMutation();
     const { id: Uid } = useParams<{ id: string }>();
+        const [cookies, setCookies] = useCookies(["role"]);
+        const isAdmin = cookies.role === "true" || cookies.role === true;
 
     useEffect(() => {
         if (!Uid) {
@@ -19,8 +21,8 @@ const HouseDetails = () => {
     }, [mutate, Uid]);
 
     const selectedProperty = Array.isArray(data)
-        ? data.find((property: any) => property.Uid?.toString() === Uid && property.check && !property.reject) // Exclude properties with "check": false or "reject": true
-        : (data?.check && !data?.reject ? data : null); // Ensure the selected property meets the criteria
+        ? data.find((property: any) => property.Uid?.toString() === Uid && property.check && !property.reject) 
+        : (data?.check && !data?.reject ? data : null); 
 
     const formik = useFormik<Record<string, any>>({
         enableReinitialize: true,
@@ -62,13 +64,14 @@ const HouseDetails = () => {
         { name: 'Unit_in_floor', label: 'واحد در طبقه' },
         { name: 'room_number', label: 'تعداد اتاق' },
         { name: 'document_type', label: 'نوع سند' },
-        {name: 'land_metrage', label: 'متراژ کل زمین', format: (v: string | number) => v + ' متر'},
+        { name: 'land_metrage', label: 'متراژ کل زمین', format: (v: string | number) => v + ' متر' },
         { name: 'useful_metrage', label: 'متراژ مفید', format: (v: string | number) => v + ' متر' },
         { name: 'year_of_build', label: 'سال ساخت' },
         { name: 'location', label: 'موقعیت مکانی' },
         { name: 'loan', label: 'مبلغ وام', format: (v: string | number) => v ? `${v.toLocaleString()} تومان` : 'ندارد' },
         { name: 'price', label: 'قیمت', format: (v: string | number) => `${v?.toLocaleString?.() || v} تومان` },
         { name: 'features', label: 'امکانات' },
+        ...(isAdmin ? [{ name: 'state_code', label: 'توضیحات ادمین' }] : [])
     ];
 
     const shouldHideFields = (usage: string) =>
@@ -87,10 +90,6 @@ const HouseDetails = () => {
         usage === "زمین کشاورزی" || usage === "مغازه";
     const shouldHideLoan = (usage: string) =>
         usage === "زمین مسکونی" || usage === "زمین کشاورزی" || usage === "مغازه";
-
-    const [cookies, setCookies] = useCookies(["role"]);
-
-    const isAdmin = cookies.role === "true" || cookies.role === true;
 
     const staticUser = {
         full_name: "محمد طاهر زاهدی",
@@ -214,13 +213,14 @@ const HouseDetails = () => {
                                             {fields
                                                 .filter(field => field.name !== 'userID' && field.name !== 'full_name')
                                                 .filter(field => {
+                                                    // فقط زمانی state_code را نمایش بده که ادمین باشد
+                                                    if (field.name === 'state_code' && !isAdmin) return false;
                                                     if (hideFields) {
                                                         if (
                                                             ['useful_metrage', 'floor_number', 'floor', 'Unit_in_floor', 'room_number', 'year_of_build', 'features', 'location', 'loan'].includes(field.name)
                                                         ) {
                                                             if (field.name === 'useful_metrage' && hideUsefulMetrage) return false;
                                                             if (field.name === 'year_of_build' && hideYearOfBuild) return false;
-                                                            // امکانات فقط برای زمین مسکونی، زمین کشاورزی و مغازه نمایش داده نشود
                                                             if (field.name === 'features' && hideFeatures) return false;
                                                             if (field.name === 'location' && hideLocation) return false;
                                                             if (field.name === 'loan' && hideLoan) return false;

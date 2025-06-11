@@ -29,6 +29,8 @@ interface StepThreeProps {
     useful_metrage?: number;
     document_type?: string;
     setDocumentType?: (v: string) => void;
+    state_code?: string;
+    setStateCode?: (v: string) => void;
 }
 
 const shouldHideFields = (type?: string) =>
@@ -49,7 +51,9 @@ const StepThree = ({
     Unit_in_floor,
     useful_metrage,
     document_type,
-    setDocumentType
+    setDocumentType,
+    state_code
+, setStateCode
 }: StepThreeProps) => {
     const [submitAttempted, setSubmitAttempted] = useState(false);
     const hideFields = shouldHideFields(type);
@@ -111,7 +115,8 @@ const StepThree = ({
                     features: features || "-",
                     Unit_in_floor: Unit_in_floor !== undefined && Unit_in_floor !== null ? Unit_in_floor : 0,
                     useful_metrage: useful_metrage !== undefined && useful_metrage !== null ? useful_metrage : 0,
-                    document_type: document_type || "-"
+                    document_type: document_type || "-",
+                    state_code: state_code || "-"
                 });
                 if (onReset) onReset();
             } catch {
@@ -136,7 +141,8 @@ const StepThree = ({
                 features: features || "-",
                 Unit_in_floor: Unit_in_floor !== undefined && Unit_in_floor !== null ? Unit_in_floor : 0,
                 useful_metrage: useful_metrage !== undefined && useful_metrage !== null ? useful_metrage : 0,
-                document_type: document_type || "-"
+                document_type: document_type || "-",
+                state_code: state_code || "-"
             });
         }
     };
