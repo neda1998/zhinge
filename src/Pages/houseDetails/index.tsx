@@ -71,7 +71,6 @@ const HouseDetails = () => {
         { name: 'loan', label: 'مبلغ وام', format: (v: string | number) => v ? `${v.toLocaleString()} تومان` : 'ندارد' },
         { name: 'price', label: 'قیمت', format: (v: string | number) => `${v?.toLocaleString?.() || v} تومان` },
         { name: 'features', label: 'امکانات' },
-        ...(isAdmin ? [{ name: 'state_code', label: 'توضیحات ادمین' }] : [])
     ];
 
     const shouldHideFields = (usage: string) =>
@@ -213,8 +212,6 @@ const HouseDetails = () => {
                                             {fields
                                                 .filter(field => field.name !== 'userID' && field.name !== 'full_name')
                                                 .filter(field => {
-                                                    // فقط زمانی state_code را نمایش بده که ادمین باشد
-                                                    if (field.name === 'state_code' && !isAdmin) return false;
                                                     if (hideFields) {
                                                         if (
                                                             ['useful_metrage', 'floor_number', 'floor', 'Unit_in_floor', 'room_number', 'year_of_build', 'features', 'location', 'loan'].includes(field.name)
@@ -284,6 +281,22 @@ const HouseDetails = () => {
                                         </span>
                                     </div>
                                 </div>
+            {
+                isAdmin && (
+                    <div className="flex w-full flex-col gap-5 justify-start bg-white/90 border border-gray-100 shadow-2xl rounded-3xl p-4 md:p-8">
+                                    <div className="w-full flex justify-center h-14 mb-2">
+                                        <div className="w-[90%] bg-gradient-to-l from-green-400 to-blue-400 flex items-center justify-center rounded-full text-white font-extrabold text-xl shadow-lg tracking-wide py-2">
+                                            توضیحات بیشتر ادمین
+                                        </div>
+                                    </div>
+                                    <div className="w-full flex justify-center">
+                                        <span className="text-[16px] text-gray-700 font-medium leading-relaxed text-justify">
+                                            {selectedProperty?.state_code || "توضیحات موجود نیست"}
+                                        </span>
+                                    </div>
+                                </div>
+                )
+            }
                             </div>
                         </div>
                     </div>
