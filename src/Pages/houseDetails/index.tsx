@@ -10,8 +10,8 @@ import { useCookies } from 'react-cookie';
 const HouseDetails = () => {
     const { mutate, data, isLoading, error } = UseByUidAnnounceMutation();
     const { id: Uid } = useParams<{ id: string }>();
-        const [cookies, setCookies] = useCookies(["role"]);
-        const isAdmin = cookies.role === "true" || cookies.role === true;
+    const [cookies, setCookies] = useCookies(["role"]);
+    const isAdmin = cookies.role === "true" || cookies.role === true;
 
     useEffect(() => {
         if (!Uid) {
@@ -21,8 +21,8 @@ const HouseDetails = () => {
     }, [mutate, Uid]);
 
     const selectedProperty = Array.isArray(data)
-        ? data.find((property: any) => property.Uid?.toString() === Uid && property.check && !property.reject) 
-        : (data?.check && !data?.reject ? data : null); 
+        ? data.find((property: any) => property.Uid?.toString() === Uid && property.check && !property.reject)
+        : (data?.check && !data?.reject ? data : null);
 
     const formik = useFormik<Record<string, any>>({
         enableReinitialize: true,
@@ -281,22 +281,22 @@ const HouseDetails = () => {
                                         </span>
                                     </div>
                                 </div>
-            {
-                isAdmin && (
-                    <div className="flex w-full flex-col gap-5 justify-start bg-white/90 border border-gray-100 shadow-2xl rounded-3xl p-4 md:p-8">
-                                    <div className="w-full flex justify-center h-14 mb-2">
-                                        <div className="w-[90%] bg-gradient-to-l from-green-400 to-blue-400 flex items-center justify-center rounded-full text-white font-extrabold text-xl shadow-lg tracking-wide py-2">
-                                            توضیحات بیشتر ادمین
+                                {
+                                    isAdmin && (
+                                        <div className="flex w-full flex-col gap-5 justify-start bg-white/90 border border-gray-100 shadow-2xl rounded-3xl p-4 md:p-8">
+                                            <div className="w-full flex justify-center h-14 mb-2">
+                                                <div className="w-[90%] bg-gradient-to-l from-green-400 to-blue-400 flex items-center justify-center rounded-full text-white font-extrabold text-xl shadow-lg tracking-wide py-2">
+                                                    توضیحات بیشتر ادمین
+                                                </div>
+                                            </div>
+                                            <div className="w-full flex justify-center">
+                                                <span className="text-[16px] text-gray-700 font-medium leading-relaxed text-justify">
+                                                    {selectedProperty?.state_code || "توضیحات موجود نیست"}
+                                                </span>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div className="w-full flex justify-center">
-                                        <span className="text-[16px] text-gray-700 font-medium leading-relaxed text-justify">
-                                            {selectedProperty?.state_code || "توضیحات موجود نیست"}
-                                        </span>
-                                    </div>
-                                </div>
-                )
-            }
+                                    )
+                                }
                             </div>
                         </div>
                     </div>
